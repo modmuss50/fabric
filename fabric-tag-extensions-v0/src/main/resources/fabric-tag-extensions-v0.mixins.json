@@ -5,6 +5,7 @@
   "mixins": [
     "AccessorFluidTags",
     "MixinObjectBuilder",
+    "MixinRequiredTagListRegistry",
     "MixinTagImpl",
     "MixinTagBuilder"
   ],
