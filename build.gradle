@@ -440,7 +440,7 @@ task github(dependsOn: remapMavenJar) {
 		releaseBuilder.prerelease(Globals.preRelease)
 
 		def ghRelease = releaseBuilder.create()
-		ghRelease.uploadAsset(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"), "application/java-archive");
+		ghRelease.uploadAsset(file("${project.buildDir}/libs/${archivesBaseName}-${project.version}.jar"), "application/java-archive");
 	}
 }
 
@@ -455,7 +455,7 @@ task modrinth(type: com.modrinth.minotaur.TaskModrinthUpload, dependsOn: remapMa
 	versionName = "[$Globals.mcVersion] Fabric API $Globals.baseVersion"
 	releaseType = Globals.preRelease ? "beta" : "release"
 
-	uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
+	uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${project.version}.jar")
 
 	addGameVersion(Globals.mcVersion)
 	addLoader('fabric')
