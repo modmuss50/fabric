@@ -407,7 +407,7 @@ curseforge {
 		addGameVersion "1.16.5"
 		addGameVersion "Fabric"
 
-		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
+		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.version}.jar")) {
 			displayName = "[$Globals.mcVersion] Fabric API $Globals.baseVersion"
 		}
 
