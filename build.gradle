@@ -474,7 +474,7 @@ task checkVersion {
 		def metadata = new XmlSlurper().parseText(xml)
 		def versions = metadata.versioning.versions.version*.text();
 		if (versions.contains(version)) {
-			throw new RuntimeException("${version} has already been released!")
+			throw new RuntimeException("${project.version} has already been released!")
 		}
 	}
 }
