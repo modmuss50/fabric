@@ -187,9 +187,15 @@ allprojects {
 		processResources {
 			inputs.property "version", project.version
 
-			filesMatching("fabric.mod.json") {
+			from(sourceSets.main.resources.srcDirs) {
+				include "fabric.mod.json"
+                                duplicatesStrategy = DuplicatesStrategy.INCLUDE // allow duplicates
 				expand "version": project.version
-				duplicatesStrategy = DuplicatesStrategy.INCLUDE // allow duplicates
+			}
+
+			from(sourceSets.main.resources.srcDirs) {
+                                duplicatesStrategy = DuplicatesStrategy.INCLUDE // allow duplicates
+				exclude "fabric.mod.json"
 			}
 		}
 
