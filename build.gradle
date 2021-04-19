@@ -189,6 +189,7 @@ allprojects {
 
 			filesMatching("fabric.mod.json") {
 				expand "version": project.version
+				duplicatesStrategy = DuplicatesStrategy.INCLUDE // allow duplicates
 			}
 		}
 
