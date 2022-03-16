@@ -17,6 +17,9 @@
 package net.fabricmc.fabric.mixin.gametest;
 
 import com.mojang.brigadier.arguments.ArgumentType;
+
+import net.minecraft.util.registry.Registry;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,19 +33,21 @@ import net.minecraft.command.argument.TestFunctionArgumentType;
 import net.minecraft.command.argument.serialize.ArgumentSerializer;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 @Mixin(ArgumentTypes.class)
 public abstract class ArgumentTypesMixin {
 	@Shadow
-	public static <T extends ArgumentType<?>> void register(String id, Class<T> argClass, ArgumentSerializer<T> serializer) {
+	private static <A extends ArgumentType<?>, T extends ArgumentSerializer.class_7217<A>> ArgumentSerializer<A, T> register(Registry<ArgumentSerializer<?, ?>> registry, String string, Class<? extends A> clazz, ArgumentSerializer<A, T> argumentSerializer) {
 		throw new AssertionError("Nope.");
 	}
 
 	@Inject(method = "register()V", at = @At("RETURN"))
-	private static void register(CallbackInfo ci) {
+	private static void register(Registry<ArgumentSerializer<?, ?>> registry, CallbackInfoReturnable<ArgumentSerializer<?, ?>> ci) {
 		// Registered by vanilla when isDevelopment is enabled.
 		if (!SharedConstants.isDevelopment) {
-			register("test_argument", TestFunctionArgumentType.class, new ConstantArgumentSerializer<>(TestFunctionArgumentType::testFunction));
-			register("test_class", TestClassArgumentType.class, new ConstantArgumentSerializer<>(TestClassArgumentType::testClass));
+			register(registry, "test_argument", TestFunctionArgumentType.class, ConstantArgumentSerializer.method_41999(TestFunctionArgumentType::testFunction));
+			register(registry, "test_class", TestClassArgumentType.class, ConstantArgumentSerializer.method_41999(TestClassArgumentType::testClass));
 		}
 	}
 }
