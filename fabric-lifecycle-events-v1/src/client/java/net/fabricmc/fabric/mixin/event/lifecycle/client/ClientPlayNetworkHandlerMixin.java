@@ -16,6 +16,9 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
+import net.minecraft.class_7756;
+import net.minecraft.class_7780;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,8 +47,6 @@ import net.fabricmc.fabric.impl.event.lifecycle.LoadedChunksCache;
 abstract class ClientPlayNetworkHandlerMixin {
 	@Shadow
 	private ClientWorld world;
-	@Shadow
-	private DynamicRegistryManager.Immutable registryManager;
 
 	@Inject(method = "onPlayerRespawn", at = @At(value = "NEW", target = "net/minecraft/client/world/ClientWorld"))
 	private void onPlayerRespawn(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
@@ -102,6 +103,7 @@ abstract class ClientPlayNetworkHandlerMixin {
 		}
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Inject(
 			method = "onSynchronizeTags",
 			at = @At(
@@ -111,6 +113,7 @@ abstract class ClientPlayNetworkHandlerMixin {
 			)
 	)
 	private void hookOnSynchronizeTags(SynchronizeTagsS2CPacket packet, CallbackInfo ci) {
-		CommonLifecycleEvents.TAGS_LOADED.invoker().onTagsLoaded(registryManager, true);
+		var self = (ClientPlayNetworkHandler) (Object) this;
+		CommonLifecycleEvents.TAGS_LOADED.invoker().onTagsLoaded(self.getRegistryManager(), true);
 	}
 }
