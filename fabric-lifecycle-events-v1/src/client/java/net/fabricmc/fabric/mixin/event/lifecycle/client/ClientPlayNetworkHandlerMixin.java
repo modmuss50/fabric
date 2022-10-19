@@ -16,9 +16,6 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
-import net.minecraft.class_7756;
-import net.minecraft.class_7780;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +29,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
 import net.minecraft.network.packet.s2c.play.SynchronizeTagsS2CPacket;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.chunk.WorldChunk;
 
 import net.fabricmc.api.EnvType;
@@ -113,7 +109,7 @@ abstract class ClientPlayNetworkHandlerMixin {
 			)
 	)
 	private void hookOnSynchronizeTags(SynchronizeTagsS2CPacket packet, CallbackInfo ci) {
-		var self = (ClientPlayNetworkHandler) (Object) this;
+		ClientPlayNetworkHandler self = (ClientPlayNetworkHandler) (Object) this;
 		CommonLifecycleEvents.TAGS_LOADED.invoker().onTagsLoaded(self.getRegistryManager(), true);
 	}
 }
