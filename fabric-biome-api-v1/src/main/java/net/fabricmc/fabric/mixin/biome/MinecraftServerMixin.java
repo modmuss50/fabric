@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.mixin.biome;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +26,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.SaveProperties;
 import net.minecraft.world.dimension.DimensionOptions;
 
 import net.fabricmc.fabric.impl.biome.NetherBiomeData;
@@ -44,7 +42,7 @@ public class MinecraftServerMixin {
 		// This is the last point where we can safely modify worldgen related things
 		// plus, this is server-side only, and DRM is easily accessible
 		// please blame Mojang for using dynamic registry
-		var registry = getRegistryManager().get(Registry.DIMENSION_KEY);
+		Registry<DimensionOptions> registry = getRegistryManager().get(Registry.DIMENSION_KEY);
 
 		registry.stream().forEach(dimensionOptions -> NetherBiomeData.modifyBiomeSource(getRegistryManager().get(Registry.BIOME_KEY), dimensionOptions.chunkGenerator().getBiomeSource()));
 	}

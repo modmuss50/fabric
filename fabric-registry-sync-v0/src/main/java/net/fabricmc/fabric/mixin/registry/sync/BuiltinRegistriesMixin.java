@@ -30,6 +30,7 @@ public class BuiltinRegistriesMixin {
 	@Inject(method = "<clinit>", at = @At("TAIL"))
 	private static void unfreezeBultinRegistries(CallbackInfo ci) {
 		((SimpleRegistry<?>) BuiltinRegistries.REGISTRIES).frozen = false;
+		
 		for (Registry<?> registry : BuiltinRegistries.REGISTRIES) {
 			((SimpleRegistry<?>) registry).frozen = false;
 		}

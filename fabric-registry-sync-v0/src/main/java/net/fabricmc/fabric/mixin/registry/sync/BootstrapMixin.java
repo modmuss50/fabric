@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.mixin.registry.sync;
 
-import java.util.Iterator;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -69,7 +67,7 @@ public class BootstrapMixin {
 	private static void skipFreeze() {
 		Registry.freezeRegistries();
 
-		((SimpleRegistry<?>)Registry.REGISTRIES).frozen = false;
+		((SimpleRegistry<?>) Registry.REGISTRIES).frozen = false;
 
 		for (Registry<?> registry : Registry.REGISTRIES) {
 			((SimpleRegistry<?>) registry).frozen = false;
