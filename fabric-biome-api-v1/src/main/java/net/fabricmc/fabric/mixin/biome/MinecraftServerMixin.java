@@ -28,24 +28,24 @@ import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.SaveProperties;
+import net.minecraft.world.dimension.DimensionOptions;
 
 import net.fabricmc.fabric.impl.biome.NetherBiomeData;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
 	@Shadow
-	@Final
-	protected SaveProperties saveProperties;
-
-	@Shadow
-	@Final
-	private DynamicRegistryManager.Immutable registryManager;
+	private DynamicRegistryManager.Immutable getRegistryManager() {
+		throw new AssertionError();
+	}
 
 	@Inject(method = "createWorlds", at = @At("HEAD"))
 	private void addNetherBiomes(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci) {
 		// This is the last point where we can safely modify worldgen related things
 		// plus, this is server-side only, and DRM is easily accessible
 		// please blame Mojang for using dynamic registry
-		this.saveProperties.getGeneratorOptions().getDimensions().stream().forEach(dimensionOptions -> NetherBiomeData.modifyBiomeSource(this.registryManager.get(Registry.BIOME_KEY), dimensionOptions.getChunkGenerator().getBiomeSource()));
+		var registry = getRegistryManager().get(Registry.DIMENSION_KEY);
+
+		registry.stream().forEach(dimensionOptions -> NetherBiomeData.modifyBiomeSource(getRegistryManager().get(Registry.BIOME_KEY), dimensionOptions.chunkGenerator().getBiomeSource()));
 	}
 }

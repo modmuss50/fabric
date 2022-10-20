@@ -155,7 +155,10 @@ public abstract class SimpleRegistryMixin<T> extends Registry<T> implements Rema
 	}
 
 	@Inject(method = "set", at = @At("RETURN"))
-	private <V extends T> void set(int rawId, RegistryKey<Registry<T>> registryKey, V entry, Lifecycle lifecycle, CallbackInfoReturnable<V> info) {
+	private <V extends T> void set(int rawId, RegistryKey<Registry<T>> registryKey, V entry, Lifecycle lifecycle, CallbackInfoReturnable<RegistryEntry<T>> info) {
+		if (info.getReturnValue() instanceof RegistryEntry.Reference<T> reference) {
+			reference.method_45918(entry);
+		}
 		onChange(registryKey);
 	}
 

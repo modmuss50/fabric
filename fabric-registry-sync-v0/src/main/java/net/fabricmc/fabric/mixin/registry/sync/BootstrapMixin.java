@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.registry.sync;
 
+import java.util.Iterator;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,6 +31,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.BiomeKeys;
 
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
@@ -64,6 +67,12 @@ public class BootstrapMixin {
 
 	@Redirect(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/registry/Registry;freezeRegistries()V"))
 	private static void skipFreeze() {
-		// Don't freeze
+		Registry.freezeRegistries();
+
+		((SimpleRegistry<?>)Registry.REGISTRIES).frozen = false;
+
+		for (Registry<?> registry : Registry.REGISTRIES) {
+			((SimpleRegistry<?>) registry).frozen = false;
+		}
 	}
 }

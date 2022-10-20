@@ -16,7 +16,11 @@
 
 package net.fabricmc.fabric.test.registry.sync;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.apache.commons.lang3.Validate;
@@ -24,13 +28,29 @@ import org.apache.commons.lang3.Validate;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.class_7659;
+import net.minecraft.class_7701;
+import net.minecraft.class_7712;
+import net.minecraft.class_7726;
+import net.minecraft.class_7780;
+import net.minecraft.client.gui.screen.world.CreateWorldScreen;
+import net.minecraft.client.world.GeneratorOptionsHolder;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.resource.DataPackSettings;
+import net.minecraft.resource.ResourcePackManager;
+import net.minecraft.resource.ResourcePackProvider;
+import net.minecraft.resource.VanillaDataPackProvider;
+import net.minecraft.server.SaveLoading;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.world.gen.GeneratorOptions;
+import net.minecraft.world.gen.WorldPresets;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -145,13 +165,13 @@ public class RegistrySyncTest implements ModInitializer {
 
 		// Force-Initialize the dynamic registry manager, doing this in a Mod initializer would cause
 		// further registrations into BuiltInRegistries to _NOT_ propagate into DynamicRegistryManager.BUILTIN
-		checkFeature(DynamicRegistryManager.createAndLoad(), f1Id);
+		checkFeature(DynamicRegistryManager.of(Registry.REGISTRIES), f1Id);
 
 		ConfiguredFeature<DefaultFeatureConfig, ?> cf2 = new ConfiguredFeature<>(Feature.DESERT_WELL, DefaultFeatureConfig.INSTANCE);
 		Identifier f2Id = new Identifier("registry_sync", "f2");
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, f2Id, cf2);
 
-		DynamicRegistryManager impl2 = DynamicRegistryManager.createAndLoad();
+		DynamicRegistryManager impl2 = DynamicRegistryManager.of(Registry.REGISTRIES);
 		checkFeature(impl2, f1Id);
 		checkFeature(impl2, f2Id);
 	}
