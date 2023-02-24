@@ -10,7 +10,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id 'jacoco'
-	id "fabric-loom" version "1.1.8" apply false
+	id "fabric-loom" version "1.1.local" apply false
 	id "com.diffplug.spotless" version "6.11.0"
 	id "org.ajoberstar.grgit" version "3.1.0"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
@@ -133,6 +133,10 @@ allprojects {
 		}
 	}
 
+	repositories {
+		mavenLocal()
+	}
+
 	publishing {
 		setupRepositories(repositories)
 	}
@@ -165,6 +169,10 @@ allprojects {
 			compileClasspath += client.compileClasspath
 			runtimeClasspath += client.runtimeClasspath
 		}
+		test {
+			compileClasspath += testmod.compileClasspath
+			runtimeClasspath += testmod.runtimeClasspath
+		}
 	}
 
 	loom {
@@ -196,6 +204,7 @@ allprojects {
 
 		loom.mods.register(p.name + "-testmod") {
 			sourceSet p.sourceSets.testmod
+			sourceSet p.sourceSets.test
 		}
 	}
 
@@ -206,6 +215,9 @@ allprojects {
 
 		testmodImplementation sourceSets.main.output
 		testmodImplementation sourceSets.client.output
+
+		testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+		testImplementation sourceSets.testmod.output
 	}
 
 	tasks.withType(ProcessResources).configureEach {
@@ -276,6 +288,10 @@ allprojects {
 		source(sourceSets.main.output)
 		source(sourceSets.client.output)
 		source(sourceSets.testmod.output)
+	}
+
+	test {
+		useJUnitPlatform()
 	}
 
 	// Apply to each valid subproject.
