@@ -22,7 +22,7 @@ jobs:
           context: changelog
           workflow_id: release.yml
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew checkVersion build publish curseforge github modrinth -x :runGametest -x :fabric-biome-api-v1:runDatagen -x :fabric-data-generation-api-v1:runDatagen --stacktrace -Porg.gradle.parallel.threads=10
+      - run: ./gradlew checkVersion build publish curseforge github modrinth -x :runGametest -x :fabric-biome-api-v1:runDatagen -x :fabric-data-generation-api-v1:runDatagen --stacktrace -Porg.gradle.workers.max=10
         env:
           MAVEN_URL: ${{ secrets.MAVEN_URL }}
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
