@@ -48,10 +48,14 @@ public abstract class ClientCommonNetworkHandlerMixin implements NetworkHandlerE
 			if (handled) {
 				ci.cancel();
 			} else if (payload instanceof RetainedPayload retained && retained.buf().refCnt() > 0) {
-				// Vanilla forces to use the render thread for its payloads,
-				// that means this method can get called multiple times.
-				retained.buf().skipBytes(retained.buf().readableBytes());
-				retained.buf().release();
+				try {
+					// Vanilla forces to use the render thread for its payloads,
+					// that means this method can get called multiple times.
+					retained.buf().skipBytes(retained.buf().readableBytes());
+					retained.buf().release();
+				} catch (io.netty.util.IllegalReferenceCountException e) {
+					throw new RuntimeException("Failed to handle unknown packet: " + retained.id() + " refCnt: " + retained.buf().refCnt(), e);
+				}
 			}
 		}
 	}
