@@ -26,9 +26,12 @@ import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientSync;
 public class CustomIngredientSyncClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		ClientConfigurationNetworking.registerGlobalReceiver(CustomIngredientSync.PACKET_ID, (client, handler, buf, responseSender) -> {
-			int protocolVersion = buf.readVarInt();
-			handler.sendPacket(ClientConfigurationNetworking.createC2SPacket(CustomIngredientSync.PACKET_ID, CustomIngredientSync.createResponsePacket(protocolVersion)));
+		ClientConfigurationNetworking.registerGlobalReceiver(CustomIngredientSync.IngredientSyncPayloadS2C.ID, (payload, responseSender) -> {
+			int protocolVersion = payload.protocolVersion();
+			CustomIngredientSync.IngredientSyncPayloadC2S responsePayload = CustomIngredientSync.createResponsePayload(protocolVersion);
+			if (responsePayload != null) {
+				responseSender.sendPacket(responsePayload);
+			}
 		});
 	}
 }

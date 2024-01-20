@@ -19,7 +19,6 @@ package net.fabricmc.fabric.impl.recipe.ingredient;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -28,7 +27,6 @@ import com.mojang.serialization.DataResult;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 
@@ -49,8 +47,8 @@ public class CustomIngredientImpl extends Ingredient {
 
 	public static final Codec<CustomIngredientSerializer<?>> CODEC = Identifier.CODEC.flatXmap(identifier ->
 					Optional.ofNullable(REGISTERED_SERIALIZERS.get(identifier))
-					.map(DataResult::success)
-					.orElseGet(() -> DataResult.error(() -> "Unknown custom ingredient serializer: " + identifier)),
+							.map(DataResult::success)
+							.orElseGet(() -> DataResult.error(() -> "Unknown custom ingredient serializer: " + identifier)),
 			serializer -> DataResult.success(serializer.getIdentifier())
 	);
 

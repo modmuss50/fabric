@@ -21,6 +21,11 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import io.netty.channel.ChannelHandler;
+
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.RegistryByteBuf;
+import net.minecraft.network.packet.CustomPayload;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.PacketByteBuf;
@@ -67,6 +72,17 @@ public class CustomIngredientSync implements ModInitializer {
 		return buf;
 	}
 
+	@Nullable
+	public static IngredientSyncPayloadC2S createResponsePayload(int serverProtocolVersion) {
+		if (serverProtocolVersion < PROTOCOL_VERSION_1) {
+			// Not supposed to happen - notify the server that we didn't understand the query.
+			return null;
+		}
+
+		// Always send protocol 1 - the server should support it even if it supports more recent protocols.
+		return new IngredientSyncPayloadC2S(PROTOCOL_VERSION_1, CustomIngredientImpl.REGISTERED_SERIALIZERS.keySet());
+	}
+
 	public static Set<Identifier> decodeResponsePacket(PacketByteBuf buf) {
 		int protocolVersion = buf.readVarInt();
 
@@ -91,8 +107,8 @@ public class CustomIngredientSync implements ModInitializer {
 			}
 		});
 
-		ServerConfigurationNetworking.registerGlobalReceiver(PACKET_ID, (server, handler, buf, responseSender) -> {
-			Set<Identifier> supportedCustomIngredients = decodeResponsePacket(buf);
+		ServerConfigurationNetworking.registerGlobalReceiver(IngredientSyncPayloadC2S.ID, (payload, handler, responseSender) -> {
+			Set<Identifier> supportedCustomIngredients = payload.registeredSerializers();
 			ChannelHandler packetEncoder = ((ServerCommonNetworkHandlerAccessor) handler).getConnection().channel.pipeline().get("encoder");
 
 			if (packetEncoder != null) { // Null in singleplayer
@@ -110,14 +126,78 @@ public class CustomIngredientSync implements ModInitializer {
 		public void sendPacket(Consumer<Packet<?>> sender) {
 			// Send packet with 1 so the client can send us back the list of supported tags.
 			// 1 is sent in case we need a different protocol later for some reason.
-			PacketByteBuf buf = PacketByteBufs.create();
-			buf.writeVarInt(PROTOCOL_VERSION_1); // max supported server protocol version
-			sender.accept(ServerConfigurationNetworking.createS2CPacket(PACKET_ID, buf));
+			sender.accept(ServerConfigurationNetworking.createS2CPacket(new IngredientSyncPayloadS2C(
+					PROTOCOL_VERSION_1 // max supported server protocol version
+			)));
 		}
 
 		@Override
 		public Key getKey() {
 			return KEY;
+		}
+	}
+
+	public record IngredientSyncPayloadS2C(int protocolVersion) implements CustomPayload {
+		public static final CustomPayload.Id<IngredientSyncPayloadS2C> ID = new Id<>(PACKET_ID);
+		public static final PacketCodec<RegistryByteBuf, IngredientSyncPayloadS2C> CODEC = CustomPayload.codecOf(IngredientSyncPayloadS2C::write, IngredientSyncPayloadS2C::new);
+
+		public IngredientSyncPayloadS2C(PacketByteBuf buf) {
+			this(buf.readVarInt());
+		}
+
+		public void write(PacketByteBuf buf) {
+			buf.writeVarInt(this.protocolVersion);
+		}
+
+		@Override
+		public Id<? extends CustomPayload> getId() {
+			return ID;
+		}
+	}
+
+	public static class IngredientSyncPayloadC2S implements CustomPayload {
+		public static final CustomPayload.Id<IngredientSyncPayloadC2S> ID = new Id<>(PACKET_ID);
+		public static final PacketCodec<RegistryByteBuf, IngredientSyncPayloadC2S> CODEC = CustomPayload.codecOf(IngredientSyncPayloadC2S::write, IngredientSyncPayloadC2S::new);
+
+		private final int protocolVersion;
+		private final Set<Identifier> registeredSerializers;
+
+		public IngredientSyncPayloadC2S(int protocolVersion, Set<Identifier> registeredSerializers) {
+			this.protocolVersion = protocolVersion;
+			this.registeredSerializers = registeredSerializers;
+		}
+
+		public IngredientSyncPayloadC2S(PacketByteBuf buf) {
+			this.protocolVersion = buf.readVarInt();
+			switch (protocolVersion) {
+				case PROTOCOL_VERSION_1 -> {
+					Set<Identifier> identifiers = buf.readCollection(HashSet::new, PacketByteBuf::readIdentifier);
+					// Remove unknown keys to save memory
+					identifiers.removeIf(id -> !CustomIngredientImpl.REGISTERED_SERIALIZERS.containsKey(id));
+					this.registeredSerializers = identifiers;
+				}
+				default -> {
+					throw new IllegalArgumentException("Unknown ingredient sync protocol version: " + protocolVersion);
+				}
+			}
+		}
+
+		public int protocolVersion() {
+			return this.protocolVersion;
+		}
+
+		public Set<Identifier> registeredSerializers() {
+			return this.registeredSerializers;
+		}
+
+		public void write(PacketByteBuf buf) {
+			buf.writeVarInt(this.protocolVersion);
+			buf.writeCollection(this.registeredSerializers, PacketByteBuf::writeIdentifier);
+		}
+
+		@Override
+		public Id<? extends CustomPayload> getId() {
+			return ID;
 		}
 	}
 }
