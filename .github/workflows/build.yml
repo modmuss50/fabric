@@ -43,6 +43,8 @@ jobs:
         with:
           distribution: 'microsoft'
           java-version: '21'
+      - run: /home/linuxbrew/.linuxbrew/bin/brew install tracy
+      - run: tracy-capture -o ./run/trace.tracy &
       - name: Run Auto test Client
         uses: modmuss50/xvfb-action@v1
         with:
@@ -51,6 +53,11 @@ jobs:
         if: always()
         with:
           name: Test Screenshots
+          path: run/screenshots
+      - run: while pgrep tracy >/dev/null; do sleep 1; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tracy
           path: run/screenshots
 
   server_test:

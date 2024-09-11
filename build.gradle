@@ -516,7 +516,8 @@ tasks.register('runProductionAutoTestClient', JavaExec) {
 		args(
 				"--assetIndex", loom.minecraftProvider.versionInfo.assetIndex().fabricId(loom.minecraftProvider.minecraftVersion()),
 				"--assetsDir", new File(loom.files.userCache, "assets").absolutePath,
-				"--gameDir", workingDir.absolutePath
+				"--gameDir", workingDir.absolutePath,
+				"--tracy"
 				)
 
 		if (Platform.CURRENT.operatingSystem.isMacOS()) {
