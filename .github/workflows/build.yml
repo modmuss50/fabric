@@ -58,7 +58,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: Tracy
-          path: run/screenshots
+          path: run/trace.tracy
 
   server_test:
     runs-on: ubuntu-22.04
