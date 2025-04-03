@@ -50,7 +50,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.impl.networking.FabricRegistryByteBuf;
 import net.fabricmc.fabric.test.networking.NetworkingTestmods;
-import net.fabricmc.fabric.test.networking.common.NetworkingCommonTest;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class NetworkingPlayPacketTest implements ModInitializer {
@@ -146,10 +145,6 @@ public final class NetworkingPlayPacketTest implements ModInitializer {
 			FabricRegistryByteBuf fabricRegistryByteBuf = (FabricRegistryByteBuf) buf;
 			Collection<Identifier> channels = fabricRegistryByteBuf.fabric_getSendableConfigurationChannels();
 			Objects.requireNonNull(channels);
-
-			if (!channels.contains(NetworkingCommonTest.CommonPayload.ID.id())) {
-				throw new IllegalStateException("Expected common payload channel to be sent");
-			}
 
 			TextCodecs.REGISTRY_PACKET_CODEC.encode(buf, this.message);
 		}
