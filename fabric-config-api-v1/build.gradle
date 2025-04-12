@@ -1,0 +1,5 @@
+version = getSubprojectVersion(project)
+
+loom {
+	accessWidenerPath = file("src/main/resources/fabric-config-api-v1.accesswidener")
+}

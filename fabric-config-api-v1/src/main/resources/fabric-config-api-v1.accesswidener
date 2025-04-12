@@ -1,0 +1,22 @@
+accessWidener	v2	named
+
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter IGNORED_PATHS Ljava/util/Set;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter KEY_VALUE_SEPARATOR Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter ENTRY_SEPARATOR Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter SQUARE_OPEN_BRACKET Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter SQUARE_CLOSE_BRACKET Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter SEMICOLON Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter SPACE Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter CURLY_OPEN_BRACKET Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter CURLY_CLOSE_BRACKET Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter NEW_LINE Ljava/lang/String;
+
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter result Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter prefix Ljava/lang/String;
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter indentationLevel I
+accessible field net/minecraft/nbt/visitor/NbtOrderedStringFormatter pathParts Ljava/util/List;
+
+extendable method net/minecraft/nbt/visitor/NbtOrderedStringFormatter pushPathPart (Ljava/lang/String;)V
+accessible method net/minecraft/nbt/visitor/NbtOrderedStringFormatter popPathPart ()V
+
+accessible method net/minecraft/nbt/NbtCompound <init> (Ljava/util/Map;)V
