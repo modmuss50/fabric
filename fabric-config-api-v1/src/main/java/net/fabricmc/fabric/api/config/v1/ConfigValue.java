@@ -16,10 +16,10 @@
 
 package net.fabricmc.fabric.api.config.v1;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
+import net.fabricmc.fabric.api.config.v1.constrains.Constraint;
 import org.jetbrains.annotations.ApiStatus;
+
+import java.util.function.Supplier;
 
 @ApiStatus.NonExtendable
 public interface ConfigValue<T> extends Supplier<T>, ConfigEntry {
@@ -30,9 +30,7 @@ public interface ConfigValue<T> extends Supplier<T>, ConfigEntry {
 	@Override
 	ConfigValue<T> comment(String comment);
 
-	ConfigValue<T> validate(Predicate<T> predicate, String requirement);
-
-	ConfigValue<T> oneOf(T... values);
-
 	ConfigValue<T> requiresRestart();
+
+	ConfigValue<T> constraint(Constraint<T> constraintConsumer);
 }

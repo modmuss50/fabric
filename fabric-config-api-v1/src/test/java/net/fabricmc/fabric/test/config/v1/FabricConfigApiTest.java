@@ -16,24 +16,23 @@
 
 package net.fabricmc.fabric.test.config.v1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
-import java.util.Map;
-
 import com.mojang.serialization.Codec;
-
-import net.minecraft.util.Identifier;
-
-import org.junit.jupiter.api.Test;
-
 import net.fabricmc.fabric.api.config.v1.Config;
 import net.fabricmc.fabric.api.config.v1.ConfigGroup;
 import net.fabricmc.fabric.api.config.v1.ConfigValue;
 import net.fabricmc.fabric.api.config.v1.FabricConfigApi;
+import net.fabricmc.fabric.api.config.v1.constrains.Constraint;
 import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
 import net.fabricmc.fabric.impl.config.serialization.ConfigDecoder;
 import net.fabricmc.fabric.impl.config.serialization.ConfigEncoder;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FabricConfigApiTest {
 	private static final Identifier ID = Identifier.of("fabric", "test");
@@ -51,10 +50,26 @@ public class FabricConfigApiTest {
 
 			ConfigValue<Float> FLOAT = CONFIG.floatValue("float", 1.0F)
 											.comment("This is an example float config value")
-											.validate((f -> f > 0), "Value must be greater than 0")
-											.oneOf(1.0F, 2.0F, 3.0F)
+											.constraint(Constraint.numeric(Float.class)
+                                                    .min(0.0F)
+													.range(0.0F, 10.0F)
+                                                    .max(10.0F)
+													.step(0.5F)
+											)
 											.requiresRestart()
 											.syncWithClient();
+
+			ConfigValue<List<String>> STRING_LIST = CONFIG.stringListValue("list", List.of("A", "B", "C"))
+					.comment("This is an example list config value")
+					.constraint(Constraint.list(String.class)
+							.maxLength(3)
+							.entryConstraint(Constraint.string()
+									.minLength(1)
+									.pattern("[A-Z]*")
+									.uppercase()))
+					.syncWithClient();
+
+			ConfigValue<DyeColor> COLOR = CONFIG.enumValue("color", DyeColor::values, DyeColor.RED);
 
 			ConfigGroup GROUP = CONFIG.group("group")
 									.comment("Groups can have comments as well");
