@@ -43,11 +43,18 @@ public class FabricConfigApiTest {
 		interface TestConfig {
 			Config CONFIG = FabricConfigApi.config(ID);
 
-			ConfigValue<String> EXAMPLE_STRING = CONFIG.string("example_string", "default")
+			ConfigValue<String> EXAMPLE_STRING = CONFIG.stringValue("example_string", "default")
 					.comment("This is an example string config value");
-			ConfigValue<Integer> EXAMPLE_INT = CONFIG.integer("example_int", 123)
+			ConfigValue<Integer> EXAMPLE_INT = CONFIG.intValue("example_int", 123)
 					.comment("This is an example int config value")
 					.syncWithClient();
+
+			ConfigValue<Float> FLOAT = CONFIG.floatValue("float", 1.0F)
+											.comment("This is an example float config value")
+											.validate((f -> f > 0), "Value must be greater than 0")
+											.oneOf(1.0F, 2.0F, 3.0F)
+											.requiresRestart()
+											.syncWithClient();
 
 			ConfigGroup GROUP = CONFIG.group("group")
 									.comment("Groups can have comments as well");
@@ -89,7 +96,7 @@ public class FabricConfigApiTest {
 	void readUpdatedValue() {
 		interface TestConfig {
 			Config CONFIG = FabricConfigApi.config(ID);
-			ConfigValue<String> VALUE = CONFIG.string("value", "hello");
+			ConfigValue<String> VALUE = CONFIG.stringValue("value", "hello");
 		}
 
 		assertEquals("hello", TestConfig.VALUE.get());
@@ -113,7 +120,7 @@ public class FabricConfigApiTest {
 	void readInvalidConfig() {
 		interface TestConfig {
 			Config CONFIG = FabricConfigApi.config(ID);
-			ConfigValue<String> VALUE = CONFIG.string("value", "hello");
+			ConfigValue<String> VALUE = CONFIG.stringValue("value", "hello");
 		}
 
 		ConfigGroupImpl impl = (ConfigGroupImpl) TestConfig.CONFIG;
@@ -133,9 +140,9 @@ public class FabricConfigApiTest {
 	void readPartialConfig() {
 		interface TestConfig {
 			Config CONFIG = FabricConfigApi.config(ID);
-			ConfigValue<String> A = CONFIG.string("a", "hello");
-			ConfigValue<String> B = CONFIG.string("b", "hello");
-			ConfigValue<String> C = CONFIG.string("c", "hello");
+			ConfigValue<String> A = CONFIG.stringValue("a", "hello");
+			ConfigValue<String> B = CONFIG.stringValue("b", "hello");
+			ConfigValue<String> C = CONFIG.stringValue("c", "hello");
 		}
 
 		ConfigGroupImpl impl = (ConfigGroupImpl) TestConfig.CONFIG;

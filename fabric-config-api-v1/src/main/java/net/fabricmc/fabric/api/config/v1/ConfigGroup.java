@@ -23,12 +23,36 @@ import org.jetbrains.annotations.ApiStatus;
 public interface ConfigGroup extends ConfigEntry {
 	<T> ConfigValue<T> codec(String key, Codec<T> codec, T defaultValue);
 
-	default ConfigValue<String> string(String key, String defaultValue) {
-		return codec(key, Codec.STRING, defaultValue);
+	default ConfigValue<Boolean> boolValue(String key, boolean defaultValue) {
+		return codec(key, Codec.BOOL, defaultValue);
 	}
 
-	default ConfigValue<Integer> integer(String key, int defaultValue) {
-		return codec(key, Codec.INT, defaultValue);
+	StringConfigValue stringValue(String key, String defaultValue);
+
+	<T extends Number> NumericConfigValue<T> numeric(String key, Codec<T> codec, T defaultValue);
+
+	default NumericConfigValue<Byte> byteValue(String key, byte defaultValue) {
+		return numeric(key, Codec.BYTE, defaultValue);
+	}
+
+	default NumericConfigValue<Short> shortValue(String key, short defaultValue) {
+		return numeric(key, Codec.SHORT, defaultValue);
+	}
+
+	default NumericConfigValue<Integer> intValue(String key, int defaultValue) {
+		return numeric(key, Codec.INT, defaultValue);
+	}
+
+	default NumericConfigValue<Long> longValue(String key, long defaultValue) {
+		return numeric(key, Codec.LONG, defaultValue);
+	}
+
+	default NumericConfigValue<Float> floatValue(String key, float defaultValue) {
+		return numeric(key, Codec.FLOAT, defaultValue);
+	}
+
+	default NumericConfigValue<Double> doubleValue(String key, double defaultValue) {
+		return numeric(key, Codec.DOUBLE, defaultValue);
 	}
 
 	ConfigGroup group(String key);

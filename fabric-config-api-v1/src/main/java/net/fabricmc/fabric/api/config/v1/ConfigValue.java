@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.api.config.v1;
 
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -28,4 +29,10 @@ public interface ConfigValue<T> extends Supplier<T>, ConfigEntry {
 
 	@Override
 	ConfigValue<T> comment(String comment);
+
+	ConfigValue<T> validate(Predicate<T> predicate, String requirement);
+
+	ConfigValue<T> oneOf(T... values);
+
+	ConfigValue<T> requiresRestart();
 }
