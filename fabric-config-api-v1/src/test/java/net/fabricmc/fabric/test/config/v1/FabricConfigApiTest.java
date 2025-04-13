@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.mojang.serialization.Codec;
+
+import net.minecraft.util.Identifier;
+
 import org.junit.jupiter.api.Test;
 
 import net.fabricmc.fabric.api.config.v1.Config;
@@ -33,10 +36,12 @@ import net.fabricmc.fabric.impl.config.serialization.ConfigDecoder;
 import net.fabricmc.fabric.impl.config.serialization.ConfigEncoder;
 
 public class FabricConfigApiTest {
+	private static final Identifier ID = Identifier.of("fabric", "test");
+
 	@Test
 	void writeToSnbt() {
 		interface TestConfig {
-			Config CONFIG = FabricConfigApi.config("test");
+			Config CONFIG = FabricConfigApi.config(ID);
 
 			ConfigValue<String> EXAMPLE_STRING = CONFIG.string("example_string", "default")
 					.comment("This is an example string config value");
@@ -83,7 +88,7 @@ public class FabricConfigApiTest {
 	@Test
 	void readUpdatedValue() {
 		interface TestConfig {
-			Config CONFIG = FabricConfigApi.config("test");
+			Config CONFIG = FabricConfigApi.config(ID);
 			ConfigValue<String> VALUE = CONFIG.string("value", "hello");
 		}
 
@@ -107,7 +112,7 @@ public class FabricConfigApiTest {
 	@Test
 	void readInvalidConfig() {
 		interface TestConfig {
-			Config CONFIG = FabricConfigApi.config("test");
+			Config CONFIG = FabricConfigApi.config(ID);
 			ConfigValue<String> VALUE = CONFIG.string("value", "hello");
 		}
 
@@ -127,7 +132,7 @@ public class FabricConfigApiTest {
 	@Test
 	void readPartialConfig() {
 		interface TestConfig {
-			Config CONFIG = FabricConfigApi.config("test");
+			Config CONFIG = FabricConfigApi.config(ID);
 			ConfigValue<String> A = CONFIG.string("a", "hello");
 			ConfigValue<String> B = CONFIG.string("b", "hello");
 			ConfigValue<String> C = CONFIG.string("c", "hello");

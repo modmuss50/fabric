@@ -26,9 +26,12 @@ import net.minecraft.nbt.SnbtParsing;
 import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
 
 public class ConfigDecoder {
+	private static final String COMMENT_PATTERN = "(?m)^\\s*//.*(?:\\R)?";
+
 	public static void decodeInto(String content, ConfigGroupImpl config) {
 		try {
-			NbtElement nbt = SnbtParsing.createParser(NbtOps.INSTANCE).parse(new StringReader(content));
+			String snbt = content.replaceAll(COMMENT_PATTERN, "");
+			NbtElement nbt = SnbtParsing.createParser(NbtOps.INSTANCE).parse(new StringReader(snbt));
 			config.codec().decode(NbtOps.INSTANCE, nbt);
 		} catch (CommandSyntaxException e) {
 			throw new RuntimeException(e);

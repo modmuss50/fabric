@@ -16,40 +16,27 @@
 
 package net.fabricmc.fabric.impl.config;
 
-import java.nio.file.Path;
+import net.fabricmc.fabric.api.config.v1.Config;
+import net.fabricmc.fabric.api.config.v1.FabricConfigApi;
+import net.minecraft.util.Identifier;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import net.fabricmc.fabric.api.config.v1.Config;
-import net.fabricmc.fabric.api.config.v1.FabricConfigApi;
-import net.fabricmc.loader.api.FabricLoader;
-
 public class FabricConfigApiImpl implements FabricConfigApi {
-	private static final Map<ConfigRef, Config> CONFIGS = new HashMap<>();
+	private static final Map<Identifier, Config> CONFIGS = new HashMap<>();
 
 	static void register(Config config) {
 		ConfigRoot root = (ConfigRoot) config;
-		ConfigRef ref = new ConfigRef(root.getModId(), root.getPath());
+		Identifier id = root.getId();
 
-		if (CONFIGS.containsKey(ref)) {
-			throw new IllegalStateException("Config already registered: " + ref);
+		if (CONFIGS.containsKey(id)) {
+			throw new IllegalStateException("Config already registered: " + id);
 		}
 
 		// Don't allow any further modification to the config specification
 		root.finalizeSpec();
 
-		CONFIGS.put(ref, config);
-	}
-
-	private record ConfigRef(String modId, String... path) {
-		private ConfigRef {
-			// TODO validate the path is reasonable
-		}
-
-		Path getPath() {
-			return FabricLoader.getInstance().getConfigDir()
-					.resolve(modId)
-					.resolve(String.join("/", path) + ".cfg");
-		}
+		CONFIGS.put(id, config);
 	}
 }

@@ -16,15 +16,15 @@
 
 package net.fabricmc.fabric.api.config.v1;
 
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.fabricmc.fabric.impl.config.ConfigRoot;
 
 @ApiStatus.NonExtendable
 public interface FabricConfigApi {
-	// TODO maybe just use an Identifier instead of a String?
-	static Config config(String modid, String... path) {
-		return new ConfigRoot(modid, path);
+	static Config config(Identifier id) {
+		return new ConfigRoot(id);
 	}
 
 	static void register(Config config) {

@@ -17,22 +17,17 @@
 package net.fabricmc.fabric.impl.config;
 
 import net.fabricmc.fabric.api.config.v1.Config;
+import net.minecraft.util.Identifier;
 
 public class ConfigRoot extends ConfigGroupImpl implements Config {
-	private final String modId;
-	private final String[] path;
+	private final Identifier id;
 
-	public ConfigRoot(String modId, String[] path) {
-		this.modId = modId;
-		this.path = path;
-	}
+    public ConfigRoot(Identifier id) {
+        this.id = id;
+    }
 
-	public String getModId() {
-		return modId;
-	}
-
-	public String[] getPath() {
-		return path;
+	public Identifier getId() {
+		return id;
 	}
 
 	@Override
