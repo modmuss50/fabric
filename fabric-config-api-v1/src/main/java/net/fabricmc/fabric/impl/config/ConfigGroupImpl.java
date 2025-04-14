@@ -24,6 +24,7 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.fabric.api.config.v1.ConfigGroup;
 import net.fabricmc.fabric.api.config.v1.ConfigValue;
+import net.fabricmc.fabric.api.config.v1.ui.UIControl;
 import net.fabricmc.fabric.impl.config.serialization.ConfigGroupCodec;
 
 public class ConfigGroupImpl extends AbstractConfigEntry implements ConfigGroup {
@@ -33,7 +34,17 @@ public class ConfigGroupImpl extends AbstractConfigEntry implements ConfigGroup 
 
 	@Override
 	public <T> ConfigValue<T> codec(String key, Codec<T> codec, T defaultValue) {
-		return addEntry(key, new ConfigValueImpl<>(key, codec, defaultValue));
+		ConfigValueImpl<T> configValue = new ConfigValueImpl<>(key, codec, defaultValue);
+
+		configValue.uiControl(UIControl.FallbackControl.FACTORY, t -> {
+			// TODO use codec to convert to snbt
+			return "";
+		}, string -> {
+			// TODO use codec to convert snbt back to T
+			return null;
+		});
+
+		return addEntry(key, configValue);
 	}
 
 	@Override

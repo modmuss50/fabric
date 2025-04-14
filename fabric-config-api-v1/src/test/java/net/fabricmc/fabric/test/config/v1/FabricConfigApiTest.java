@@ -21,7 +21,7 @@ import net.fabricmc.fabric.api.config.v1.Config;
 import net.fabricmc.fabric.api.config.v1.ConfigGroup;
 import net.fabricmc.fabric.api.config.v1.ConfigValue;
 import net.fabricmc.fabric.api.config.v1.FabricConfigApi;
-import net.fabricmc.fabric.api.config.v1.constrains.Constraint;
+import net.fabricmc.fabric.api.config.v1.constraint.Constraint;
 import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
 import net.fabricmc.fabric.impl.config.serialization.ConfigDecoder;
 import net.fabricmc.fabric.impl.config.serialization.ConfigEncoder;

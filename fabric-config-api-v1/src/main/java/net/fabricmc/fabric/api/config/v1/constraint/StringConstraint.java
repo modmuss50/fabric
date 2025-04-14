@@ -1,4 +1,4 @@
-package net.fabricmc.fabric.api.config.v1.constrains;
+package net.fabricmc.fabric.api.config.v1.constraint;
 
 public interface StringConstraint extends Constraint<String> {
 	static StringConstraint create() {

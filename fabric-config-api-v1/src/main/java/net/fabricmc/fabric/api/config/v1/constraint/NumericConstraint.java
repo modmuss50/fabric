@@ -1,4 +1,4 @@
-package net.fabricmc.fabric.api.config.v1.constrains;
+package net.fabricmc.fabric.api.config.v1.constraint;
 
 public interface NumericConstraint<T extends Number> extends Constraint<T> {
 	static <T extends Number> NumericConstraint<T> create(Class<T> number) {

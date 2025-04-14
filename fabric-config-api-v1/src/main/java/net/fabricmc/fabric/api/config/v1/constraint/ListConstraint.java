@@ -1,4 +1,4 @@
-package net.fabricmc.fabric.api.config.v1.constrains;
+package net.fabricmc.fabric.api.config.v1.constraint;
 
 import java.util.List;
 

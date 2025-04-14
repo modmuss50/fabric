@@ -16,13 +16,17 @@
 
 package net.fabricmc.fabric.api.config.v1;
 
-import net.fabricmc.fabric.api.config.v1.constrains.Constraint;
-import org.jetbrains.annotations.ApiStatus;
-
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.ApiStatus;
+
+import net.fabricmc.fabric.api.config.v1.constraint.Constraint;
+import net.fabricmc.fabric.api.config.v1.ui.UIControl;
+
 @ApiStatus.NonExtendable
-public interface ConfigValue<T> extends Supplier<T>, ConfigEntry {
+public interface ConfigValue<T> extends Supplier<T>, Consumer<T>, ConfigEntry {
 	default ConfigValue<T> syncWithClient() {
 		return this;
 	}
@@ -33,4 +37,14 @@ public interface ConfigValue<T> extends Supplier<T>, ConfigEntry {
 	ConfigValue<T> requiresRestart();
 
 	ConfigValue<T> constraint(Constraint<T> constraintConsumer);
+
+	default ConfigValue<T> uiControl(UIControl.Factory<T> uiControlFactory) {
+		return uiControl(uiControlFactory, Function.identity(), Function.identity());
+	}
+
+	<J> ConfigValue<T> uiControl(UIControl.Factory<J> uiControlFactory,
+								 Function<T, J> toUIValue,
+								 Function<J, T> fromUIValue);
+
+	UIControl<?> getUIType();
 }
