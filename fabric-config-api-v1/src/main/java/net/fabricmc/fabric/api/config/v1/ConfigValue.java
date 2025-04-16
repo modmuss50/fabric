@@ -16,12 +16,17 @@
 
 package net.fabricmc.fabric.api.config.v1;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.ApiStatus;
+
+import net.fabricmc.fabric.api.config.v1.type.ValueAttribute;
 
 @ApiStatus.NonExtendable
 public interface ConfigValue<T> extends Supplier<T>, ConfigNode {
 	@Override
 	ConfigValue<T> comment(String comment);
+
+	ConfigValue<T> attributes(Class<? super T> type, List<ValueAttribute<T>> attributes);
 }

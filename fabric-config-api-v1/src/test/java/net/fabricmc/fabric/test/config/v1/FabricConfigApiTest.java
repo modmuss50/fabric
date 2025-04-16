@@ -16,6 +16,12 @@
 
 package net.fabricmc.fabric.test.config.v1;
 
+import static net.fabricmc.fabric.api.config.v1.type.string.PatternAttribute.lowercase;
+import static net.fabricmc.fabric.api.config.v1.type.list.AccptedValuesListAttribute.acceptedValues;
+import static net.fabricmc.fabric.api.config.v1.type.list.ListAttribute.type;
+import static net.fabricmc.fabric.api.config.v1.type.list.MaxLengthListAttribute.maxLength;
+import static net.fabricmc.fabric.api.config.v1.type.number.MaxValueAttribute.max;
+import static net.fabricmc.fabric.api.config.v1.type.number.MinValueAttribute.min;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -44,15 +50,29 @@ public class FabricConfigApiTest {
 			Config CONFIG = FabricConfigApi.config(ID);
 
 			ConfigValue<String> EXAMPLE_STRING = CONFIG.stringValue("example_string", "default")
-					.comment("This is an example string config value");
+					.comment("This is an example string config value")
+					.attributes(String.class, List.of(
+						lowercase()
+					));
+
 			ConfigValue<Integer> EXAMPLE_INT = CONFIG.intValue("example_int", 123)
-					.comment("This is an example int config value");
+					.comment("This is an example int config value")
+					.attributes(Integer.class, List.of(
+						min(0),
+						max(100)
+					));
+
+			ConfigValue<List<String>> STRING_LIST = CONFIG.stringListValue("list", List.of("A", "B", "C"))
+					.comment("This is an example list config value")
+					.attributes(List.class, List.of(
+						type(String.class),
+						acceptedValues(String.class, List.of("A", "B", "C")),
+						maxLength(String.class, 3)
+					));
 
 			ConfigValue<Float> FLOAT = CONFIG.floatValue("float", 1.0F)
 											.comment("This is an example float config value");
 
-			ConfigValue<List<String>> STRING_LIST = CONFIG.stringListValue("list", List.of("A", "B", "C"))
-					.comment("This is an example list config value");
 
 			ConfigValue<DyeColor> COLOR = CONFIG.enumValue("color", DyeColor::values, DyeColor.RED);
 
