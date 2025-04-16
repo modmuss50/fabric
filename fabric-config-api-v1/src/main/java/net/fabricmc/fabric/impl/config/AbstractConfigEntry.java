@@ -47,7 +47,7 @@ public abstract class AbstractConfigEntry implements ConfigEntry {
 		finalized = true;
 	}
 
-	private void validateSpecChange() {
+	protected void validateSpecChange() {
 		if (finalized) {
 			throw new IllegalStateException("Cannot alter configuration spec after it has been finalized");
 		}

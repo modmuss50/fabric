@@ -1,65 +1,99 @@
 package net.fabricmc.fabric.api.config.v1.ui;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import net.fabricmc.fabric.api.config.v1.constraint.Constraint;
-
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.NonExtendable
-public sealed interface UIControl<T> extends Supplier<T>, Consumer<T> permits UIControl.BooleanControl,
+public sealed abstract class UIControl<T> implements Supplier<T>, Consumer<T> permits UIControl.BooleanControl,
 		UIControl.StringControl,
 		UIControl.NumberControl,
 		UIControl.ColorControl,
 		UIControl.StringListControl,
 		UIControl.FallbackControl,
 		UIControl.CustomControl {
-	Collection<Constraint<T>> getConstraints();
+	private final Supplier<T> getter;
+	private final Consumer<T> setter;
 
-	@ApiStatus.NonExtendable
-	non-sealed interface BooleanControl extends UIControl<Boolean> {
-		Factory<Boolean> FACTORY = null;
+	protected UIControl(Supplier<T> getter, Consumer<T> setter) {
+		this.getter = getter;
+		this.setter = setter;
 	}
 
-	@ApiStatus.NonExtendable
-	non-sealed interface StringControl extends UIControl<String> {
-		Factory<String> FACTORY = null;
+	@Override
+	public T get() {
+		return getter.get();
 	}
 
-	@ApiStatus.NonExtendable
-	non-sealed interface NumberControl extends UIControl<Number> {
-		Factory<Byte> BYTE_FACTORY = null;
-		Factory<Short> SHORT_FACTORY = null;
-		Factory<Integer> INTEGER_FACTORY = null;
-		Factory<Long> LONG_FACTORY = null;
-		Factory<Float> FLOAT_FACTORY = null;
-		Factory<Double> DOUBLE_FACTORY = null;
+	@Override
+	public void accept(T t) {
+		setter.accept(t);
 	}
 
-	@ApiStatus.NonExtendable
-	non-sealed interface ColorControl extends UIControl<Integer> {
-		Factory<Integer> FACTORY = null;
+	public static final class BooleanControl extends UIControl<Boolean> {
+		public static final Factory<Boolean> FACTORY = BooleanControl::new;
+
+		private BooleanControl(Supplier<Boolean> getter, Consumer<Boolean> setter) {
+			super(getter, setter);
+		}
 	}
 
-	@ApiStatus.NonExtendable
-	non-sealed interface StringListControl extends UIControl<List<String>> {
-		Factory<List<String>> FACTORY = null;
+	public static final class StringControl extends UIControl<String> {
+		public static final Factory<String> FACTORY = StringControl::new;
+
+		private StringControl(Supplier<String> getter, Consumer<String> setter) {
+			super(getter, setter);
+		}
+	}
+
+	public static final class NumberControl extends UIControl<Number> {
+		public static final Factory<Byte> BYTE_FACTORY = null;
+		public static final Factory<Short> SHORT_FACTORY = null;
+		public static final Factory<Integer> INTEGER_FACTORY = null;
+		public static final Factory<Long> LONG_FACTORY = null;
+		public static final Factory<Float> FLOAT_FACTORY = null;
+		public static final Factory<Double> DOUBLE_FACTORY = null;
+
+		private NumberControl(Supplier<Number> getter, Consumer<Number> setter) {
+			super(getter, setter);
+		}
+	}
+
+	public static final class ColorControl extends UIControl<Integer> {
+		public static final Factory<Integer> FACTORY = ColorControl::new;
+
+		private ColorControl(Supplier<Integer> getter, Consumer<Integer> setter) {
+			super(getter, setter);
+		}
+	}
+
+	public static final class StringListControl extends UIControl<List<String>> {
+		public static final Factory<List<String>> FACTORY = StringListControl::new;
+
+		private StringListControl(Supplier<List<String>> getter, Consumer<List<String>> setter) {
+			super(getter, setter);
+		}
 	}
 
 	// The fallback type uses SNBT to serialize the value as a string, allowing the ui to edit unknown types
-	@ApiStatus.NonExtendable
-	non-sealed interface FallbackControl extends UIControl<String> {
-		Factory<String> FACTORY = null;
+	public static final class FallbackControl extends UIControl<String> {
+		public static final Factory<String> FACTORY = FallbackControl::new;
+
+		private FallbackControl(Supplier<String> getter, Consumer<String> setter) {
+			super(getter, setter);
+		}
 	}
 
 	// If a mod wants to add its own control for its own UI.
-	non-sealed interface CustomControl<T> extends UIControl<T> {
+	non-sealed abstract static class CustomControl<T> extends UIControl<T> {
+		protected CustomControl(Supplier<T> getter, Consumer<T> setter) {
+			super(getter, setter);
+		}
 	}
 
-	interface Factory<T> {
+	public interface Factory<T> {
 		@ApiStatus.Internal
 		UIControl<T> create(Supplier<T> getter, Consumer<T> setter);
 	}

@@ -46,5 +46,5 @@ public interface ConfigValue<T> extends Supplier<T>, Consumer<T>, ConfigEntry {
 								 Function<T, J> toUIValue,
 								 Function<J, T> fromUIValue);
 
-	UIControl<?> getUIType();
+	UIControl<?> getUIControl();
 }
