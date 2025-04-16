@@ -16,23 +16,24 @@
 
 package net.fabricmc.fabric.test.config.v1;
 
-import com.mojang.serialization.Codec;
-import net.fabricmc.fabric.api.config.v1.Config;
-import net.fabricmc.fabric.api.config.v1.ConfigGroup;
-import net.fabricmc.fabric.api.config.v1.ConfigValue;
-import net.fabricmc.fabric.api.config.v1.FabricConfigApi;
-import net.fabricmc.fabric.api.config.v1.constraint.Constraint;
-import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
-import net.fabricmc.fabric.impl.config.serialization.ConfigDecoder;
-import net.fabricmc.fabric.impl.config.serialization.ConfigEncoder;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.mojang.serialization.Codec;
+import org.junit.jupiter.api.Test;
+
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Identifier;
+
+import net.fabricmc.fabric.api.config.v1.Config;
+import net.fabricmc.fabric.api.config.v1.ConfigGroup;
+import net.fabricmc.fabric.api.config.v1.ConfigValue;
+import net.fabricmc.fabric.api.config.v1.FabricConfigApi;
+import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
+import net.fabricmc.fabric.impl.config.serialization.ConfigParser;
+import net.fabricmc.fabric.impl.config.serialization.ConfigWriter;
 
 public class FabricConfigApiTest {
 	private static final Identifier ID = Identifier.of("fabric", "test");
@@ -45,29 +46,13 @@ public class FabricConfigApiTest {
 			ConfigValue<String> EXAMPLE_STRING = CONFIG.stringValue("example_string", "default")
 					.comment("This is an example string config value");
 			ConfigValue<Integer> EXAMPLE_INT = CONFIG.intValue("example_int", 123)
-					.comment("This is an example int config value")
-					.syncWithClient();
+					.comment("This is an example int config value");
 
 			ConfigValue<Float> FLOAT = CONFIG.floatValue("float", 1.0F)
-											.comment("This is an example float config value")
-											.constraint(Constraint.numeric(Float.class)
-                                                    .min(0.0F)
-													.range(0.0F, 10.0F)
-                                                    .max(10.0F)
-													.step(0.5F)
-											)
-											.requiresRestart()
-											.syncWithClient();
+											.comment("This is an example float config value");
 
 			ConfigValue<List<String>> STRING_LIST = CONFIG.stringListValue("list", List.of("A", "B", "C"))
-					.comment("This is an example list config value")
-					.constraint(Constraint.list(String.class)
-							.maxLength(3)
-							.entryConstraint(Constraint.string()
-									.minLength(1)
-									.pattern("[A-Z]*")
-									.uppercase()))
-					.syncWithClient();
+					.comment("This is an example list config value");
 
 			ConfigValue<DyeColor> COLOR = CONFIG.enumValue("color", DyeColor::values, DyeColor.RED);
 
@@ -80,7 +65,7 @@ public class FabricConfigApiTest {
 		}
 
 		ConfigGroupImpl impl = (ConfigGroupImpl) TestConfig.CONFIG;
-		String snbt = ConfigEncoder.encodeToSNBT(impl);
+		String snbt = ConfigWriter.writeToSNBT(impl);
 
 		assertEquals("""
 				{
@@ -117,7 +102,7 @@ public class FabricConfigApiTest {
 		assertEquals("hello", TestConfig.VALUE.get());
 
 		ConfigGroupImpl impl = (ConfigGroupImpl) TestConfig.CONFIG;
-		String snbt = ConfigEncoder.encodeToSNBT(impl);
+		String snbt = ConfigWriter.writeToSNBT(impl);
 
 		assertEquals("""
 				{
@@ -126,7 +111,7 @@ public class FabricConfigApiTest {
 				""".trim(), snbt);
 
 		snbt = snbt.replace("hello", "world");
-		ConfigDecoder.decodeInto(snbt, impl);
+		ConfigParser.loadInto(snbt, impl);
 
 		assertEquals("world", TestConfig.VALUE.get());
 	}
@@ -146,7 +131,7 @@ public class FabricConfigApiTest {
 				}
 				""";
 
-		ConfigDecoder.decodeInto(snbt, impl);
+		ConfigParser.loadInto(snbt, impl);
 
 		assertEquals("world", TestConfig.VALUE.get());
 	}
@@ -168,7 +153,7 @@ public class FabricConfigApiTest {
 				}
 				""";
 
-		ConfigDecoder.decodeInto(snbt, impl);
+		ConfigParser.loadInto(snbt, impl);
 
 		assertEquals("world", TestConfig.A.get());
 		assertEquals("hello", TestConfig.B.get());

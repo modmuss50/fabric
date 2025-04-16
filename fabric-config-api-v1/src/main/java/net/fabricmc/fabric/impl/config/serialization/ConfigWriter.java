@@ -24,21 +24,21 @@ import com.mojang.serialization.DataResult;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 
-import net.fabricmc.fabric.impl.config.AbstractConfigEntry;
+import net.fabricmc.fabric.impl.config.AbstractConfigNode;
 import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
 
-public class ConfigEncoder {
-	public static String encodeToSNBT(ConfigGroupImpl config) {
+public class ConfigWriter {
+	public static String writeToSNBT(ConfigGroupImpl config) {
 		DataResult<NbtElement> result = config.codec().encodeStart(NbtOps.INSTANCE, config);
 		return new ConfigStringFormatter(createEncodeContext(config)).apply(result.getOrThrow());
 	}
 
-	private static EncodeContext createEncodeContext(ConfigGroupImpl group) {
+	private static WriteContext createEncodeContext(ConfigGroupImpl group) {
 		var comments = new HashMap<String, String>();
-		var childContexts = new HashMap<String, EncodeContext>();
+		var childContexts = new HashMap<String, WriteContext>();
 
-		for (Map.Entry<String, AbstractConfigEntry> entry : group.getEntries().entrySet()) {
-			AbstractConfigEntry configEntry = entry.getValue();
+		for (Map.Entry<String, AbstractConfigNode> entry : group.getEntries().entrySet()) {
+			AbstractConfigNode configEntry = entry.getValue();
 
 			if (configEntry.getComment() != null) {
 				comments.put(entry.getKey(), configEntry.getComment());
@@ -49,6 +49,6 @@ public class ConfigEncoder {
 			}
 		}
 
-		return new EncodeContext(comments, childContexts);
+		return new WriteContext(comments, childContexts);
 	}
 }

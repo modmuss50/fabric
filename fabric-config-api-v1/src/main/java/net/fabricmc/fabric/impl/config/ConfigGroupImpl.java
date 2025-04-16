@@ -24,26 +24,16 @@ import com.mojang.serialization.Codec;
 
 import net.fabricmc.fabric.api.config.v1.ConfigGroup;
 import net.fabricmc.fabric.api.config.v1.ConfigValue;
-import net.fabricmc.fabric.api.config.v1.ui.UIControl;
 import net.fabricmc.fabric.impl.config.serialization.ConfigGroupCodec;
 
-public class ConfigGroupImpl extends AbstractConfigEntry implements ConfigGroup {
-	private final Map<String, AbstractConfigEntry> entries = new HashMap<>();
-	private final Codec<Map<String, AbstractConfigEntry>> entriesCodec = Codec.dispatchedMap(Codec.STRING, key -> entries.get(key).codec());
+public class ConfigGroupImpl extends AbstractConfigNode implements ConfigGroup {
+	private final Map<String, AbstractConfigNode> entries = new HashMap<>();
+	private final Codec<Map<String, AbstractConfigNode>> entriesCodec = Codec.dispatchedMap(Codec.STRING, key -> entries.get(key).codec());
 	private final ConfigGroupCodec groupCodec = new ConfigGroupCodec(entries);
 
 	@Override
 	public <T> ConfigValue<T> codec(String key, Codec<T> codec, T defaultValue) {
 		ConfigValueImpl<T> configValue = new ConfigValueImpl<>(key, codec, defaultValue);
-
-		configValue.uiControl(UIControl.FallbackControl.FACTORY, t -> {
-			// TODO use codec to convert to snbt
-			return "";
-		}, string -> {
-			// TODO use codec to convert snbt back to T
-			return null;
-		});
-
 		return addEntry(key, configValue);
 	}
 
@@ -58,7 +48,7 @@ public class ConfigGroupImpl extends AbstractConfigEntry implements ConfigGroup 
 		return this;
 	}
 
-	private <T extends AbstractConfigEntry> T addEntry(String key, T entry) {
+	private <T extends AbstractConfigNode> T addEntry(String key, T entry) {
 		if (entries.containsKey(key)) {
 			throw new IllegalStateException("Entry with key '" + key + "' already exists in the config group");
 		}
@@ -67,7 +57,7 @@ public class ConfigGroupImpl extends AbstractConfigEntry implements ConfigGroup 
 		return entry;
 	}
 
-	public Map<String, AbstractConfigEntry> getEntries() {
+	public Map<String, AbstractConfigNode> getEntries() {
 		return Collections.unmodifiableMap(entries);
 	}
 
@@ -84,7 +74,7 @@ public class ConfigGroupImpl extends AbstractConfigEntry implements ConfigGroup 
 	public void finalizeSpec() {
 		super.finalizeSpec();
 
-		for (AbstractConfigEntry entry : entries.values()) {
+		for (AbstractConfigNode entry : entries.values()) {
 			entry.finalizeSpec();
 		}
 	}

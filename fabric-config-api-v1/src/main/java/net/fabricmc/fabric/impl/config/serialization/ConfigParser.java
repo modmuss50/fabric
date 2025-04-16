@@ -25,10 +25,10 @@ import net.minecraft.nbt.SnbtParsing;
 
 import net.fabricmc.fabric.impl.config.ConfigGroupImpl;
 
-public class ConfigDecoder {
+public class ConfigParser {
 	private static final String COMMENT_PATTERN = "(?m)^\\s*//.*(?:\\R)?";
 
-	public static void decodeInto(String content, ConfigGroupImpl config) {
+	public static void loadInto(String content, ConfigGroupImpl config) {
 		try {
 			String snbt = content.replaceAll(COMMENT_PATTERN, "");
 			NbtElement nbt = SnbtParsing.createParser(NbtOps.INSTANCE).parse(new StringReader(snbt));

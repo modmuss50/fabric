@@ -19,16 +19,16 @@ package net.fabricmc.fabric.impl.config;
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.fabric.api.config.v1.ConfigEntry;
+import net.fabricmc.fabric.api.config.v1.ConfigNode;
 
-public abstract class AbstractConfigEntry implements ConfigEntry {
+public abstract class AbstractConfigNode implements ConfigNode {
 	private boolean finalized = false;
 	private String comment = null;
 
-	public abstract Codec<? extends AbstractConfigEntry> codec();
+	public abstract Codec<? extends AbstractConfigNode> codec();
 
 	@Override
-	public ConfigEntry comment(String comment) {
+	public ConfigNode comment(String comment) {
 		validateSpecChange();
 
 		if (this.comment != null) {

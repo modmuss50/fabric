@@ -18,9 +18,9 @@ package net.fabricmc.fabric.impl.config.serialization;
 
 import java.util.Map;
 
-public record EncodeContext(
+public record WriteContext(
 		Map<String, String> comments,
-		Map<String, EncodeContext> subContext
+		Map<String, WriteContext> subContext
 ) {
-	public static final EncodeContext EMPTY = new EncodeContext(Map.of(), Map.of());
+	public static final WriteContext EMPTY = new WriteContext(Map.of(), Map.of());
 }

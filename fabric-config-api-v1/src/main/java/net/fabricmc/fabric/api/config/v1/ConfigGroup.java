@@ -20,60 +20,51 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
-
-import net.fabricmc.fabric.api.config.v1.ui.UIControl;
-
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.util.StringIdentifiable;
 
+/**
+ * A group of configuration values.
+ */
 @ApiStatus.NonExtendable
-public interface ConfigGroup extends ConfigEntry {
+public interface ConfigGroup extends ConfigNode {
 	<T> ConfigValue<T> codec(String key, Codec<T> codec, T defaultValue);
 
 	default ConfigValue<Boolean> boolValue(String key, boolean defaultValue) {
-		return codec(key, Codec.BOOL, defaultValue)
-				.uiControl(UIControl.BooleanControl.FACTORY);
+		return codec(key, Codec.BOOL, defaultValue);
 	}
 
 	default ConfigValue<String> stringValue(String key, String defaultValue) {
-		return codec(key, Codec.STRING, defaultValue)
-				.uiControl(UIControl.StringControl.FACTORY);
+		return codec(key, Codec.STRING, defaultValue);
 	}
 
 	default ConfigValue<List<String>> stringListValue(String key, List<String> defaultValue) {
-		return codec(key, Codec.STRING.listOf(), defaultValue)
-				.uiControl(UIControl.StringListControl.FACTORY);
+		return codec(key, Codec.STRING.listOf(), defaultValue);
 	}
 
 	default ConfigValue<Byte> byteValue(String key, byte defaultValue) {
-		return codec(key, Codec.BYTE, defaultValue)
-				.uiControl(UIControl.NumberControl.BYTE_FACTORY);
+		return codec(key, Codec.BYTE, defaultValue);
 	}
 
 	default ConfigValue<Short> shortValue(String key, short defaultValue) {
-		return codec(key, Codec.SHORT, defaultValue)
-				.uiControl(UIControl.NumberControl.SHORT_FACTORY);
+		return codec(key, Codec.SHORT, defaultValue);
 	}
 
 	default ConfigValue<Integer> intValue(String key, int defaultValue) {
-		return codec(key, Codec.INT, defaultValue)
-				.uiControl(UIControl.NumberControl.INTEGER_FACTORY);
+		return codec(key, Codec.INT, defaultValue);
 	}
 
 	default ConfigValue<Long> longValue(String key, long defaultValue) {
-		return codec(key, Codec.LONG, defaultValue)
-				.uiControl(UIControl.NumberControl.LONG_FACTORY);
+		return codec(key, Codec.LONG, defaultValue);
 	}
 
 	default ConfigValue<Float> floatValue(String key, float defaultValue) {
-		return codec(key, Codec.FLOAT, defaultValue)
-				.uiControl(UIControl.NumberControl.FLOAT_FACTORY);
+		return codec(key, Codec.FLOAT, defaultValue);
 	}
 
 	default ConfigValue<Double> doubleValue(String key, double defaultValue) {
-		return codec(key, Codec.DOUBLE, defaultValue)
-				.uiControl(UIControl.NumberControl.DOUBLE_FACTORY);
+		return codec(key, Codec.DOUBLE, defaultValue);
 	}
 
 	default <T extends StringIdentifiable> ConfigValue<T> enumValue(String key, Supplier<T[]> values, T defaultValue) {

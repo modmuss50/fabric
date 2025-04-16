@@ -28,19 +28,19 @@ import com.mojang.serialization.RecordBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.fabricmc.fabric.impl.config.AbstractConfigEntry;
+import net.fabricmc.fabric.impl.config.AbstractConfigNode;
 
 /**
  * We need a codec is that is resilient to errors in the input data.
  */
-public record ConfigGroupCodec(Map<String, AbstractConfigEntry> configEntries) implements Codec<Map<String, AbstractConfigEntry>> {
+public record ConfigGroupCodec(Map<String, AbstractConfigNode> configEntries) implements Codec<Map<String, AbstractConfigNode>> {
 	private static final Logger LOGGER = LoggerFactory.getLogger("ConfigGroupCodec");
 
 	@Override
-	public <T> DataResult<T> encode(final Map<String, AbstractConfigEntry> input, final DynamicOps<T> ops, final T prefix) {
+	public <T> DataResult<T> encode(final Map<String, AbstractConfigNode> input, final DynamicOps<T> ops, final T prefix) {
 		final RecordBuilder<T> mapBuilder = ops.mapBuilder();
 
-		for (final Map.Entry<String, AbstractConfigEntry> entry : input.entrySet()) {
+		for (final Map.Entry<String, AbstractConfigNode> entry : input.entrySet()) {
 			mapBuilder.add(Codec.STRING.encodeStart(ops, entry.getKey()), encodeValue(configEntries.get(entry.getKey()).codec(), entry.getValue(), ops));
 		}
 
@@ -48,14 +48,14 @@ public record ConfigGroupCodec(Map<String, AbstractConfigEntry> configEntries) i
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T, V2 extends AbstractConfigEntry> DataResult<T> encodeValue(final Codec<V2> codec, final AbstractConfigEntry input, final DynamicOps<T> ops) {
+	private <T, V2 extends AbstractConfigNode> DataResult<T> encodeValue(final Codec<V2> codec, final AbstractConfigNode input, final DynamicOps<T> ops) {
 		return codec.encodeStart(ops, (V2) input);
 	}
 
 	@Override
-	public <T> DataResult<Pair<Map<String, AbstractConfigEntry>, T>> decode(final DynamicOps<T> ops, final T input) {
+	public <T> DataResult<Pair<Map<String, AbstractConfigNode>, T>> decode(final DynamicOps<T> ops, final T input) {
 		return ops.getMap(input).flatMap(map -> {
-			final ImmutableMap.Builder<String, AbstractConfigEntry> builder = ImmutableMap.builder();
+			final ImmutableMap.Builder<String, AbstractConfigNode> builder = ImmutableMap.builder();
 
 			map.entries().forEach(pair -> {
 				final DataResult<String> k = Codec.STRING.parse(ops, pair.getFirst());
@@ -71,8 +71,8 @@ public record ConfigGroupCodec(Map<String, AbstractConfigEntry> configEntries) i
 					return;
 				}
 
-				final DataResult<? extends AbstractConfigEntry> v = configEntries.get(optionalK.get()).codec().parse(ops, pair.getSecond());
-				Optional<? extends AbstractConfigEntry> optionalV = v.result();
+				final DataResult<? extends AbstractConfigNode> v = configEntries.get(optionalK.get()).codec().parse(ops, pair.getSecond());
+				Optional<? extends AbstractConfigNode> optionalV = v.result();
 
 				if (optionalV.isEmpty()) {
 					LOGGER.error("Failed to decode value {} from {}  {}", k, pair, v.resultOrPartial());

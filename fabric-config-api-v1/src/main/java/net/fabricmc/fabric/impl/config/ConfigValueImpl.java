@@ -16,12 +16,8 @@
 
 package net.fabricmc.fabric.impl.config;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Function;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -30,17 +26,11 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 
 import net.fabricmc.fabric.api.config.v1.ConfigValue;
-import net.fabricmc.fabric.api.config.v1.constraint.Constraint;
-import net.fabricmc.fabric.api.config.v1.ui.UIControl;
 
-public class ConfigValueImpl<T> extends AbstractConfigEntry implements ConfigValue<T> {
+public class ConfigValueImpl<T> extends AbstractConfigNode implements ConfigValue<T> {
 	private final String key;
 	private final Codec<T> codec;
 	private final T defaultValue;
-
-	private boolean requiresRestart = false;
-	private List<Constraint<T>> constraints = new ArrayList<>();
-	private UIControl<?> uiControl = null;
 
 	private final ReadWriteLock lock = new ReentrantReadWriteLock();
 	private T value = null;
@@ -66,8 +56,7 @@ public class ConfigValueImpl<T> extends AbstractConfigEntry implements ConfigVal
 		}
 	}
 
-	@Override
-	public void accept(T value) {
+	public void setValue(T value) {
 		lock.writeLock().lock();
 
 		try {
@@ -85,7 +74,7 @@ public class ConfigValueImpl<T> extends AbstractConfigEntry implements ConfigVal
 	@Override
 	public Codec<ConfigValueImpl<T>> codec() {
 		return codec.xmap(newVal -> {
-			accept(newVal);
+			setValue(newVal);
 			return this;
 		}, ConfigValueImpl::get);
 	}
@@ -94,32 +83,5 @@ public class ConfigValueImpl<T> extends AbstractConfigEntry implements ConfigVal
 	public ConfigValueImpl<T> comment(String comment) {
 		super.comment(comment);
 		return this;
-	}
-
-	@Override
-	public ConfigValue<T> requiresRestart() {
-		validateSpecChange();
-		this.requiresRestart = true;
-		return this;
-	}
-
-	@Override
-	public ConfigValue<T> constraint(Constraint<T> constraintConsumer) {
-		validateSpecChange();
-		this.constraints.add(constraintConsumer);
-		return this;
-	}
-
-	@Override
-	public <J> ConfigValue<T> uiControl(UIControl.Factory<J> uiControlFactory, Function<T, J> toUIValue, Function<J, T> fromUIValue) {
-		validateSpecChange();
-		this.uiControl = uiControlFactory.create(() -> toUIValue.apply(this.get()), j -> this.accept(fromUIValue.apply(j)));
-		return this;
-	}
-
-	@Override
-	public UIControl<?> getUIControl() {
-		Objects.requireNonNull(this.uiControl, "UIControl not set");
-		return this.uiControl;
 	}
 }

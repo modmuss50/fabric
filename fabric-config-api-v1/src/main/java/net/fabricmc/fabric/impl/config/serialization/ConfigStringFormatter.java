@@ -22,16 +22,19 @@ import java.util.List;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.visitor.NbtOrderedStringFormatter;
 
+/**
+ * An SNBT encoder that supports comments.
+ */
 public class ConfigStringFormatter extends NbtOrderedStringFormatter {
-	private final EncodeContext encodeContext;
+	private final WriteContext writeContext;
 
-	public ConfigStringFormatter(EncodeContext encodeContext) {
-		this.encodeContext = encodeContext;
+	public ConfigStringFormatter(WriteContext writeContext) {
+		this.writeContext = writeContext;
 	}
 
-	public ConfigStringFormatter(String prefix, int indentationLevel, List<String> pathParts, EncodeContext encodeContext) {
+	public ConfigStringFormatter(String prefix, int indentationLevel, List<String> pathParts, WriteContext writeContext) {
 		super(prefix, indentationLevel, pathParts);
-		this.encodeContext = encodeContext;
+		this.writeContext = writeContext;
 	}
 
 	@Override
@@ -55,14 +58,14 @@ public class ConfigStringFormatter extends NbtOrderedStringFormatter {
 		while (it.hasNext()) {
 			String key = it.next();
 
-			if (encodeContext.comments().containsKey(key)) {
+			if (writeContext.comments().containsKey(key)) {
 				sb.append(pathPrefix.repeat(this.indentationLevel + 1))
 						.append("// ")
-						.append(encodeContext.comments().get(key))
+						.append(writeContext.comments().get(key))
 						.append(NEW_LINE);
 			}
 
-			EncodeContext subContext = encodeContext.subContext().getOrDefault(key, EncodeContext.EMPTY);
+			WriteContext subContext = writeContext.subContext().getOrDefault(key, WriteContext.EMPTY);
 
 			this.pushPathPart(key);
 			sb.append(pathPrefix.repeat(this.indentationLevel + 1))

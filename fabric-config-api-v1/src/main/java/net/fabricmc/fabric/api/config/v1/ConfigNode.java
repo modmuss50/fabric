@@ -18,7 +18,10 @@ package net.fabricmc.fabric.api.config.v1;
 
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * A node in a configuration tree, this may be a config entry, group or even the root node.
+ */
 @ApiStatus.NonExtendable
-public interface ConfigEntry {
-	ConfigEntry comment(String comment);
+public interface ConfigNode {
+	ConfigNode comment(String comment);
 }

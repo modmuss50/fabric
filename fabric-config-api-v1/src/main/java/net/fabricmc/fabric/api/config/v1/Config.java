@@ -18,6 +18,9 @@ package net.fabricmc.fabric.api.config.v1;
 
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * This is the root of a configuration tree.
+ */
 @ApiStatus.NonExtendable
 public interface Config extends ConfigGroup {
 	@Override
