@@ -62,11 +62,10 @@ jobs:
           path: profile.tracy
 
   client_test_windows:
-    build:
-      strategy:
-        fail-fast: false
-        matrix:
-          os: [ windows-2025, windows-11-arm ]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-2025, windows-11-arm ]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
