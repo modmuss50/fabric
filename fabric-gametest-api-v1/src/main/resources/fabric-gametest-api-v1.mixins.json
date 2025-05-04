@@ -5,7 +5,8 @@
   "mixins": [
     "RegistryLoaderMixin",
     "StructureTemplateManagerMixin",
-    "TestServerMixin"
+    "TestServerMixin",
+    "TestSetAccessor"
   ],
   "server": [
     "server.MainMixin"

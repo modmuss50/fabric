@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -29,7 +31,9 @@ import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.impl.client.gametest.context.ClientGameTestContextImpl;
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
+import net.fabricmc.fabric.impl.gametest.reporting.TestReporter;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 
 public class FabricClientGameTestRunner {
@@ -46,18 +50,33 @@ public class FabricClientGameTestRunner {
 		ThreadingImpl.runTestThread(() -> {
 			ClientGameTestContextImpl context = new ClientGameTestContextImpl();
 
-			for (EntrypointContainer<FabricClientGameTest> gameTest : gameTests) {
-				currentlyRunningGameTest = gameTest;
+			for (Map.Entry<ModContainer, List<EntrypointContainer<FabricClientGameTest>>> entry : groupTestsByMod(gameTests)) {
+				try (TestReporter.Group modGroup = TestReporter.group(entry.getKey().getMetadata().getName())) {
+					for (EntrypointContainer<FabricClientGameTest> gameTest : entry.getValue()) {
+						currentlyRunningGameTest = gameTest;
 
-				try {
-					setupInitialGameTestState(context);
-					gameTest.getEntrypoint().runTest(context);
-					setupAndCheckFinalGameTestState(context);
-				} finally {
-					currentlyRunningGameTest = null;
+						try {
+							setupInitialGameTestState(context);
+							TestReporter.Test test = TestReporter.test(gameTest.getDefinition());
+							gameTest.getEntrypoint().runTest(context);
+							test.success();
+							setupAndCheckFinalGameTestState(context);
+						} finally {
+							currentlyRunningGameTest = null;
+						}
+					}
 				}
+
 			}
 		});
+	}
+
+	private static List<Map.Entry<ModContainer, List<EntrypointContainer<FabricClientGameTest>>>> groupTestsByMod(List<EntrypointContainer<FabricClientGameTest>> gameTests) {
+		return gameTests.stream()
+				.collect(Collectors.groupingBy(EntrypointContainer::getProvider))
+				.entrySet()
+				.stream()
+				.toList();
 	}
 
 	private static List<EntrypointContainer<FabricClientGameTest>> getTestToRun() {
