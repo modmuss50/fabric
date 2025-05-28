@@ -28,8 +28,8 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
 
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.IdentifiedElement;
-import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.fabricmc.fabric.impl.client.rendering.HudElementRegistryImpl;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -38,73 +38,83 @@ public abstract class InGameHudMixin {
 		HudRenderCallback.EVENT.invoker().onHudRender(drawContext, tickCounter);
 	}
 
+	@Inject(method = "render", at = @At(value = "HEAD"))
+	public void renderFirst(DrawContext drawContext, RenderTickCounter tickCounter, CallbackInfo callbackInfo) {
+		HudElementRegistryImpl.renderFirst(drawContext, tickCounter);
+	}
+
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderMiscOverlays(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapMiscOverlays(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.MISC_OVERLAYS).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.MISC_OVERLAYS, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderCrosshair(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapCrosshair(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.CROSSHAIR).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.CROSSHAIR, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderMainHud(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapMainHud(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.HOTBAR_AND_BARS).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.HOTBAR_AND_BARS, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderStatusEffectOverlay(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapStatusEffectOverlay(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.STATUS_EFFECTS).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.STATUS_EFFECTS, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderBossBarHud(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapBossBarHud(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.BOSS_BAR).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.BOSS_BAR, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderSleepOverlay(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapSleepOverlay(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.SLEEP).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.SLEEP, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderDemoTimer(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapDemoTimer(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.DEMO_TIMER).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.DEMO_TIMER, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderDebugHud(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapDebugHud(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.DEBUG).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.DEBUG, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapScoreboardSidebar(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.SCOREBOARD).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.SCOREBOARD, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderOverlayMessage(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapOverlayMessage(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.OVERLAY_MESSAGE).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.OVERLAY_MESSAGE, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderTitleAndSubtitle(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapTitleAndSubtitle(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.TITLE_AND_SUBTITLE).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.TITLE_AND_SUBTITLE, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderChat(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapChat(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.CHAT).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.CHAT, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderPlayerList(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapPlayerList(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.PLAYER_LIST).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.PLAYER_LIST, instance, context, tickCounter, renderVanilla);
 	}
 
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderSubtitlesHud(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V"))
 	private void wrapSubtitlesHud(InGameHud instance, DrawContext context, RenderTickCounter tickCounter, Operation<Void> renderVanilla) {
-		HudElementRegistryImpl.getVanillaLayer(IdentifiedElement.SUBTITLES).render(instance, context, tickCounter, renderVanilla);
+		HudElementRegistryImpl.renderVanilla(VanillaHudElements.SUBTITLES, instance, context, tickCounter, renderVanilla);
+	}
+
+	@Inject(method = "render", at = @At(value = "TAIL"))
+	public void renderLast(DrawContext drawContext, RenderTickCounter tickCounter, CallbackInfo callbackInfo) {
+		HudElementRegistryImpl.renderLast(drawContext, tickCounter);
 	}
 }

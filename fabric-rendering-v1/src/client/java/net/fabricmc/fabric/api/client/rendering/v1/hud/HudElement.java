@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.client.rendering.v1.hud;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 
+@FunctionalInterface
 public interface HudElement {
 	void render(DrawContext context, RenderTickCounter tickCounter);
 }

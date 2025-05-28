@@ -16,22 +16,20 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1.hud;
 
-import java.util.function.Function;
-
 import com.google.common.base.Preconditions;
 
 import net.minecraft.util.Identifier;
 
-import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
+import net.fabricmc.fabric.impl.client.rendering.HudElementRegistryImpl;
 
 /**
- * A registry of identified hud elements with methods to add elements in specific positions.
+ * A registry of hud elements with methods to add elements in specific positions relative to the vanilla elements.
  *
  * <p>Operations relative to a vanilla element will inherit that element's render condition.
- * The render condition for all vanilla elements except {@link IdentifiedElement#SLEEP} is {@link net.minecraft.client.option.GameOptions#hudHidden}.
- * Only {@link #addFirst(IdentifiedElement)} and {@link #addLast(IdentifiedElement)} will not inherit any render condition.
+ * The render condition for all vanilla elements except {@link VanillaHudElements#SLEEP} is {@link net.minecraft.client.option.GameOptions#hudHidden}.
+ * Only {@link #addFirst(HudElement)} and {@link #addLast(HudElement)} will not inherit any render condition.
  * There is currently no mechanism to change the render condition of a vanilla element.
- * For vanilla elements, see {@link IdentifiedElement}.
+ * For vanilla elements, see {@link VanillaHudElements}.
  *
  * <p>Common places to add elements (as of 1.21.6):
  * <table>
@@ -40,27 +38,27 @@ import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
  *         <th>Use Case</th>
  *     </tr>
  *     <tr>
- *         <td>Before {@link IdentifiedElement#MISC_OVERLAYS MISC_OVERLAYS}</td>
+ *         <td>Before {@link VanillaHudElements#MISC_OVERLAYS MISC_OVERLAYS}</td>
  *         <td>Render before everything</td>
  *     </tr>
  *     <tr>
- *         <td>After {@link IdentifiedElement#MISC_OVERLAYS MISC_OVERLAYS}</td>
+ *         <td>After {@link VanillaHudElements#MISC_OVERLAYS MISC_OVERLAYS}</td>
  *         <td>Render after misc overlays (vignette, spyglass, and powder snow) and before the crosshair</td>
  *     </tr>
  *     <tr>
- *         <td>After {@link IdentifiedElement#HOTBAR_AND_BARS HOTBAR_AND_BARS}</td>
+ *         <td>After {@link VanillaHudElements#HOTBAR_AND_BARS HOTBAR_AND_BARS}</td>
  *         <td>Render after most main hud elements like hotbar, spectator hud, status bars, experience bar, status effects overlays, and boss bar and before the sleep overlay</td>
  *     </tr>
  *     <tr>
- *         <td>Before {@link IdentifiedElement#DEMO_TIMER DEMO_TIMER}</td>
+ *         <td>Before {@link VanillaHudElements#DEMO_TIMER DEMO_TIMER}</td>
  *         <td>Render after sleep overlay and before the demo timer, debug HUD, scoreboard, overlay message (action bar), and title and subtitle</td>
  *     </tr>
  *     <tr>
- *         <td>Before {@link IdentifiedElement#CHAT CHAT}</td>
+ *         <td>Before {@link VanillaHudElements#CHAT CHAT}</td>
  *         <td>Render after the debug HUD, scoreboard, overlay message (action bar), and title and subtitle and before {@link net.minecraft.client.gui.hud.ChatHud ChatHud}, player list, and sound subtitles</td>
  *     </tr>
  *     <tr>
- *         <td>After {@link IdentifiedElement#SUBTITLES SUBTITLES}</td>
+ *         <td>After {@link VanillaHudElements#SUBTITLES SUBTITLES}</td>
  *         <td>Render after everything</td>
  *     </tr>
  * </table>
@@ -71,8 +69,8 @@ public interface HudElementRegistry {
 	 *
 	 * @param element the element to add
 	 */
-	static void addFirst(IdentifiedElement element) {
-		Preconditions.checkNotNull(element, "hudElement");
+	static void addFirst(HudElement element) {
+		Preconditions.checkNotNull(element, "element");
 		HudElementRegistryImpl.addFirst(element);
 	}
 
@@ -81,92 +79,36 @@ public interface HudElementRegistry {
 	 *
 	 * @param element the element to add
 	 */
-	static void addLast(IdentifiedElement element) {
-		Preconditions.checkNotNull(element, "hudElement");
+	static void addLast(HudElement element) {
+		Preconditions.checkNotNull(element, "element");
 		HudElementRegistryImpl.addLast(element);
 	}
 
 	/**
-	 * Attaches an element before the element with the specified identifier.
+	 * Attaches an element before the vanilla element with the specified identifier.
 	 *
 	 * <p>The render condition of the vanilla element being attached to, if any, also applies to the new element.
 	 *
-	 * @param beforeThis the identifier of the element to add the new element before
-	 * @param element    the element to add
+	 * @param before   the identifier of the element to add the new element before
+	 * @param element  the element to add
 	 */
-	static void attachElementBefore(Identifier beforeThis, IdentifiedElement element) {
-		Preconditions.checkNotNull(beforeThis, "beforeThis");
-		Preconditions.checkNotNull(element, "hudElement");
-		HudElementRegistryImpl.attachElementBefore(beforeThis, element);
+	static void addBefore(Identifier before, HudElement element) {
+		Preconditions.checkNotNull(before, "beforeThis");
+		Preconditions.checkNotNull(element, "element");
+		HudElementRegistryImpl.attachElementBefore(before, element);
 	}
 
 	/**
-	 * Attaches an element before the element with the specified identifier.
+	 * Attaches an element after the vanilla element with the specified identifier.
 	 *
 	 * <p>The render condition of the vanilla element being attached to, if any, also applies to the new element.
 	 *
-	 * @param beforeThis the identifier of the element to add the new element before
-	 * @param identifier the identifier of the new element
-	 * @param element    the element to add
+	 * @param after    the identifier of the element to add the new element after
+	 * @param element  the element to add
 	 */
-	static void attachElementBefore(Identifier beforeThis, Identifier identifier, HudElement element) {
-		Preconditions.checkNotNull(beforeThis, "beforeThis");
-		Preconditions.checkNotNull(identifier, "identifier");
-		Preconditions.checkNotNull(element, "hudElement");
-		HudElementRegistryImpl.attachElementBefore(beforeThis, IdentifiedElement.of(identifier, element));
-	}
-
-	/**
-	 * Attaches an element after the element with the specified identifier.
-	 *
-	 * <p>The render condition of the vanilla element being attached to, if any, also applies to the new element.
-	 *
-	 * @param afterThis the identifier of the element to add the new element after
-	 * @param element   the element to add
-	 */
-	static void attachElementAfter(Identifier afterThis, IdentifiedElement element) {
-		Preconditions.checkNotNull(afterThis, "afterThis");
-		Preconditions.checkNotNull(element, "hudElement");
-		HudElementRegistryImpl.attachElementAfter(afterThis, element);
-	}
-
-	/**
-	 * Attaches an element after the element with the specified identifier.
-	 *
-	 * <p>The render condition of the vanilla element being attached to, if any, also applies to the new element.
-	 *
-	 * @param afterThis  the identifier of the element to add the new element after
-	 * @param identifier the identifier of the new element
-	 * @param element    the element to add
-	 */
-	static void attachElementAfter(Identifier afterThis, Identifier identifier, HudElement element) {
-		Preconditions.checkNotNull(afterThis, "afterThis");
-		Preconditions.checkNotNull(identifier, "identifier");
-		Preconditions.checkNotNull(element, "hudElement");
-		HudElementRegistryImpl.attachElementAfter(afterThis, IdentifiedElement.of(identifier, element));
-	}
-
-	/**
-	 * Removes an element with the specified identifier.
-	 *
-	 * @param identifier the identifier of the element to remove
-	 */
-	static void removeElement(Identifier identifier) {
-		Preconditions.checkNotNull(identifier, "identifier");
-		HudElementRegistryImpl.removeElement(identifier);
-	}
-
-	/**
-	 * Replaces an element with the specified identifier.
-	 *
-	 * <p>The render condition of the vanilla element being replaced, if any, also applies to the new element.
-	 *
-	 * @param identifier the identifier of the element to replace
-	 * @param replacer   a function that takes the old element and returns the new element
-	 */
-	static void replaceElement(Identifier identifier, Function<IdentifiedElement, IdentifiedElement> replacer) {
-		Preconditions.checkNotNull(identifier, "identifier");
-		Preconditions.checkNotNull(replacer, "replacer");
-		HudElementRegistryImpl.replaceElement(identifier, replacer);
+	static void addAfter(Identifier after, HudElement element) {
+		Preconditions.checkNotNull(after, "afterThis");
+		Preconditions.checkNotNull(element, "element");
+		HudElementRegistryImpl.attachElementAfter(after, element);
 	}
 }
