@@ -7,6 +7,12 @@ for (def sourceSet in [
 	// We have to capture the source set name for the lazy string literals,
 	// otherwise it'll just be whatever the last source set is in the list.
 	def sourceSetName = sourceSet.name
+	def dir = file("src/$sourceSetName/java")
+
+	if (!dir.exists()) {
+		continue
+	}
+
 	def taskName = sourceSet.getTaskName('generate', 'PackageInfos')
 	def task = tasks.register(taskName, GeneratePackageInfos) {
 		group = 'fabric'
@@ -14,17 +20,10 @@ for (def sourceSet in [
 
 		// Only apply to default source directory since we also add the generated
 		// sources to the source set.
-		sourceRoot = file("src/$sourceSetName/java")
+		sourceRoot = dir
 		header = rootProject.file('HEADER')
-		outputDir = file("src/generated/$sourceSetName")
 	}
-	sourceSet.java.srcDir task
-
-	def cleanTask = tasks.register(sourceSet.getTaskName('clean', 'PackageInfos'), Delete) {
-		group = 'fabric'
-		delete file("src/generated/$sourceSetName")
-	}
-	clean.dependsOn cleanTask
+	tasks.generateResources.dependsOn task
 }
 
 abstract class GeneratePackageInfos extends DefaultTask {
@@ -38,17 +37,12 @@ abstract class GeneratePackageInfos extends DefaultTask {
 	@InputDirectory
 	final DirectoryProperty sourceRoot = project.objects.directoryProperty()
 
-	@OutputDirectory
-	final DirectoryProperty outputDir = project.objects.directoryProperty()
-
 	GeneratePackageInfos() {
 		projectName.set(project.name)
 	}
 
 	@TaskAction
 	def run() {
-		def output = outputDir.get().asFile.toPath()
-		output.deleteDir()
 		def headerText = header.readLines().join("\n") // normalize line endings
 		def root = sourceRoot.get().asFile.toPath()
 
@@ -72,8 +66,6 @@ abstract class GeneratePackageInfos extends DefaultTask {
 			}
 
 			def relativePath = root.relativize(it)
-			def target = output.resolve(relativePath)
-			Files.createDirectories(target)
 
 			def packageName = relativePath.toString().replace(File.separator, '.')
 
@@ -85,7 +77,7 @@ abstract class GeneratePackageInfos extends DefaultTask {
 			def implPattern = /^(net[\/\\]fabricmc[\/\\]fabric[\/\\](impl|mixin))/
 			def isImpl = relativePath.toString() ==~ implPattern
 
-			target.resolve('package-info.java').withWriter {
+			it.resolve('package-info.java').withWriter {
 				if (isImpl) {
 					it.write("""$headerText
 						|/**
