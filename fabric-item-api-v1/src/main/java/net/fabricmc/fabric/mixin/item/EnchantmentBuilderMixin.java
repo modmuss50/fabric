@@ -21,10 +21,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.enchantment.Enchantment;
-
 import net.fabricmc.fabric.impl.item.EnchantmentUtil;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 @Mixin(Enchantment.Builder.class)
 public class EnchantmentBuilderMixin implements EnchantmentUtil.BuilderExtensions {

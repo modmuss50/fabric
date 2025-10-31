@@ -22,18 +22,16 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.google.gson.JsonParseException;
-
-import net.minecraft.client.render.model.UnbakedModel;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-
 import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
 import net.fabricmc.fabric.mixin.client.model.loading.JsonUnbakedModelAccessor;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 
 public class UnbakedModelDeserializerRegistry {
-	private static final Map<Identifier, UnbakedModelDeserializer> DESERIALIZERS = new HashMap<>();
+	private static final Map<ResourceLocation, UnbakedModelDeserializer> DESERIALIZERS = new HashMap<>();
 
-	public static void register(Identifier id, UnbakedModelDeserializer deserializer) {
+	public static void register(ResourceLocation id, UnbakedModelDeserializer deserializer) {
 		Objects.requireNonNull(id, "id cannot be null");
 		Objects.requireNonNull(id, "deserializer cannot be null");
 
@@ -42,13 +40,13 @@ public class UnbakedModelDeserializerRegistry {
 		}
 	}
 
-	public static UnbakedModelDeserializer get(Identifier id) {
+	public static UnbakedModelDeserializer get(ResourceLocation id) {
 		Objects.requireNonNull(id, "id cannot be null");
 
 		return DESERIALIZERS.get(id);
 	}
 
 	public static UnbakedModel deserialize(Reader reader) throws JsonParseException {
-		return JsonHelper.deserialize(JsonUnbakedModelAccessor.fabric_getGson(), reader, UnbakedModel.class);
+		return GsonHelper.fromJson(JsonUnbakedModelAccessor.fabric_getGson(), reader, UnbakedModel.class);
 	}
 }

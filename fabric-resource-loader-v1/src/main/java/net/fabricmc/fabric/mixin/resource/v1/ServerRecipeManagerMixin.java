@@ -23,24 +23,22 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.recipe.ServerRecipeManager;
-import net.minecraft.registry.RegistryWrapper;
-
 import net.fabricmc.fabric.impl.resource.v1.FabricRecipeManager;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.crafting.RecipeManager;
 
-@Mixin(ServerRecipeManager.class)
+@Mixin(RecipeManager.class)
 public class ServerRecipeManagerMixin implements FabricRecipeManager {
 	@Unique
-	private RegistryWrapper.WrapperLookup registries;
+	private HolderLookup.Provider registries;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
-	private void init(RegistryWrapper.WrapperLookup registries, CallbackInfo ci) {
+	private void init(HolderLookup.Provider registries, CallbackInfo ci) {
 		this.registries = registries;
 	}
 
 	@Override
-	public RegistryWrapper.WrapperLookup fabric$getRegistries() {
+	public HolderLookup.Provider fabric$getRegistries() {
 		return Objects.requireNonNull(registries);
 	}
 }

@@ -19,20 +19,18 @@ package net.fabricmc.fabric.test.resource.loader;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 public class ResourceReloadListenerTestMod implements ModInitializer {
 	public static final String MODID = "fabric-resource-loader-v0-testmod";
@@ -57,10 +55,10 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 	}
 
 	private void setupClientReloadListeners() {
-		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override
-			public Identifier getFabricId() {
-				return Identifier.of(MODID, "client_second");
+			public ResourceLocation getFabricId() {
+				return ResourceLocation.fromNamespaceAndPath(MODID, "client_second");
 			}
 
 			@Override
@@ -71,15 +69,15 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 
 			@Override
-			public Collection<Identifier> getFabricDependencies() {
-				return Collections.singletonList(Identifier.of(MODID, "client_first"));
+			public Collection<ResourceLocation> getFabricDependencies() {
+				return Collections.singletonList(ResourceLocation.fromNamespaceAndPath(MODID, "client_first"));
 			}
 		});
 
-		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override
-			public Identifier getFabricId() {
-				return Identifier.of(MODID, "client_first");
+			public ResourceLocation getFabricId() {
+				return ResourceLocation.fromNamespaceAndPath(MODID, "client_first");
 			}
 
 			@Override
@@ -90,10 +88,10 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 	}
 
 	private void setupServerReloadListeners() {
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override
-			public Identifier getFabricId() {
-				return Identifier.of(MODID, "server_second");
+			public ResourceLocation getFabricId() {
+				return ResourceLocation.fromNamespaceAndPath(MODID, "server_second");
 			}
 
 			@Override
@@ -104,15 +102,15 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 
 			@Override
-			public Collection<Identifier> getFabricDependencies() {
-				return Collections.singletonList(Identifier.of(MODID, "server_first"));
+			public Collection<ResourceLocation> getFabricDependencies() {
+				return Collections.singletonList(ResourceLocation.fromNamespaceAndPath(MODID, "server_first"));
 			}
 		});
 
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
 			@Override
-			public Identifier getFabricId() {
-				return Identifier.of(MODID, "server_first");
+			public ResourceLocation getFabricId() {
+				return ResourceLocation.fromNamespaceAndPath(MODID, "server_first");
 			}
 
 			@Override
@@ -121,21 +119,21 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 		});
 
-		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(RegistryReloader.ID, RegistryReloader::new);
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(RegistryReloader.ID, RegistryReloader::new);
 	}
 
-	private record RegistryReloader(RegistryWrapper.WrapperLookup wrapperLookup) implements SimpleSynchronousResourceReloadListener {
-		private static final Identifier ID = Identifier.of(MODID, "registry_reloader");
+	private record RegistryReloader(HolderLookup.Provider wrapperLookup) implements SimpleSynchronousResourceReloadListener {
+		private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MODID, "registry_reloader");
 
 		@Override
-		public Identifier getFabricId() {
+		public ResourceLocation getFabricId() {
 			return ID;
 		}
 
 		@Override
 		public void reload(ResourceManager manager) {
 			Objects.requireNonNull(wrapperLookup);
-			wrapperLookup.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
+			wrapperLookup.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
 		}
 	}
 }

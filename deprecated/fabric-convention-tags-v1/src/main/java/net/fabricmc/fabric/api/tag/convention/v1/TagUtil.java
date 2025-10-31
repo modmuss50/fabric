@@ -16,10 +16,9 @@
 
 package net.fabricmc.fabric.api.tag.convention.v1;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.tags.TagKey;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.tag.TagKey;
 
 /**
  * @deprecated Please use {@link net.fabricmc.fabric.api.tag.convention.v2.TagUtil}
@@ -42,7 +41,7 @@ public final class TagUtil {
 	 */
 	@Deprecated
 	@SuppressWarnings("unchecked")
-	public static <T> boolean isIn(@Nullable DynamicRegistryManager registryManager, TagKey<T> tagKey, T entry) {
+	public static <T> boolean isIn(@Nullable RegistryAccess registryManager, TagKey<T> tagKey, T entry) {
 		return net.fabricmc.fabric.api.tag.convention.v2.TagUtil.isIn(registryManager, tagKey, entry);
 	}
 }

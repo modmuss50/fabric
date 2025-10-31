@@ -16,14 +16,14 @@
 
 package net.fabricmc.fabric.impl.resource.v1;
 
-import net.minecraft.resource.ResourceReloader;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 
-public interface FabricResourceReloader extends ResourceReloader {
+public interface FabricResourceReloader extends PreparableReloadListener {
 	/**
 	 * {@return the unique identifier of this Vanilla resource reloader}
 	 */
-	Identifier fabric$getId();
+	ResourceLocation fabric$getId();
 
 	@Override
 	default String getName() {

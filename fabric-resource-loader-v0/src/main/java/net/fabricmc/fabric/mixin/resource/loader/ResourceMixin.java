@@ -17,12 +17,10 @@
 package net.fabricmc.fabric.mixin.resource.loader;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourcePackSource;
-
 import net.fabricmc.fabric.impl.resource.loader.FabricResource;
 import net.fabricmc.fabric.impl.resource.loader.ResourcePackSourceTracker;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.resources.Resource;
 
 /**
  * Implements {@link FabricResource} (resource source getter/setter)
@@ -32,8 +30,8 @@ import net.fabricmc.fabric.impl.resource.loader.ResourcePackSourceTracker;
 class ResourceMixin implements FabricResource {
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public ResourcePackSource getFabricPackSource() {
+	public PackSource getFabricPackSource() {
 		Resource self = (Resource) (Object) this;
-		return ResourcePackSourceTracker.getSource(self.getPack());
+		return ResourcePackSourceTracker.getSource(self.source());
 	}
 }

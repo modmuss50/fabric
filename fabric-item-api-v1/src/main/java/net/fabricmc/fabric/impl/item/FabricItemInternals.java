@@ -19,23 +19,21 @@ package net.fabricmc.fabric.impl.item;
 import java.util.WeakHashMap;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.item.Item;
-
 import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
 import net.fabricmc.fabric.api.item.v1.EquipmentSlotProvider;
+import net.minecraft.world.item.Item;
 
 public final class FabricItemInternals {
-	private static final WeakHashMap<Item.Settings, ExtraData> extraData = new WeakHashMap<>();
+	private static final WeakHashMap<Item.Properties, ExtraData> extraData = new WeakHashMap<>();
 
 	private FabricItemInternals() {
 	}
 
-	public static ExtraData computeExtraData(Item.Settings settings) {
+	public static ExtraData computeExtraData(Item.Properties settings) {
 		return extraData.computeIfAbsent(settings, s -> new ExtraData());
 	}
 
-	public static void onBuild(Item.Settings settings, Item item) {
+	public static void onBuild(Item.Properties settings, Item item) {
 		ExtraData data = extraData.get(settings);
 
 		if (data != null) {

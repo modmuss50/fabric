@@ -17,15 +17,13 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.model;
 
 import java.util.List;
-
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.model.multipart.MultiPartModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.render.model.MultipartBlockStateModel;
-
-@Mixin(MultipartBlockStateModel.MultipartBakedModel.class)
+@Mixin(MultiPartModel.SharedBakedState.class)
 public interface MultipartBlockStateModelMultipartBakedModelAccessor {
 	@Accessor("selectors")
-	List<MultipartBlockStateModel.Selector<BlockStateModel>> getSelectors();
+	List<MultiPartModel.Selector<BlockStateModel>> getSelectors();
 }

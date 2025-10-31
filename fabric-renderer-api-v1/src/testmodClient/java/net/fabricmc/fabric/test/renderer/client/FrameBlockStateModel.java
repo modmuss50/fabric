@@ -22,23 +22,20 @@ import java.util.function.Predicate;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.model.Baker;
-import net.minecraft.client.render.model.BlockModelPart;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
-
 import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class FrameBlockStateModel implements BlockStateModel {
 	private final BlockStateModel frameModel;
@@ -48,7 +45,7 @@ public class FrameBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
+	public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
 		// Emit our frame model
 		frameModel.emitQuads(emitter, blockView, pos, state, random, cullTest);
 
@@ -57,8 +54,8 @@ public class FrameBlockStateModel implements BlockStateModel {
 			return; // No inner block to render, or data of wrong type
 		}
 
-		BlockState innerState = mimickedBlock.getDefaultState();
-		BlockStateModel innerModel = MinecraftClient.getInstance().getBlockRenderManager().getModel(innerState);
+		BlockState innerState = mimickedBlock.defaultBlockState();
+		BlockStateModel innerModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(innerState);
 
 		// Now, we emit a transparent scaled-down version of the inner model
 
@@ -101,14 +98,14 @@ public class FrameBlockStateModel implements BlockStateModel {
 
 	@Override
 	@Nullable
-	public Object createGeometryKey(BlockRenderView blockView, BlockPos pos, BlockState state, Random random) {
+	public Object createGeometryKey(BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random) {
 		// We should not access the block entity from here. We should instead use the immutable render data provided by the block entity.
 		if (!(((FabricBlockView) blockView).getBlockEntityRenderData(pos) instanceof Block mimickedBlock)) {
 			return this; // No inner block to render, or data of wrong type
 		}
 
-		BlockState innerState = mimickedBlock.getDefaultState();
-		BlockStateModel innerModel = MinecraftClient.getInstance().getBlockRenderManager().getModel(innerState);
+		BlockState innerState = mimickedBlock.defaultBlockState();
+		BlockStateModel innerModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(innerState);
 		Object subkey = innerModel.createGeometryKey(blockView, pos, state, random);
 
 		if (subkey == null) {
@@ -122,25 +119,25 @@ public class FrameBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public void addParts(Random random, List<BlockModelPart> parts) {
+	public void addParts(RandomSource random, List<BlockModelPart> parts) {
 		// Renderer API makes this obsolete, so don't add any parts
 	}
 
 	@Override
-	public Sprite particleSprite() {
-		return frameModel.particleSprite();
+	public TextureAtlasSprite particleSprite() {
+		return frameModel.particleIcon();
 	}
 
 	@Override
-	public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
+	public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
 		// We should not access the block entity from here. We should instead use the immutable render data provided by the block entity.
 		if (!(((FabricBlockView) blockView).getBlockEntityRenderData(pos) instanceof Block mimickedBlock)) {
-			return frameModel.particleSprite(blockView, pos, state); // No inner block to render, or data of wrong type
+			return frameModel.particleIcon(blockView, pos, state); // No inner block to render, or data of wrong type
 		}
 
-		BlockState innerState = mimickedBlock.getDefaultState();
-		BlockStateModel innerModel = MinecraftClient.getInstance().getBlockRenderManager().getModel(innerState);
-		return innerModel.particleSprite(blockView, pos, state);
+		BlockState innerState = mimickedBlock.defaultBlockState();
+		BlockStateModel innerModel = Minecraft.getInstance().getBlockRenderer().getBlockModel(innerState);
+		return innerModel.particleIcon(blockView, pos, state);
 	}
 
 	public record Unbaked(BlockStateModel.Unbaked frameModel) implements CustomUnbakedBlockStateModel {
@@ -155,11 +152,11 @@ public class FrameBlockStateModel implements BlockStateModel {
 
 		@Override
 		public void resolve(Resolver resolver) {
-			frameModel.resolve(resolver);
+			frameModel.resolveDependencies(resolver);
 		}
 
 		@Override
-		public BlockStateModel bake(Baker baker) {
+		public BlockStateModel bake(ModelBaker baker) {
 			BlockStateModel bakedFrameModel = frameModel.bake(baker);
 			return new FrameBlockStateModel(bakedFrameModel);
 		}

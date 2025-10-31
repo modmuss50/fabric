@@ -16,23 +16,22 @@
 
 package net.fabricmc.fabric.impl.resource.v1;
 
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.SynchronousResourceReloader;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.flag.FeatureFlagSet;
 
 // Used to inject into the ResourceReloader store.
-public record SetupMarkerResourceReloader(RegistryWrapper.WrapperLookup registryLookup, FeatureSet featureSet) implements SynchronousResourceReloader {
+public record SetupMarkerResourceReloader(HolderLookup.Provider registryLookup, FeatureFlagSet featureSet) implements ResourceManagerReloadListener {
 	@Override
-	public void prepareSharedState(Store store) {
-		store.put(ResourceLoader.RELOADER_REGISTRY_LOOKUP_KEY, registryLookup);
-		store.put(ResourceLoader.RELOADER_FEATURE_SET_KEY, featureSet);
+	public void prepareSharedState(SharedState store) {
+		store.set(ResourceLoader.RELOADER_REGISTRY_LOOKUP_KEY, registryLookup);
+		store.set(ResourceLoader.RELOADER_FEATURE_SET_KEY, featureSet);
 	}
 
 	@Override
-	public void reload(ResourceManager manager) {
+	public void onResourceManagerReload(ResourceManager manager) {
 		// Do nothing.
 	}
 }

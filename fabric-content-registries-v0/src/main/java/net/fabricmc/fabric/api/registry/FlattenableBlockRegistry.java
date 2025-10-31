@@ -20,11 +20,9 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-
 import net.fabricmc.fabric.mixin.content.registry.ShovelItemAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * A registry for shovel flattening interactions. A vanilla example is turning dirt to dirt paths.

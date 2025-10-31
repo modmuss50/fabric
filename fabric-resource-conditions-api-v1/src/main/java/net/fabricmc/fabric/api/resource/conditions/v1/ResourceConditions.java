@@ -20,13 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.resource.featuretoggle.FeatureFlag;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.resource.conditions.conditions.AllModsLoadedResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.AndResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.AnyModsLoadedResourceCondition;
@@ -36,12 +29,17 @@ import net.fabricmc.fabric.impl.resource.conditions.conditions.OrResourceConditi
 import net.fabricmc.fabric.impl.resource.conditions.conditions.RegistryContainsResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.TagsPopulatedResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.TrueResourceCondition;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlag;
 
 /**
  * Contains default resource conditions and the condition registry.
  */
 public final class ResourceConditions {
-	private static final Map<Identifier, ResourceConditionType<?>> REGISTERED_CONDITIONS = new ConcurrentHashMap<>();
+	private static final Map<ResourceLocation, ResourceConditionType<?>> REGISTERED_CONDITIONS = new ConcurrentHashMap<>();
 
 	/**
 	 * The JSON key for resource conditions, {@value #CONDITIONS_KEY}.
@@ -72,7 +70,7 @@ public final class ResourceConditions {
 	/**
 	 * @return the condition with ID {@code id}, or {@code null} if there is no such condition
 	 */
-	public static ResourceConditionType<?> getConditionType(Identifier id) {
+	public static ResourceConditionType<?> getConditionType(ResourceLocation id) {
 		return REGISTERED_CONDITIONS.get(id);
 	}
 
@@ -148,8 +146,8 @@ public final class ResourceConditions {
 	 * @param <T> the type of the tag values
 	 */
 	@SafeVarargs
-	public static <T> ResourceCondition tagsPopulated(RegistryKey<? extends Registry<T>> registry, TagKey<T>... tags) {
-		return new TagsPopulatedResourceCondition(registry.getValue(), tags);
+	public static <T> ResourceCondition tagsPopulated(ResourceKey<? extends Registry<T>> registry, TagKey<T>... tags) {
+		return new TagsPopulatedResourceCondition(registry.location(), tags);
 	}
 
 	/**
@@ -157,12 +155,12 @@ public final class ResourceConditions {
 	 * and takes one field, {@code features}, which is a list of the feature IDs. If there are no IDs to
 	 * check, it always passes. If an unknown feature is specified, it always fails.
 	 */
-	public static ResourceCondition featuresEnabled(Identifier... features) {
+	public static ResourceCondition featuresEnabled(ResourceLocation... features) {
 		return new FeaturesEnabledResourceCondition(features);
 	}
 
 	/**
-	 * @see #featuresEnabled(Identifier...)
+	 * @see #featuresEnabled(ResourceLocation...)
 	 */
 	public static ResourceCondition featuresEnabled(FeatureFlag... features) {
 		return new FeaturesEnabledResourceCondition(features);
@@ -178,15 +176,15 @@ public final class ResourceConditions {
 	 * @param <T> the type of the tag values
 	 */
 	@SafeVarargs
-	public static <T> ResourceCondition registryContains(RegistryKey<T>... entries) {
+	public static <T> ResourceCondition registryContains(ResourceKey<T>... entries) {
 		return new RegistryContainsResourceCondition(entries);
 	}
 
 	/**
-	 * @see #registryContains(RegistryKey[])
+	 * @see #registryContains(ResourceKey[])
 	 * @param <T> the type of the tag values
 	 */
-	public static <T> ResourceCondition registryContains(RegistryKey<? extends Registry<T>> registry, Identifier... entries) {
-		return new RegistryContainsResourceCondition(registry.getValue(), entries);
+	public static <T> ResourceCondition registryContains(ResourceKey<? extends Registry<T>> registry, ResourceLocation... entries) {
+		return new RegistryContainsResourceCondition(registry.location(), entries);
 	}
 }

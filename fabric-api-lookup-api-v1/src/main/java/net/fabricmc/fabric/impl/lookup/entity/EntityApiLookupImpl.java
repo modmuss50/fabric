@@ -28,15 +28,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.registry.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.fabricmc.fabric.api.lookup.v1.custom.ApiLookupMap;
 import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap;
 import net.fabricmc.fabric.api.lookup.v1.entity.EntityApiLookup;
@@ -47,20 +45,20 @@ public class EntityApiLookupImpl<A, C> implements EntityApiLookup<A, C> {
 	private static final Map<Class<?>, Set<EntityType<?>>> REGISTERED_SELVES = new HashMap<>();
 	private static boolean checkEntityLookup = true;
 
-	private final Identifier identifier;
+	private final ResourceLocation identifier;
 	private final Class<A> apiClass;
 	private final Class<C> contextClass;
 	private final ApiProviderMap<EntityType<?>, EntityApiProvider<A, C>> providerMap = ApiProviderMap.create();
 	private final List<EntityApiProvider<A, C>> fallbackProviders = new CopyOnWriteArrayList<>();
 
-	private EntityApiLookupImpl(Identifier identifier, Class<A> apiClass, Class<C> contextClass) {
+	private EntityApiLookupImpl(ResourceLocation identifier, Class<A> apiClass, Class<C> contextClass) {
 		this.identifier = identifier;
 		this.apiClass = apiClass;
 		this.contextClass = contextClass;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <A, C> EntityApiLookup<A, C> get(Identifier lookupId, Class<A> apiClass, Class<C> contextClass) {
+	public static <A, C> EntityApiLookup<A, C> get(ResourceLocation lookupId, Class<A> apiClass, Class<C> contextClass) {
 		return (EntityApiLookup<A, C>) LOOKUPS.getLookup(lookupId, apiClass, contextClass);
 	}
 
@@ -71,13 +69,13 @@ public class EntityApiLookupImpl<A, C> implements EntityApiLookup<A, C> {
 			synchronized (REGISTERED_SELVES) {
 				REGISTERED_SELVES.forEach((apiClass, entityTypes) -> {
 					for (EntityType<?> entityType : entityTypes) {
-						Entity entity = entityType.create(server.getOverworld(), SpawnReason.LOAD);
+						Entity entity = entityType.create(server.overworld(), EntitySpawnReason.LOAD);
 
 						if (entity == null) {
 							String errorMessage = String.format(
 									"Failed to register self-implementing entities for API class %s. Can not create entity of type %s.",
 									apiClass.getCanonicalName(),
-									Registries.ENTITY_TYPE.getId(entityType)
+									BuiltInRegistries.ENTITY_TYPE.getKey(entityType)
 							);
 							throw new NullPointerException(errorMessage);
 						}
@@ -101,7 +99,7 @@ public class EntityApiLookupImpl<A, C> implements EntityApiLookup<A, C> {
 	public A find(Entity entity, C context) {
 		Objects.requireNonNull(entity, "Entity may not be null.");
 
-		if (EntityPredicates.VALID_ENTITY.test(entity)) {
+		if (EntitySelector.ENTITY_STILL_ALIVE.test(entity)) {
 			EntityApiProvider<A, C> provider = providerMap.get(entity.getType());
 
 			if (provider != null) {
@@ -144,7 +142,7 @@ public class EntityApiLookupImpl<A, C> implements EntityApiLookup<A, C> {
 
 		for (EntityType<?> entityType : entityTypes) {
 			if (providerMap.putIfAbsent(entityType, provider) != null) {
-				LOGGER.warn("Encountered duplicate API provider registration for entity type: " + Registries.ENTITY_TYPE.getId(entityType));
+				LOGGER.warn("Encountered duplicate API provider registration for entity type: " + BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
 			}
 		}
 	}
@@ -157,7 +155,7 @@ public class EntityApiLookupImpl<A, C> implements EntityApiLookup<A, C> {
 	}
 
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return identifier;
 	}
 

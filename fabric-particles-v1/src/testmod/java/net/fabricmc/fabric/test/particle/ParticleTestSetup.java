@@ -17,33 +17,28 @@
 package net.fabricmc.fabric.test.particle;
 
 import com.mojang.brigadier.Command;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public final class ParticleTestSetup implements ModInitializer {
 	// The dust particles of this block are always tinted (default).
-	public static final RegistryKey<Block> ALWAYS_TINTED_KEY = block("always_tinted");
-	public static final Block ALWAYS_TINTED = new ParticleTintTestBlock(AbstractBlock.Settings.create().breakInstantly().registryKey(ALWAYS_TINTED_KEY), 0xFF00FF);
+	public static final ResourceKey<Block> ALWAYS_TINTED_KEY = block("always_tinted");
+	public static final Block ALWAYS_TINTED = new ParticleTintTestBlock(BlockBehaviour.Properties.of().instabreak().setId(ALWAYS_TINTED_KEY), 0xFF00FF);
 	// The dust particles of this block are only tinted when the block is broken over water.
-	public static final RegistryKey<Block> TINTED_OVER_WATER_KEY = block("tinted_over_water");
-	public static final Block TINTED_OVER_WATER = new ParticleTintTestBlock(AbstractBlock.Settings.create().breakInstantly().registryKey(TINTED_OVER_WATER_KEY), 0xFFFF00);
+	public static final ResourceKey<Block> TINTED_OVER_WATER_KEY = block("tinted_over_water");
+	public static final Block TINTED_OVER_WATER = new ParticleTintTestBlock(BlockBehaviour.Properties.of().instabreak().setId(TINTED_OVER_WATER_KEY), 0xFFFF00);
 	// The dust particles of this block are never tinted.
-	public static final RegistryKey<Block> NEVER_TINTED_KEY = block("never_tinted");
-	public static final Block NEVER_TINTED = new ParticleTintTestBlock(AbstractBlock.Settings.create().breakInstantly().registryKey(NEVER_TINTED_KEY), 0x00FFFF);
+	public static final ResourceKey<Block> NEVER_TINTED_KEY = block("never_tinted");
+	public static final Block NEVER_TINTED = new ParticleTintTestBlock(BlockBehaviour.Properties.of().instabreak().setId(NEVER_TINTED_KEY), 0x00FFFF);
 
 	@Override
 	public void onInitialize() {
@@ -62,12 +57,12 @@ public final class ParticleTestSetup implements ModInitializer {
 		});
 	}
 
-	private static RegistryKey<Block> block(String path) {
-		return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of("fabric-particles-v1-testmod", path));
+	private static ResourceKey<Block> block(String path) {
+		return ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("fabric-particles-v1-testmod", path));
 	}
 
-	private static void registerBlock(RegistryKey<Block> key, Block block) {
-		Registry.register(Registries.BLOCK, key, block);
-		Registry.register(Registries.ITEM, key.getValue(), new BlockItem(block, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, key.getValue()))));
+	private static void registerBlock(ResourceKey<Block> key, Block block) {
+		Registry.register(BuiltInRegistries.BLOCK, key, block);
+		Registry.register(BuiltInRegistries.ITEM, key.location(), new BlockItem(block, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, key.location()))));
 	}
 }

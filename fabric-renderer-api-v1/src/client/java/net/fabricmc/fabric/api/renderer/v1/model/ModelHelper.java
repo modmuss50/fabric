@@ -21,13 +21,11 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.util.Atlases;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.core.Direction;
+import net.minecraft.data.AtlasIds;
 
 /**
  * Collection of utilities for model implementations.
@@ -47,7 +45,7 @@ public final class ModelHelper {
 	 * Use {@link #faceFromIndex(int)} to retrieve encoded face.
 	 */
 	public static int toFaceIndex(@Nullable Direction face) {
-		return face == null ? NULL_FACE_ID : face.getIndex();
+		return face == null ? NULL_FACE_ID : face.get3DDataValue();
 	}
 
 	/**
@@ -65,13 +63,13 @@ public final class ModelHelper {
 	/**
 	 * Converts a mesh into an array of lists of vanilla baked quads.
 	 * Useful for creating vanilla baked models when required for compatibility.
-	 * The array indexes correspond to {@link Direction#getId()} with the
+	 * The array indexes correspond to {@link Direction#getName()} with the
 	 * addition of {@link #NULL_FACE_ID}.
 	 *
 	 * <p>Retrieves sprites from the block texture atlas via {@link SpriteFinder}.
 	 */
 	public static List<BakedQuad>[] toQuadLists(Mesh mesh) {
-		SpriteFinder finder = MinecraftClient.getInstance().getAtlasManager().getAtlasTexture(Atlases.BLOCKS).spriteFinder();
+		SpriteFinder finder = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).spriteFinder();
 
 		@SuppressWarnings("unchecked")
 		final ImmutableList.Builder<BakedQuad>[] builders = new ImmutableList.Builder[7];
@@ -82,7 +80,7 @@ public final class ModelHelper {
 
 		mesh.forEach(q -> {
 			Direction cullFace = q.cullFace();
-			builders[cullFace == null ? NULL_FACE_ID : cullFace.getIndex()].add(q.toBakedQuad(finder.find(q)));
+			builders[cullFace == null ? NULL_FACE_ID : cullFace.get3DDataValue()].add(q.toBakedQuad(finder.find(q)));
 		});
 
 		@SuppressWarnings("unchecked")

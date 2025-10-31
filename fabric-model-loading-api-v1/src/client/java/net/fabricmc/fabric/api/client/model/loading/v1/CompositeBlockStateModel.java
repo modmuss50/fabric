@@ -20,15 +20,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Unmodifiable;
-
-import net.minecraft.client.render.item.model.CompositeItemModel;
-import net.minecraft.client.render.model.BlockStateModel;
-
 import net.fabricmc.fabric.impl.client.model.loading.CompositeBlockStateModelImpl;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.item.CompositeModel;
 
 /**
  * A custom block state model that is made of one or more other block state models. Analogous to
- * {@link CompositeItemModel}. Uses the first submodel to determine the particle sprite.
+ * {@link CompositeModel}. Uses the first submodel to determine the particle sprite.
  */
 @ApiStatus.NonExtendable
 public interface CompositeBlockStateModel extends BlockStateModel {
@@ -65,7 +63,7 @@ public interface CompositeBlockStateModel extends BlockStateModel {
 		/**
 		 * Creates a new unbaked composite model from the given non-empty list of submodels.
 		 */
-		static Unbaked of(List<BlockStateModel.Unbaked> models) {
+		static net.fabricmc.fabric.api.client.model.loading.v1.CompositeBlockStateModel.Unbaked of(List<BlockStateModel.Unbaked> models) {
 			return CompositeBlockStateModelImpl.Unbaked.of(models);
 		}
 

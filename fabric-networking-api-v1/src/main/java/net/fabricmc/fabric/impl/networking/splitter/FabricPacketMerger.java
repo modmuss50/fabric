@@ -24,27 +24,25 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.network.encoding.VarInts;
-import net.minecraft.network.handler.DecoderHandler;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.PacketType;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.networking.GenericPayloadAccessor;
 import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
 import net.fabricmc.fabric.impl.networking.VanillaPacketTypes;
 import net.fabricmc.fabric.mixin.networking.accessor.DecoderHandlerAccessor;
+import net.minecraft.network.PacketDecoder;
+import net.minecraft.network.VarInt;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketType;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 public class FabricPacketMerger extends MessageToMessageDecoder<Packet<?>> {
-	private final DecoderHandler<?> decoderHandler;
+	private final PacketDecoder<?> decoderHandler;
 	private final PayloadTypeRegistryImpl<?> payloadTypeRegistry;
 	private final VanillaPacketTypes vanillaPacketTypes;
 	@Nullable
 	private Merger packetMerger;
 
-	public FabricPacketMerger(DecoderHandler<?> decoderHandler, PayloadTypeRegistryImpl<?> payloadTypeRegistry, VanillaPacketTypes vanillaPacketTypes) {
+	public FabricPacketMerger(PacketDecoder<?> decoderHandler, PayloadTypeRegistryImpl<?> payloadTypeRegistry, VanillaPacketTypes vanillaPacketTypes) {
 		this.decoderHandler = decoderHandler;
 		this.payloadTypeRegistry = payloadTypeRegistry;
 		this.vanillaPacketTypes = vanillaPacketTypes;
@@ -54,14 +52,14 @@ public class FabricPacketMerger extends MessageToMessageDecoder<Packet<?>> {
 		if (this.packetMerger != null) {
 			ensureNotTransitioning(packet);
 
-			CustomPayload payload = packet instanceof GenericPayloadAccessor accessor ? accessor.fabric_payload() : null;
+			CustomPacketPayload payload = packet instanceof GenericPayloadAccessor accessor ? accessor.fabric_payload() : null;
 
 			if (payload == null) {
-				throw new DecoderException("Received '" + packet.getPacketType().id() + "' packet, while expecting 'minecraft:custom_payload'!");
+				throw new DecoderException("Received '" + packet.type().id() + "' packet, while expecting 'minecraft:custom_payload'!");
 			}
 
 			if (!(payload instanceof FabricSplitPacketPayload splitPacketPayload)) {
-				throw new DecoderException("Expected '" + FabricSplitPacketPayload.ID.id() +"' payload packet, but received '" + payload.getId().id() + "'!");
+				throw new DecoderException("Expected '" + FabricSplitPacketPayload.ID.id() +"' payload packet, but received '" + payload.type().id() + "'!");
 			}
 
 			if (this.packetMerger.add(channelHandlerContext, splitPacketPayload, list)) {
@@ -70,16 +68,16 @@ public class FabricPacketMerger extends MessageToMessageDecoder<Packet<?>> {
 		} else if (packet instanceof GenericPayloadAccessor accessor && accessor.fabric_payload() instanceof FabricSplitPacketPayload payload) {
 			ensureNotTransitioning(packet);
 			ByteBuf buf = payload.byteBuf();
-			int packetSize = VarInts.read(buf);
+			int packetSize = VarInt.read(buf);
 			int readerIndex = buf.readerIndex();
 
-			PacketType<?> packetType = this.vanillaPacketTypes.get(VarInts.read(buf));
+			PacketType<?> packetType = this.vanillaPacketTypes.get(VarInt.read(buf));
 
-			if (packetType != packet.getPacketType()) {
-				throw new DecoderException("Received unsupported split packet type! Expected '" + packet.getPacketType().id() + " got '" + (packetType != null ? packetType.id() : "<NULL>") + "'!");
+			if (packetType != packet.type()) {
+				throw new DecoderException("Received unsupported split packet type! Expected '" + packet.type().id() + " got '" + (packetType != null ? packetType.id() : "<NULL>") + "'!");
 			}
 
-			Identifier payloadId = Identifier.PACKET_CODEC.decode(payload.byteBuf());
+			ResourceLocation payloadId = ResourceLocation.STREAM_CODEC.decode(payload.byteBuf());
 
 			buf.readerIndex(readerIndex);
 			int maxSize = payloadTypeRegistry.getMaxPacketSize(payloadId);
@@ -98,26 +96,26 @@ public class FabricPacketMerger extends MessageToMessageDecoder<Packet<?>> {
 		} else {
 			list.add(packet);
 
-			if (packet.transitionsNetworkState()) {
+			if (packet.isTerminal()) {
 				channelHandlerContext.pipeline().remove(channelHandlerContext.name());
 			}
 		}
 	}
 
 	private static void ensureNotTransitioning(Packet<?> packet) {
-		if (packet.transitionsNetworkState()) {
+		if (packet.isTerminal()) {
 			throw new DecoderException("Terminal message received in bundle");
 		}
 	}
 
 	private static class Merger {
 		private final DecoderHandlerAccessor decoderHandler;
-		private final Identifier packetId;
+		private final ResourceLocation packetId;
 		private final int finalSize;
 
 		private final ByteBuf byteBuf;
 
-		Merger(DecoderHandler<?> decoderHandler, Identifier identifier, int finalSize) {
+		Merger(PacketDecoder<?> decoderHandler, ResourceLocation identifier, int finalSize) {
 			this.decoderHandler = (DecoderHandlerAccessor) decoderHandler;
 			this.packetId = identifier;
 			this.byteBuf = Unpooled.buffer(finalSize);

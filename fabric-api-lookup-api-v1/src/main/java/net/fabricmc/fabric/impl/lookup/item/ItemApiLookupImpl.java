@@ -23,34 +23,32 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.lookup.v1.custom.ApiLookupMap;
 import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap;
 import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
 public class ItemApiLookupImpl<A, C> implements ItemApiLookup<A, C> {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-api-lookup-api-v1/item");
 	private static final ApiLookupMap<ItemApiLookup<?, ?>> LOOKUPS = ApiLookupMap.create(ItemApiLookupImpl::new);
 
 	@SuppressWarnings("unchecked")
-	public static <A, C> ItemApiLookup<A, C> get(Identifier lookupId, Class<A> apiClass, Class<C> contextClass) {
+	public static <A, C> ItemApiLookup<A, C> get(ResourceLocation lookupId, Class<A> apiClass, Class<C> contextClass) {
 		return (ItemApiLookup<A, C>) LOOKUPS.getLookup(lookupId, apiClass, contextClass);
 	}
 
-	private final Identifier identifier;
+	private final ResourceLocation identifier;
 	private final Class<A> apiClass;
 	private final Class<C> contextClass;
 	private final ApiProviderMap<Item, ItemApiProvider<A, C>> providerMap = ApiProviderMap.create();
 	private final List<ItemApiProvider<A, C>> fallbackProviders = new CopyOnWriteArrayList<>();
 
 	@SuppressWarnings("unchecked")
-	private ItemApiLookupImpl(Identifier identifier, Class<?> apiClass, Class<?> contextClass) {
+	private ItemApiLookupImpl(ResourceLocation identifier, Class<?> apiClass, Class<?> contextClass) {
 		this.identifier = identifier;
 		this.apiClass = (Class<A>) apiClass;
 		this.contextClass = (Class<C>) contextClass;
@@ -84,8 +82,8 @@ public class ItemApiLookupImpl<A, C> implements ItemApiLookup<A, C> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void registerSelf(ItemConvertible... items) {
-		for (ItemConvertible itemConvertible : items) {
+	public void registerSelf(ItemLike... items) {
+		for (ItemLike itemConvertible : items) {
 			Item item = itemConvertible.asItem();
 
 			if (!apiClass.isAssignableFrom(item.getClass())) {
@@ -102,19 +100,19 @@ public class ItemApiLookupImpl<A, C> implements ItemApiLookup<A, C> {
 	}
 
 	@Override
-	public void registerForItems(ItemApiProvider<A, C> provider, ItemConvertible... items) {
+	public void registerForItems(ItemApiProvider<A, C> provider, ItemLike... items) {
 		Objects.requireNonNull(provider, "ItemApiProvider may not be null.");
 
 		if (items.length == 0) {
 			throw new IllegalArgumentException("Must register at least one ItemConvertible instance with an ItemApiProvider.");
 		}
 
-		for (ItemConvertible itemConvertible : items) {
+		for (ItemLike itemConvertible : items) {
 			Item item = itemConvertible.asItem();
 			Objects.requireNonNull(item, "Item convertible in item form may not be null.");
 
 			if (providerMap.putIfAbsent(item, provider) != null) {
-				LOGGER.warn("Encountered duplicate API provider registration for item: " + Registries.ITEM.getId(item));
+				LOGGER.warn("Encountered duplicate API provider registration for item: " + BuiltInRegistries.ITEM.getKey(item));
 			}
 		}
 	}
@@ -127,7 +125,7 @@ public class ItemApiLookupImpl<A, C> implements ItemApiLookup<A, C> {
 	}
 
 	@Override
-	public Identifier getId() {
+	public ResourceLocation getId() {
 		return identifier;
 	}
 

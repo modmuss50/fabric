@@ -16,10 +16,9 @@
 
 package net.fabricmc.fabric.impl.renderer;
 
-import net.minecraft.client.render.model.ErrorCollectingSpriteGetter;
-
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
+import net.minecraft.client.resources.model.SpriteGetter;
 
 public interface BasicItemModelExtension {
-	void fabric_setMesh(Mesh mesh, ErrorCollectingSpriteGetter spriteGetter);
+	void fabric_setMesh(Mesh mesh, SpriteGetter spriteGetter);
 }

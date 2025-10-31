@@ -21,9 +21,6 @@ import java.util.List;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.registry.RegistryOps;
-
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.fabricmc.fabric.impl.resource.conditions.DefaultResourceConditionTypes;
@@ -40,7 +37,7 @@ public record OrResourceCondition(List<ResourceCondition> conditions) implements
 	}
 
 	@Override
-	public boolean test(RegistryOps.@Nullable RegistryInfoGetter registryInfo) {
+	public boolean test(RegistryOps.@Nullable RegistryInfoLookup registryInfo) {
 		return ResourceConditionsImpl.conditionsMet(this.conditions(), registryInfo, false);
 	}
 }

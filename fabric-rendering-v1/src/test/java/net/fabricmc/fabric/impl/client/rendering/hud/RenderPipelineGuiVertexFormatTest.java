@@ -21,11 +21,9 @@ import java.util.Optional;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderPipeline;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderPipelineGuiVertexFormatTest {
 	@Test
@@ -46,33 +44,33 @@ public class RenderPipelineGuiVertexFormatTest {
 	void testSnippetTransfersToPipeline() {
 		RenderPipeline.Snippet snippet = FabricRenderPipeline.Snippet.withPipelineDrawModeForGui(createEmptySnippet(), true);
 		RenderPipeline pipeline = RenderPipeline.builder(
-						RenderPipelines.POSITION_COLOR_SNIPPET,
-						RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET,
+						RenderPipelines.DEBUG_FILLED_SNIPPET,
+						RenderPipelines.MATRICES_PROJECTION_SNIPPET,
 						snippet
 				)
-				.withLocation(Identifier.of("test", "pipeline_454b"))
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "pipeline_454b"))
 				.build();
 		Assertions.assertTrue(pipeline.usePipelineDrawModeForGui());
 
 		snippet = FabricRenderPipeline.Snippet.withPipelineDrawModeForGui(createEmptySnippet(), false);
 
 		pipeline = RenderPipeline.builder(
-						RenderPipelines.POSITION_COLOR_SNIPPET,
-						RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET,
+						RenderPipelines.DEBUG_FILLED_SNIPPET,
+						RenderPipelines.MATRICES_PROJECTION_SNIPPET,
 						snippet
 				)
-				.withLocation(Identifier.of("test", "pipeline_454cc"))
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "pipeline_454cc"))
 				.build();
 		Assertions.assertFalse(pipeline.usePipelineDrawModeForGui());
 		// now the default should apply if no snippet sets the value, and the value isn't set on the builder
 		snippet = FabricRenderPipeline.Snippet.withoutPipelineDrawModeForGui(createEmptySnippet());
 
 		pipeline = RenderPipeline.builder(
-						RenderPipelines.POSITION_COLOR_SNIPPET,
-						RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET,
+						RenderPipelines.DEBUG_FILLED_SNIPPET,
+						RenderPipelines.MATRICES_PROJECTION_SNIPPET,
 						snippet
 				)
-				.withLocation(Identifier.of("test", "pipeline_4547q"))
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "pipeline_4547q"))
 				.build();
 		Assertions.assertFalse(pipeline.usePipelineDrawModeForGui());
 	}
@@ -80,21 +78,21 @@ public class RenderPipelineGuiVertexFormatTest {
 	@Test
 	void testBuilderTransfersToPipeline() {
 		RenderPipeline.Builder builder = RenderPipeline.builder(
-						RenderPipelines.POSITION_COLOR_SNIPPET,
-						RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET
+						RenderPipelines.DEBUG_FILLED_SNIPPET,
+						RenderPipelines.MATRICES_PROJECTION_SNIPPET
 				)
 				.withUsePipelineDrawModeForGui(true)
-				.withLocation(Identifier.of("test", "pipeline_454gg"));
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "pipeline_454gg"));
 		RenderPipeline pipeline = builder.build();
 		Assertions.assertTrue(pipeline.usePipelineDrawModeForGui());
 
 		builder.withUsePipelineDrawModeForGui(false)
-				.withLocation(Identifier.of("test", "pipeline_454ff"));
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "pipeline_454ff"));
 		pipeline = builder.build();
 		Assertions.assertFalse(pipeline.usePipelineDrawModeForGui());
 
 		builder.withoutUsePipelineDrawModeForGui()
-				.withLocation(Identifier.of("test", "pipeline_454jj"));
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "pipeline_454jj"));
 		pipeline = builder.build();
 		Assertions.assertFalse(pipeline.usePipelineDrawModeForGui());
 	}

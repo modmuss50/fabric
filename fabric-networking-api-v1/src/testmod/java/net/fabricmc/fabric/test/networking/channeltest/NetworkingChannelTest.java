@@ -16,12 +16,12 @@
 
 package net.fabricmc.fabric.test.networking.channeltest;
 
-import static net.minecraft.command.argument.EntityArgumentType.getPlayer;
-import static net.minecraft.command.argument.EntityArgumentType.player;
-import static net.minecraft.command.argument.IdentifierArgumentType.getIdentifier;
-import static net.minecraft.command.argument.IdentifierArgumentType.identifier;
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.arguments.EntityArgument.getPlayer;
+import static net.minecraft.commands.arguments.EntityArgument.player;
+import static net.minecraft.commands.arguments.ResourceLocationArgument.getId;
+import static net.minecraft.commands.arguments.ResourceLocationArgument.id;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,20 +32,17 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.EntitySelector;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
 public final class NetworkingChannelTest implements ModInitializer {
 	@Override
@@ -91,46 +88,46 @@ public final class NetworkingChannelTest implements ModInitializer {
 		});
 	}
 
-	private static CompletableFuture<Suggestions> suggestReceivableChannels(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
-		final ServerPlayerEntity player = context.getSource().getPlayer();
+	private static CompletableFuture<Suggestions> suggestReceivableChannels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
+		final ServerPlayer player = context.getSource().getPlayer();
 
-		return CommandSource.suggestIdentifiers(ServerPlayNetworking.getReceived(player), builder);
+		return SharedSuggestionProvider.suggestResource(ServerPlayNetworking.getReceived(player), builder);
 	}
 
-	private static int registerChannel(CommandContext<ServerCommandSource> context, ServerPlayerEntity executor) throws CommandSyntaxException {
-		final Identifier channel = getIdentifier(context, "channel");
+	private static int registerChannel(CommandContext<CommandSourceStack> context, ServerPlayer executor) throws CommandSyntaxException {
+		final ResourceLocation channel = getId(context, "channel");
 
 		if (ServerPlayNetworking.getReceived(executor).contains(channel)) {
-			throw new SimpleCommandExceptionType(Text.literal(String.format("Cannot register channel %s twice for server player", channel))).create();
+			throw new SimpleCommandExceptionType(Component.literal(String.format("Cannot register channel %s twice for server player", channel))).create();
 		}
 
-		CustomPayload.Type<RegistryByteBuf, ? extends CustomPayload> payloadType = PayloadTypeRegistryImpl.PLAY_C2S.get(channel);
+		CustomPacketPayload.TypeAndCodec<RegistryFriendlyByteBuf, ? extends CustomPacketPayload> payloadType = PayloadTypeRegistryImpl.PLAY_C2S.get(channel);
 
 		if (payloadType != null) {
-			ServerPlayNetworking.registerReceiver(executor.networkHandler, payloadType.id(), (payload, ctx) -> {
+			ServerPlayNetworking.registerReceiver(executor.connection, payloadType.type(), (payload, ctx) -> {
 				System.out.printf("Received packet on channel %s%n", payloadType.id().id());
 			});
-			context.getSource().sendFeedback(() -> Text.literal(String.format("Registered channel %s for %s", channel, executor.getDisplayName())), false);
+			context.getSource().sendSuccess(() -> Component.literal(String.format("Registered channel %s for %s", channel, executor.getDisplayName())), false);
 			return 1;
 		} else {
-			throw new SimpleCommandExceptionType(Text.literal("Unknown channel id")).create();
+			throw new SimpleCommandExceptionType(Component.literal("Unknown channel id")).create();
 		}
 	}
 
-	private static int unregisterChannel(CommandContext<ServerCommandSource> context, ServerPlayerEntity player) throws CommandSyntaxException {
-		final Identifier channel = getIdentifier(context, "channel");
+	private static int unregisterChannel(CommandContext<CommandSourceStack> context, ServerPlayer player) throws CommandSyntaxException {
+		final ResourceLocation channel = getId(context, "channel");
 
 		if (!ServerPlayNetworking.getReceived(player).contains(channel)) {
-			throw new SimpleCommandExceptionType(Text.literal("Cannot unregister channel the server player entity cannot receive packets on")).create();
+			throw new SimpleCommandExceptionType(Component.literal("Cannot unregister channel the server player entity cannot receive packets on")).create();
 		}
 
-		ServerPlayNetworking.unregisterReceiver(player.networkHandler, channel);
-		context.getSource().sendFeedback(() -> Text.literal(String.format("Unregistered channel %s for %s", getIdentifier(context, "channel"), player.getDisplayName())), false);
+		ServerPlayNetworking.unregisterReceiver(player.connection, channel);
+		context.getSource().sendSuccess(() -> Component.literal(String.format("Unregistered channel %s for %s", getId(context, "channel"), player.getDisplayName())), false);
 
 		return 1;
 	}
 
-	private static int infoCommand(CommandContext<ServerCommandSource> context, ServerPlayerEntity player) {
+	private static int infoCommand(CommandContext<CommandSourceStack> context, ServerPlayer player) {
 		// TODO:
 
 		return 1;

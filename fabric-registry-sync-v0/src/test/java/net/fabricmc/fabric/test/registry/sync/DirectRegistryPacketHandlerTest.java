@@ -26,25 +26,23 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.Bootstrap;
 import net.fabricmc.fabric.impl.registry.sync.packet.DirectRegistryPacketHandler;
 
 public class DirectRegistryPacketHandlerTest {
 	@BeforeAll
 	static void beforeAll() {
-		SharedConstants.createGameVersion();
-		Bootstrap.initialize();
+		SharedConstants.tryDetectVersion();
+		Bootstrap.bootStrap();
 	}
 
 	@Test
 	void emptyRegistrySync() {
 		DirectRegistryPacketHandler handler = new DirectRegistryPacketHandler();
 
-		Map<Identifier, Object2IntMap<Identifier>> registry = new HashMap<>();
+		Map<ResourceLocation, Object2IntMap<ResourceLocation>> registry = new HashMap<>();
 
 		var payloads = new ArrayList<DirectRegistryPacketHandler.Payload>();
 		handler.sendPacket(payloads::add, registry);
@@ -64,8 +62,8 @@ public class DirectRegistryPacketHandlerTest {
 	void singlePacketRegistrySync() {
 		DirectRegistryPacketHandler handler = new DirectRegistryPacketHandler();
 
-		Map<Identifier, Object2IntMap<Identifier>> registry = new HashMap<>();
-		registry.put(Identifier.of("test"), createRegistry(150));
+		Map<ResourceLocation, Object2IntMap<ResourceLocation>> registry = new HashMap<>();
+		registry.put(ResourceLocation.parse("test"), createRegistry(150));
 
 		var payloads = new ArrayList<DirectRegistryPacketHandler.Payload>();
 		handler.sendPacket(payloads::add, registry);
@@ -84,10 +82,10 @@ public class DirectRegistryPacketHandlerTest {
 	@Test
 	void splitPacketRegistrySync() {
 		DirectRegistryPacketHandler handler = new DirectRegistryPacketHandler();
-		Map<Identifier, Object2IntMap<Identifier>> registry = new HashMap<>();
+		Map<ResourceLocation, Object2IntMap<ResourceLocation>> registry = new HashMap<>();
 
 		for (int i = 0; i < 50; i++) {
-			registry.put(Identifier.of("test", "namespace_" + i), createRegistry(15000));
+			registry.put(ResourceLocation.fromNamespaceAndPath("test", "namespace_" + i), createRegistry(15000));
 		}
 
 		var payloads = new ArrayList<DirectRegistryPacketHandler.Payload>();
@@ -105,22 +103,22 @@ public class DirectRegistryPacketHandlerTest {
 		assertMatchesDeep(registry, handler.getSyncedPacketData().idMap());
 	}
 
-	private static Object2IntMap<Identifier> createRegistry(int size) {
-		Object2IntMap<Identifier> entries = new Object2IntOpenHashMap<>();
+	private static Object2IntMap<ResourceLocation> createRegistry(int size) {
+		Object2IntMap<ResourceLocation> entries = new Object2IntOpenHashMap<>();
 
 		for (int i = 0; i < size; i++) {
-			entries.put(Identifier.of("test", "entry_" + i), i);
+			entries.put(ResourceLocation.fromNamespaceAndPath("test", "entry_" + i), i);
 		}
 
 		return entries;
 	}
 
 	// Deep comparison of two maps of maps
-	private static void assertMatchesDeep(Map<Identifier, Object2IntMap<Identifier>> expected, Map<Identifier, Object2IntMap<Identifier>> actual) {
+	private static void assertMatchesDeep(Map<ResourceLocation, Object2IntMap<ResourceLocation>> expected, Map<ResourceLocation, Object2IntMap<ResourceLocation>> actual) {
 		assertEquals(expected.size(), actual.size());
 
-		for (Map.Entry<Identifier, Object2IntMap<Identifier>> entry : expected.entrySet()) {
-			Object2IntMap<Identifier> actualValue = actual.get(entry.getKey());
+		for (Map.Entry<ResourceLocation, Object2IntMap<ResourceLocation>> entry : expected.entrySet()) {
+			Object2IntMap<ResourceLocation> actualValue = actual.get(entry.getKey());
 			assertEquals(entry.getValue(), actualValue);
 		}
 	}

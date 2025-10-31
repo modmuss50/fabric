@@ -28,21 +28,19 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.jetbrains.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.thread.ThreadExecutor;
-
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
 import net.fabricmc.fabric.impl.registry.sync.RemapException;
 import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
 import net.fabricmc.fabric.impl.registry.sync.packet.RegistryPacketHandler;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.thread.BlockableEventLoop;
 
 public final class ClientRegistrySyncHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientRegistrySyncHandler.class);
@@ -50,7 +48,7 @@ public final class ClientRegistrySyncHandler {
 	private ClientRegistrySyncHandler() {
 	}
 
-	public static <T extends RegistryPacketHandler.RegistrySyncPayload> CompletableFuture<Boolean> receivePacket(ThreadExecutor<?> executor, RegistryPacketHandler<T> handler, T payload, boolean accept) {
+	public static <T extends RegistryPacketHandler.RegistrySyncPayload> CompletableFuture<Boolean> receivePacket(BlockableEventLoop<?> executor, RegistryPacketHandler<T> handler, T payload, boolean accept) {
 		handler.receivePayload(payload);
 
 		if (!handler.isPacketFinished()) {
@@ -88,10 +86,10 @@ public final class ClientRegistrySyncHandler {
 		// First check that all of the data provided is valid before making any changes
 		checkRemoteRemap(data);
 
-		for (Map.Entry<Identifier, Object2IntMap<Identifier>> entry : data.idMap().entrySet()) {
-			final Identifier registryId = entry.getKey();
+		for (Map.Entry<ResourceLocation, Object2IntMap<ResourceLocation>> entry : data.idMap().entrySet()) {
+			final ResourceLocation registryId = entry.getKey();
 
-			Registry<?> registry = Registries.REGISTRIES.get(registryId);
+			Registry<?> registry = BuiltInRegistries.REGISTRY.getValue(registryId);
 
 			// Registry was not found on the client, is it optional?
 			// If so we can just ignore it.
@@ -113,13 +111,13 @@ public final class ClientRegistrySyncHandler {
 
 	@VisibleForTesting
 	public static void checkRemoteRemap(RegistryPacketHandler.SyncedPacketData data) throws RemapException {
-		Map<Identifier, Object2IntMap<Identifier>> map = data.idMap();
-		ArrayList<Identifier> missingRegistries = new ArrayList<>();
-		Map<Identifier, List<Identifier>> missingEntries = new HashMap<>();
+		Map<ResourceLocation, Object2IntMap<ResourceLocation>> map = data.idMap();
+		ArrayList<ResourceLocation> missingRegistries = new ArrayList<>();
+		Map<ResourceLocation, List<ResourceLocation>> missingEntries = new HashMap<>();
 
-		for (Identifier registryId : map.keySet()) {
-			final Object2IntMap<Identifier> remoteRegistry = map.get(registryId);
-			Registry<?> registry = Registries.REGISTRIES.get(registryId);
+		for (ResourceLocation registryId : map.keySet()) {
+			final Object2IntMap<ResourceLocation> remoteRegistry = map.get(registryId);
+			Registry<?> registry = BuiltInRegistries.REGISTRY.getValue(registryId);
 
 			if (registry == null) {
 				if (!isRegistryOptional(registryId, data)) {
@@ -130,8 +128,8 @@ public final class ClientRegistrySyncHandler {
 				continue;
 			}
 
-			for (Identifier remoteId : remoteRegistry.keySet()) {
-				if (!registry.containsId(remoteId)) {
+			for (ResourceLocation remoteId : remoteRegistry.keySet()) {
+				if (!registry.containsKey(remoteId)) {
 					// Found a registry entry from the server that is missing on the client
 					missingEntries.computeIfAbsent(registryId, i -> new ArrayList<>()).add(remoteId);
 				}
@@ -147,7 +145,7 @@ public final class ClientRegistrySyncHandler {
 		if (!missingRegistries.isEmpty()) {
 			LOGGER.error("Received unknown remote registries from server");
 
-			for (Identifier registryId : missingRegistries) {
+			for (ResourceLocation registryId : missingRegistries) {
 				LOGGER.error("Received unknown remote registry ({}) from server", registryId);
 			}
 		}
@@ -155,8 +153,8 @@ public final class ClientRegistrySyncHandler {
 		if (!missingEntries.isEmpty()) {
 			LOGGER.error("Received unknown remote registry entries from server");
 
-			for (Map.Entry<Identifier, List<Identifier>> entry : missingEntries.entrySet()) {
-				for (Identifier identifier : entry.getValue()) {
+			for (Map.Entry<ResourceLocation, List<ResourceLocation>> entry : missingEntries.entrySet()) {
+				for (ResourceLocation identifier : entry.getValue()) {
 					LOGGER.error("Registry entry ({}) is missing from local registry ({})", identifier, entry.getKey());
 				}
 			}
@@ -169,70 +167,70 @@ public final class ClientRegistrySyncHandler {
 		throw new RemapException(missingEntriesError(missingEntries));
 	}
 
-	private static Text missingRegistriesError(List<Identifier> missingRegistries) {
-		MutableText text = Text.empty();
+	private static Component missingRegistriesError(List<ResourceLocation> missingRegistries) {
+		MutableComponent text = Component.empty();
 
 		final int count = missingRegistries.size();
 
 		if (count == 1) {
-			text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-registry.title.singular"));
+			text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-registry.title.singular"));
 		} else {
-			text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-registry.title.plural", count));
+			text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-registry.title.plural", count));
 		}
 
-		text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-registry.subtitle.1").formatted(Formatting.GREEN));
-		text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-registry.subtitle.2"));
+		text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-registry.subtitle.1").withStyle(ChatFormatting.GREEN));
+		text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-registry.subtitle.2"));
 
 		final int toDisplay = 4;
 
 		for (int i = 0; i < Math.min(missingRegistries.size(), toDisplay); i++) {
-			text = text.append(Text.literal(missingRegistries.get(i).toString()).formatted(Formatting.YELLOW));
-			text = text.append(ScreenTexts.LINE_BREAK);
+			text = text.append(Component.literal(missingRegistries.get(i).toString()).withStyle(ChatFormatting.YELLOW));
+			text = text.append(CommonComponents.NEW_LINE);
 		}
 
 		if (missingRegistries.size() > toDisplay) {
-			text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-registry.footer", missingRegistries.size() - toDisplay));
+			text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-registry.footer", missingRegistries.size() - toDisplay));
 		}
 
 		return text;
 	}
 
-	private static Text missingEntriesError(Map<Identifier, List<Identifier>> missingEntries) {
-		MutableText text = Text.empty();
+	private static Component missingEntriesError(Map<ResourceLocation, List<ResourceLocation>> missingEntries) {
+		MutableComponent text = Component.empty();
 
 		final int count = missingEntries.values().stream().mapToInt(List::size).sum();
 
 		if (count == 1) {
-			text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-remote.title.singular"));
+			text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-remote.title.singular"));
 		} else {
-			text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-remote.title.plural", count));
+			text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-remote.title.plural", count));
 		}
 
-		text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-remote.subtitle.1").formatted(Formatting.GREEN));
-		text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-remote.subtitle.2"));
+		text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-remote.subtitle.1").withStyle(ChatFormatting.GREEN));
+		text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-remote.subtitle.2"));
 
 		final int toDisplay = 4;
 		// Get the distinct missing namespaces
 		final List<String> namespaces = missingEntries.values().stream()
 				.flatMap(List::stream)
-				.map(Identifier::getNamespace)
+				.map(ResourceLocation::getNamespace)
 				.distinct()
 				.sorted()
 				.toList();
 
 		for (int i = 0; i < Math.min(namespaces.size(), toDisplay); i++) {
-			text = text.append(Text.literal(namespaces.get(i)).formatted(Formatting.YELLOW));
-			text = text.append(ScreenTexts.LINE_BREAK);
+			text = text.append(Component.literal(namespaces.get(i)).withStyle(ChatFormatting.YELLOW));
+			text = text.append(CommonComponents.NEW_LINE);
 		}
 
 		if (namespaces.size() > toDisplay) {
-			text = text.append(Text.translatable("fabric-registry-sync-v0.unknown-remote.footer", namespaces.size() - toDisplay));
+			text = text.append(Component.translatable("fabric-registry-sync-v0.unknown-remote.footer", namespaces.size() - toDisplay));
 		}
 
 		return text;
 	}
 
-	private static boolean isRegistryOptional(Identifier registryId, RegistryPacketHandler.SyncedPacketData data) {
+	private static boolean isRegistryOptional(ResourceLocation registryId, RegistryPacketHandler.SyncedPacketData data) {
 		EnumSet<RegistryAttribute> registryAttributes = data.attributes().get(registryId);
 		return registryAttributes.contains(RegistryAttribute.OPTIONAL);
 	}

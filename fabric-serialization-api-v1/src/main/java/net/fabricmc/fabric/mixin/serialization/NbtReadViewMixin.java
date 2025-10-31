@@ -22,35 +22,33 @@ import java.util.Optional;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.storage.NbtReadView;
-
 import net.fabricmc.fabric.api.serialization.v1.view.FabricReadView;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.TagValueInput;
 
-@Mixin(NbtReadView.class)
+@Mixin(TagValueInput.class)
 public class NbtReadViewMixin implements FabricReadView {
 	@Shadow
 	@Final
-	private NbtCompound nbt;
+	private CompoundTag input;
 
 	@Override
 	public Collection<String> keys() {
-		return this.nbt.getKeys();
+		return this.input.keySet();
 	}
 
 	@Override
 	public boolean contains(String key) {
-		return this.nbt.contains(key);
+		return this.input.contains(key);
 	}
 
 	@Override
 	public Optional<byte[]> getOptionalByteArray(String key) {
-		return this.nbt.getByteArray(key);
+		return this.input.getByteArray(key);
 	}
 
 	@Override
 	public Optional<long[]> getOptionalLongArray(String key) {
-		return this.nbt.getLongArray(key);
+		return this.input.getLongArray(key);
 	}
 }

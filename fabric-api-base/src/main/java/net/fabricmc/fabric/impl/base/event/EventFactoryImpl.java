@@ -28,10 +28,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 import com.google.common.collect.MapMaker;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.event.Event;
+import net.minecraft.resources.ResourceLocation;
 
 public final class EventFactoryImpl {
 	private static final Set<ArrayBackedEvent<?>> ARRAY_BACKED_EVENTS
@@ -49,8 +47,8 @@ public final class EventFactoryImpl {
 		return event;
 	}
 
-	public static void ensureContainsDefault(Identifier[] defaultPhases) {
-		for (Identifier id : defaultPhases) {
+	public static void ensureContainsDefault(ResourceLocation[] defaultPhases) {
+		for (ResourceLocation id : defaultPhases) {
 			if (id.equals(Event.DEFAULT_PHASE)) {
 				return;
 			}
@@ -59,7 +57,7 @@ public final class EventFactoryImpl {
 		throw new IllegalArgumentException("The event phases must contain Event.DEFAULT_PHASE.");
 	}
 
-	public static void ensureNoDuplicates(Identifier[] defaultPhases) {
+	public static void ensureNoDuplicates(ResourceLocation[] defaultPhases) {
 		for (int i = 0; i < defaultPhases.length; ++i) {
 			for (int j = i+1; j < defaultPhases.length; ++j) {
 				if (defaultPhases[i].equals(defaultPhases[j])) {

@@ -17,15 +17,14 @@
 package net.fabricmc.fabric.impl.attachment.sync;
 
 import java.util.Set;
-
-import net.minecraft.network.ClientConnection;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.Connection;
+import net.minecraft.resources.ResourceLocation;
 
 /**
- * Implemented on {@link ClientConnection} to store which attachments the client supports.
+ * Implemented on {@link Connection} to store which attachments the client supports.
  */
 public interface SupportedAttachmentsClientConnection {
-	void fabric_setSupportedAttachments(Set<Identifier> supportedAttachments);
+	void fabric_setSupportedAttachments(Set<ResourceLocation> supportedAttachments);
 
-	Set<Identifier> fabric_getSupportedAttachments();
+	Set<ResourceLocation> fabric_getSupportedAttachments();
 }

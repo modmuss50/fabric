@@ -16,10 +16,9 @@
 
 package net.fabricmc.fabric.api.event.lifecycle.v1;
 
-import net.minecraft.registry.DynamicRegistryManager;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.core.RegistryAccess;
 
 public final class CommonLifecycleEvents {
 	private CommonLifecycleEvents() {
@@ -39,6 +38,6 @@ public final class CommonLifecycleEvents {
 		 * @param registries Up-to-date registries from which the tags can be retrieved.
 		 * @param client True if the client just received a sync packet, false if the server just (re)loaded the tags.
 		 */
-		void onTagsLoaded(DynamicRegistryManager registries, boolean client);
+		void onTagsLoaded(RegistryAccess registries, boolean client);
 	}
 }

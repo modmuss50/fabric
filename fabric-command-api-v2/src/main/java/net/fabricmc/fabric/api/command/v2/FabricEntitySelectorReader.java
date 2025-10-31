@@ -16,10 +16,10 @@
 
 package net.fabricmc.fabric.api.command.v2;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /**
- * Fabric extension to {@link net.minecraft.command.EntitySelectorReader}, implemented
+ * Fabric extension to {@link net.minecraft.commands.arguments.selector.EntitySelectorParser}, implemented
  * using interface injection. This allows custom entity selectors to
  * set a custom flag to a reader. This can be used to implement mutually-exclusive
  * or non-repeatable entity selector option.
@@ -30,7 +30,7 @@ public interface FabricEntitySelectorReader {
 	 * @param key the key of the flag
 	 * @param value the value of the flag
 	 */
-	default void setCustomFlag(Identifier key, boolean value) {
+	default void setCustomFlag(ResourceLocation key, boolean value) {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
@@ -39,7 +39,7 @@ public interface FabricEntitySelectorReader {
 	 * @param key the key of the flag
 	 * @return the value, or {@code false} if the flag is not set
 	 */
-	default boolean getCustomFlag(Identifier key) {
+	default boolean getCustomFlag(ResourceLocation key) {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 }

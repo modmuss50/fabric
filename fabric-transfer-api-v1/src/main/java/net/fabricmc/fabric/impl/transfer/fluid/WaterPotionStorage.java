@@ -17,14 +17,6 @@
 package net.fabricmc.fabric.impl.transfer.fluid;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.Potions;
-
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -33,6 +25,12 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ExtractionOnlyStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.material.Fluids;
 
 /**
  * Implementation of the storage for a water potion.
@@ -48,8 +46,8 @@ public class WaterPotionStorage implements ExtractionOnlyStorage<FluidVariant>, 
 
 	private static boolean isWaterPotion(ContainerItemContext context) {
 		ItemVariant variant = context.getItemVariant();
-		PotionContentsComponent potionContents = variant.getComponentMap()
-				.getOrDefault(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT);
+		PotionContents potionContents = variant.getComponentMap()
+				.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
 		return variant.isOf(Items.POTION) && potionContents.potion().orElse(null) == Potions.WATER;
 	}
 
@@ -65,8 +63,8 @@ public class WaterPotionStorage implements ExtractionOnlyStorage<FluidVariant>, 
 
 	private ItemVariant mapToGlassBottle() {
 		ItemStack newStack = context.getItemVariant().toStack();
-		newStack.set(DataComponentTypes.POTION_CONTENTS, PotionContentsComponent.DEFAULT);
-		return ItemVariant.of(Items.GLASS_BOTTLE, newStack.getComponentChanges());
+		newStack.set(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+		return ItemVariant.of(Items.GLASS_BOTTLE, newStack.getComponentsPatch());
 	}
 
 	@Override

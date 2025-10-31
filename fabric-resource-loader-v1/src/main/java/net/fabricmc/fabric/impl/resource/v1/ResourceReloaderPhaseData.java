@@ -17,15 +17,13 @@
 package net.fabricmc.fabric.impl.resource.v1;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.resource.ResourceReloader;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.base.toposort.SortableNode;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 class ResourceReloaderPhaseData extends SortableNode<ResourceReloaderPhaseData> {
-	final Identifier id;
-	ResourceReloader resourceReloader;
+	final ResourceLocation id;
+	PreparableReloadListener resourceReloader;
 	/**
 	 * This is used to keep track of the source and ordering expectation of this resource reloader.
 	 * <ul>
@@ -47,7 +45,7 @@ class ResourceReloaderPhaseData extends SortableNode<ResourceReloaderPhaseData> 
 	 */
 	VanillaStatus vanillaStatus = VanillaStatus.NONE;
 
-	ResourceReloaderPhaseData(Identifier id, @Nullable ResourceReloader resourceReloader) {
+	ResourceReloaderPhaseData(ResourceLocation id, @Nullable PreparableReloadListener resourceReloader) {
 		super();
 		this.id = id;
 		this.resourceReloader = resourceReloader;
@@ -118,7 +116,7 @@ class ResourceReloaderPhaseData extends SortableNode<ResourceReloaderPhaseData> 
 	}
 
 	static class AfterVanilla extends ResourceReloaderPhaseData {
-		AfterVanilla(Identifier id) {
+		AfterVanilla(ResourceLocation id) {
 			super(id, null);
 			this.setVanillaStatus(VanillaStatus.VANILLA);
 		}

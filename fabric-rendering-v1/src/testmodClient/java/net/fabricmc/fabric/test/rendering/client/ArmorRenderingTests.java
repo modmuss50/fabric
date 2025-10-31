@@ -16,27 +16,26 @@
 
 package net.fabricmc.fabric.test.rendering.client;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.command.RenderCommandQueue;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.entity.state.BipedEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ArmorRenderingTests implements ClientModInitializer {
-	private BipedEntityModel<BipedEntityRenderState> armorModel;
-	private final Identifier texture = Identifier.ofVanilla("textures/block/dirt.png");
+	private HumanoidModel<HumanoidRenderState> armorModel;
+	private final ResourceLocation texture = ResourceLocation.withDefaultNamespace("textures/block/dirt.png");
 
 	// Renders a biped model with dirt texture, replacing diamond helmet and diamond chest plate rendering
 	// Also makes diamond sword a valid helmet and renders them as dirt helmets. Their default head item rendering is disabled.
@@ -44,29 +43,29 @@ public class ArmorRenderingTests implements ClientModInitializer {
 	public void onInitializeClient() {
 		ArmorRenderer armorRenderer = new ArmorRenderer() {
 			@Override
-			public void render(MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, ItemStack stack, BipedEntityRenderState renderState, EquipmentSlot slot, int light, BipedEntityModel<BipedEntityRenderState> contextModel) {
+			public void render(PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, ItemStack stack, HumanoidRenderState renderState, EquipmentSlot slot, int light, HumanoidModel<HumanoidRenderState> contextModel) {
 				if (armorModel == null) {
-					armorModel = new BipedEntityModel<>(MinecraftClient.getInstance().getLoadedEntityModels().getModelPart(EntityModelLayers.PLAYER));
+					armorModel = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER));
 				}
 
-				armorModel.setAngles(renderState);
-				armorModel.setVisible(false);
+				armorModel.setupAnim(renderState);
+				armorModel.setAllVisible(false);
 				armorModel.body.visible = slot == EquipmentSlot.CHEST;
 				armorModel.leftArm.visible = slot == EquipmentSlot.CHEST;
 				armorModel.rightArm.visible = slot == EquipmentSlot.CHEST;
 				armorModel.head.visible = slot == EquipmentSlot.HEAD;
 
-				RenderCommandQueue renderCommandQueue = orderedRenderCommandQueue.getBatchingQueue(0);
-				renderCommandQueue.submitModel(armorModel, renderState, matrices, RenderLayers.armorCutoutNoCull(texture), light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF, null, 0, null);
+				OrderedSubmitNodeCollector renderCommandQueue = orderedRenderCommandQueue.order(0);
+				renderCommandQueue.submitModel(armorModel, renderState, matrices, RenderTypes.armorCutoutNoCull(texture), light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, null, 0, null);
 
-				if (stack.hasGlint()) {
-					renderCommandQueue.submitModel(armorModel, renderState, matrices, RenderLayers.armorEntityGlint(), light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF, null, 0, null);
+				if (stack.hasFoil()) {
+					renderCommandQueue.submitModel(armorModel, renderState, matrices, RenderTypes.armorEntityGlint(), light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, null, 0, null);
 				}
 			}
 
 			@Override
 			public boolean shouldRenderDefaultHeadItem(LivingEntity entity, ItemStack stack) {
-				return !stack.isOf(Items.DIAMOND_SWORD);
+				return !stack.is(Items.DIAMOND_SWORD);
 			}
 		};
 

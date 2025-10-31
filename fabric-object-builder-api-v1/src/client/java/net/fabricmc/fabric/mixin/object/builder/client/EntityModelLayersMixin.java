@@ -16,41 +16,40 @@
 
 package net.fabricmc.fabric.mixin.object.builder.client;
 
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.WoodType;
-import net.minecraft.client.render.block.entity.HangingSignBlockEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.util.Identifier;
-
-@Mixin(EntityModelLayers.class)
+@Mixin(ModelLayers.class)
 public class EntityModelLayersMixin {
-	@Inject(method = "createStandingSign", at = @At("HEAD"), cancellable = true)
-	private static void createStandingSign(WoodType type, CallbackInfoReturnable<EntityModelLayer> cir) {
-		if (type.name().indexOf(Identifier.NAMESPACE_SEPARATOR) != -1) {
-			Identifier identifier = Identifier.of(type.name());
-			cir.setReturnValue(new EntityModelLayer(identifier.withPrefixedPath("sign/standing/"), "main"));
+	@Inject(method = "createStandingSignModelName", at = @At("HEAD"), cancellable = true)
+	private static void createStandingSign(WoodType type, CallbackInfoReturnable<ModelLayerLocation> cir) {
+		if (type.name().indexOf(ResourceLocation.NAMESPACE_SEPARATOR) != -1) {
+			ResourceLocation identifier = ResourceLocation.parse(type.name());
+			cir.setReturnValue(new ModelLayerLocation(identifier.withPrefix("sign/standing/"), "main"));
 		}
 	}
 
-	@Inject(method = "createWallSign", at = @At("HEAD"), cancellable = true)
-	private static void createWallSign(WoodType type, CallbackInfoReturnable<EntityModelLayer> cir) {
-		if (type.name().indexOf(Identifier.NAMESPACE_SEPARATOR) != -1) {
-			Identifier identifier = Identifier.of(type.name());
-			cir.setReturnValue(new EntityModelLayer(identifier.withPrefixedPath("sign/wall/"), "main"));
+	@Inject(method = "createWallSignModelName", at = @At("HEAD"), cancellable = true)
+	private static void createWallSign(WoodType type, CallbackInfoReturnable<ModelLayerLocation> cir) {
+		if (type.name().indexOf(ResourceLocation.NAMESPACE_SEPARATOR) != -1) {
+			ResourceLocation identifier = ResourceLocation.parse(type.name());
+			cir.setReturnValue(new ModelLayerLocation(identifier.withPrefix("sign/wall/"), "main"));
 		}
 	}
 
-	@Inject(method = "createHangingSign", at = @At("HEAD"), cancellable = true)
-	private static void createHangingSign(WoodType type, HangingSignBlockEntityRenderer.AttachmentType attachmentType, CallbackInfoReturnable<EntityModelLayer> cir) {
-		if (type.name().indexOf(Identifier.NAMESPACE_SEPARATOR) != -1) {
-			Identifier identifier = Identifier.of(type.name());
-			cir.setReturnValue(new EntityModelLayer(identifier.withPath(path -> {
-				return "hanging_sign/" + path + "/" + attachmentType.asString();
+	@Inject(method = "createHangingSignModelName", at = @At("HEAD"), cancellable = true)
+	private static void createHangingSign(WoodType type, HangingSignRenderer.AttachmentType attachmentType, CallbackInfoReturnable<ModelLayerLocation> cir) {
+		if (type.name().indexOf(ResourceLocation.NAMESPACE_SEPARATOR) != -1) {
+			ResourceLocation identifier = ResourceLocation.parse(type.name());
+			cir.setReturnValue(new ModelLayerLocation(identifier.withPath(path -> {
+				return "hanging_sign/" + path + "/" + attachmentType.getSerializedName();
 			}), "main"));
 		}
 	}

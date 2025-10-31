@@ -18,13 +18,6 @@ package net.fabricmc.fabric.test.tag.client.v1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.BiomeKeys;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -36,6 +29,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEnchantmentTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.resources.ResourceLocation;
 
 public class ClientTagTest implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientTagTest.class);
@@ -45,7 +39,7 @@ public class ClientTagTest implements ClientModInitializer {
 	public void onInitializeClient() {
 		final ModContainer container = FabricLoader.getInstance().getModContainer(MOD_ID).get();
 
-		if (!ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(MOD_ID, "test2"),
+		if (!ResourceManagerHelper.registerBuiltinResourcePack(ResourceLocation.fromNamespaceAndPath(MOD_ID, "test2"),
 				container, ResourcePackActivationType.ALWAYS_ENABLED)) {
 			throw new IllegalStateException("Could not register built-in resource pack.");
 		}

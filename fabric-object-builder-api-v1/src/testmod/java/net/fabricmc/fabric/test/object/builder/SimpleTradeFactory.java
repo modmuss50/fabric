@@ -16,23 +16,22 @@
 
 package net.fabricmc.fabric.test.object.builder;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.trading.MerchantOffer;
 import org.jspecify.annotations.Nullable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
+class SimpleTradeFactory implements VillagerTrades.ItemListing {
+	private final MerchantOffer offer;
 
-class SimpleTradeFactory implements TradeOffers.Factory {
-	private final TradeOffer offer;
-
-	SimpleTradeFactory(TradeOffer offer) {
+	SimpleTradeFactory(MerchantOffer offer) {
 		this.offer = offer;
 	}
 
 	@Override
-	public @Nullable TradeOffer create(ServerWorld serverWorld, Entity entity, Random random) {
+	public @Nullable MerchantOffer getOffer(ServerLevel serverWorld, Entity entity, RandomSource random) {
 		// ALWAYS supply a copy of the offer.
 		return this.offer.copy();
 	}

@@ -16,9 +16,6 @@
 
 package net.fabricmc.fabric.test.transfer.ingame;
 
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Items;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -26,6 +23,8 @@ import net.fabricmc.fabric.api.transfer.v1.storage.TransferVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ExtractionOnlyStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluids;
 
 public class CreativeStorage<T extends TransferVariant<?>> implements ExtractionOnlyStorage<T>, SingleSlotStorage<T> {
 	public static final CreativeStorage<FluidVariant> WATER = new CreativeStorage<>(FluidVariant.of(Fluids.WATER));

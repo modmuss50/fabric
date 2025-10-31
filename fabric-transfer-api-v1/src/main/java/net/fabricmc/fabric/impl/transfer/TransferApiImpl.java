@@ -27,15 +27,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.ComponentType;
-
 import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentType;
 
 public class TransferApiImpl {
 	public static final Logger LOGGER = LoggerFactory.getLogger("fabric-transfer-api-v1");
@@ -113,8 +111,8 @@ public class TransferApiImpl {
 		};
 	}
 
-	public static ComponentChanges mergeChanges(ComponentChanges base, ComponentChanges applied) {
-		ComponentChanges.Builder builder = ComponentChanges.builder();
+	public static DataComponentPatch mergeChanges(DataComponentPatch base, DataComponentPatch applied) {
+		DataComponentPatch.Builder builder = DataComponentPatch.builder();
 
 		writeChangesTo(base, builder);
 		writeChangesTo(applied, builder);
@@ -123,10 +121,10 @@ public class TransferApiImpl {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void writeChangesTo(ComponentChanges changes, ComponentChanges.Builder builder) {
-		for (Map.Entry<ComponentType<?>, Optional<?>> entry : changes.entrySet()) {
+	private static void writeChangesTo(DataComponentPatch changes, DataComponentPatch.Builder builder) {
+		for (Map.Entry<DataComponentType<?>, Optional<?>> entry : changes.entrySet()) {
 			if (entry.getValue().isPresent()) {
-				builder.add((ComponentType<Object>) entry.getKey(), entry.getValue().get());
+				builder.set((DataComponentType<Object>) entry.getKey(), entry.getValue().get());
 			} else {
 				builder.remove(entry.getKey());
 			}

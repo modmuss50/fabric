@@ -20,12 +20,10 @@ import java.util.function.BiFunction;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.lookup.entity.EntityApiLookupImpl;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 
 /**
  * An object that allows retrieving APIs from entities.
@@ -93,7 +91,7 @@ public interface EntityApiLookup<A, C> {
 	 * @return the unique lookup with the passed lookupId.
 	 * @throws IllegalArgumentException If another {@code apiClass} or another {@code contextClass} was already registered with the same identifier.
 	 */
-	static <A, C> EntityApiLookup<A, C> get(Identifier lookupId, Class<A> apiClass, Class<C> contextClass) {
+	static <A, C> EntityApiLookup<A, C> get(ResourceLocation lookupId, Class<A> apiClass, Class<C> contextClass) {
 		return EntityApiLookupImpl.get(lookupId, apiClass, contextClass);
 	}
 
@@ -149,7 +147,7 @@ public interface EntityApiLookup<A, C> {
 	/**
 	 * Return the identifier of this lookup.
 	 */
-	Identifier getId();
+	ResourceLocation getId();
 
 	/**
 	 * Returns the API class of this lookup.

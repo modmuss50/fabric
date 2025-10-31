@@ -24,13 +24,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-
-import net.minecraft.client.render.model.UnbakedModel;
-import net.minecraft.client.render.model.json.JsonUnbakedModel;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-
 import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 
 public class UnbakedModelJsonDeserializer implements JsonDeserializer<UnbakedModel> {
 	private static final String TYPE_KEY = "fabric:type";
@@ -51,13 +49,13 @@ public class UnbakedModelJsonDeserializer implements JsonDeserializer<UnbakedMod
 				optional = false;
 			} else if (typeElement.isJsonObject()) {
 				JsonObject typeObject = typeElement.getAsJsonObject();
-				idStr = JsonHelper.getString(typeObject, TYPE_ID_KEY);
-				optional = JsonHelper.getBoolean(typeObject, TYPE_OPTIONAL_KEY, false);
+				idStr = GsonHelper.getAsString(typeObject, TYPE_ID_KEY);
+				optional = GsonHelper.getAsBoolean(typeObject, TYPE_OPTIONAL_KEY, false);
 			} else {
-				throw new JsonSyntaxException("Expected " + TYPE_KEY + " to be a string or object, was " + JsonHelper.getType(typeElement));
+				throw new JsonSyntaxException("Expected " + TYPE_KEY + " to be a string or object, was " + GsonHelper.getType(typeElement));
 			}
 
-			Identifier id = Identifier.of(idStr);
+			ResourceLocation id = ResourceLocation.parse(idStr);
 			UnbakedModelDeserializer deserializer = UnbakedModelDeserializer.get(id);
 
 			if (deserializer != null) {
@@ -67,6 +65,6 @@ public class UnbakedModelJsonDeserializer implements JsonDeserializer<UnbakedMod
 			}
 		}
 
-		return context.deserialize(jsonElement, JsonUnbakedModel.class);
+		return context.deserialize(jsonElement, BlockModel.class);
 	}
 }

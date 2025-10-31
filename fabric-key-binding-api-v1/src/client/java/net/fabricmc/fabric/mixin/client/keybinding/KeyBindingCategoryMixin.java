@@ -24,20 +24,18 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.client.keybinding.CategoryComparator;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.ResourceLocation;
 
-@Mixin(KeyBinding.Category.class)
+@Mixin(KeyMapping.Category.class)
 abstract class KeyBindingCategoryMixin {
 	@Shadow
 	@Final
-	static List<KeyBinding.Category> CATEGORIES;
+	static List<KeyMapping.Category> SORT_ORDER;
 
-	@Inject(method = "create(Lnet/minecraft/util/Identifier;)Lnet/minecraft/client/option/KeyBinding$Category;", at = @At("RETURN"))
-	private static void onReturnRegister(Identifier id, CallbackInfoReturnable<KeyBinding.Category> cir) {
-		CATEGORIES.sort(CategoryComparator.INSTANCE);
+	@Inject(method = "register(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/KeyMapping$Category;", at = @At("RETURN"))
+	private static void onReturnRegister(ResourceLocation id, CallbackInfoReturnable<KeyMapping.Category> cir) {
+		SORT_ORDER.sort(CategoryComparator.INSTANCE);
 	}
 }

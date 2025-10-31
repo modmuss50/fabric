@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.api.event;
 
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.util.Identifier;
 
 /**
  * Base class for Fabric's event implementations.
@@ -60,7 +59,7 @@ public abstract class Event<T> {
 	 * The identifier of the default phase.
 	 * Have a look at {@link EventFactory#createWithPhases} for an explanation of event phases.
 	 */
-	public static final Identifier DEFAULT_PHASE = Identifier.of("fabric", "default");
+	public static final ResourceLocation DEFAULT_PHASE = ResourceLocation.fromNamespaceAndPath("fabric", "default");
 
 	/**
 	 * Register a listener to the event for the specified phase.
@@ -69,7 +68,7 @@ public abstract class Event<T> {
 	 * @param phase Identifier of the phase this listener should be registered for. It will be created if it didn't exist yet.
 	 * @param listener The desired listener.
 	 */
-	public void register(Identifier phase, T listener) {
+	public void register(ResourceLocation phase, T listener) {
 		// This is done to keep compatibility with existing Event subclasses, but they should really not be subclassing Event.
 		register(listener);
 	}
@@ -85,7 +84,7 @@ public abstract class Event<T> {
 	 * @param firstPhase The identifier of the phase that should run before the other. It will be created if it didn't exist yet.
 	 * @param secondPhase The identifier of the phase that should run after the other. It will be created if it didn't exist yet.
 	 */
-	public void addPhaseOrdering(Identifier firstPhase, Identifier secondPhase) {
+	public void addPhaseOrdering(ResourceLocation firstPhase, ResourceLocation secondPhase) {
 		// This is not abstract to avoid breaking existing Event subclasses, but they should really not be subclassing Event.
 	}
 }

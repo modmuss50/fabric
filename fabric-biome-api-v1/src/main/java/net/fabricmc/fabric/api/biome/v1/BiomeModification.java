@@ -21,22 +21,20 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.biome.modification.BiomeModificationImpl;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Provides methods for modifying biomes. To create an instance, call
- * {@link BiomeModifications#create(Identifier)}.
+ * {@link BiomeModifications#create(ResourceLocation)}.
  *
  * @see BiomeModifications
  */
 public class BiomeModification {
-	private final Identifier id;
+	private final ResourceLocation id;
 
 	@ApiStatus.Internal
-	BiomeModification(Identifier id) {
+	BiomeModification(ResourceLocation id) {
 		this.id = id;
 	}
 

@@ -16,15 +16,14 @@
 
 package net.fabricmc.fabric.test.access.client;
 
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.test.access.SignBlockEntityTest;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 
 public class BlockEntityRendererTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		BlockEntityRendererFactories.register(SignBlockEntityTest.TEST_SIGN_BLOCK_ENTITY, SignBlockEntityRenderer::new);
+		BlockEntityRenderers.register(SignBlockEntityTest.TEST_SIGN_BLOCK_ENTITY, SignRenderer::new);
 	}
 }

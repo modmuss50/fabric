@@ -17,13 +17,12 @@
 package net.fabricmc.fabric.api.registry;
 
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.GameEventTags;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.GameEventTags;
-import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.event.Vibrations;
 
 /**
  * Provides a method for registering sculk sensor frequencies.
@@ -48,16 +47,16 @@ public final class SculkSensorFrequencyRegistry {
 	 * @param frequency The frequency to register.
 	 * @throws IllegalArgumentException if the given frequency is not within the allowed range.
 	 */
-	public static void register(RegistryKey<GameEvent> event, int frequency) {
+	public static void register(ResourceKey<GameEvent> event, int frequency) {
 		if (frequency <= 0 || frequency >= 16) {
-			throw new IllegalArgumentException("Attempted to register Sculk Sensor frequency for event "+ event.getValue() +" with frequency "+frequency+". Sculk Sensor frequencies must be between 1 and 15 inclusive.");
+			throw new IllegalArgumentException("Attempted to register Sculk Sensor frequency for event "+ event.location() +" with frequency "+frequency+". Sculk Sensor frequencies must be between 1 and 15 inclusive.");
 		}
 
-		final Reference2IntOpenHashMap<RegistryKey<GameEvent>> map = (Reference2IntOpenHashMap<RegistryKey<GameEvent>>) Vibrations.FREQUENCIES;
+		final Reference2IntOpenHashMap<ResourceKey<GameEvent>> map = (Reference2IntOpenHashMap<ResourceKey<GameEvent>>) VibrationSystem.VIBRATION_FREQUENCY_FOR_EVENT;
 		int replaced = map.put(event, frequency);
 
 		if (replaced != 0) {
-			LOGGER.debug("Replaced old frequency mapping for {} - was {}, now {}", event.getValue(), replaced, frequency);
+			LOGGER.debug("Replaced old frequency mapping for {} - was {}, now {}", event.location(), replaced, frequency);
 		}
 	}
 }

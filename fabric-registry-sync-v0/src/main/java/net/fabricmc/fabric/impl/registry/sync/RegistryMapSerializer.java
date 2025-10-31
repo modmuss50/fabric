@@ -18,48 +18,46 @@ package net.fabricmc.fabric.impl.registry.sync;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 
 public class RegistryMapSerializer {
 	public static final int VERSION = 1;
 
-	public static Map<Identifier, Object2IntMap<Identifier>> fromNbt(NbtCompound nbt) {
-		NbtCompound mainNbt = nbt.getCompound("registries").orElseThrow();
-		Map<Identifier, Object2IntMap<Identifier>> map = new LinkedHashMap<>();
+	public static Map<ResourceLocation, Object2IntMap<ResourceLocation>> fromNbt(CompoundTag nbt) {
+		CompoundTag mainNbt = nbt.getCompound("registries").orElseThrow();
+		Map<ResourceLocation, Object2IntMap<ResourceLocation>> map = new LinkedHashMap<>();
 
-		for (String registryId : mainNbt.getKeys()) {
-			Object2IntMap<Identifier> idMap = new Object2IntLinkedOpenHashMap<>();
-			NbtCompound idNbt = mainNbt.getCompound(registryId).orElseThrow();
+		for (String registryId : mainNbt.keySet()) {
+			Object2IntMap<ResourceLocation> idMap = new Object2IntLinkedOpenHashMap<>();
+			CompoundTag idNbt = mainNbt.getCompound(registryId).orElseThrow();
 
-			for (String id : idNbt.getKeys()) {
-				idMap.put(Identifier.of(id), idNbt.getInt(id, 0));
+			for (String id : idNbt.keySet()) {
+				idMap.put(ResourceLocation.parse(id), idNbt.getIntOr(id, 0));
 			}
 
-			map.put(Identifier.of(registryId), idMap);
+			map.put(ResourceLocation.parse(registryId), idMap);
 		}
 
 		return map;
 	}
 
-	public static NbtCompound toNbt(Map<Identifier, Object2IntMap<Identifier>> map) {
-		NbtCompound mainNbt = new NbtCompound();
+	public static CompoundTag toNbt(Map<ResourceLocation, Object2IntMap<ResourceLocation>> map) {
+		CompoundTag mainNbt = new CompoundTag();
 
 		map.forEach((registryId, idMap) -> {
-			NbtCompound registryNbt = new NbtCompound();
+			CompoundTag registryNbt = new CompoundTag();
 
-			for (Object2IntMap.Entry<Identifier> idPair : idMap.object2IntEntrySet()) {
+			for (Object2IntMap.Entry<ResourceLocation> idPair : idMap.object2IntEntrySet()) {
 				registryNbt.putInt(idPair.getKey().toString(), idPair.getIntValue());
 			}
 
 			mainNbt.put(registryId.toString(), registryNbt);
 		});
 
-		NbtCompound nbt = new NbtCompound();
+		CompoundTag nbt = new CompoundTag();
 		nbt.putInt("version", VERSION);
 		nbt.put("registries", mainNbt);
 		return nbt;

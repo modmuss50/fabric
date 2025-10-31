@@ -18,14 +18,12 @@ package net.fabricmc.fabric.test.resource.loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class BuiltinResourcePackTestMod implements ModInitializer {
 	public static final String MODID = "fabric-resource-loader-v0-testmod";
@@ -36,11 +34,11 @@ public class BuiltinResourcePackTestMod implements ModInitializer {
 	public void onInitialize() {
 		// Should always be present as it's **this** mod.
 		FabricLoader.getInstance().getModContainer(MODID)
-				.map(container -> ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(MODID, "test"),
-						container, Text.literal("Fabric Resource Loader Test Pack"), ResourcePackActivationType.DEFAULT_ENABLED))
+				.map(container -> ResourceManagerHelper.registerBuiltinResourcePack(ResourceLocation.fromNamespaceAndPath(MODID, "test"),
+						container, Component.literal("Fabric Resource Loader Test Pack"), ResourcePackActivationType.DEFAULT_ENABLED))
 				.filter(success -> !success).ifPresent(success -> LOGGER.warn("Could not register built-in resource pack with custom name."));
 		FabricLoader.getInstance().getModContainer(MODID)
-				.map(container -> ResourceManagerHelper.registerBuiltinResourcePack(Identifier.of(MODID, "test2"),
+				.map(container -> ResourceManagerHelper.registerBuiltinResourcePack(ResourceLocation.fromNamespaceAndPath(MODID, "test2"),
 						container, ResourcePackActivationType.NORMAL))
 				.filter(success -> !success).ifPresent(success -> LOGGER.warn("Could not register built-in resource pack."));
 	}

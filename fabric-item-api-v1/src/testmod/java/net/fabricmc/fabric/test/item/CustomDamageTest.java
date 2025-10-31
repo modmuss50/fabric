@@ -16,26 +16,6 @@
 
 package net.fabricmc.fabric.test.item;
 
-import net.minecraft.component.ComponentType;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.potion.Potions;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.EnchantmentTags;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -43,10 +23,25 @@ import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 public class CustomDamageTest implements ModInitializer {
-	public static final ComponentType<Integer> WEIRD = Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of("fabric-item-api-v1-testmod", "weird"),
-																			ComponentType.<Integer>builder().codec(Codecs.NON_NEGATIVE_INT).packetCodec(PacketCodecs.VAR_INT).build());
+	public static final DataComponentType<Integer> WEIRD = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, ResourceLocation.fromNamespaceAndPath("fabric-item-api-v1-testmod", "weird"),
+																			DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
 	public static final CustomDamageHandler WEIRD_DAMAGE_HANDLER = (stack, amount, entity, slot, breakCallback) -> {
 		// If sneaking, apply all damage to vanilla. Otherwise, increment a tag on the stack by one and don't apply any damage
 		if (entity.isSneaking()) {
@@ -57,12 +52,12 @@ public class CustomDamageTest implements ModInitializer {
 		}
 	};
 	// Do this static init *after* the damage handler otherwise it's still null while inside the constructor
-	public static final RegistryKey<Item> WEIRD_PICK_KEY = RegistryKey.of(RegistryKeys.ITEM, Identifier.of("fabric-item-api-v1-testmod", "weird_pickaxe"));
+	public static final ResourceKey<Item> WEIRD_PICK_KEY = ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("fabric-item-api-v1-testmod", "weird_pickaxe"));
 	public static final Item WEIRD_PICK = new WeirdPick(WEIRD_PICK_KEY);
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registries.ITEM, WEIRD_PICK_KEY, WEIRD_PICK);
+		Registry.register(BuiltInRegistries.ITEM, WEIRD_PICK_KEY, WEIRD_PICK);
 		FuelRegistryEvents.BUILD.register((builder, context) -> builder.add(WEIRD_PICK, context.baseSmeltTime()));
 		FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> builder.registerPotionRecipe(Potions.WATER, WEIRD_PICK, Potions.AWKWARD));
 		EnchantmentEvents.ALLOW_ENCHANTING.register(((enchantment, target, enchantingContext) -> {
@@ -75,22 +70,22 @@ public class CustomDamageTest implements ModInitializer {
 	}
 
 	public static class WeirdPick extends Item {
-		protected WeirdPick(RegistryKey<Item> registryKey) {
-			super(new Item.Settings().pickaxe(ToolMaterial.GOLD, 3f, 5f).customDamage(WEIRD_DAMAGE_HANDLER).registryKey(registryKey));
+		protected WeirdPick(ResourceKey<Item> registryKey) {
+			super(new Item.Properties().pickaxe(ToolMaterial.GOLD, 3f, 5f).customDamage(WEIRD_DAMAGE_HANDLER).registryKey(registryKey));
 		}
 
 		@Override
-		public Text getName(ItemStack stack) {
+		public Component getName(ItemStack stack) {
 			int v = stack.getOrDefault(WEIRD, 0);
 			return super.getName(stack).copy().append(" (Weird Value: " + v + ")");
 		}
 
 		@Override
 		public ItemStack getRecipeRemainder(ItemStack stack) {
-			if (stack.getDamage() < stack.getMaxDamage() - 1) {
+			if (stack.getDamageValue() < stack.getMaxDamage() - 1) {
 				ItemStack moreDamaged = stack.copy();
 				moreDamaged.setCount(1);
-				moreDamaged.setDamage(stack.getDamage() + 1);
+				moreDamaged.setDamageValue(stack.getDamageValue() + 1);
 				return moreDamaged;
 			}
 
@@ -98,9 +93,9 @@ public class CustomDamageTest implements ModInitializer {
 		}
 
 		@Override
-		public boolean canBeEnchantedWith(ItemStack stack, RegistryEntry<Enchantment> enchantment, EnchantingContext context) {
-			return context == EnchantingContext.ACCEPTABLE && enchantment.matchesKey(Enchantments.FIRE_ASPECT)
-				|| !enchantment.matchesKey(Enchantments.FORTUNE) && super.canBeEnchantedWith(stack, enchantment, context);
+		public boolean canBeEnchantedWith(ItemStack stack, Holder<Enchantment> enchantment, EnchantingContext context) {
+			return context == EnchantingContext.ACCEPTABLE && enchantment.is(Enchantments.FIRE_ASPECT)
+				|| !enchantment.is(Enchantments.FORTUNE) && super.canBeEnchantedWith(stack, enchantment, context);
 		}
 	}
 }

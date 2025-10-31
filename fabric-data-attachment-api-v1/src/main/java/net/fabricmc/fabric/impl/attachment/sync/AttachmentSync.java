@@ -21,13 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.server.network.ServerPlayerConfigurationTask;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -43,6 +36,11 @@ import net.fabricmc.fabric.impl.attachment.sync.c2s.AcceptedAttachmentsPayloadC2
 import net.fabricmc.fabric.impl.attachment.sync.s2c.AttachmentSyncPayloadS2C;
 import net.fabricmc.fabric.impl.attachment.sync.s2c.RequestAcceptedAttachmentsPayloadS2C;
 import net.fabricmc.fabric.mixin.networking.accessor.ServerCommonNetworkHandlerAccessor;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ConfigurationTask;
 
 public class AttachmentSync implements ModInitializer {
 	public static final int MAX_IDENTIFIER_SIZE = 256;
@@ -51,22 +49,22 @@ public class AttachmentSync implements ModInitializer {
 		return new AcceptedAttachmentsPayloadC2S(AttachmentRegistryImpl.getSyncableAttachments());
 	}
 
-	public static void trySync(AttachmentSyncPayloadS2C payload, ServerPlayerEntity player) {
+	public static void trySync(AttachmentSyncPayloadS2C payload, ServerPlayer player) {
 		if (!payload.attachments().isEmpty()) {
 			ServerPlayNetworking.send(player, payload);
 		}
 	}
 
-	private static Set<Identifier> decodeResponsePayload(AcceptedAttachmentsPayloadC2S payload) {
-		Set<Identifier> atts = payload.acceptedAttachments();
-		Set<Identifier> syncable = AttachmentRegistryImpl.getSyncableAttachments();
+	private static Set<ResourceLocation> decodeResponsePayload(AcceptedAttachmentsPayloadC2S payload) {
+		Set<ResourceLocation> atts = payload.acceptedAttachments();
+		Set<ResourceLocation> syncable = AttachmentRegistryImpl.getSyncableAttachments();
 		atts.retainAll(syncable);
 
 		if (atts.size() < syncable.size()) {
 			// Client doesn't support all
 			AttachmentEntrypoint.LOGGER.warn(
 					"Client does not support the syncable attachments {}",
-					syncable.stream().filter(id -> !atts.contains(id)).map(Identifier::toString).collect(Collectors.joining(", "))
+					syncable.stream().filter(id -> !atts.contains(id)).map(ResourceLocation::toString).collect(Collectors.joining(", "))
 			);
 		}
 
@@ -92,8 +90,8 @@ public class AttachmentSync implements ModInitializer {
 		});
 
 		ServerConfigurationNetworking.registerGlobalReceiver(AcceptedAttachmentsPayloadC2S.ID, (payload, context) -> {
-			Set<Identifier> supportedAttachments = decodeResponsePayload(payload);
-			ClientConnection connection = ((ServerCommonNetworkHandlerAccessor) context.networkHandler()).getConnection();
+			Set<ResourceLocation> supportedAttachments = decodeResponsePayload(payload);
+			Connection connection = ((ServerCommonNetworkHandlerAccessor) context.networkHandler()).getConnection();
 			((SupportedAttachmentsClientConnection) connection).fabric_setSupportedAttachments(supportedAttachments);
 
 			context.networkHandler().completeTask(AttachmentSyncTask.KEY);
@@ -105,7 +103,7 @@ public class AttachmentSync implements ModInitializer {
 		ServerPlayerEvents.JOIN.register((player) -> {
 			List<AttachmentChange> changes = new ArrayList<>();
 			// sync world attachments
-			((AttachmentTargetImpl) player.getEntityWorld()).fabric_computeInitialSyncChanges(player, changes::add);
+			((AttachmentTargetImpl) player.level()).fabric_computeInitialSyncChanges(player, changes::add);
 			// sync player's own persistent attachments that couldn't be synced earlier
 			((AttachmentTargetImpl) player).fabric_computeInitialSyncChanges(player, changes::add);
 
@@ -135,16 +133,16 @@ public class AttachmentSync implements ModInitializer {
 		});
 	}
 
-	private record AttachmentSyncTask() implements ServerPlayerConfigurationTask {
-		public static final Key KEY = new Key(RequestAcceptedAttachmentsPayloadS2C.PACKET_ID.toString());
+	private record AttachmentSyncTask() implements ConfigurationTask {
+		public static final Type KEY = new Type(RequestAcceptedAttachmentsPayloadS2C.PACKET_ID.toString());
 
 		@Override
-		public void sendPacket(Consumer<Packet<?>> sender) {
+		public void start(Consumer<Packet<?>> sender) {
 			sender.accept(ServerConfigurationNetworking.createS2CPacket(RequestAcceptedAttachmentsPayloadS2C.INSTANCE));
 		}
 
 		@Override
-		public Key getKey() {
+		public Type type() {
 			return KEY;
 		}
 	}

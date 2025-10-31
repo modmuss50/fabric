@@ -16,19 +16,18 @@
 
 package net.fabricmc.fabric.mixin.datagen.recipe;
 
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.crafting.Recipe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import net.minecraft.data.recipe.ComplexRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.registry.RegistryKey;
-
-@Mixin(ComplexRecipeJsonBuilder.class)
+@Mixin(SpecialRecipeBuilder.class)
 abstract class ComplexRecipeJsonBuilderMixin {
-	@ModifyVariable(method = "offerTo(Lnet/minecraft/data/recipe/RecipeExporter;Lnet/minecraft/registry/RegistryKey;)V", at = @At("HEAD"), argsOnly = true)
-	private RegistryKey<Recipe<?>> modifyRecipeKey(RegistryKey<Recipe<?>> recipeKey, RecipeExporter exporter) {
-		return RegistryKey.of(recipeKey.getRegistryRef(), exporter.getRecipeIdentifier(recipeKey.getValue()));
+	@ModifyVariable(method = "save(Lnet/minecraft/data/recipes/RecipeOutput;Lnet/minecraft/resources/ResourceKey;)V", at = @At("HEAD"), argsOnly = true)
+	private ResourceKey<Recipe<?>> modifyRecipeKey(ResourceKey<Recipe<?>> recipeKey, RecipeOutput exporter) {
+		return ResourceKey.create(recipeKey.registryKey(), exporter.getRecipeIdentifier(recipeKey.location()));
 	}
 }

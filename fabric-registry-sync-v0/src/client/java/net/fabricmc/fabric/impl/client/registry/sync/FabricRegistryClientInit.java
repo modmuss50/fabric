@@ -20,15 +20,13 @@ import java.util.concurrent.CompletionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.text.Text;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
 import net.fabricmc.fabric.impl.registry.sync.RemapException;
 import net.fabricmc.fabric.impl.registry.sync.SyncCompletePayload;
 import net.fabricmc.fabric.impl.registry.sync.packet.RegistryPacketHandler;
+import net.minecraft.network.chat.Component;
 
 public class FabricRegistryClientInit implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FabricRegistryClientInit.class);
@@ -55,9 +53,9 @@ public class FabricRegistryClientInit implements ClientModInitializer {
 		});
 	}
 
-	private Text getText(Throwable e) {
+	private Component getText(Throwable e) {
 		if (e instanceof RemapException remapException) {
-			final Text text = remapException.getText();
+			final Component text = remapException.getText();
 
 			if (text != null) {
 				return text;
@@ -66,6 +64,6 @@ public class FabricRegistryClientInit implements ClientModInitializer {
 			return getText(completionException.getCause());
 		}
 
-		return Text.literal("Registry remapping failed: " + e.getMessage());
+		return Component.literal("Registry remapping failed: " + e.getMessage());
 	}
 }

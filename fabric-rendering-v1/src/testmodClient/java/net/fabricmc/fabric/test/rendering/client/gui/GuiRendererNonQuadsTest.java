@@ -17,26 +17,23 @@
 package net.fabricmc.fabric.test.rendering.client.gui;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.ScreenRect;
-import net.minecraft.client.gui.render.state.SimpleGuiElementRenderState;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.texture.TextureSetup;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.gui.render.state.GuiElementRenderState;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.ResourceLocation;
 
 public class GuiRendererNonQuadsTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		HudElementRegistry.addFirst(Identifier.of("test", "gui_renderer_non_quads_test"), (context, renderTickCounter) -> {
+		HudElementRegistry.addFirst(ResourceLocation.fromNamespaceAndPath("test", "gui_renderer_non_quads_test"), (context, renderTickCounter) -> {
 			context.getMatrices().pushMatrix();
 			context.getMatrices().rotateAbout(
 					(float) Util.getMeasuringTimeMs() / 3000,
@@ -56,34 +53,34 @@ public class GuiRendererNonQuadsTest implements ClientModInitializer {
 		});
 	}
 
-	record CustomTestState(Matrix3x2f matrix, ScreenRect bounds, ScreenRect scissorArea, int x0, int y0, int x1, int y1, int x2, int y2) implements SimpleGuiElementRenderState {
-		CustomTestState(Matrix3x2f matrix, ScreenRect scissorArea, int x0, int y0, int x1, int y1, int x2, int y2) {
+	record CustomTestState(Matrix3x2f matrix, ScreenRectangle bounds, ScreenRectangle scissorArea, int x0, int y0, int x1, int y1, int x2, int y2) implements GuiElementRenderState {
+		CustomTestState(Matrix3x2f matrix, ScreenRectangle scissorArea, int x0, int y0, int x1, int y1, int x2, int y2) {
 			this(matrix, createTriangleBounds(x0, y0, x1, y1, x2, y2, matrix, scissorArea), scissorArea, x0, y0, x1, y1, x2, y2);
 		}
 
 		private static final RenderPipeline PIPELINE = RenderPipeline.builder(RenderPipelines.GUI_SNIPPET)
-				.withLocation(Identifier.of("test", "gui_renderer_non_quads_test"))
+				.withLocation(ResourceLocation.fromNamespaceAndPath("test", "gui_renderer_non_quads_test"))
 				.withUsePipelineDrawModeForGui(true)
-				.withVertexFormat(VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.TRIANGLES)
+				.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.DrawMode.TRIANGLES)
 				.build();
 
 		@Override
-		public void setupVertices(VertexConsumer vertices) {
-			vertices.vertex(matrix, x0, y0).color(0x99FFFF00)
-					.vertex(matrix, x1, y1).color(0x99FF00FF)
-					.vertex(matrix, x2, y2).color(0x9900FFFF);
+		public void buildVertices(VertexConsumer vertices) {
+			vertices.addVertexWith2DPose(matrix, x0, y0).setColor(0x99FFFF00)
+					.addVertexWith2DPose(matrix, x1, y1).setColor(0x99FF00FF)
+					.addVertexWith2DPose(matrix, x2, y2).setColor(0x9900FFFF);
 		}
 
 		@Override
 		public TextureSetup textureSetup() {
-			return TextureSetup.empty();
+			return TextureSetup.noTexture();
 		}
 
 		public RenderPipeline pipeline() {
 			return PIPELINE;
 		}
 
-		private static ScreenRect createTriangleBounds(int x0, int y0, int x1, int y1, int x2, int y2, Matrix3x2f matrix, @Nullable ScreenRect scissorArea) {
+		private static ScreenRectangle createTriangleBounds(int x0, int y0, int x1, int y1, int x2, int y2, Matrix3x2f matrix, @Nullable ScreenRectangle scissorArea) {
 			int minX = Math.min(x0, Math.min(x1, x2));
 			int minY = Math.min(y0, Math.min(y1, y2));
 			int maxX = Math.max(x0, Math.max(x1, x2));
@@ -92,8 +89,8 @@ public class GuiRendererNonQuadsTest implements ClientModInitializer {
 		}
 
 		@Nullable
-		private static ScreenRect createBounds(int x0, int y0, int x1, int y1, Matrix3x2f matrix, @Nullable ScreenRect scissorArea) {
-			ScreenRect screenRect = new ScreenRect(x0, y0, x1 - x0, y1 - y0).transformEachVertex(matrix);
+		private static ScreenRectangle createBounds(int x0, int y0, int x1, int y1, Matrix3x2f matrix, @Nullable ScreenRectangle scissorArea) {
+			ScreenRectangle screenRect = new ScreenRectangle(x0, y0, x1 - x0, y1 - y0).transformMaxBounds(matrix);
 			return scissorArea != null
 				? scissorArea.intersection(screenRect)
 				: screenRect;

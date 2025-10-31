@@ -20,22 +20,17 @@ import java.util.concurrent.Executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.random.Random;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.message.v1.ServerMessageDecoratorEvent;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.minecraft.Util;
 
 public class ChatTest implements ModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChatTest.class);
 
 	@Override
 	public void onInitialize() {
-		Executor ioWorkerExecutor = Util.getIoWorkerExecutor();
+		Executor ioWorkerExecutor = Util.ioPool();
 
 		// Basic content phase testing
 		ServerMessageDecoratorEvent.EVENT.register(ServerMessageDecoratorEvent.CONTENT_PHASE, (sender, message) -> {

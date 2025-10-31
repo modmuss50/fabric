@@ -24,26 +24,24 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.registry.sync.RemapException;
 import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
 import net.fabricmc.fabric.impl.registry.sync.trackers.vanilla.BlockInitTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public class MinecraftClientMixin {
 	@Shadow
 	@Final
 	private static Logger LOGGER;
 
 	// Unmap the registry before loading a new SP/MP setup.
-	@Inject(at = @At("RETURN"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V")
+	@Inject(at = @At("RETURN"), method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V")
 	public void disconnectAfter(Screen disconnectionScreen, boolean bl, CallbackInfo ci) {
 		try {
 			unmap();
@@ -56,15 +54,15 @@ public class MinecraftClientMixin {
 	private void afterModInit(CallbackInfo ci) {
 		// Freeze the registries on the client
 		LOGGER.debug("Freezing registries");
-		Registries.bootstrap();
+		BuiltInRegistries.bootStrap();
 		BlockInitTracker.postFreeze();
-		ItemGroups.collect();
+		CreativeModeTabs.validate();
 	}
 
 	@Unique
 	private static void unmap() throws RemapException {
-		for (Identifier registryId : Registries.REGISTRIES.getIds()) {
-			Registry<?> registry = Registries.REGISTRIES.get(registryId);
+		for (ResourceLocation registryId : BuiltInRegistries.REGISTRY.keySet()) {
+			Registry<?> registry = BuiltInRegistries.REGISTRY.getValue(registryId);
 
 			if (registry instanceof RemappableRegistry) {
 				((RemappableRegistry) registry).unmap();

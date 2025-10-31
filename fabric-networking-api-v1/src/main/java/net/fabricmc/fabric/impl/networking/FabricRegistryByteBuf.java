@@ -17,14 +17,12 @@
 package net.fabricmc.fabric.impl.networking;
 
 import java.util.Set;
-
+import net.minecraft.resources.ResourceLocation;
 import org.jspecify.annotations.Nullable;
 
-import net.minecraft.util.Identifier;
-
 public interface FabricRegistryByteBuf {
-	void fabric_setSendableConfigurationChannels(Set<Identifier> globalChannels);
+	void fabric_setSendableConfigurationChannels(Set<ResourceLocation> globalChannels);
 
 	@Nullable
-	Set<Identifier> fabric_getSendableConfigurationChannels();
+	Set<ResourceLocation> fabric_getSendableConfigurationChannels();
 }

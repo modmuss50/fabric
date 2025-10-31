@@ -17,15 +17,13 @@
 package net.fabricmc.fabric.api.client.render.fluid.v1;
 
 import java.util.Objects;
-
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockRenderView;
 
 /**
  * A simple fluid render handler that uses and loads sprites given by their
@@ -42,33 +40,33 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	/**
 	 * The vanilla still water texture identifier.
 	 */
-	public static final Identifier WATER_STILL = Identifier.ofVanilla("block/water_still");
+	public static final ResourceLocation WATER_STILL = ResourceLocation.withDefaultNamespace("block/water_still");
 
 	/**
 	 * The vanilla flowing water texture identifier.
 	 */
-	public static final Identifier WATER_FLOWING = Identifier.ofVanilla("block/water_flow");
+	public static final ResourceLocation WATER_FLOWING = ResourceLocation.withDefaultNamespace("block/water_flow");
 
 	/**
 	 * The vanilla water overlay texture identifier.
 	 */
-	public static final Identifier WATER_OVERLAY = Identifier.ofVanilla("block/water_overlay");
+	public static final ResourceLocation WATER_OVERLAY = ResourceLocation.withDefaultNamespace("block/water_overlay");
 
 	/**
 	 * The vanilla still lava texture identifier.
 	 */
-	public static final Identifier LAVA_STILL = Identifier.ofVanilla("block/lava_still");
+	public static final ResourceLocation LAVA_STILL = ResourceLocation.withDefaultNamespace("block/lava_still");
 
 	/**
 	 * The vanilla flowing lava texture identifier.
 	 */
-	public static final Identifier LAVA_FLOWING = Identifier.ofVanilla("block/lava_flow");
+	public static final ResourceLocation LAVA_FLOWING = ResourceLocation.withDefaultNamespace("block/lava_flow");
 
-	protected final Identifier stillTexture;
-	protected final Identifier flowingTexture;
-	protected final Identifier overlayTexture;
+	protected final ResourceLocation stillTexture;
+	protected final ResourceLocation flowingTexture;
+	protected final ResourceLocation overlayTexture;
 
-	protected final Sprite[] sprites;
+	protected final TextureAtlasSprite[] sprites;
 
 	protected final int tint;
 
@@ -83,11 +81,11 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * transparent blocks}.
 	 * @param tint The fluid color RGB. Alpha is ignored.
 	 */
-	public SimpleFluidRenderHandler(Identifier stillTexture, Identifier flowingTexture, @Nullable Identifier overlayTexture, int tint) {
+	public SimpleFluidRenderHandler(ResourceLocation stillTexture, ResourceLocation flowingTexture, @Nullable ResourceLocation overlayTexture, int tint) {
 		this.stillTexture = Objects.requireNonNull(stillTexture, "stillTexture");
 		this.flowingTexture = Objects.requireNonNull(flowingTexture, "flowingTexture");
 		this.overlayTexture = overlayTexture;
-		this.sprites = new Sprite[overlayTexture == null ? 2 : 3];
+		this.sprites = new TextureAtlasSprite[overlayTexture == null ? 2 : 3];
 		this.tint = tint;
 	}
 
@@ -100,7 +98,7 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * {@linkplain FluidRenderHandlerRegistry#setBlockTransparency registered
 	 * transparent blocks}.
 	 */
-	public SimpleFluidRenderHandler(Identifier stillTexture, Identifier flowingTexture, Identifier overlayTexture) {
+	public SimpleFluidRenderHandler(ResourceLocation stillTexture, ResourceLocation flowingTexture, ResourceLocation overlayTexture) {
 		this(stillTexture, flowingTexture, overlayTexture, -1);
 	}
 
@@ -112,7 +110,7 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * @param flowingTexture The texture for flowing/falling fluid.
 	 * @param tint The fluid color RGB. Alpha is ignored.
 	 */
-	public SimpleFluidRenderHandler(Identifier stillTexture, Identifier flowingTexture, int tint) {
+	public SimpleFluidRenderHandler(ResourceLocation stillTexture, ResourceLocation flowingTexture, int tint) {
 		this(stillTexture, flowingTexture, null, tint);
 	}
 
@@ -122,7 +120,7 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * @param stillTexture The texture for still fluid.
 	 * @param flowingTexture The texture for flowing/falling fluid.
 	 */
-	public SimpleFluidRenderHandler(Identifier stillTexture, Identifier flowingTexture) {
+	public SimpleFluidRenderHandler(ResourceLocation stillTexture, ResourceLocation flowingTexture) {
 		this(stillTexture, flowingTexture, null, -1);
 	}
 
@@ -143,7 +141,7 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Sprite[] getFluidSprites(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+	public TextureAtlasSprite[] getFluidSprites(@Nullable BlockAndTintGetter view, @Nullable BlockPos pos, FluidState state) {
 		return sprites;
 	}
 
@@ -151,7 +149,7 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void reloadTextures(SpriteAtlasTexture textureAtlas) {
+	public void reloadTextures(TextureAtlas textureAtlas) {
 		sprites[0] = textureAtlas.getSprite(stillTexture);
 		sprites[1] = textureAtlas.getSprite(flowingTexture);
 
@@ -164,7 +162,7 @@ public class SimpleFluidRenderHandler implements FluidRenderHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getFluidColor(@Nullable BlockRenderView view, @Nullable BlockPos pos, FluidState state) {
+	public int getFluidColor(@Nullable BlockAndTintGetter view, @Nullable BlockPos pos, FluidState state) {
 		return tint;
 	}
 }

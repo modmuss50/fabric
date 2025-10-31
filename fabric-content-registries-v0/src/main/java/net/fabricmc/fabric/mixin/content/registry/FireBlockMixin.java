@@ -23,15 +23,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FireBlock;
-import net.minecraft.state.property.Properties;
-
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.impl.content.registry.FireBlockHooks;
 import net.fabricmc.fabric.impl.content.registry.FlammableBlockRegistryImpl;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 @Mixin(FireBlock.class)
 public class FireBlockMixin implements FireBlockHooks {
@@ -39,12 +37,12 @@ public class FireBlockMixin implements FireBlockHooks {
 	private FlammableBlockRegistryImpl registry;
 
 	@Shadow
-	private int getSpreadChance(BlockState block_1) {
+	private int getBurnOdds(BlockState block_1) {
 		return 0;
 	}
 
 	@Shadow
-	private int getBurnChance(BlockState block_1) {
+	private int getIgniteOdds(BlockState block_1) {
 		return 0;
 	}
 
@@ -53,13 +51,13 @@ public class FireBlockMixin implements FireBlockHooks {
 		registry = FlammableBlockRegistryImpl.getInstance((Block) (Object) this);
 	}
 
-	@Inject(at = @At("HEAD"), method = "getBurnChance", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getIgniteOdds", cancellable = true)
 	private void getFabricBurnChance(BlockState block, CallbackInfoReturnable info) {
 		FlammableBlockRegistry.Entry entry = registry.getFabric(block.getBlock());
 
 		if (entry != null) {
 			// TODO: use a (BlockState -> int) with this as the default impl
-			if (block.contains(Properties.WATERLOGGED) && block.get(Properties.WATERLOGGED)) {
+			if (block.hasProperty(BlockStateProperties.WATERLOGGED) && block.getValue(BlockStateProperties.WATERLOGGED)) {
 				info.setReturnValue(0);
 			} else {
 				info.setReturnValue(entry.getBurnChance());
@@ -67,13 +65,13 @@ public class FireBlockMixin implements FireBlockHooks {
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "getSpreadChance", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getBurnOdds", cancellable = true)
 	private void getFabricSpreadChance(BlockState block, CallbackInfoReturnable info) {
 		FlammableBlockRegistry.Entry entry = registry.getFabric(block.getBlock());
 
 		if (entry != null) {
 			// TODO: use a (BlockState -> int) with this as the default impl
-			if (block.contains(Properties.WATERLOGGED) && block.get(Properties.WATERLOGGED)) {
+			if (block.hasProperty(BlockStateProperties.WATERLOGGED) && block.getValue(BlockStateProperties.WATERLOGGED)) {
 				info.setReturnValue(0);
 			} else {
 				info.setReturnValue(entry.getSpreadChance());
@@ -83,6 +81,6 @@ public class FireBlockMixin implements FireBlockHooks {
 
 	@Override
 	public FlammableBlockRegistry.Entry fabric_getVanillaEntry(BlockState block) {
-		return new FlammableBlockRegistry.Entry(getBurnChance(block), getSpreadChance(block));
+		return new FlammableBlockRegistry.Entry(getIgniteOdds(block), getBurnOdds(block));
 	}
 }

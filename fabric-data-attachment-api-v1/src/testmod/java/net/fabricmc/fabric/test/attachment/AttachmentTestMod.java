@@ -19,22 +19,6 @@ package net.fabricmc.fabric.test.attachment;
 import com.mojang.serialization.Codec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
@@ -43,54 +27,62 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class AttachmentTestMod implements ModInitializer {
 	public static final String MOD_ID = "fabric-data-attachment-api-v1-testmod";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final AttachmentType<String> PERSISTENT = AttachmentRegistry.createPersistent(
-			Identifier.of(MOD_ID, "persistent"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "persistent"),
 			Codec.STRING
 	);
 	public static final AttachmentType<String> FEATURE_ATTACHMENT = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "feature")
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "feature")
 	);
 	public static final AttachmentType<Boolean> SYNCED_WITH_ALL = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "synced_all"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "synced_all"),
 			builder -> builder
 					.initializer(() -> false)
 					.persistent(Codec.BOOL)
 					.syncWith(PacketCodecs.BOOLEAN, AttachmentSyncPredicate.all())
 	);
 	public static final AttachmentType<Boolean> SYNCED_WITH_TARGET = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "synced_target"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "synced_target"),
 			builder -> builder
 					.initializer(() -> false)
 					.persistent(Codec.BOOL)
 					.syncWith(PacketCodecs.BOOLEAN, AttachmentSyncPredicate.targetOnly())
 	);
 	public static final AttachmentType<Boolean> SYNCED_EXCEPT_TARGET = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "synced_except_target"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "synced_except_target"),
 			builder -> builder
 					.initializer(() -> false)
 					.persistent(Codec.BOOL)
 					.syncWith(PacketCodecs.BOOLEAN, AttachmentSyncPredicate.allButTarget())
 	);
 	public static final AttachmentType<Boolean> SYNCED_CREATIVE_ONLY = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "synced_creative"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "synced_creative"),
 			builder -> builder
 					.initializer(() -> false)
 					.persistent(Codec.BOOL)
 					.syncWith(PacketCodecs.BOOLEAN, (target, player) -> player.isCreative())
 	);
 	public static final AttachmentType<ItemStack> SYNCED_ITEM = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "synced_item"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "synced_item"),
 			builder -> builder
 					.initializer(() -> ItemStack.EMPTY)
 					.persistent(ItemStack.CODEC)
 					.syncWith(ItemStack.OPTIONAL_PACKET_CODEC, AttachmentSyncPredicate.all())
 	);
 	public static final AttachmentType<Integer> SYNCED_RENDER_DISTANCE = AttachmentRegistry.create(
-			Identifier.of(MOD_ID, "synced_render_distance"),
+			ResourceLocation.fromNamespaceAndPath(MOD_ID, "synced_render_distance"),
 			builder -> builder
 					.persistent(Codecs.NON_NEGATIVE_INT)
 					.syncWith(PacketCodecs.INTEGER, AttachmentSyncPredicate.targetOnly())
@@ -98,12 +90,12 @@ public class AttachmentTestMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registries.FEATURE, Identifier.of(MOD_ID, "set_attachment"), new SetAttachmentFeature(DefaultFeatureConfig.CODEC));
+		Registry.register(BuiltInRegistries.FEATURE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "set_attachment"), new SetAttachmentFeature(NoneFeatureConfiguration.CODEC));
 
 		BiomeModifications.addFeature(
 				BiomeSelectors.foundInOverworld(),
-				GenerationStep.Feature.VEGETAL_DECORATION,
-				RegistryKey.of(RegistryKeys.PLACED_FEATURE, Identifier.of(MOD_ID, "set_attachment"))
+				GenerationStep.Decoration.VEGETAL_DECORATION,
+				ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(MOD_ID, "set_attachment"))
 		);
 
 		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {

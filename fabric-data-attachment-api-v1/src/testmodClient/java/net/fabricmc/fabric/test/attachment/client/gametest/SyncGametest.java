@@ -22,22 +22,9 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.item.Items;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.WorldChunk;
-
+import net.minecraft.server.level.ServerPlayer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
@@ -49,8 +36,8 @@ import net.fabricmc.fabric.test.attachment.AttachmentTestMod;
 public class SyncGametest implements FabricClientGameTest {
 	public static final Logger LOGGER = LoggerFactory.getLogger("data-attachment-persistence-gametest");
 
-	private static ServerPlayerEntity getSinglePlayer(MinecraftServer server) {
-		return server.getPlayerManager().getPlayerList().getFirst();
+	private static ServerPlayer getSinglePlayer(MinecraftServer server) {
+		return server.getPlayerList().getPlayers().getFirst();
 	}
 
 	private static void setSyncedWithAll(AttachmentTarget target) {

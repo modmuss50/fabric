@@ -17,10 +17,8 @@
 package net.fabricmc.fabric.mixin.client.sound;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.client.sound.SoundInstance;
-
 import net.fabricmc.fabric.api.client.sound.v1.FabricSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 
 @Mixin(SoundInstance.class)
 public interface SoundInstanceMixin extends FabricSoundInstance {

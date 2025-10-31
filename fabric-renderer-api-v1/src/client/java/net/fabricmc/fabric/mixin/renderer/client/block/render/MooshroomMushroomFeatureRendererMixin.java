@@ -17,24 +17,23 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.render;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.EmptyBlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.feature.MooshroomMushroomFeatureRenderer;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EmptyBlockRenderView;
-
-@Mixin(MooshroomMushroomFeatureRenderer.class)
+@Mixin(MushroomCowMushroomLayer.class)
 abstract class MooshroomMushroomFeatureRendererMixin {
 	// Fix tinted quads being rendered completely black and provide the BlockState as context.
-	@Redirect(method = "renderMushroom", at = @At(value = "INVOKE", target = "net/minecraft/client/render/command/OrderedRenderCommandQueue.submitBlockStateModel(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/render/model/BlockStateModel;FFFIII)V"))
-	private void renderProxy(OrderedRenderCommandQueue commandQueue, MatrixStack matrices, RenderLayer renderLayer, BlockStateModel model, float r, float g, float b, int light, int overlay, int outlineColor, @Local BlockState blockState) {
-		commandQueue.submitBlockStateModel(matrices, blockLayer -> renderLayer, model, 1, 1, 1, light, overlay, outlineColor, EmptyBlockRenderView.INSTANCE, BlockPos.ORIGIN, blockState);
+	@Redirect(method = "submitMushroomBlock", at = @At(value = "INVOKE", target = "net/minecraft/client/render/command/OrderedRenderCommandQueue.submitBlockStateModel(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/render/model/BlockStateModel;FFFIII)V"))
+	private void renderProxy(SubmitNodeCollector commandQueue, PoseStack matrices, RenderType renderLayer, BlockStateModel model, float r, float g, float b, int light, int overlay, int outlineColor, @Local BlockState blockState) {
+		commandQueue.submitBlockStateModel(matrices, blockLayer -> renderLayer, model, 1, 1, 1, light, overlay, outlineColor, EmptyBlockAndTintGetter.INSTANCE, BlockPos.ZERO, blockState);
 	}
 }

@@ -19,7 +19,8 @@ package net.fabricmc.fabric.test.command.argument;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
-
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -28,13 +29,10 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.Text;
-
 public class SmileyArgumentType implements ArgumentType<SmileyArgument> {
 	private static final Collection<String> SMILEY_VALUES = Arrays.stream(SmileyArgument.values()).map(s -> s.smiley).toList();
 	public static final DynamicCommandExceptionType INVALID_COLOR_EXCEPTION = new DynamicCommandExceptionType(smiley -> {
-		return Text.literal("Invalid smiley: " + smiley); // use Text.translatable in your mod!
+		return Component.literal("Invalid smiley: " + smiley); // use Text.translatable in your mod!
 	});
 
 	public static SmileyArgumentType smiley() {
@@ -61,7 +59,7 @@ public class SmileyArgumentType implements ArgumentType<SmileyArgument> {
 
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-		return CommandSource.suggestMatching(SMILEY_VALUES, builder);
+		return SharedSuggestionProvider.suggest(SMILEY_VALUES, builder);
 	}
 
 	@Override

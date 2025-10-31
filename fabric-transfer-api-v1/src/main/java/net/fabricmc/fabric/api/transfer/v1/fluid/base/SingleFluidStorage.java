@@ -17,14 +17,12 @@
 package net.fabricmc.fabric.api.transfer.v1.fluid.base;
 
 import java.util.Objects;
-
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.TransferVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * A storage that can store a single fluid variant at any given time.
@@ -64,17 +62,17 @@ public abstract class SingleFluidStorage extends SingleVariantStorage<FluidVaria
 	}
 
 	/**
-	 * Simple implementation of reading from {@link ReadView}, to match what is written by {@link #writeData}.
+	 * Simple implementation of reading from {@link ValueInput}, to match what is written by {@link #writeData}.
 	 * Other formats are allowed, this is just a suggestion.
 	 */
-	public void readData(ReadView data) {
+	public void readData(ValueInput data) {
 		SingleVariantStorage.readData(this, FluidVariant.CODEC, FluidVariant::blank, data);
 	}
 
 	/**
-	 * Simple implementation of writing to {@link WriteView}. Other formats are allowed, this is just a convenient suggestion.
+	 * Simple implementation of writing to {@link ValueOutput}. Other formats are allowed, this is just a convenient suggestion.
 	 */
-	public void writeData(WriteView data) {
+	public void writeData(ValueOutput data) {
 		SingleVariantStorage.writeData(this, FluidVariant.CODEC, data);
 	}
 }

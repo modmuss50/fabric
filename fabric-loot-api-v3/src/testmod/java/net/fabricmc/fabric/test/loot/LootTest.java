@@ -19,36 +19,17 @@ package net.fabricmc.fabric.test.loot;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.SetEnchantmentsLootFunction;
-import net.minecraft.loot.function.SetNameLootFunction;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.recipe.AbstractCookingRecipe;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ServerRecipeManager;
-import net.minecraft.recipe.input.SingleStackRecipeInput;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 public class LootTest implements ModInitializer {
 	@Override
@@ -134,7 +115,7 @@ public class LootTest implements ModInitializer {
 			}
 		});
 
-		ServerRecipeManager.MatchGetter<SingleStackRecipeInput, ? extends AbstractCookingRecipe> matchGetter = ServerRecipeManager.createCachedMatchGetter(RecipeType.SMELTING);
+		RecipeManager.CachedCheck<SingleRecipeInput, ? extends AbstractCookingRecipe> matchGetter = RecipeManager.createCheck(RecipeType.SMELTING);
 
 		// smelt any smeltable drops from blocks broken with a diamond pickaxe
 		LootTableEvents.MODIFY_DROPS.register((entry, context, drops) -> {
@@ -180,7 +161,7 @@ public class LootTest implements ModInitializer {
 		}
 
 		@Override
-		public void modifyLootTableDrops(RegistryEntry<LootTable> entry, LootContext context, List<ItemStack> drops) {
+		public void modifyLootTableDrops(Holder<LootTable> entry, LootContext context, List<ItemStack> drops) {
 			if (running) return;
 
 			try {

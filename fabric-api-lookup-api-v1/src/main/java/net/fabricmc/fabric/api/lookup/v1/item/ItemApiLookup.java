@@ -18,14 +18,12 @@ package net.fabricmc.fabric.api.lookup.v1.item;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.impl.lookup.item.ItemApiLookupImpl;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
 /**
  * An object that allows retrieving APIs from item stacks.
@@ -102,7 +100,7 @@ public interface ItemApiLookup<A, C> {
 	 * @return The unique lookup with the passed lookupId.
 	 * @throws IllegalArgumentException If another {@code apiClass} or another {@code contextClass} was already registered with the same identifier.
 	 */
-	static <A, C> ItemApiLookup<A, C> get(Identifier lookupId, Class<A> apiClass, Class<C> contextClass) {
+	static <A, C> ItemApiLookup<A, C> get(ResourceLocation lookupId, Class<A> apiClass, Class<C> contextClass) {
 		return ItemApiLookupImpl.get(lookupId, apiClass, contextClass);
 	}
 
@@ -127,7 +125,7 @@ public interface ItemApiLookup<A, C> {
 	 * @param items Items for which to expose the API.
 	 * @throws IllegalArgumentException If the API class is not assignable from a class of one of the items.
 	 */
-	void registerSelf(ItemConvertible... items);
+	void registerSelf(ItemLike... items);
 
 	/**
 	 * Expose the API for the passed items.
@@ -136,7 +134,7 @@ public interface ItemApiLookup<A, C> {
 	 * @param provider The provider.
 	 * @param items The items.
 	 */
-	void registerForItems(ItemApiProvider<A, C> provider, ItemConvertible... items);
+	void registerForItems(ItemApiProvider<A, C> provider, ItemLike... items);
 
 	/**
 	 * Expose the API for all queries: the fallbacks providers will be invoked if no object was found using the regular providers.
@@ -148,7 +146,7 @@ public interface ItemApiLookup<A, C> {
 	/**
 	 * Return the identifier of this lookup.
 	 */
-	Identifier getId();
+	ResourceLocation getId();
 
 	/**
 	 * Return the API class of this lookup.

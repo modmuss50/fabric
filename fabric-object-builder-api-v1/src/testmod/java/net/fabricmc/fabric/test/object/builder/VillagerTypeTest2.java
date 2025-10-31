@@ -16,14 +16,9 @@
 
 package net.fabricmc.fabric.test.object.builder;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradedItem;
-import net.minecraft.village.VillagerProfession;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.world.entity.npc.VillagerProfession;
 
 /*
  * Second entrypoint to validate class loading does not break this.

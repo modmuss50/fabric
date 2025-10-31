@@ -28,17 +28,15 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.data.DataOutput;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.DataWriter;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryOps;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceLocation;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
@@ -51,26 +49,26 @@ import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
  */
 public abstract class FabricAdvancementProvider implements DataProvider {
 	protected final FabricDataOutput output;
-	private final DataOutput.PathResolver pathResolver;
-	private final CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup;
+	private final PackOutput.PathProvider pathResolver;
+	private final CompletableFuture<HolderLookup.Provider> registryLookup;
 
-	protected FabricAdvancementProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+	protected FabricAdvancementProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
 		this.output = output;
-		this.pathResolver = output.getResolver(RegistryKeys.ADVANCEMENT);
+		this.pathResolver = output.createRegistryElementsPathProvider(Registries.ADVANCEMENT);
 		this.registryLookup = registryLookup;
 	}
 
 	/**
 	 * Implement this method to register advancements to generate use the consumer callback to register advancements.
 	 *
-	 * <p>Use {@link Advancement.Builder#build(Consumer, String)} to help build advancements.
+	 * <p>Use {@link Advancement.Builder#save(Consumer, String)} to help build advancements.
 	 */
-	public abstract void generateAdvancement(RegistryWrapper.WrapperLookup registryLookup, Consumer<AdvancementEntry> consumer);
+	public abstract void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer);
 
 	/**
 	 * Return a new exporter that applies the specified conditions to any advancement it receives.
 	 */
-	protected Consumer<AdvancementEntry> withConditions(Consumer<AdvancementEntry> exporter, ResourceCondition... conditions) {
+	protected Consumer<AdvancementHolder> withConditions(Consumer<AdvancementHolder> exporter, ResourceCondition... conditions) {
 		Preconditions.checkArgument(conditions.length > 0, "Must add at least one condition.");
 		return advancement -> {
 			FabricDataGenHelper.addConditions(advancement, conditions);
@@ -79,32 +77,32 @@ public abstract class FabricAdvancementProvider implements DataProvider {
 	}
 
 	@Override
-	public CompletableFuture<?> run(DataWriter writer) {
+	public CompletableFuture<?> run(CachedOutput writer) {
 		return this.registryLookup.thenCompose(lookup -> {
-			final Set<Identifier> identifiers = Sets.newHashSet();
-			final Set<AdvancementEntry> advancements = Sets.newHashSet();
+			final Set<ResourceLocation> identifiers = Sets.newHashSet();
+			final Set<AdvancementHolder> advancements = Sets.newHashSet();
 
 			generateAdvancement(lookup, advancements::add);
 
-			RegistryOps<JsonElement> ops = lookup.getOps(JsonOps.INSTANCE);
+			RegistryOps<JsonElement> ops = lookup.createSerializationContext(JsonOps.INSTANCE);
 			final List<CompletableFuture<?>> futures = new ArrayList<>();
 
-			for (AdvancementEntry advancement : advancements) {
+			for (AdvancementHolder advancement : advancements) {
 				if (!identifiers.add(advancement.id())) {
 					throw new IllegalStateException("Duplicate advancement " + advancement.id());
 				}
 
 				JsonObject advancementJson = Advancement.CODEC.encodeStart(ops, advancement.value()).getOrThrow(IllegalStateException::new).getAsJsonObject();
 				FabricDataGenHelper.addConditions(advancementJson, FabricDataGenHelper.consumeConditions(advancement));
-				futures.add(DataProvider.writeToPath(writer, advancementJson, getOutputPath(advancement)));
+				futures.add(DataProvider.saveStable(writer, advancementJson, getOutputPath(advancement)));
 			}
 
 			return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
 		});
 	}
 
-	private Path getOutputPath(AdvancementEntry advancement) {
-		return pathResolver.resolveJson(advancement.id());
+	private Path getOutputPath(AdvancementHolder advancement) {
+		return pathResolver.json(advancement.id());
 	}
 
 	@Override

@@ -19,10 +19,8 @@ package net.fabricmc.fabric.test.sound.client;
 import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFormat;
-
+import net.minecraft.client.sounds.AudioStream;
 import org.lwjgl.BufferUtils;
-
-import net.minecraft.client.sound.AudioStream;
 
 /**
  * An audio stream which plays a sine wave.

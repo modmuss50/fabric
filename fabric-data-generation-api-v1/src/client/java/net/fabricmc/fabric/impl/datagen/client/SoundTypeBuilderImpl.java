@@ -33,19 +33,17 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.include.com.google.common.base.Preconditions;
-
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 
 public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SoundTypeBuilderImpl.class);
 
-	private SoundCategory category = SoundCategory.NEUTRAL;
+	private SoundSource category = SoundSource.NEUTRAL;
 	@Nullable
 	private String subtitle;
 	private final List<Entry> sounds = new ArrayList<>();
@@ -53,7 +51,7 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 	public SoundTypeBuilderImpl() { }
 
 	@Override
-	public SoundTypeBuilder category(SoundCategory category) {
+	public SoundTypeBuilder category(SoundSource category) {
 		Objects.requireNonNull(category, "Sound event category must not be null.");
 		this.category = category;
 		return this;
@@ -89,16 +87,16 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 
 		for (Entry sound : sounds) {
 			if (sound.type() == RegistrationType.SOUND_EVENT) {
-				Registries.SOUND_EVENT.getOptionalValue(sound.name()).orElseThrow(() -> new IllegalStateException("Referenced sound event " + sound.name() + " does not exist"));
+				BuiltInRegistries.SOUND_EVENT.getOptional(sound.name()).orElseThrow(() -> new IllegalStateException("Referenced sound event " + sound.name() + " does not exist"));
 			}
 		}
 
 		return new SoundType(sounds, category, Optional.ofNullable(subtitle));
 	}
 
-	public record SoundType(List<Entry> sounds, SoundCategory category, Optional<String> subtitle) {
-		private static final Map<String, SoundCategory> CATEGORIES = Arrays.stream(SoundCategory.values()).collect(Collectors.toMap(SoundCategory::getName, Function.identity()));
-		private static final Codec<SoundCategory> SOUND_CATEGORY_CODEC = Codec.stringResolver(SoundCategory::getName, name -> CATEGORIES.getOrDefault(name.toLowerCase(Locale.ROOT), SoundCategory.NEUTRAL));
+	public record SoundType(List<Entry> sounds, SoundSource category, Optional<String> subtitle) {
+		private static final Map<String, SoundSource> CATEGORIES = Arrays.stream(SoundSource.values()).collect(Collectors.toMap(SoundSource::getName, Function.identity()));
+		private static final Codec<SoundSource> SOUND_CATEGORY_CODEC = Codec.stringResolver(SoundSource::getName, name -> CATEGORIES.getOrDefault(name.toLowerCase(Locale.ROOT), SoundSource.NEUTRAL));
 		public static final Codec<SoundType> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 				Entry.CODEC.listOf().fieldOf("sounds").forGetter(SoundType::sounds),
 				SOUND_CATEGORY_CODEC.fieldOf("category").forGetter(SoundType::category),
@@ -106,9 +104,9 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 		).apply(instance, SoundType::new));
 	}
 
-	private record Entry(Identifier name, RegistrationType type, float volume, float pitch, int weight, int attenuationDistance, boolean stream, boolean preload) {
+	private record Entry(ResourceLocation name, RegistrationType type, float volume, float pitch, int weight, int attenuationDistance, boolean stream, boolean preload) {
 		private static final Codec<Entry> MAP_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				Identifier.CODEC.fieldOf("name").forGetter(Entry::name),
+				ResourceLocation.CODEC.fieldOf("name").forGetter(Entry::name),
 				RegistrationType.CODEC.optionalFieldOf("type", RegistrationType.FILE).forGetter(Entry::type),
 				Codec.FLOAT.optionalFieldOf("volume", EntryBuilder.DEFAULT_VOLUME).forGetter(Entry::volume),
 				Codec.FLOAT.optionalFieldOf("pitch", EntryBuilder.DEFAULT_PITCH).forGetter(Entry::pitch),
@@ -118,7 +116,7 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 				Codec.BOOL.optionalFieldOf("preload", false).forGetter(Entry::preload)
 		).apply(instance, Entry::new));
 
-		private static final Codec<Entry> STRING_CODEC = Identifier.CODEC.xmap(
+		private static final Codec<Entry> STRING_CODEC = ResourceLocation.CODEC.xmap(
 				id -> new Entry(id, RegistrationType.FILE, EntryBuilder.DEFAULT_VOLUME, EntryBuilder.DEFAULT_PITCH, EntryBuilder.DEFAULT_WEIGHT, EntryBuilder.DEFAULT_ATTENUATION_DISTANCE, false, false),
 				Entry::name
 		);
@@ -138,7 +136,7 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 	}
 
 	public static final class EntryBuilderImpl implements EntryBuilder {
-		private final Identifier id;
+		private final ResourceLocation id;
 		private final RegistrationType type;
 
 		private float volume = DEFAULT_VOLUME;
@@ -148,16 +146,16 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 		private boolean stream = false;
 		private boolean preload = false;
 
-		private EntryBuilderImpl(RegistrationType type, Identifier id) {
+		private EntryBuilderImpl(RegistrationType type, ResourceLocation id) {
 			this.type = type;
 			this.id = id;
 		}
 
-		public static EntryBuilder create(RegistrationType type, Identifier id) {
+		public static EntryBuilder create(RegistrationType type, ResourceLocation id) {
 			return new EntryBuilderImpl(type, id);
 		}
 
-		public static EntryBuilder ofFile(Identifier soundFile) {
+		public static EntryBuilder ofFile(ResourceLocation soundFile) {
 			Objects.requireNonNull(soundFile, "Sound file/event id must not be null.");
 
 			if (soundFile.getPath().indexOf('.') != -1) {
@@ -169,12 +167,12 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 
 		public static EntryBuilder ofEvent(SoundEvent event) {
 			Objects.requireNonNull(event, "Sound event must not be null.");
-			return create(RegistrationType.SOUND_EVENT, event.id());
+			return create(RegistrationType.SOUND_EVENT, event.location());
 		}
 
-		public static EntryBuilder ofEvent(RegistryEntry<SoundEvent> event) {
+		public static EntryBuilder ofEvent(Holder<SoundEvent> event) {
 			Objects.requireNonNull(event, "Sound event key must not be null.");
-			return create(RegistrationType.SOUND_EVENT, event.getKey().orElseThrow(() -> new IllegalArgumentException("Direct (non-registered) sound event cannot be added")).getValue());
+			return create(RegistrationType.SOUND_EVENT, event.unwrapKey().orElseThrow(() -> new IllegalArgumentException("Direct (non-registered) sound event cannot be added")).location());
 		}
 
 		@Override
@@ -217,7 +215,7 @@ public final class SoundTypeBuilderImpl implements SoundTypeBuilder {
 		}
 
 		public Entry build(@Nullable String suffix) {
-			return new Entry(id.withSuffixedPath(suffix == null ? "" : suffix), type, volume, pitch, weight, attenuationDistance, stream, preload);
+			return new Entry(id.withSuffix(suffix == null ? "" : suffix), type, volume, pitch, weight, attenuationDistance, stream, preload);
 		}
 	}
 }

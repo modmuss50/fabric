@@ -16,19 +16,18 @@
 
 package net.fabricmc.fabric.api.renderer.v1.sprite;
 
-import net.minecraft.client.render.model.ErrorCollectingSpriteGetter;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
+import net.minecraft.client.resources.model.SpriteGetter;
+import net.minecraft.resources.ResourceLocation;
 
 /**
- * Note: This interface is automatically implemented on {@link ErrorCollectingSpriteGetter} via Mixin and interface injection.
+ * Note: This interface is automatically implemented on {@link SpriteGetter} via Mixin and interface injection.
  */
 public interface FabricErrorCollectingSpriteGetter {
 	/**
 	 * {@return the sprite finder for the given atlas ID}
 	 */
-	default SpriteFinder spriteFinder(Identifier atlasId) {
+	default SpriteFinder spriteFinder(ResourceLocation atlasId) {
 		throw new UnsupportedOperationException();
 	}
 }

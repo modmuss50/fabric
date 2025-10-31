@@ -18,16 +18,14 @@ package net.fabricmc.fabric.mixin.registry.sync.client;
 
 import java.util.List;
 import java.util.Map;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistrySynchronization;
+import net.minecraft.resources.ResourceKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.SerializableRegistries;
-
-@Mixin(targets = "net/minecraft/client/network/ClientRegistries$DynamicRegistries")
+@Mixin(targets = "net/minecraft/client/multiplayer/RegistryDataCollector$ContentsCollector")
 public interface ClientRegistriesDynamicRegistriesAccessor {
 	@Accessor
-	Map<RegistryKey<? extends Registry<?>>, List<SerializableRegistries.SerializedRegistryEntry>> getDynamicRegistries();
+	Map<ResourceKey<? extends Registry<?>>, List<RegistrySynchronization.PackedRegistryEntry>> getElements();
 }

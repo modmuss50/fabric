@@ -16,18 +16,17 @@
 
 package net.fabricmc.fabric.api.event.registry;
 
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-
 import net.fabricmc.fabric.impl.registry.sync.RegistryAttributeImpl;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 
 public interface RegistryAttributeHolder {
-	static RegistryAttributeHolder get(RegistryKey<?> registryKey) {
+	static RegistryAttributeHolder get(ResourceKey<?> registryKey) {
 		return RegistryAttributeImpl.getHolder(registryKey);
 	}
 
 	static RegistryAttributeHolder get(Registry<?> registry) {
-		return get(registry.getKey());
+		return get(registry.key());
 	}
 
 	RegistryAttributeHolder addAttribute(RegistryAttribute attribute);

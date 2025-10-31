@@ -16,8 +16,8 @@
 
 package net.fabricmc.fabric.impl.resource.v1;
 
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
 
 public interface FabricRecipeManager {
-	RegistryWrapper.WrapperLookup fabric$getRegistries();
+	HolderLookup.Provider fabric$getRegistries();
 }

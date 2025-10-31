@@ -16,9 +16,9 @@
 
 package net.fabricmc.fabric.api.tag;
 
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 
 /**
  * General-purpose Fabric-provided extensions for {@link TagKey} subclasses.
@@ -47,10 +47,10 @@ public interface FabricTagKey {
 		stringBuilder.append("tag.");
 
 		TagKey<?> tagKey = (TagKey<?>) this;
-		Identifier registryIdentifier = tagKey.registryRef().getValue();
-		Identifier tagIdentifier = tagKey.id();
+		ResourceLocation registryIdentifier = tagKey.registry().location();
+		ResourceLocation tagIdentifier = tagKey.location();
 
-		if (!registryIdentifier.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+		if (!registryIdentifier.getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
 			stringBuilder.append(registryIdentifier.getNamespace())
 					.append(".");
 		}
@@ -72,7 +72,7 @@ public interface FabricTagKey {
 	 *
 	 * @return the translatable text for a TagKey
 	 */
-	default Text getName() {
-		return Text.translatableWithFallback(getTranslationKey(), "#" + ((TagKey<?>) this).id().toString());
+	default Component getName() {
+		return Component.translatableWithFallback(getTranslationKey(), "#" + ((TagKey<?>) this).location().toString());
 	}
 }

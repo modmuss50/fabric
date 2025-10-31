@@ -17,12 +17,10 @@
 package net.fabricmc.fabric.api.client.screen.v1;
 
 import java.util.Objects;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.input.KeyInput;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 
 /**
  * Events related to use of the keyboard in a {@link Screen}.
@@ -117,7 +115,7 @@ public final class ScreenKeyboardEvents {
 		 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
 		 */
-		boolean allowKeyPress(Screen screen, KeyInput context);
+		boolean allowKeyPress(Screen screen, KeyEvent context);
 	}
 
 	@FunctionalInterface
@@ -129,7 +127,7 @@ public final class ScreenKeyboardEvents {
 		 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
 		 */
-		void beforeKeyPress(Screen screen, KeyInput context);
+		void beforeKeyPress(Screen screen, KeyEvent context);
 	}
 
 	@FunctionalInterface
@@ -141,7 +139,7 @@ public final class ScreenKeyboardEvents {
 		 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
 		 */
-		void afterKeyPress(Screen screen, KeyInput context);
+		void afterKeyPress(Screen screen, KeyEvent context);
 	}
 
 	@FunctionalInterface
@@ -154,7 +152,7 @@ public final class ScreenKeyboardEvents {
 		 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
 		 */
-		boolean allowKeyRelease(Screen screen, KeyInput context);
+		boolean allowKeyRelease(Screen screen, KeyEvent context);
 	}
 
 	@FunctionalInterface
@@ -166,7 +164,7 @@ public final class ScreenKeyboardEvents {
 		 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
 		 */
-		void beforeKeyRelease(Screen screen, KeyInput context);
+		void beforeKeyRelease(Screen screen, KeyEvent context);
 	}
 
 	@FunctionalInterface
@@ -178,6 +176,6 @@ public final class ScreenKeyboardEvents {
 		 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
 		 */
-		void afterKeyRelease(Screen screen, KeyInput context);
+		void afterKeyRelease(Screen screen, KeyEvent context);
 	}
 }

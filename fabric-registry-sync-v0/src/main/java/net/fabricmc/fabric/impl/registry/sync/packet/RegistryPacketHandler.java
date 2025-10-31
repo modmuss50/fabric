@@ -24,22 +24,20 @@ import java.util.zip.Deflater;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class RegistryPacketHandler<T extends RegistryPacketHandler.RegistrySyncPayload> {
 	private int rawBufSize = 0;
 	private int deflatedBufSize = 0;
 
-	public abstract CustomPayload.Id<T> getPacketId();
+	public abstract CustomPacketPayload.Type<T> getPacketId();
 
-	public abstract void sendPacket(Consumer<T> sender, Map<Identifier, Object2IntMap<Identifier>> registryMap);
+	public abstract void sendPacket(Consumer<T> sender, Map<ResourceLocation, Object2IntMap<ResourceLocation>> registryMap);
 
 	public abstract void receivePayload(T payload);
 
@@ -50,7 +48,7 @@ public abstract class RegistryPacketHandler<T extends RegistryPacketHandler.Regi
 	@Nullable
 	public abstract SyncedPacketData getSyncedPacketData();
 
-	protected final void computeBufSize(PacketByteBuf buf) {
+	protected final void computeBufSize(FriendlyByteBuf buf) {
 		if (!RegistrySyncManager.DEBUG) {
 			return;
 		}
@@ -60,7 +58,7 @@ public abstract class RegistryPacketHandler<T extends RegistryPacketHandler.Regi
 		Deflater deflater = new Deflater();
 
 		int i = byteBuf.readableBytes();
-		PacketByteBuf deflatedBuf = PacketByteBufs.create();
+		FriendlyByteBuf deflatedBuf = PacketByteBufs.create();
 
 		if (i < 256) {
 			deflatedBuf.writeVarInt(0);
@@ -92,11 +90,11 @@ public abstract class RegistryPacketHandler<T extends RegistryPacketHandler.Regi
 		return deflatedBufSize;
 	}
 
-	public interface RegistrySyncPayload extends CustomPayload {
+	public interface RegistrySyncPayload extends CustomPacketPayload {
 	}
 
 	public record SyncedPacketData(
-			Map<Identifier, Object2IntMap<Identifier>> idMap,
-			Map<Identifier, EnumSet<RegistryAttribute>> attributes
+			Map<ResourceLocation, Object2IntMap<ResourceLocation>> idMap,
+			Map<ResourceLocation, EnumSet<RegistryAttribute>> attributes
 	) { }
 }

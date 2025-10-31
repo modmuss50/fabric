@@ -23,18 +23,16 @@ import java.util.Map;
 
 import com.google.common.collect.MapMaker;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.fabricmc.fabric.impl.transfer.DebugMessages;
+import net.minecraft.core.Direction;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
 
 /**
  * Implementation of {@link InventoryStorage}.
@@ -51,11 +49,11 @@ public class InventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlo
 	 */
 	// TODO: look into promoting the weak reference to a soft reference if building the wrappers becomes a performance bottleneck.
 	// TODO: should have identity semantics?
-	private static final Map<Inventory, InventoryStorageImpl> WRAPPERS = new MapMaker().weakValues().makeMap();
+	private static final Map<Container, InventoryStorageImpl> WRAPPERS = new MapMaker().weakValues().makeMap();
 
-	public static InventoryStorage of(Inventory inventory, @Nullable Direction direction) {
+	public static InventoryStorage of(Container inventory, @Nullable Direction direction) {
 		InventoryStorageImpl storage = WRAPPERS.computeIfAbsent(inventory, inv -> {
-			if (inv instanceof PlayerInventory playerInventory) {
+			if (inv instanceof Inventory playerInventory) {
 				return new PlayerInventoryStorageImpl(playerInventory);
 			} else {
 				return new InventoryStorageImpl(inv);
@@ -65,7 +63,7 @@ public class InventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlo
 		return storage.getSidedWrapper(direction);
 	}
 
-	final Inventory inventory;
+	final Container inventory;
 	/**
 	 * This {@code backingList} is the real list of wrappers.
 	 * The {@code parts} in the superclass is the public-facing unmodifiable sublist with exactly the right amount of slots.
@@ -76,7 +74,7 @@ public class InventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlo
 	 */
 	final MarkDirtyParticipant markDirtyParticipant = new MarkDirtyParticipant();
 
-	InventoryStorageImpl(Inventory inventory) {
+	InventoryStorageImpl(Container inventory) {
 		super(Collections.emptyList());
 		this.inventory = inventory;
 		this.backingList = new ArrayList<>();
@@ -91,7 +89,7 @@ public class InventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlo
 	 * Resize slot list to match the current size of the inventory.
 	 */
 	private void resizeSlotList() {
-		int inventorySize = inventory.size();
+		int inventorySize = inventory.getContainerSize();
 
 		// If the public-facing list must change...
 		if (inventorySize != parts.size()) {
@@ -106,7 +104,7 @@ public class InventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlo
 	}
 
 	private InventoryStorage getSidedWrapper(@Nullable Direction direction) {
-		if (inventory instanceof SidedInventory && direction != null) {
+		if (inventory instanceof WorldlyContainer && direction != null) {
 			return new SidedInventoryStorageImpl(this, direction);
 		} else {
 			return this;
@@ -131,7 +129,7 @@ public class InventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlo
 
 		@Override
 		protected void onFinalCommit() {
-			inventory.markDirty();
+			inventory.setChanged();
 		}
 	}
 }

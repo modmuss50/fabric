@@ -28,23 +28,21 @@ import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.impl.attachment.sync.AttachmentSync;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 
 public final class AttachmentRegistryImpl {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-data-attachment-api-v1");
-	private static final Map<Identifier, AttachmentType<?>> attachmentRegistry = new HashMap<>();
-	private static final Set<Identifier> syncableAttachments = new HashSet<>();
-	private static final Set<Identifier> syncableView = Collections.unmodifiableSet(syncableAttachments);
+	private static final Map<ResourceLocation, AttachmentType<?>> attachmentRegistry = new HashMap<>();
+	private static final Set<ResourceLocation> syncableAttachments = new HashSet<>();
+	private static final Set<ResourceLocation> syncableView = Collections.unmodifiableSet(syncableAttachments);
 
-	public static <A> void register(Identifier id, AttachmentType<A> attachmentType) {
+	public static <A> void register(ResourceLocation id, AttachmentType<A> attachmentType) {
 		AttachmentType<?> existing = attachmentRegistry.put(id, attachmentType);
 
 		if (existing != null) {
@@ -62,11 +60,11 @@ public final class AttachmentRegistryImpl {
 	}
 
 	@Nullable
-	public static AttachmentType<?> get(Identifier id) {
+	public static AttachmentType<?> get(ResourceLocation id) {
 		return attachmentRegistry.get(id);
 	}
 
-	public static Set<Identifier> getSyncableAttachments() {
+	public static Set<ResourceLocation> getSyncableAttachments() {
 		return syncableView;
 	}
 
@@ -80,7 +78,7 @@ public final class AttachmentRegistryImpl {
 		@Nullable
 		private Codec<A> persistenceCodec = null;
 		@Nullable
-		private PacketCodec<? super RegistryByteBuf, A> packetCodec = null;
+		private StreamCodec<? super RegistryFriendlyByteBuf, A> packetCodec = null;
 		@Nullable
 		private AttachmentSyncPredicate syncPredicate = null;
 		private boolean copyOnDeath = false;
@@ -108,7 +106,7 @@ public final class AttachmentRegistryImpl {
 		}
 
 		@Deprecated
-		public AttachmentRegistry.Builder<A> syncWith(PacketCodec<? super RegistryByteBuf, A> packetCodec, AttachmentSyncPredicate syncPredicate) {
+		public AttachmentRegistry.Builder<A> syncWith(StreamCodec<? super RegistryFriendlyByteBuf, A> packetCodec, AttachmentSyncPredicate syncPredicate) {
 			Objects.requireNonNull(packetCodec, "packet codec cannot be null");
 			Objects.requireNonNull(syncPredicate, "sync predicate cannot be null");
 
@@ -118,7 +116,7 @@ public final class AttachmentRegistryImpl {
 		}
 
 		@Override
-		public AttachmentType<A> buildAndRegister(Identifier id) {
+		public AttachmentType<A> buildAndRegister(ResourceLocation id) {
 			Objects.requireNonNull(id, "identifier cannot be null");
 
 			if (syncPredicate != null && id.toString().length() > AttachmentSync.MAX_IDENTIFIER_SIZE) {

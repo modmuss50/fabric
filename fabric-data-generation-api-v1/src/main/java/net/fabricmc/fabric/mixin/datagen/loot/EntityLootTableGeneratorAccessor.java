@@ -16,14 +16,13 @@
 
 package net.fabricmc.fabric.mixin.datagen.loot;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.loot.EntityLootSubProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.data.loottable.EntityLootTableGenerator;
-import net.minecraft.registry.RegistryWrapper;
-
-@Mixin(EntityLootTableGenerator.class)
+@Mixin(EntityLootSubProvider.class)
 public interface EntityLootTableGeneratorAccessor {
 	@Accessor()
-	RegistryWrapper.WrapperLookup getRegistries();
+	HolderLookup.Provider getRegistries();
 }

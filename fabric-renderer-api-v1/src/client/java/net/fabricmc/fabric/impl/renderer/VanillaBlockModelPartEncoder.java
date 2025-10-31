@@ -20,15 +20,13 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.BlockModelPart;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.mesh.ShadeMode;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.core.Direction;
 
 /**
  * Routines for adaptation of vanilla {@link BlockModelPart}s to FRAPI pipelines.

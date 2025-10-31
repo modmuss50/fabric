@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.api.resource;
 
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This class contains default keys for various Minecraft resource reload listeners.
@@ -29,16 +28,16 @@ import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
 @Deprecated
 public final class ResourceReloadListenerKeys {
 	// client
-	public static final Identifier SOUNDS = ResourceReloaderKeys.Client.SOUNDS;
-	public static final Identifier FONTS = ResourceReloaderKeys.Client.FONTS;
-	public static final Identifier MODELS = ResourceReloaderKeys.Client.MODELS;
-	public static final Identifier LANGUAGES = ResourceReloaderKeys.Client.LANGUAGES;
-	public static final Identifier TEXTURES = ResourceReloaderKeys.Client.TEXTURES;
+	public static final ResourceLocation SOUNDS = ResourceReloaderKeys.Client.SOUNDS;
+	public static final ResourceLocation FONTS = ResourceReloaderKeys.Client.FONTS;
+	public static final ResourceLocation MODELS = ResourceReloaderKeys.Client.MODELS;
+	public static final ResourceLocation LANGUAGES = ResourceReloaderKeys.Client.LANGUAGES;
+	public static final ResourceLocation TEXTURES = ResourceReloaderKeys.Client.TEXTURES;
 
 	// server
-	public static final Identifier RECIPES = ResourceReloaderKeys.Server.RECIPES;
-	public static final Identifier ADVANCEMENTS = ResourceReloaderKeys.Server.ADVANCEMENTS;
-	public static final Identifier FUNCTIONS = ResourceReloaderKeys.Server.FUNCTIONS;
+	public static final ResourceLocation RECIPES = ResourceReloaderKeys.Server.RECIPES;
+	public static final ResourceLocation ADVANCEMENTS = ResourceReloaderKeys.Server.ADVANCEMENTS;
+	public static final ResourceLocation FUNCTIONS = ResourceReloaderKeys.Server.FUNCTIONS;
 
 	private ResourceReloadListenerKeys() { }
 }

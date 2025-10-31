@@ -20,16 +20,14 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.mojang.serialization.MapCodec;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.display.SlotDisplay;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 /**
  * Base class for ALL and ANY ingredients.
@@ -62,8 +60,8 @@ abstract class CombinedIngredient implements CustomIngredient {
 
 	@Override
 	public SlotDisplay toDisplay() {
-		return new SlotDisplay.CompositeSlotDisplay(
-				ingredients.stream().map(Ingredient::toDisplay).toList()
+		return new SlotDisplay.Composite(
+				ingredients.stream().map(Ingredient::display).toList()
 		);
 	}
 
@@ -80,19 +78,19 @@ abstract class CombinedIngredient implements CustomIngredient {
 	}
 
 	static class Serializer<I extends CombinedIngredient> implements CustomIngredientSerializer<I> {
-		private final Identifier identifier;
+		private final ResourceLocation identifier;
 		private final MapCodec<I> codec;
-		private final PacketCodec<RegistryByteBuf, I> packetCodec;
+		private final StreamCodec<RegistryFriendlyByteBuf, I> packetCodec;
 
-		Serializer(Identifier identifier, Function<List<Ingredient>, I> factory, MapCodec<I> codec) {
+		Serializer(ResourceLocation identifier, Function<List<Ingredient>, I> factory, MapCodec<I> codec) {
 			this.identifier = identifier;
 			this.codec = codec;
-			this.packetCodec = Ingredient.PACKET_CODEC.collect(PacketCodecs.toList())
-					.xmap(factory, I::getIngredients);
+			this.packetCodec = Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list())
+					.map(factory, I::getIngredients);
 		}
 
 		@Override
-		public Identifier getIdentifier() {
+		public ResourceLocation getIdentifier() {
 			return identifier;
 		}
 
@@ -102,7 +100,7 @@ abstract class CombinedIngredient implements CustomIngredient {
 		}
 
 		@Override
-		public PacketCodec<RegistryByteBuf, I> getPacketCodec() {
+		public StreamCodec<RegistryFriendlyByteBuf, I> getPacketCodec() {
 			return this.packetCodec;
 		}
 	}

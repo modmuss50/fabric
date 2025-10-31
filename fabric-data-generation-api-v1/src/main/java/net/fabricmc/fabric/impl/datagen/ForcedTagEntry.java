@@ -17,17 +17,16 @@
 package net.fabricmc.fabric.impl.datagen;
 
 import java.util.function.Predicate;
-
-import net.minecraft.registry.tag.TagEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagEntry;
 
 public class ForcedTagEntry extends TagEntry {
-	public ForcedTagEntry(Identifier id) {
+	public ForcedTagEntry(ResourceLocation id) {
 		super(id, true, true); // if it's optional, then no need to force
 	}
 
 	@Override
-	public boolean canAdd(Predicate<Identifier> objectExistsTest, Predicate<Identifier> tagExistsTest) {
+	public boolean verifyIfPresent(Predicate<ResourceLocation> objectExistsTest, Predicate<ResourceLocation> tagExistsTest) {
 		return true;
 	}
 }

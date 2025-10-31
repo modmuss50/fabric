@@ -18,20 +18,18 @@ package net.fabricmc.fabric.test.resource.loader.v1;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.ResourceReloader;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.resource.SynchronousResourceReloader;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 public class ResourceReloaderTestMod implements ModInitializer {
 	public static final String NAMESPACE = "fabric-resource-loader-v1-testmod";
@@ -56,42 +54,42 @@ public class ResourceReloaderTestMod implements ModInitializer {
 	}
 
 	private void setupClientReloadListeners() {
-		Identifier clientFirstId = Identifier.of(NAMESPACE, "client_first");
-		Identifier clientSecondId = Identifier.of(NAMESPACE, "client_second");
+		ResourceLocation clientFirstId = ResourceLocation.fromNamespaceAndPath(NAMESPACE, "client_first");
+		ResourceLocation clientSecondId = ResourceLocation.fromNamespaceAndPath(NAMESPACE, "client_second");
 
-		ResourceLoader resourceLoader = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
-		resourceLoader.registerReloader(clientSecondId, (SynchronousResourceReloader) manager -> {
+		ResourceLoader resourceLoader = ResourceLoader.get(PackType.CLIENT_RESOURCES);
+		resourceLoader.registerReloader(clientSecondId, (ResourceManagerReloadListener) manager -> {
 			if (!clientResources) {
 				throw new AssertionError("Second reload listener was called before the first!");
 			}
 		});
-		resourceLoader.registerReloader(clientFirstId, (SynchronousResourceReloader) manager -> clientResources = true);
+		resourceLoader.registerReloader(clientFirstId, (ResourceManagerReloadListener) manager -> clientResources = true);
 		resourceLoader.addReloaderOrdering(clientFirstId, clientSecondId);
 	}
 
 	private void setupServerReloadListeners() {
-		Identifier serverFirstId = Identifier.of(NAMESPACE, "server_first");
-		Identifier serverSecondId = Identifier.of(NAMESPACE, "server_second");
+		ResourceLocation serverFirstId = ResourceLocation.fromNamespaceAndPath(NAMESPACE, "server_first");
+		ResourceLocation serverSecondId = ResourceLocation.fromNamespaceAndPath(NAMESPACE, "server_second");
 
-		ResourceLoader resourceLoader = ResourceLoader.get(ResourceType.SERVER_DATA);
-		resourceLoader.registerReloader(serverSecondId, (SynchronousResourceReloader) manager -> {
+		ResourceLoader resourceLoader = ResourceLoader.get(PackType.SERVER_DATA);
+		resourceLoader.registerReloader(serverSecondId, (ResourceManagerReloadListener) manager -> {
 			if (!serverResources) {
 				throw new AssertionError("Second reload listener was called before the first!");
 			}
 		});
-		resourceLoader.registerReloader(serverFirstId, (SynchronousResourceReloader) manager -> serverResources = true);
+		resourceLoader.registerReloader(serverFirstId, (ResourceManagerReloadListener) manager -> serverResources = true);
 		resourceLoader.addReloaderOrdering(serverFirstId, serverSecondId);
 		resourceLoader.registerReloader(RegistryReloader.ID, new RegistryReloader());
 	}
 
-	private static class RegistryReloader implements ResourceReloader {
-		private static final Identifier ID = Identifier.of(NAMESPACE, "registry_reloader");
+	private static class RegistryReloader implements PreparableReloadListener {
+		private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(NAMESPACE, "registry_reloader");
 
 		@Override
-		public CompletableFuture<Void> reload(Store store, Executor prepareExecutor, Synchronizer reloadSynchronizer, Executor applyExecutor) {
-			RegistryWrapper.WrapperLookup registries = store.getOrThrow(ResourceLoader.RELOADER_REGISTRY_LOOKUP_KEY);
-			registries.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
-			return reloadSynchronizer.whenPrepared(null);
+		public CompletableFuture<Void> reload(SharedState store, Executor prepareExecutor, PreparationBarrier reloadSynchronizer, Executor applyExecutor) {
+			HolderLookup.Provider registries = store.get(ResourceLoader.RELOADER_REGISTRY_LOOKUP_KEY);
+			registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
+			return reloadSynchronizer.wait(null);
 		}
 	}
 }

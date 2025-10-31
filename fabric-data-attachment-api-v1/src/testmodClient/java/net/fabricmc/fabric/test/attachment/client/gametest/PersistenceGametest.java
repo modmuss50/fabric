@@ -22,18 +22,9 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.client.gui.screen.world.WorldCreator;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.chunk.ProtoChunk;
-import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.chunk.WrapperProtoChunk;
-
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
@@ -55,8 +46,8 @@ public class PersistenceGametest implements FabricClientGameTest {
 		}
 	}
 
-	private static ServerPlayerEntity getSinglePlayer(MinecraftServer server) {
-		return server.getPlayerManager().getPlayerList().getFirst();
+	private static ServerPlayer getSinglePlayer(MinecraftServer server) {
+		return server.getPlayerList().getPlayers().getFirst();
 	}
 
 	@Override

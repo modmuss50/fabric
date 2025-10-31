@@ -34,42 +34,40 @@ import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
-
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.ResourceReloader;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.fabric.impl.base.toposort.NodeSorting;
 import net.fabricmc.fabric.impl.base.toposort.SortableNode;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 public final class ResourceLoaderImpl implements ResourceLoader {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Map<ResourceType, ResourceLoaderImpl> IMPL_MAP = new EnumMap<>(ResourceType.class);
+	private static final Map<PackType, ResourceLoaderImpl> IMPL_MAP = new EnumMap<>(PackType.class);
 
 	private static final boolean DEBUG_RELOADERS_IDENTITY = TriState.fromSystemProperty("fabric.resource_loader.debug.reloaders_identity")
 			.orElse(FabricLoader.getInstance().isDevelopmentEnvironment());
 	public static final boolean DEBUG_PROFILE_RESOURCE_RELOADERS = Boolean.getBoolean("fabric.resource_loader.debug.profile_resource_reloaders");
 	private static final boolean DEBUG_RELOADERS_ORDER = Boolean.getBoolean("fabric.resource_loader.debug.reloaders_order");
 
-	public static ResourceLoaderImpl get(ResourceType type) {
+	public static ResourceLoaderImpl get(PackType type) {
 		return IMPL_MAP.computeIfAbsent(type, ResourceLoaderImpl::new);
 	}
 
-	private final Map<Identifier, ResourceReloader> addedReloaders = new LinkedHashMap<>();
+	private final Map<ResourceLocation, PreparableReloadListener> addedReloaders = new LinkedHashMap<>();
 	private final Set<ReloaderOrder> reloadersOrdering = new LinkedHashSet<>();
-	private final ResourceType type;
+	private final PackType type;
 
-	private ResourceLoaderImpl(ResourceType type) {
+	private ResourceLoaderImpl(PackType type) {
 		this.type = type;
 	}
 
 	@Override
-	public void registerReloader(Identifier id, ResourceReloader reloader) {
+	public void registerReloader(ResourceLocation id, PreparableReloadListener reloader) {
 		Objects.requireNonNull(id, "The reloader identifier should not be null.");
 		Objects.requireNonNull(reloader, "The reloader should not be null.");
 
@@ -79,7 +77,7 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 			);
 		}
 
-		for (Map.Entry<Identifier, ResourceReloader> entry : this.addedReloaders.entrySet()) {
+		for (Map.Entry<ResourceLocation, PreparableReloadListener> entry : this.addedReloaders.entrySet()) {
 			if (entry.getValue() == reloader) {
 				throw new IllegalStateException(
 						"Resource reloader with ID %s already in resource reloader set with ID %s!"
@@ -92,7 +90,7 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 	}
 
 	@Override
-	public void addReloaderOrdering(Identifier firstReloader, Identifier secondReloader) {
+	public void addReloaderOrdering(ResourceLocation firstReloader, ResourceLocation secondReloader) {
 		Objects.requireNonNull(firstReloader, "The first reloader identifier should not be null.");
 		Objects.requireNonNull(secondReloader, "The second reloader identifier should not be null.");
 
@@ -103,7 +101,7 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 		this.reloadersOrdering.add(new ReloaderOrder(firstReloader, secondReloader));
 	}
 
-	private Identifier getResourceReloaderIdForSorting(ResourceReloader reloader) {
+	private ResourceLocation getResourceReloaderIdForSorting(PreparableReloadListener reloader) {
 		if (reloader instanceof FabricResourceReloader identifiable) {
 			return identifiable.fabric$getId();
 		} else {
@@ -115,7 +113,7 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 				);
 			}
 
-			return Identifier.of("unknown",
+			return ResourceLocation.fromNamespaceAndPath("unknown",
 					"private/"
 							+ reloader.getClass().getName()
 							.replace(".", "/")
@@ -125,7 +123,7 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 		}
 	}
 
-	public static List<ResourceReloader> sort(ResourceType type, List<ResourceReloader> listeners) {
+	public static List<PreparableReloadListener> sort(PackType type, List<PreparableReloadListener> listeners) {
 		if (type == null) {
 			return listeners;
 		}
@@ -142,13 +140,13 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 	 *
 	 * @param reloaders the resource reloaders to sort
 	 */
-	private void sort(List<ResourceReloader> reloaders) {
+	private void sort(List<PreparableReloadListener> reloaders) {
 		// Build the actual full list of resource reloaders to add.
-		final Set<Map.Entry<Identifier, ResourceReloader>> reloadersToAdd
+		final Set<Map.Entry<ResourceLocation, PreparableReloadListener>> reloadersToAdd
 				= new LinkedHashSet<>(this.addedReloaders.entrySet());
 
 		// Locate and extract the setup marker.
-		ResourceReloader setupReloader = this.extractSetupMarker(reloaders);
+		PreparableReloadListener setupReloader = this.extractSetupMarker(reloaders);
 
 		// Remove any modded reloaders to sort properly.
 		reloadersToAdd.stream().map(Map.Entry::getValue).forEach(reloaders::remove);
@@ -159,9 +157,9 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 		//   trust them 100%. Only code doesn't lie.
 		// - We add all custom reloaders after vanilla reloaders if they don't have contrary ordering. Same reasons.
 
-		var runtimePhases = new Object2ObjectOpenHashMap<Identifier, ResourceReloaderPhaseData>();
+		var runtimePhases = new Object2ObjectOpenHashMap<ResourceLocation, ResourceReloaderPhaseData>();
 
-		Iterator<ResourceReloader> itPhases = reloaders.iterator();
+		Iterator<PreparableReloadListener> itPhases = reloaders.iterator();
 		// Add the virtual before Vanilla phase.
 		ResourceReloaderPhaseData last = new ResourceReloaderPhaseData(ResourceReloaderKeys.BEFORE_VANILLA, null);
 		last.setVanillaStatus(ResourceReloaderPhaseData.VanillaStatus.VANILLA);
@@ -169,8 +167,8 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 
 		// Add all the Vanilla reloaders.
 		while (itPhases.hasNext()) {
-			ResourceReloader currentReloader = itPhases.next();
-			Identifier id = this.getResourceReloaderIdForSorting(currentReloader);
+			PreparableReloadListener currentReloader = itPhases.next();
+			ResourceLocation id = this.getResourceReloaderIdForSorting(currentReloader);
 
 			var current = new ResourceReloaderPhaseData(id, currentReloader);
 			current.setVanillaStatus(ResourceReloaderPhaseData.VanillaStatus.VANILLA);
@@ -186,7 +184,7 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 		SortableNode.link(last, afterVanilla);
 
 		// Add the modded reloaders.
-		for (Map.Entry<Identifier, ResourceReloader> moddedReloader : reloadersToAdd) {
+		for (Map.Entry<ResourceLocation, PreparableReloadListener> moddedReloader : reloadersToAdd) {
 			var phase = new ResourceReloaderPhaseData(moddedReloader.getKey(), moddedReloader.getValue());
 			runtimePhases.put(phase.id, phase);
 		}
@@ -245,13 +243,13 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 		}
 	}
 
-	private @Nullable ResourceReloader extractSetupMarker(List<ResourceReloader> reloaders) {
-		if (type == ResourceType.CLIENT_RESOURCES) {
+	private @Nullable PreparableReloadListener extractSetupMarker(List<PreparableReloadListener> reloaders) {
+		if (type == PackType.CLIENT_RESOURCES) {
 			// We don't need the registry for client resources.
 			return null;
 		}
 
-		Iterator<ResourceReloader> it = reloaders.iterator();
+		Iterator<PreparableReloadListener> it = reloaders.iterator();
 
 		while (it.hasNext()) {
 			if (it.next() instanceof SetupMarkerResourceReloader marker) {
@@ -264,8 +262,8 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 	}
 
 	// A bit of a hack to get the registry, but it works.
-	public static RegistryWrapper.WrapperLookup getWrapperLookup(List<ResourceReloader> reloaders) {
-		for (ResourceReloader resourceReloader : reloaders) {
+	public static HolderLookup.Provider getWrapperLookup(List<PreparableReloadListener> reloaders) {
+		for (PreparableReloadListener resourceReloader : reloaders) {
 			if (resourceReloader instanceof FabricRecipeManager recipeManager) {
 				return recipeManager.fabric$getRegistries();
 			}
@@ -274,6 +272,6 @@ public final class ResourceLoaderImpl implements ResourceLoader {
 		throw new IllegalStateException("No ServerRecipeManager found in reloaders!");
 	}
 
-	private record ReloaderOrder(Identifier first, Identifier second) {
+	private record ReloaderOrder(ResourceLocation first, ResourceLocation second) {
 	}
 }

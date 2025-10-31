@@ -20,13 +20,11 @@ import com.google.gson.GsonBuilder;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-
-import net.minecraft.client.render.model.UnbakedModel;
-import net.minecraft.client.render.model.json.JsonUnbakedModel;
-
 import net.fabricmc.fabric.impl.client.model.loading.UnbakedModelJsonDeserializer;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.resources.model.UnbakedModel;
 
-@Mixin(JsonUnbakedModel.class)
+@Mixin(BlockModel.class)
 abstract class JsonUnbakedModelMixin {
 	@ModifyExpressionValue(method = "<clinit>()V", at = @At(value = "NEW", target = "com/google/gson/GsonBuilder"))
 	private static GsonBuilder addUnbakedModelAdapter(GsonBuilder builder) {

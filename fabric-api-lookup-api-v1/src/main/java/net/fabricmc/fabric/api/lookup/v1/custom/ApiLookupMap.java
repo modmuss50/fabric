@@ -19,10 +19,8 @@ package net.fabricmc.fabric.api.lookup.v1.custom;
 import java.util.Objects;
 
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.lookup.custom.ApiLookupMapImpl;
+import net.minecraft.resources.ResourceLocation;
 
 //CHECKSTYLE.OFF: JavadocStyle - Checkstyle didn't like <A, C>, even though {@code ... } already escapes it.
 /**
@@ -116,7 +114,7 @@ public interface ApiLookupMap<L> extends Iterable<L> {
 	 * @throws IllegalArgumentException If another {@code apiClass} or another {@code contextClass} was already registered with the same identifier.
 	 * @throws NullPointerException If one of the arguments is null.
 	 */
-	L getLookup(Identifier lookupId, Class<?> apiClass, Class<?> contextClass);
+	L getLookup(ResourceLocation lookupId, Class<?> apiClass, Class<?> contextClass);
 
 	@FunctionalInterface
 	interface LookupConstructor<L> {
@@ -127,7 +125,7 @@ public interface ApiLookupMap<L> extends Iterable<L> {
 		 * @param apiClass The API class passed to {@link #getLookup}.
 		 * @param contextClass The context class passed to {@link #getLookup}.
 		 */
-		L get(Identifier identifier, Class<?> apiClass, Class<?> contextClass);
+		L get(ResourceLocation identifier, Class<?> apiClass, Class<?> contextClass);
 	}
 
 	/**

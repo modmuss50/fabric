@@ -20,52 +20,49 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
-
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.slf4j.Logger;
-
-import net.minecraft.client.resource.metadata.AnimationResourceMetadata;
-import net.minecraft.client.texture.MipmapStrategy;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.SpriteContents;
-import net.minecraft.client.texture.SpriteDimensions;
-import net.minecraft.client.texture.SpriteOpener;
-import net.minecraft.client.texture.atlas.AtlasSource;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.metadata.ResourceMetadata;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.AtlasSourceRegistry;
+import net.minecraft.client.renderer.texture.MipmapStrategy;
+import net.minecraft.client.renderer.texture.SpriteContents;
+import net.minecraft.client.renderer.texture.atlas.SpriteResourceLoader;
+import net.minecraft.client.renderer.texture.atlas.SpriteSource;
+import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
+import net.minecraft.client.resources.metadata.animation.FrameSize;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceMetadata;
+import net.minecraft.util.Mth;
 
 public class CustomAtlasSourcesTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		AtlasSourceRegistry.register(Identifier.of("fabric-rendering-v1-testmod", "double"), DoubleAtlasSource.CODEC);
+		AtlasSourceRegistry.register(ResourceLocation.fromNamespaceAndPath("fabric-rendering-v1-testmod", "double"), DoubleAtlasSource.CODEC);
 	}
 
-	private static class DoubleAtlasSource implements AtlasSource {
+	private static class DoubleAtlasSource implements SpriteSource {
 		private static final Logger LOGGER = LogUtils.getLogger();
 		public static final MapCodec<DoubleAtlasSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				Identifier.CODEC.fieldOf("resource").forGetter(source -> source.resource),
-				Identifier.CODEC.fieldOf("sprite").forGetter(source -> source.sprite)
+				ResourceLocation.CODEC.fieldOf("resource").forGetter(source -> source.resource),
+				ResourceLocation.CODEC.fieldOf("sprite").forGetter(source -> source.sprite)
 		).apply(instance, DoubleAtlasSource::new));
 
-		private final Identifier resource;
-		private final Identifier sprite;
+		private final ResourceLocation resource;
+		private final ResourceLocation sprite;
 
-		DoubleAtlasSource(Identifier resource, Identifier sprite) {
+		DoubleAtlasSource(ResourceLocation resource, ResourceLocation sprite) {
 			this.resource = resource;
 			this.sprite = sprite;
 		}
 
 		@Override
-		public void load(ResourceManager resourceManager, SpriteRegions regions) {
-			Identifier resourceId = RESOURCE_FINDER.toResourcePath(resource);
+		public void run(ResourceManager resourceManager, Output regions) {
+			ResourceLocation resourceId = TEXTURE_ID_CONVERTER.idToFile(resource);
 			Optional<Resource> optionalResource = resourceManager.getResource(resourceId);
 
 			if (optionalResource.isPresent()) {
@@ -76,27 +73,27 @@ public class CustomAtlasSourcesTest implements ClientModInitializer {
 		}
 
 		@Override
-		public MapCodec<? extends AtlasSource> getCodec() {
+		public MapCodec<? extends SpriteSource> codec() {
 			return CODEC;
 		}
 
-		private static class DoubleSpriteRegion implements AtlasSource.SpriteRegion {
-			private final Identifier resourceId;
+		private static class DoubleSpriteRegion implements SpriteSource.DiscardableLoader {
+			private final ResourceLocation resourceId;
 			private final Resource resource;
-			private final Identifier spriteId;
+			private final ResourceLocation spriteId;
 
-			DoubleSpriteRegion(Identifier resourceId, Resource resource, Identifier spriteId) {
+			DoubleSpriteRegion(ResourceLocation resourceId, Resource resource, ResourceLocation spriteId) {
 				this.resourceId = resourceId;
 				this.resource = resource;
 				this.spriteId = spriteId;
 			}
 
 			@Override
-			public SpriteContents method_52853(SpriteOpener spriteOpener) {
+			public SpriteContents get(SpriteResourceLoader spriteOpener) {
 				ResourceMetadata metadata;
 
 				try {
-					metadata = resource.getMetadata();
+					metadata = resource.metadata();
 				} catch (Exception e) {
 					LOGGER.error("Unable to parse metadata from {}", resourceId, e);
 					return null;
@@ -104,7 +101,7 @@ public class CustomAtlasSourcesTest implements ClientModInitializer {
 
 				NativeImage image;
 
-				try (InputStream inputStream = resource.getInputStream()) {
+				try (InputStream inputStream = resource.open()) {
 					image = NativeImage.read(inputStream);
 				} catch (IOException e) {
 					LOGGER.error("Using missing texture, unable to load {}", resourceId, e);
@@ -113,13 +110,13 @@ public class CustomAtlasSourcesTest implements ClientModInitializer {
 
 				int imageWidth = image.getWidth();
 				int imageHeight = image.getHeight();
-				AnimationResourceMetadata animationMetadata = metadata.decode(AnimationResourceMetadata.SERIALIZER)
-						.orElse(new AnimationResourceMetadata(Optional.empty(), Optional.empty(), Optional.empty(), 1, false));
-				SpriteDimensions dimensions = animationMetadata.getSize(imageWidth, imageHeight);
+				AnimationMetadataSection animationMetadata = metadata.getSection(AnimationMetadataSection.TYPE)
+						.orElse(new AnimationMetadataSection(Optional.empty(), Optional.empty(), Optional.empty(), 1, false));
+				FrameSize dimensions = animationMetadata.calculateFrameSize(imageWidth, imageHeight);
 				int frameWidth = dimensions.width();
 				int frameHeight = dimensions.height();
 
-				if (!MathHelper.isMultipleOf(imageWidth, frameWidth) || !MathHelper.isMultipleOf(imageHeight, dimensions.height())) {
+				if (!Mth.isMultipleOf(imageWidth, frameWidth) || !Mth.isMultipleOf(imageHeight, dimensions.height())) {
 					LOGGER.error("Image {} size {},{} is not multiple of frame size {},{}", resourceId, imageWidth, imageHeight, frameWidth, frameHeight);
 					image.close();
 					return null;
@@ -130,7 +127,7 @@ public class CustomAtlasSourcesTest implements ClientModInitializer {
 				int offsetX = frameWidth / 16;
 				int offsetY = frameHeight / 16;
 
-				NativeImage doubleImage = new NativeImage(image.getFormat(), image.getWidth(), image.getHeight(), false);
+				NativeImage doubleImage = new NativeImage(image.format(), image.getWidth(), image.getHeight(), false);
 
 				for (int frameY = 0; frameY < frameCountY; frameY++) {
 					for (int frameX = 0; frameX < frameCountX; frameX++) {
@@ -145,8 +142,8 @@ public class CustomAtlasSourcesTest implements ClientModInitializer {
 			private static void blendRect(NativeImage src, NativeImage dst, int srcX, int srcY, int destX, int destY, int width, int height) {
 				for (int y = 0; y < height; ++y) {
 					for (int x = 0; x < width; ++x) {
-						int c = src.getColorArgb(srcX + x, srcY + y);
-						dst.setColorArgb(destX + x, destY + y, c);
+						int c = src.getPixel(srcX + x, srcY + y);
+						dst.setPixel(destX + x, destY + y, c);
 					}
 				}
 			}

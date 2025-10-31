@@ -19,14 +19,12 @@ package net.fabricmc.fabric.api.recipe.v1.ingredient;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.display.SlotDisplay;
-import net.minecraft.registry.entry.RegistryEntry;
-
 import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientImpl;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 /**
  * Interface that modders can implement to create new behaviors for {@link Ingredient}s.
@@ -75,7 +73,7 @@ public interface CustomIngredient {
 	 *
 	 * <p>Note: no caching needs to be done by the implementation, this is already handled by the ingredient itself.
 	 */
-	Stream<RegistryEntry<Item>> getMatchingItems();
+	Stream<Holder<Item>> getMatchingItems();
 
 	/**
 	 * Returns whether this ingredient always requires {@linkplain #test direct stack testing}.
@@ -99,7 +97,7 @@ public interface CustomIngredient {
 	 */
 	default SlotDisplay toDisplay() {
 		// Matches the vanilla logic in Ingredient.toDisplay()
-		return new SlotDisplay.CompositeSlotDisplay(getMatchingItems().map(Ingredient::createDisplayWithRemainder).toList());
+		return new SlotDisplay.Composite(getMatchingItems().map(Ingredient::displayForSingleItem).toList());
 	}
 
 	/**

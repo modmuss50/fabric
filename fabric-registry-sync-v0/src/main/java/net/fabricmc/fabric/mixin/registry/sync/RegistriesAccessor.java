@@ -16,16 +16,15 @@
 
 package net.fabricmc.fabric.mixin.registry.sync;
 
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.registry.MutableRegistry;
-import net.minecraft.registry.Registries;
-
-@Mixin(Registries.class)
+@Mixin(BuiltInRegistries.class)
 public interface RegistriesAccessor<T> {
 	@Accessor()
-	static MutableRegistry<MutableRegistry<?>> getROOT() {
+	static WritableRegistry<WritableRegistry<?>> getWRITABLE_REGISTRY() {
 		throw new UnsupportedOperationException();
 	}
 }

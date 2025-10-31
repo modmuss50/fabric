@@ -17,9 +17,6 @@
 package net.fabricmc.fabric.impl.resource.conditions;
 
 import com.mojang.serialization.MapCodec;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.AllModsLoadedResourceCondition;
@@ -31,6 +28,7 @@ import net.fabricmc.fabric.impl.resource.conditions.conditions.OrResourceConditi
 import net.fabricmc.fabric.impl.resource.conditions.conditions.RegistryContainsResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.TagsPopulatedResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.TrueResourceCondition;
+import net.minecraft.resources.ResourceLocation;
 
 public class DefaultResourceConditionTypes {
 	public static final ResourceConditionType<TrueResourceCondition> TRUE = createResourceConditionType("true", TrueResourceCondition.CODEC);
@@ -44,6 +42,6 @@ public class DefaultResourceConditionTypes {
 	public static final ResourceConditionType<RegistryContainsResourceCondition> REGISTRY_CONTAINS = createResourceConditionType("registry_contains", RegistryContainsResourceCondition.CODEC);
 
 	private static <T extends ResourceCondition> ResourceConditionType<T> createResourceConditionType(String name, MapCodec<T> codec) {
-		return ResourceConditionType.create(Identifier.of("fabric", name), codec);
+		return ResourceConditionType.create(ResourceLocation.fromNamespaceAndPath("fabric", name), codec);
 	}
 }

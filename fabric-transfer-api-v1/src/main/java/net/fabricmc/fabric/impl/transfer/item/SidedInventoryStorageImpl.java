@@ -19,14 +19,12 @@ package net.fabricmc.fabric.impl.transfer.item;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.minecraft.core.Direction;
+import net.minecraft.world.WorldlyContainer;
 
 /**
  * Sidedness-aware wrapper around a {@link InventoryStorageImpl} for sided inventories.
@@ -45,8 +43,8 @@ class SidedInventoryStorageImpl extends CombinedStorage<ItemVariant, SingleSlotS
 	}
 
 	private static List<SingleSlotStorage<ItemVariant>> createWrapperList(InventoryStorageImpl storage, Direction direction) {
-		SidedInventory inventory = (SidedInventory) storage.inventory;
-		int[] availableSlots = inventory.getAvailableSlots(direction);
+		WorldlyContainer inventory = (WorldlyContainer) storage.inventory;
+		int[] availableSlots = inventory.getSlotsForFace(direction);
 		SidedInventorySlotWrapper[] slots = new SidedInventorySlotWrapper[availableSlots.length];
 
 		for (int i = 0; i < availableSlots.length; ++i) {

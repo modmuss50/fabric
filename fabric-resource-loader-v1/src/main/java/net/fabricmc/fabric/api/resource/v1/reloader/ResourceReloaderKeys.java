@@ -16,12 +16,12 @@
 
 package net.fabricmc.fabric.api.resource.v1.reloader;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * This class contains default keys for various Minecraft resource reloaders.
  *
- * @see net.minecraft.resource.ResourceReloader
+ * @see net.minecraft.server.packs.resources.PreparableReloadListener
  */
 public final class ResourceReloaderKeys {
 	/**
@@ -29,17 +29,17 @@ public final class ResourceReloaderKeys {
 	 *
 	 * <p>No resource reloaders are assigned to this identifier.
 	 *
-	 * @see net.fabricmc.fabric.api.resource.v1.ResourceLoader#addReloaderOrdering(Identifier, Identifier)
+	 * @see net.fabricmc.fabric.api.resource.v1.ResourceLoader#addReloaderOrdering(ResourceLocation, ResourceLocation)
 	 */
-	public static final Identifier BEFORE_VANILLA = Identifier.of("fabric", "before_vanilla");
+	public static final ResourceLocation BEFORE_VANILLA = ResourceLocation.fromNamespaceAndPath("fabric", "before_vanilla");
 	/**
 	 * Represents the application phase after Vanilla resource reloaders are invoked.
 	 *
 	 * <p>No resource reloaders are assigned to this identifier.
 	 *
-	 * @see net.fabricmc.fabric.api.resource.v1.ResourceLoader#addReloaderOrdering(Identifier, Identifier)
+	 * @see net.fabricmc.fabric.api.resource.v1.ResourceLoader#addReloaderOrdering(ResourceLocation, ResourceLocation)
 	 */
-	public static final Identifier AFTER_VANILLA = Identifier.of("fabric", "after_vanilla");
+	public static final ResourceLocation AFTER_VANILLA = ResourceLocation.fromNamespaceAndPath("fabric", "after_vanilla");
 
 	private ResourceReloaderKeys() { }
 
@@ -47,24 +47,24 @@ public final class ResourceReloaderKeys {
 	 * Keys for various client resource reloaders.
 	 */
 	public static final class Client {
-		public static final Identifier BLOCK_ENTITY_RENDERERS = Identifier.ofVanilla("block_entity_renderers");
-		public static final Identifier BLOCK_RENDER_MANAGER = Identifier.ofVanilla("block_render_manager");
-		public static final Identifier CLOUD_CELLS = Identifier.ofVanilla("cloud_cells");
-		public static final Identifier EQUIPMENT_MODELS = Identifier.ofVanilla("equipment_models");
-		public static final Identifier ENTITY_RENDERERS = Identifier.ofVanilla("entity_renderers");
-		public static final Identifier DRY_FOLIAGE_COLORMAP = Identifier.ofVanilla("dry_foliage_colormap");
-		public static final Identifier FOLIAGE_COLORMAP = Identifier.ofVanilla("foliage_colormap");
-		public static final Identifier FONTS = Identifier.ofVanilla("fonts");
-		public static final Identifier GRASS_COLORMAP = Identifier.ofVanilla("grass_colormap");
-		public static final Identifier ATLAS = Identifier.ofVanilla("atlas");
-		public static final Identifier LANGUAGES = Identifier.ofVanilla("languages");
-		public static final Identifier MODELS = Identifier.ofVanilla("models");
-		public static final Identifier PARTICLES = Identifier.ofVanilla("particles");
-		public static final Identifier SHADERS = Identifier.ofVanilla("shaders");
-		public static final Identifier SOUNDS = Identifier.ofVanilla("sounds");
-		public static final Identifier SPLASH_TEXTS = Identifier.ofVanilla("splash_texts");
-		public static final Identifier TEXTURES = Identifier.ofVanilla("textures");
-		public static final Identifier WAYPOINT_STYLE_ASSETS = Identifier.ofVanilla("waypoint_style_assets");
+		public static final ResourceLocation BLOCK_ENTITY_RENDERERS = ResourceLocation.withDefaultNamespace("block_entity_renderers");
+		public static final ResourceLocation BLOCK_RENDER_MANAGER = ResourceLocation.withDefaultNamespace("block_render_manager");
+		public static final ResourceLocation CLOUD_CELLS = ResourceLocation.withDefaultNamespace("cloud_cells");
+		public static final ResourceLocation EQUIPMENT_MODELS = ResourceLocation.withDefaultNamespace("equipment_models");
+		public static final ResourceLocation ENTITY_RENDERERS = ResourceLocation.withDefaultNamespace("entity_renderers");
+		public static final ResourceLocation DRY_FOLIAGE_COLORMAP = ResourceLocation.withDefaultNamespace("dry_foliage_colormap");
+		public static final ResourceLocation FOLIAGE_COLORMAP = ResourceLocation.withDefaultNamespace("foliage_colormap");
+		public static final ResourceLocation FONTS = ResourceLocation.withDefaultNamespace("fonts");
+		public static final ResourceLocation GRASS_COLORMAP = ResourceLocation.withDefaultNamespace("grass_colormap");
+		public static final ResourceLocation ATLAS = ResourceLocation.withDefaultNamespace("atlas");
+		public static final ResourceLocation LANGUAGES = ResourceLocation.withDefaultNamespace("languages");
+		public static final ResourceLocation MODELS = ResourceLocation.withDefaultNamespace("models");
+		public static final ResourceLocation PARTICLES = ResourceLocation.withDefaultNamespace("particles");
+		public static final ResourceLocation SHADERS = ResourceLocation.withDefaultNamespace("shaders");
+		public static final ResourceLocation SOUNDS = ResourceLocation.withDefaultNamespace("sounds");
+		public static final ResourceLocation SPLASH_TEXTS = ResourceLocation.withDefaultNamespace("splash_texts");
+		public static final ResourceLocation TEXTURES = ResourceLocation.withDefaultNamespace("textures");
+		public static final ResourceLocation WAYPOINT_STYLE_ASSETS = ResourceLocation.withDefaultNamespace("waypoint_style_assets");
 
 		private Client() {
 		}
@@ -74,9 +74,9 @@ public final class ResourceReloaderKeys {
 	 * Keys for various server resource reloaders.
 	 */
 	public static final class Server {
-		public static final Identifier ADVANCEMENTS = Identifier.ofVanilla("advancements");
-		public static final Identifier FUNCTIONS = Identifier.ofVanilla("functions");
-		public static final Identifier RECIPES = Identifier.ofVanilla("recipes");
+		public static final ResourceLocation ADVANCEMENTS = ResourceLocation.withDefaultNamespace("advancements");
+		public static final ResourceLocation FUNCTIONS = ResourceLocation.withDefaultNamespace("functions");
+		public static final ResourceLocation RECIPES = ResourceLocation.withDefaultNamespace("recipes");
 
 		private Server() {
 		}

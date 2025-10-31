@@ -16,32 +16,18 @@
 
 package net.fabricmc.fabric.test.item;
 
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelBasedValue;
-import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
-import net.minecraft.enchantment.effect.entity.IgniteEnchantmentEffect;
-import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
-import net.minecraft.entity.EntityType;
-import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
-import net.minecraft.loot.condition.EntityPropertiesLootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.predicate.entity.DamageSourcePredicate;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.predicate.entity.EntityTypePredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class CustomEnchantmentEffectsTest implements ModInitializer {
 	// weird impaling is a copy of impaling used for testing (just in case minecraft changes impaling for some reason)
-	public static final RegistryKey<Enchantment> WEIRD_IMPALING = RegistryKey.of(
-			RegistryKeys.ENCHANTMENT,
-			Identifier.of("fabric-item-api-v1-testmod", "weird_impaling")
+	public static final ResourceKey<Enchantment> WEIRD_IMPALING = ResourceKey.create(
+			Registries.ENCHANTMENT,
+			ResourceLocation.fromNamespaceAndPath("fabric-item-api-v1-testmod", "weird_impaling")
 	);
 
 	@Override

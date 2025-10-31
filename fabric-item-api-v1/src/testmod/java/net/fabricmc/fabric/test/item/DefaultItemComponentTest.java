@@ -19,23 +19,16 @@ package net.fabricmc.fabric.test.item;
 import java.util.List;
 
 import it.unimi.dsi.fastutil.ints.IntList;
-
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FireworkExplosionComponent;
-import net.minecraft.component.type.FireworksComponent;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class DefaultItemComponentTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		Identifier latePhase = Identifier.of("fabric-item-api-v1-testmod", "late");
+		ResourceLocation latePhase = ResourceLocation.fromNamespaceAndPath("fabric-item-api-v1-testmod", "late");
 		DefaultItemComponentEvents.MODIFY.addPhaseOrdering(Event.DEFAULT_PHASE, latePhase);
 
 		DefaultItemComponentEvents.MODIFY.register(context -> {
@@ -69,8 +62,8 @@ public class DefaultItemComponentTest implements ModInitializer {
 		});
 	}
 
-	public static Text prependModifiedLiteral(Text name) {
-		return Text.literal("Modified ")
+	public static Component prependModifiedLiteral(Component name) {
+		return Component.literal("Modified ")
 				.append(name);
 	}
 }

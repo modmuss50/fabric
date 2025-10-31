@@ -27,35 +27,33 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.Bootstrap;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 
 public class RegistryAliasTest {
-	private static final Identifier OBSOLETE_ID = id("obsolete");
-	private static final Identifier NEW_ID = id("new");
-	private static final Identifier OTHER = id("other");
-	private RegistryKey<Registry<String>> testRegistryKey;
+	private static final ResourceLocation OBSOLETE_ID = id("obsolete");
+	private static final ResourceLocation NEW_ID = id("new");
+	private static final ResourceLocation OTHER = id("other");
+	private ResourceKey<Registry<String>> testRegistryKey;
 	private Registry<String> testRegistry;
 
 	@BeforeAll
 	static void beforeAll() {
-		SharedConstants.createGameVersion();
-		Bootstrap.initialize();
+		SharedConstants.tryDetectVersion();
+		Bootstrap.bootStrap();
 	}
 
-	private static Identifier id(String s) {
-		return Identifier.of("registry_sync_test_alias_test", s);
+	private static ResourceLocation id(String s) {
+		return ResourceLocation.fromNamespaceAndPath("registry_sync_test_alias_test", s);
 	}
 
 	@BeforeEach
 	void beforeEach() {
-		testRegistryKey = RegistryKey.ofRegistry(id(UUID.randomUUID().toString()));
+		testRegistryKey = ResourceKey.createRegistryKey(id(UUID.randomUUID().toString()));
 		testRegistry = Mockito.spy(FabricRegistryBuilder.createSimple(testRegistryKey).buildAndRegister());
 
 		Registry.register(testRegistry, NEW_ID, "entry");
@@ -65,20 +63,20 @@ public class RegistryAliasTest {
 
 	@Test
 	void testAlias() {
-		RegistryKey<String> obsoleteKey = RegistryKey.of(testRegistryKey, OBSOLETE_ID);
+		ResourceKey<String> obsoleteKey = ResourceKey.create(testRegistryKey, OBSOLETE_ID);
 
-		assertTrue(testRegistry.containsId(OBSOLETE_ID));
-		assertFalse(testRegistry.getIds().contains(OBSOLETE_ID));
-		assertEquals("entry", testRegistry.get(OBSOLETE_ID));
-		assertEquals("entry", testRegistry.get(obsoleteKey));
+		assertTrue(testRegistry.containsKey(OBSOLETE_ID));
+		assertFalse(testRegistry.keySet().contains(OBSOLETE_ID));
+		assertEquals("entry", testRegistry.getValue(OBSOLETE_ID));
+		assertEquals("entry", testRegistry.getValue(obsoleteKey));
 
-		Identifier moreObsolete = id("more_obsolete");
-		assertFalse(testRegistry.containsId(moreObsolete));
+		ResourceLocation moreObsolete = id("more_obsolete");
+		assertFalse(testRegistry.containsKey(moreObsolete));
 
 		testRegistry.addAlias(moreObsolete, OBSOLETE_ID);
 
-		assertTrue(testRegistry.containsId(moreObsolete));
-		assertEquals("entry", testRegistry.get(moreObsolete));
+		assertTrue(testRegistry.containsKey(moreObsolete));
+		assertEquals("entry", testRegistry.getValue(moreObsolete));
 	}
 
 	@Test

@@ -24,12 +24,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.Block;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.client.model.loading.v1.BlockStateResolver;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -37,6 +31,10 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelModifier;
 import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedExtraModel;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 
 public class ModelLoadingPluginContextImpl implements ModelLoadingPlugin.Context {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModelLoadingPluginContextImpl.class);
@@ -44,7 +42,7 @@ public class ModelLoadingPluginContextImpl implements ModelLoadingPlugin.Context
 	final Map<Block, BlockStateResolver> blockStateResolvers = new IdentityHashMap<>();
 	final Map<ExtraModelKey<?>, UnbakedExtraModel<?>> extraModels = new HashMap<>();
 
-	private static final Identifier[] MODEL_MODIFIER_PHASES = new Identifier[]{ModelModifier.OVERRIDE_PHASE, ModelModifier.DEFAULT_PHASE, ModelModifier.WRAP_PHASE, ModelModifier.WRAP_LAST_PHASE};
+	private static final ResourceLocation[] MODEL_MODIFIER_PHASES = new ResourceLocation[]{ModelModifier.OVERRIDE_PHASE, ModelModifier.DEFAULT_PHASE, ModelModifier.WRAP_PHASE, ModelModifier.WRAP_LAST_PHASE};
 
 	private final Event<ModelModifier.OnLoad> onLoadModifiers = EventFactory.createWithPhases(ModelModifier.OnLoad.class, modifiers -> (model, context) -> {
 		for (ModelModifier.OnLoad modifier : modifiers) {
@@ -118,7 +116,7 @@ public class ModelLoadingPluginContextImpl implements ModelLoadingPlugin.Context
 		Objects.requireNonNull(block, "block cannot be null");
 		Objects.requireNonNull(resolver, "resolver cannot be null");
 
-		Optional<RegistryKey<Block>> optionalKey = Registries.BLOCK.getKey(block);
+		Optional<ResourceKey<Block>> optionalKey = BuiltInRegistries.BLOCK.getResourceKey(block);
 
 		if (optionalKey.isEmpty()) {
 			throw new IllegalArgumentException("Received unregistered block");

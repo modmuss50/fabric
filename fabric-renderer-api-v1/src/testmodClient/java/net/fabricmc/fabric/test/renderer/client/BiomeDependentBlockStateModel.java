@@ -22,23 +22,21 @@ import java.util.function.Predicate;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.model.Baker;
-import net.minecraft.client.render.model.BlockModelPart;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.biome.Biome;
-
 import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BiomeDependentBlockStateModel implements BlockStateModel {
 	private final BlockStateModel regularModel;
@@ -52,7 +50,7 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
+	public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
 		if (((FabricBlockView) blockView).hasBiomes() && ((FabricBlockView) blockView).getBiomeFabric(pos).isIn(biomeTag)) {
 			biomeModel.emitQuads(emitter, blockView, pos, state, random, cullTest);
 		} else {
@@ -62,7 +60,7 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 
 	@Override
 	@Nullable
-	public Object createGeometryKey(BlockRenderView blockView, BlockPos pos, BlockState state, Random random) {
+	public Object createGeometryKey(BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random) {
 		if (((FabricBlockView) blockView).hasBiomes() && ((FabricBlockView) blockView).getBiomeFabric(pos).isIn(biomeTag)) {
 			return biomeModel.createGeometryKey(blockView, pos, state, random);
 		} else {
@@ -71,29 +69,29 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public void addParts(Random random, List<BlockModelPart> parts) {
+	public void collectParts(RandomSource random, List<BlockModelPart> parts) {
 	}
 
 	@Override
-	public Sprite particleSprite() {
-		return regularModel.particleSprite();
+	public TextureAtlasSprite particleIcon() {
+		return regularModel.particleIcon();
 	}
 
 	@Override
-	public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
+	public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
 		if (((FabricBlockView) blockView).hasBiomes() && ((FabricBlockView) blockView).getBiomeFabric(pos).isIn(biomeTag)) {
-			return biomeModel.particleSprite(blockView, pos, state);
+			return biomeModel.particleIcon(blockView, pos, state);
 		} else {
-			return regularModel.particleSprite(blockView, pos, state);
+			return regularModel.particleIcon(blockView, pos, state);
 		}
 	}
 
 	public record Unbaked(BlockStateModel.Unbaked regularModel, BlockStateModel.Unbaked biomeModel, TagKey<Biome> biomeTag) implements CustomUnbakedBlockStateModel {
-		public static final MapCodec<Unbaked> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-				BlockStateModel.Unbaked.CODEC.fieldOf("regular_model").forGetter(Unbaked::regularModel),
-				BlockStateModel.Unbaked.CODEC.fieldOf("biome_model").forGetter(Unbaked::biomeModel),
-				TagKey.unprefixedCodec(RegistryKeys.BIOME).fieldOf("biome_tag").forGetter(Unbaked::biomeTag)
-		).apply(instance, Unbaked::new));
+		public static final MapCodec<net.fabricmc.fabric.test.renderer.client.BiomeDependentBlockStateModel.Unbaked> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+				BlockStateModel.Unbaked.CODEC.fieldOf("regular_model").forGetter(net.fabricmc.fabric.test.renderer.client.BiomeDependentBlockStateModel.Unbaked::regularModel),
+				BlockStateModel.Unbaked.CODEC.fieldOf("biome_model").forGetter(net.fabricmc.fabric.test.renderer.client.BiomeDependentBlockStateModel.Unbaked::biomeModel),
+				TagKey.codec(Registries.BIOME).fieldOf("biome_tag").forGetter(net.fabricmc.fabric.test.renderer.client.BiomeDependentBlockStateModel.Unbaked::biomeTag)
+		).apply(instance, net.fabricmc.fabric.test.renderer.client.BiomeDependentBlockStateModel.Unbaked::new));
 
 		@Override
 		public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
@@ -102,12 +100,12 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 
 		@Override
 		public void resolve(Resolver resolver) {
-			regularModel.resolve(resolver);
-			biomeModel.resolve(resolver);
+			regularModel.resolveDependencies(resolver);
+			biomeModel.resolveDependencies(resolver);
 		}
 
 		@Override
-		public BlockStateModel bake(Baker baker) {
+		public BlockStateModel bake(ModelBaker baker) {
 			BlockStateModel bakedRegularModel = regularModel.bake(baker);
 			BlockStateModel bakedBiomeModel = biomeModel.bake(baker);
 			return new BiomeDependentBlockStateModel(bakedRegularModel, bakedBiomeModel, biomeTag);

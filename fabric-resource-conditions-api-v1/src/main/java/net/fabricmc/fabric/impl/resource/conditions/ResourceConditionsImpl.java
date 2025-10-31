@@ -27,24 +27,22 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryOps;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 
 public final class ResourceConditionsImpl implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Fabric Resource Conditions");
-	public static FeatureSet currentFeatures = null;
+	public static FeatureFlagSet currentFeatures = null;
 
 	@Override
 	public void onInitialize() {
@@ -59,7 +57,7 @@ public final class ResourceConditionsImpl implements ModInitializer {
 		ResourceConditions.register(DefaultResourceConditionTypes.REGISTRY_CONTAINS);
 	}
 
-	public static boolean applyResourceConditions(JsonObject obj, String dataType, Identifier key, RegistryOps.@Nullable RegistryInfoGetter registryInfo) {
+	public static boolean applyResourceConditions(JsonObject obj, String dataType, ResourceLocation key, RegistryOps.@Nullable RegistryInfoLookup registryInfo) {
 		boolean debugLogEnabled = ResourceConditionsImpl.LOGGER.isDebugEnabled();
 
 		if (obj.has(ResourceConditions.CONDITIONS_KEY)) {
@@ -84,7 +82,7 @@ public final class ResourceConditionsImpl implements ModInitializer {
 
 	// Condition implementations
 
-	public static boolean conditionsMet(List<ResourceCondition> conditions, RegistryOps.@Nullable RegistryInfoGetter registryInfo, boolean and) {
+	public static boolean conditionsMet(List<ResourceCondition> conditions, RegistryOps.@Nullable RegistryInfoLookup registryInfo, boolean and) {
 		for (ResourceCondition condition : conditions) {
 			if (condition.test(registryInfo) != and) {
 				return !and;
@@ -104,20 +102,20 @@ public final class ResourceConditionsImpl implements ModInitializer {
 		return and;
 	}
 
-	public static boolean tagsPopulated(RegistryOps.@Nullable RegistryInfoGetter infoGetter, Identifier registryId, List<Identifier> tags) {
+	public static boolean tagsPopulated(RegistryOps.@Nullable RegistryInfoLookup infoGetter, ResourceLocation registryId, List<ResourceLocation> tags) {
 		if (infoGetter == null) {
 			LOGGER.warn("Can't retrieve registry {}, failing tags_populated resource condition check", registryId);
 			return false;
 		}
 
-		RegistryKey<? extends Registry<Object>> registryKey = RegistryKey.ofRegistry(registryId);
-		Optional<RegistryOps.RegistryInfo<Object>> optionalInfo = infoGetter.getRegistryInfo(registryKey);
+		ResourceKey<? extends Registry<Object>> registryKey = ResourceKey.createRegistryKey(registryId);
+		Optional<RegistryOps.RegistryInfo<Object>> optionalInfo = infoGetter.lookup(registryKey);
 
 		if (optionalInfo.isPresent()) {
-			RegistryEntryLookup<Object> lookup = optionalInfo.get().entryLookup();
+			HolderGetter<Object> lookup = optionalInfo.get().getter();
 
-			for (Identifier id : tags) {
-				if (lookup.getOptional(TagKey.of(registryKey, id)).isEmpty()) {
+			for (ResourceLocation id : tags) {
+				if (lookup.get(TagKey.create(registryKey, id)).isEmpty()) {
 					return false;
 				}
 			}
@@ -128,9 +126,9 @@ public final class ResourceConditionsImpl implements ModInitializer {
 		}
 	}
 
-	public static boolean featuresEnabled(Collection<Identifier> features) {
+	public static boolean featuresEnabled(Collection<ResourceLocation> features) {
 		MutableBoolean foundUnknown = new MutableBoolean();
-		FeatureSet set = FeatureFlags.FEATURE_MANAGER.featureSetOf(features, (id) -> {
+		FeatureFlagSet set = FeatureFlags.REGISTRY.fromNames(features, (id) -> {
 			LOGGER.info("Found unknown feature {}, treating it as failure", id);
 			foundUnknown.setTrue();
 		});
@@ -147,20 +145,20 @@ public final class ResourceConditionsImpl implements ModInitializer {
 		return set.isSubsetOf(currentFeatures);
 	}
 
-	public static boolean registryContains(RegistryOps.@Nullable RegistryInfoGetter infoGetter, Identifier registryId, List<Identifier> entries) {
+	public static boolean registryContains(RegistryOps.@Nullable RegistryInfoLookup infoGetter, ResourceLocation registryId, List<ResourceLocation> entries) {
 		if (infoGetter == null) {
 			LOGGER.warn("Can't retrieve registry {}, failing registry_contains resource condition check", registryId);
 			return false;
 		}
 
-		RegistryKey<? extends Registry<Object>> registryKey = RegistryKey.ofRegistry(registryId);
-		Optional<RegistryOps.RegistryInfo<Object>> optionalInfo = infoGetter.getRegistryInfo(registryKey);
+		ResourceKey<? extends Registry<Object>> registryKey = ResourceKey.createRegistryKey(registryId);
+		Optional<RegistryOps.RegistryInfo<Object>> optionalInfo = infoGetter.lookup(registryKey);
 
 		if (optionalInfo.isPresent()) {
-			RegistryEntryLookup<Object> lookup = optionalInfo.get().entryLookup();
+			HolderGetter<Object> lookup = optionalInfo.get().getter();
 
-			for (Identifier id : entries) {
-				if (lookup.getOptional(RegistryKey.of(registryKey, id)).isEmpty()) {
+			for (ResourceLocation id : entries) {
+				if (lookup.get(ResourceKey.create(registryKey, id)).isEmpty()) {
 					return false;
 				}
 			}

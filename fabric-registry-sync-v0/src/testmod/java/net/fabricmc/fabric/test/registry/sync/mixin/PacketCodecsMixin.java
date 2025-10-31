@@ -22,20 +22,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.collection.IndexedIterable;
-
 import net.fabricmc.fabric.test.registry.sync.RegistrySyncTest;
+import net.minecraft.core.IdMap;
+import net.minecraft.core.Registry;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 
-@Mixin(PacketCodecs.class)
+@Mixin(ByteBufCodecs.class)
 public interface PacketCodecsMixin {
-	@Inject(method = "registry", at = @At("HEAD"))
-	private static <T, R> void checkSynced(RegistryKey<? extends Registry<T>> registry, Function<Registry<T>, IndexedIterable<R>> registryTransformer, CallbackInfoReturnable<PacketCodec<RegistryByteBuf, R>> cir) {
+	@Inject(method = "registry(Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;)Lnet/minecraft/network/codec/StreamCodec;", at = @At("HEAD"))
+	private static <T, R> void checkSynced(ResourceKey<? extends Registry<T>> registry, Function<Registry<T>, IdMap<R>> registryTransformer, CallbackInfoReturnable<StreamCodec<RegistryFriendlyByteBuf, R>> cir) {
 		RegistrySyncTest.checkSyncedRegistry(registry);
 	}
 }

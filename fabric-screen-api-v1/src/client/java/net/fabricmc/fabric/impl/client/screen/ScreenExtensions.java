@@ -17,21 +17,19 @@
 package net.fabricmc.fabric.impl.client.screen;
 
 import java.util.List;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ClickableWidget;
-
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.fabric.api.event.Event;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.screens.Screen;
 
 public interface ScreenExtensions {
 	static ScreenExtensions getExtensions(Screen screen) {
 		return (ScreenExtensions) screen;
 	}
 
-	List<ClickableWidget> fabric_getButtons();
+	List<AbstractWidget> fabric_getButtons();
 
 	Event<ScreenEvents.Remove> fabric_getRemoveEvent();
 

@@ -16,11 +16,11 @@
 
 package net.fabricmc.fabric.api.datagen.v1.recipe;
 
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.util.Identifier;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceLocation;
 
 /**
- * Injected to all {@link RecipeExporter} instances.
+ * Injected to all {@link RecipeOutput} instances.
  */
 public interface FabricRecipeExporter {
 	/**
@@ -30,9 +30,9 @@ public interface FabricRecipeExporter {
 	 * Fabric API implementations automatically apply the corresponding method in
 	 * {@link net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider FabricRecipeProvider}.
 	 *
-	 * @see net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider#getRecipeIdentifier(Identifier)
+	 * @see net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider#getRecipeIdentifier(ResourceLocation)
 	 */
-	default Identifier getRecipeIdentifier(Identifier recipeId) {
+	default ResourceLocation getRecipeIdentifier(ResourceLocation recipeId) {
 		return recipeId;
 	}
 }

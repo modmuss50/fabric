@@ -17,11 +17,9 @@
 package net.fabricmc.fabric.api.networking.v1;
 
 import java.util.List;
-
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerConfigurationNetworkHandler;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
@@ -57,7 +55,7 @@ public final class S2CConfigurationChannelEvents {
 	 */
 	@FunctionalInterface
 	public interface Register {
-		void onChannelRegister(ServerConfigurationNetworkHandler handler, PacketSender sender, MinecraftServer server, List<Identifier> channels);
+		void onChannelRegister(ServerConfigurationPacketListenerImpl handler, PacketSender sender, MinecraftServer server, List<ResourceLocation> channels);
 	}
 
 	/**
@@ -65,6 +63,6 @@ public final class S2CConfigurationChannelEvents {
 	 */
 	@FunctionalInterface
 	public interface Unregister {
-		void onChannelUnregister(ServerConfigurationNetworkHandler handler, PacketSender sender, MinecraftServer server, List<Identifier> channels);
+		void onChannelUnregister(ServerConfigurationPacketListenerImpl handler, PacketSender sender, MinecraftServer server, List<ResourceLocation> channels);
 	}
 }

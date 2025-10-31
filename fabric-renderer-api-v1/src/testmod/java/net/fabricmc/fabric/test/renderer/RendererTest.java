@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.test.renderer;
 
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * The testmod for the Fabric Renderer API. These tests are used to validate that
@@ -48,7 +47,7 @@ public final class RendererTest implements ModInitializer {
 		Registration.init();
 	}
 
-	public static Identifier id(String path) {
-		return Identifier.of("fabric-renderer-api-v1-testmod", path);
+	public static ResourceLocation id(String path) {
+		return ResourceLocation.fromNamespaceAndPath("fabric-renderer-api-v1-testmod", path);
 	}
 }

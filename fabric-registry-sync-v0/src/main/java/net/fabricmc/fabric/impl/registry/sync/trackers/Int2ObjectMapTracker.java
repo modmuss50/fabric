@@ -27,18 +27,16 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.event.registry.RegistryIdRemapCallback;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
 public class Int2ObjectMapTracker<V, OV> implements RegistryEntryAddedCallback<V>, RegistryIdRemapCallback<V> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Int2ObjectMapTracker.class);
 	private final String name;
 	private final Int2ObjectMap<OV> mappers;
-	private Map<Identifier, OV> removedMapperCache = new HashMap<>();
+	private Map<ResourceLocation, OV> removedMapperCache = new HashMap<>();
 
 	private Int2ObjectMapTracker(String name, Int2ObjectMap<OV> mappers) {
 		this.name = name;
@@ -52,7 +50,7 @@ public class Int2ObjectMapTracker<V, OV> implements RegistryEntryAddedCallback<V
 	}
 
 	@Override
-	public void onEntryAdded(int rawId, Identifier id, V object) {
+	public void onEntryAdded(int rawId, ResourceLocation id, V object) {
 		if (removedMapperCache.containsKey(id)) {
 			mappers.put(rawId, removedMapperCache.get(id));
 		}

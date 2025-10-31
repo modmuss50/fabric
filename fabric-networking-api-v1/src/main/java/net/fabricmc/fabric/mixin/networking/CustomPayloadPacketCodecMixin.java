@@ -22,17 +22,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
-
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.networking.CustomPayloadTypeProvider;
 import net.fabricmc.fabric.impl.networking.FabricCustomPayloadPacketCodec;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
-@Mixin(targets = "net/minecraft/network/packet/CustomPayload$1")
-public abstract class CustomPayloadPacketCodecMixin<B extends PacketByteBuf> implements PacketCodec<B, CustomPayload>, FabricCustomPayloadPacketCodec<B> {
+@Mixin(targets = "net/minecraft/network/protocol/common/custom/CustomPacketPayload$1")
+public abstract class CustomPayloadPacketCodecMixin<B extends FriendlyByteBuf> implements StreamCodec<B, CustomPacketPayload>, FabricCustomPayloadPacketCodec<B> {
 	@Unique
 	private CustomPayloadTypeProvider<B> customPayloadTypeProvider;
 
@@ -46,12 +44,12 @@ public abstract class CustomPayloadPacketCodecMixin<B extends PacketByteBuf> imp
 	}
 
 	@WrapOperation(method = {
-			"encode(Lnet/minecraft/network/PacketByteBuf;Lnet/minecraft/network/packet/CustomPayload$Id;Lnet/minecraft/network/packet/CustomPayload;)V",
-			"decode(Lnet/minecraft/network/PacketByteBuf;)Lnet/minecraft/network/packet/CustomPayload;"
-	}, at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/CustomPayload$1;getCodec(Lnet/minecraft/util/Identifier;)Lnet/minecraft/network/codec/PacketCodec;"))
-	private PacketCodec<B, ? extends CustomPayload> wrapGetCodec(@Coerce PacketCodec<B, CustomPayload> instance, Identifier identifier, Operation<PacketCodec<B, CustomPayload>> original, B packetByteBuf) {
+			"writeCap(Lnet/minecraft/network/FriendlyByteBuf;Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload$Type;Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;)V",
+			"decode(Lnet/minecraft/network/FriendlyByteBuf;)Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;"
+	}, at = @At(value = "INVOKE", target = "Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload$1;findCodec(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/network/codec/StreamCodec;"))
+	private StreamCodec<B, ? extends CustomPacketPayload> wrapGetCodec(@Coerce StreamCodec<B, CustomPacketPayload> instance, ResourceLocation identifier, Operation<StreamCodec<B, CustomPacketPayload>> original, B packetByteBuf) {
 		if (customPayloadTypeProvider != null) {
-			CustomPayload.Type<B, ? extends CustomPayload> payloadType = customPayloadTypeProvider.get(packetByteBuf, identifier);
+			CustomPacketPayload.TypeAndCodec<B, ? extends CustomPacketPayload> payloadType = customPayloadTypeProvider.get(packetByteBuf, identifier);
 
 			if (payloadType != null) {
 				return payloadType.codec();

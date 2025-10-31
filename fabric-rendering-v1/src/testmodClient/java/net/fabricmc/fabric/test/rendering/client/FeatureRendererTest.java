@@ -18,21 +18,16 @@ package net.fabricmc.fabric.test.rendering.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.Blocks;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.Blocks;
 
 public final class FeatureRendererTest implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FeatureRendererTest.class);
@@ -67,21 +62,21 @@ public final class FeatureRendererTest implements ClientModInitializer {
 		});*/
 	}
 
-	private static class TestPlayerFeatureRenderer extends FeatureRenderer<PlayerEntityRenderState, PlayerEntityModel> {
-		TestPlayerFeatureRenderer(FeatureRendererContext<PlayerEntityRenderState, PlayerEntityModel> featureRendererContext) {
+	private static class TestPlayerFeatureRenderer extends RenderLayer<AvatarRenderState, PlayerModel> {
+		TestPlayerFeatureRenderer(RenderLayerParent<AvatarRenderState, PlayerModel> featureRendererContext) {
 			super(featureRendererContext);
 		}
 
 		@Override
-		public void render(MatrixStack matrices, OrderedRenderCommandQueue commandQueue, int light, PlayerEntityRenderState state, float limbAngle, float limbDistance) {
-			matrices.push();
+		public void render(PoseStack matrices, SubmitNodeCollector commandQueue, int light, AvatarRenderState state, float limbAngle, float limbDistance) {
+			matrices.pushPose();
 
 			// Translate to center above the player's head
-			matrices.translate(-0.5F, -state.height + 0.25F, -0.5F);
+			matrices.translate(-0.5F, -state.boundingBoxHeight + 0.25F, -0.5F);
 			// Render a diamond block above the player's head
-			commandQueue.getBatchingQueue(0).submitBlock(matrices, Blocks.DIAMOND_BLOCK.getDefaultState(), light, OverlayTexture.DEFAULT_UV, 0);
+			commandQueue.order(0).submitBlock(matrices, Blocks.DIAMOND_BLOCK.defaultBlockState(), light, OverlayTexture.NO_OVERLAY, 0);
 
-			matrices.pop();
+			matrices.popPose();
 		}
 	}
 }

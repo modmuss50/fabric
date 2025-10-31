@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.test.sound.client;
 
-import net.minecraft.client.MinecraftClient;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
