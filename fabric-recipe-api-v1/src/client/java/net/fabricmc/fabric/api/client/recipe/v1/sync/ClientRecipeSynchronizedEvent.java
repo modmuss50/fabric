@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.api.client.recipe.v1.sync;
 
+import net.minecraft.client.Minecraft;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
-import net.minecraft.client.Minecraft;
 
 /**
  * This event gets invoked when client receives all synchronized recipes.

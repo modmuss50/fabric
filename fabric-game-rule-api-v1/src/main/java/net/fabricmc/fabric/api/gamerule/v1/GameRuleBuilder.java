@@ -29,9 +29,7 @@ import com.mojang.serialization.JavaOps;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.gamerule.RuleCategoryExtensions;
-import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
-import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
+
 import net.minecraft.Optionull;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -42,6 +40,10 @@ import net.minecraft.world.level.gamerules.GameRuleCategory;
 import net.minecraft.world.level.gamerules.GameRuleType;
 import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
 import net.minecraft.world.level.gamerules.GameRules;
+
+import net.fabricmc.fabric.impl.gamerule.RuleCategoryExtensions;
+import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
+import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
 
 /**
  * A utility class containing classes and methods for building {@link GameRule}s.

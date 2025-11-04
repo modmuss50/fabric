@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.resource.conditions.v1;
 
 import java.util.Objects;
-import net.minecraft.Optionull;
-import net.minecraft.resources.Identifier;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+
+import net.minecraft.Optionull;
+import net.minecraft.resources.Identifier;
 
 /**
  * A type of resource conditions.

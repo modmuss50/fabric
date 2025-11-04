@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.test.item;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 
 public class CustomEnchantmentEffectsTest implements ModInitializer {
 	// weird impaling is a copy of impaling used for testing (just in case minecraft changes impaling for some reason)

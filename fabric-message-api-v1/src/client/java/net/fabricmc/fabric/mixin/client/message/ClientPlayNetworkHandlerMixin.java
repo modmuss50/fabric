@@ -22,8 +22,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
+
 import net.minecraft.client.multiplayer.ClientPacketListener;
+
+import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 
 /**
  * Mixin to {@link ClientPacketListener} to listen for sending messages and commands.

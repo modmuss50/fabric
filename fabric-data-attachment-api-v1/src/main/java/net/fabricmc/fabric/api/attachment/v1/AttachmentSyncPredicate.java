@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.api.attachment.v1;
 
 import java.util.function.BiPredicate;
-import net.minecraft.server.level.ServerPlayer;
+
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * A predicate that determines, for a specific attachment type, whether the data should be synchronized with a

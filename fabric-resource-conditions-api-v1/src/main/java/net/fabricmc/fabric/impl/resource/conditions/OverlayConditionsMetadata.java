@@ -23,9 +23,11 @@ import java.util.regex.Pattern;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.server.packs.metadata.MetadataSectionType;
+
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
-import net.minecraft.server.packs.metadata.MetadataSectionType;
 
 public record OverlayConditionsMetadata(List<Entry> overlays) {
 	public static final Codec<OverlayConditionsMetadata> CODEC = Entry.CODEC.listOf().fieldOf("entries").xmap(OverlayConditionsMetadata::new, OverlayConditionsMetadata::overlays).codec();

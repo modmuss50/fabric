@@ -17,8 +17,7 @@
 package net.fabricmc.fabric.test.transfer.ingame;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorageUtil;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -37,6 +36,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 
 public class FluidChuteBlock extends Block implements EntityBlock {
 	public FluidChuteBlock(Properties settings) {

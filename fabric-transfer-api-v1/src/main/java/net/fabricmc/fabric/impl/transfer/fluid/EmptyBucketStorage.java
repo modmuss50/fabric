@@ -18,6 +18,10 @@ package net.fabricmc.fabric.impl.transfer.fluid;
 
 import java.util.Iterator;
 import java.util.List;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -28,8 +32,6 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.BlankVariantView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.InsertionOnlyStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.mixin.transfer.BucketItemAccessor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 
 /**
  * Storage implementation for empty buckets, accepting any fluid with a bidirectional fluid &lt;-&gt; bucket mapping.

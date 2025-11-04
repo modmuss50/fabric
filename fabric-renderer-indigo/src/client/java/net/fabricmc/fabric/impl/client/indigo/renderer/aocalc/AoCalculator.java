@@ -24,18 +24,20 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.fabricmc.fabric.impl.client.indigo.Indigo;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
-import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingFormat;
-import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.QuadViewImpl;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderInfo;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.LightDataProvider;
+
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.impl.client.indigo.Indigo;
+import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
+import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingFormat;
+import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.QuadViewImpl;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderInfo;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.LightDataProvider;
 
 /**
  * Adaptation of inner, non-static class in BlockModelRenderer that serves same purpose.

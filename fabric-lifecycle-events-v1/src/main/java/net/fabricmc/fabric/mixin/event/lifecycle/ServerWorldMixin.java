@@ -23,8 +23,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+
 import net.minecraft.server.level.ServerLevel;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerWorldMixin {

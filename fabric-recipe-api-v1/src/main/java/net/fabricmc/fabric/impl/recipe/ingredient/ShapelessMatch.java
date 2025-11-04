@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.recipe.ingredient;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 

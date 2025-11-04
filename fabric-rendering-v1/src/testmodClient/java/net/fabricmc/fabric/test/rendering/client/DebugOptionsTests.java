@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.test.rendering.client;
 
-import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.api.ClientModInitializer;
 
 public class DebugOptionsTests implements ClientModInitializer {
 	@Override

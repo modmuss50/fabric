@@ -20,9 +20,11 @@ import com.google.gson.GsonBuilder;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.client.model.loading.UnbakedModelJsonDeserializer;
+
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.UnbakedModel;
+
+import net.fabricmc.fabric.impl.client.model.loading.UnbakedModelJsonDeserializer;
 
 @Mixin(BlockModel.class)
 abstract class JsonUnbakedModelMixin {

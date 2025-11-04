@@ -18,16 +18,18 @@ package net.fabricmc.fabric.impl.recipe.ingredient;
 
 import java.util.Set;
 import java.util.function.Consumer;
+
+import net.minecraft.network.PacketEncoder;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.network.ConfigurationTask;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.mixin.networking.accessor.ServerCommonNetworkHandlerAccessor;
 import net.fabricmc.fabric.mixin.recipe.ingredient.EncoderHandlerMixin;
-import net.minecraft.network.PacketEncoder;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.network.ConfigurationTask;
 
 /**
  * To reasonably support server-side only custom ingredients, we only send custom ingredients to clients that support them.

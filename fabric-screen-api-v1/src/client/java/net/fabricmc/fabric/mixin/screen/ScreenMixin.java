@@ -25,13 +25,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.impl.client.screen.ButtonList;
-import net.fabricmc.fabric.impl.client.screen.ScreenEventFactory;
-import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -39,6 +33,14 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
+
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.impl.client.screen.ButtonList;
+import net.fabricmc.fabric.impl.client.screen.ScreenEventFactory;
+import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
 
 @Mixin(Screen.class)
 abstract class ScreenMixin implements ScreenExtensions {

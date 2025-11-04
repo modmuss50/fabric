@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.test.base;
 
 import org.spongepowered.asm.mixin.MixinEnvironment;
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
+
 import net.minecraft.gametest.framework.GameTestHelper;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class FabricApiBaseGameTest {
 	@GameTest

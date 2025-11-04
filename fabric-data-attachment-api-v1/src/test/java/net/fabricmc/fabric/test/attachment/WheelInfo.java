@@ -18,6 +18,7 @@ package net.fabricmc.fabric.test.attachment;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.util.ExtraCodecs;
 
 public record WheelInfo(float wheelDiameter, float tireDiameter, float tireThickness) {

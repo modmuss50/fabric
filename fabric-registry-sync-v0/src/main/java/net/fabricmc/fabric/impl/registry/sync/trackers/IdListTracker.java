@@ -18,12 +18,14 @@ package net.fabricmc.fabric.impl.registry.sync.trackers;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.fabricmc.fabric.api.event.registry.RegistryIdRemapCallback;
-import net.fabricmc.fabric.impl.registry.sync.RemovableIdList;
+
 import net.minecraft.core.IdMapper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.fabric.api.event.registry.RegistryIdRemapCallback;
+import net.fabricmc.fabric.impl.registry.sync.RemovableIdList;
 
 public class IdListTracker<V, OV> implements RegistryEntryAddedCallback<V>, RegistryIdRemapCallback<V> {
 	private final String name;

@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.transfer.v1.storage;
 
 import java.util.Objects;
+
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
 

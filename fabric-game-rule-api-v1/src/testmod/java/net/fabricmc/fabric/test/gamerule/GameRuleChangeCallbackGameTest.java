@@ -22,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.gamerules.GameRules;
+
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
 

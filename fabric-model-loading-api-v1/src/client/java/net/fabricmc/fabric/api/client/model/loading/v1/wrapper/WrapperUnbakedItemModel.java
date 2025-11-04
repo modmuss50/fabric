@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.client.model.loading.v1.wrapper;
 
 import com.mojang.serialization.MapCodec;
+
 import net.minecraft.client.renderer.item.ItemModel;
 
 /**

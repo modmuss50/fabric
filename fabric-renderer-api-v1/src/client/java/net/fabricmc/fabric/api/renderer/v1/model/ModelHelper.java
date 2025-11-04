@@ -21,11 +21,13 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.Direction;
 import net.minecraft.data.AtlasIds;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 
 /**
  * Collection of utilities for model implementations.

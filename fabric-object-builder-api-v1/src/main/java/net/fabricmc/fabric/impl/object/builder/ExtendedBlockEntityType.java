@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.impl.object.builder;
 
 import java.util.Set;
+
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import org.jspecify.annotations.Nullable;
 
 public class ExtendedBlockEntityType<T extends BlockEntity> extends BlockEntityType<T> {
 	@Nullable

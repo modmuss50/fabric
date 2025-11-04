@@ -19,7 +19,7 @@ package net.fabricmc.fabric.impl.gamerule.widget;
 import java.util.List;
 
 import com.mojang.serialization.DataResult;
-import net.fabricmc.fabric.mixin.gamerule.client.EditGameRulesScreenAccessor;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -28,6 +28,8 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.gamerules.GameRule;
+
+import net.fabricmc.fabric.mixin.gamerule.client.EditGameRulesScreenAccessor;
 
 public final class DoubleRuleWidget extends EditGameRulesScreen.GameRuleEntry {
 	private final EditBox textFieldWidget;

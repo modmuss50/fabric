@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.mixin.attachment;
 
-import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 
 @Mixin(ServerboundCustomPayloadPacket.class)
 public interface CustomPayloadC2SPacketAccessor {

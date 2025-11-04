@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import net.minecraft.util.Unit;
 import net.minecraft.util.thread.BlockableEventLoop;
+
 import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
 
 /**

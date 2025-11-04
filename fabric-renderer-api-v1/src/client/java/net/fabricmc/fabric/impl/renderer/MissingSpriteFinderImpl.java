@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.impl.renderer;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public record MissingSpriteFinderImpl(TextureAtlasSprite missingSprite) implements SpriteFinder {
 	@Override

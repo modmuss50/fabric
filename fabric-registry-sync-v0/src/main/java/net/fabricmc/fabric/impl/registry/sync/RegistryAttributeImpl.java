@@ -21,10 +21,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jetbrains.annotations.VisibleForTesting;
+
+import net.minecraft.resources.ResourceKey;
+
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.event.registry.RegistryAttributeHolder;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.ResourceKey;
 
 public final class RegistryAttributeImpl implements RegistryAttributeHolder {
 	private static final Map<ResourceKey<?>, RegistryAttributeHolder> HOLDER_MAP = new ConcurrentHashMap<>();

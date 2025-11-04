@@ -23,13 +23,15 @@ import static net.fabricmc.fabric.test.registry.sync.CustomDynamicRegistryTest.T
 
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
+
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.test.registry.sync.TestDynamicObject;
 import net.fabricmc.fabric.test.registry.sync.TestNestedDynamicObject;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 
 public final class DynamicRegistryClientTest implements ClientModInitializer {
 	private static final Logger LOGGER = LogUtils.getLogger();

@@ -20,15 +20,17 @@ import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 import com.mojang.brigadier.context.CommandContext;
+
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.test.command.argument.SmileyArgument;
 import net.fabricmc.fabric.test.command.argument.SmileyArgumentType;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.synchronization.SingletonArgumentInfo;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 
 public class CustomArgumentTest implements ModInitializer {
 	private static final String ARG_NAME = "smiley_value";

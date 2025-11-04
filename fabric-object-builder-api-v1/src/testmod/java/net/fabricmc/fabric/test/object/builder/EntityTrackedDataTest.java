@@ -17,11 +17,7 @@
 package net.fabricmc.fabric.test.object.builder;
 
 import java.util.Optional;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
-import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,6 +30,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class EntityTrackedDataTest implements ModInitializer {
 	private static final Identifier GLOBAL_POS_ID = ObjectBuilderTestConstants.id("global_pos");

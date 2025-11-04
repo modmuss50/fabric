@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.client.rendering;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.level.block.Block;
 

@@ -19,9 +19,11 @@ package net.fabricmc.fabric.mixin.serialization;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.api.serialization.v1.view.FabricWriteView;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.storage.TagValueOutput;
+
+import net.fabricmc.fabric.api.serialization.v1.view.FabricWriteView;
 
 @Mixin(TagValueOutput.class)
 public class NbtWriteViewMixin implements FabricWriteView {

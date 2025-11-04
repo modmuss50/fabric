@@ -22,9 +22,11 @@ import java.util.Optional;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.api.serialization.v1.view.FabricReadView;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.storage.TagValueInput;
+
+import net.fabricmc.fabric.api.serialization.v1.view.FabricReadView;
 
 @Mixin(TagValueInput.class)
 public class NbtReadViewMixin implements FabricReadView {

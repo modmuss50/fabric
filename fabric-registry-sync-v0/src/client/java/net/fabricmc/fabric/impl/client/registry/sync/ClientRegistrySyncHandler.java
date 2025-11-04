@@ -27,13 +27,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.jetbrains.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
-import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
-import net.fabricmc.fabric.impl.registry.sync.RemapException;
-import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
-import net.fabricmc.fabric.impl.registry.sync.SyncCompletePayload;
-import net.fabricmc.fabric.impl.registry.sync.packet.RegistrySyncPayload;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,6 +35,14 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
+import net.fabricmc.fabric.impl.registry.sync.RegistrySyncManager;
+import net.fabricmc.fabric.impl.registry.sync.RemapException;
+import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
+import net.fabricmc.fabric.impl.registry.sync.SyncCompletePayload;
+import net.fabricmc.fabric.impl.registry.sync.packet.RegistrySyncPayload;
 
 public final class ClientRegistrySyncHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientRegistrySyncHandler.class);

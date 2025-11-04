@@ -23,10 +23,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientSync;
-import net.fabricmc.fabric.impl.recipe.ingredient.SupportedIngredientsClientConnection;
+
 import net.minecraft.network.PacketEncoder;
 import net.minecraft.network.protocol.Packet;
+
+import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientSync;
+import net.fabricmc.fabric.impl.recipe.ingredient.SupportedIngredientsClientConnection;
 
 @Mixin(PacketEncoder.class)
 public class EncoderHandlerMixin {

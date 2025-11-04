@@ -20,9 +20,11 @@ import java.util.Properties;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
+
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
-import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 
 /**
  * A builder used for creating singleplayer worlds and dedicated servers.

@@ -23,10 +23,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.registry.sync.trackers.Int2ObjectMapTracker;
+
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleResources;
 import net.minecraft.core.registries.BuiltInRegistries;
+
+import net.fabricmc.fabric.impl.registry.sync.trackers.Int2ObjectMapTracker;
 
 @Mixin(ParticleResources.class)
 public class ParticleSpriteManagerMixin {

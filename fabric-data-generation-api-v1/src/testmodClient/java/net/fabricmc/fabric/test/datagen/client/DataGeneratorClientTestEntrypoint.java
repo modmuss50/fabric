@@ -21,15 +21,7 @@ import static net.fabricmc.fabric.test.datagen.DataGeneratorTestContent.MOD_ID;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
-import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder;
-import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider;
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.JsonKeySortOrderCallback;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
-import net.fabricmc.fabric.test.datagen.DataGeneratorTestContent;
+
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
@@ -40,6 +32,16 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+
+import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder;
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider;
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.JsonKeySortOrderCallback;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
+import net.fabricmc.fabric.test.datagen.DataGeneratorTestContent;
 
 public class DataGeneratorClientTestEntrypoint implements DataGeneratorEntrypoint {
 	@Override

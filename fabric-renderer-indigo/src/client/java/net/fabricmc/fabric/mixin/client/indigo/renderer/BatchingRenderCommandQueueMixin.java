@@ -16,26 +16,28 @@
 
 package net.fabricmc.fabric.mixin.client.indigo.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MeshView;
-import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessBatchingRenderCommandQueue;
-import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessRenderCommandQueue;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.MeshItemCommand;
+
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.ItemDisplayContext;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshView;
+import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessBatchingRenderCommandQueue;
+import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessRenderCommandQueue;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.MeshItemCommand;
 
 @Mixin(SubmitNodeCollection.class)
 abstract class BatchingRenderCommandQueueMixin implements OrderedSubmitNodeCollector, AccessRenderCommandQueue, AccessBatchingRenderCommandQueue {

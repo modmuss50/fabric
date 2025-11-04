@@ -20,10 +20,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
+
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+
+import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 
 // Allows items with armor renderers to be passed to the armor feature in the first place.
 // Vanilla only stores the items with armor models in the entity's render state,

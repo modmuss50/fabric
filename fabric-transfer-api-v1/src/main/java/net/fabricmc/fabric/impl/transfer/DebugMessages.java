@@ -16,13 +16,14 @@
 
 package net.fabricmc.fabric.impl.transfer;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jspecify.annotations.Nullable;
 
 public final class DebugMessages {
 	public static String forGlobalPos(@Nullable Level world, BlockPos pos) {

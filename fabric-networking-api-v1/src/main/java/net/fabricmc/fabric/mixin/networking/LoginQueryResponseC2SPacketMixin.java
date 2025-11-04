@@ -22,11 +22,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.networking.payload.PacketByteBufLoginQueryResponse;
-import net.fabricmc.fabric.impl.networking.payload.PayloadHelper;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.login.ServerboundCustomQueryAnswerPacket;
 import net.minecraft.network.protocol.login.custom.CustomQueryAnswerPayload;
+
+import net.fabricmc.fabric.impl.networking.payload.PacketByteBufLoginQueryResponse;
+import net.fabricmc.fabric.impl.networking.payload.PayloadHelper;
 
 @Mixin(ServerboundCustomQueryAnswerPacket.class)
 public class LoginQueryResponseC2SPacketMixin {

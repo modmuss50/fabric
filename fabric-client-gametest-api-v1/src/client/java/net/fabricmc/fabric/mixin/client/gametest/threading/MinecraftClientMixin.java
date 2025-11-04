@@ -28,15 +28,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
-import net.fabricmc.fabric.impl.client.gametest.threading.NetworkSynchronizer;
-import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.util.thread.BlockableEventLoop;
 import net.minecraft.world.level.storage.LevelStorageSource;
+
+import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
+import net.fabricmc.fabric.impl.client.gametest.threading.NetworkSynchronizer;
+import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {

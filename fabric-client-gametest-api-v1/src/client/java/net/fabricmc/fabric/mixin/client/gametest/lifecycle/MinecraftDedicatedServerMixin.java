@@ -24,8 +24,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.client.gametest.util.DedicatedServerImplUtil;
+
 import net.minecraft.server.dedicated.DedicatedServer;
+
+import net.fabricmc.fabric.impl.client.gametest.util.DedicatedServerImplUtil;
 
 @Mixin(DedicatedServer.class)
 public abstract class MinecraftDedicatedServerMixin {

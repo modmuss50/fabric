@@ -17,13 +17,15 @@
 package net.fabricmc.fabric.impl.transfer.context;
 
 import java.util.List;
+
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 
 public class PlayerContainerItemContext implements ContainerItemContext {
 	private final PlayerInventoryStorage playerWrapper;

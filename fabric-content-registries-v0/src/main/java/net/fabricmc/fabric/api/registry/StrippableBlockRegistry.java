@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.api.registry;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.content.registry.StrippableBlockRegistryImpl;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
+
+import net.fabricmc.fabric.impl.content.registry.StrippableBlockRegistryImpl;
 
 /**
  * A registry for axe stripping interactions. A vanilla example is turning logs to stripped logs.

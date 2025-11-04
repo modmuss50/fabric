@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.api.client.networking.v1;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
  * Offers access to events related to the configuration connection to a server on a logical client.

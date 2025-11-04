@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.resource.v1.reloader;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 /**

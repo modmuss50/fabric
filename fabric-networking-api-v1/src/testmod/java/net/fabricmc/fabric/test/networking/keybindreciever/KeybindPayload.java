@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.test.networking.keybindreciever;
 
-import net.fabricmc.fabric.test.networking.NetworkingTestmods;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+
+import net.fabricmc.fabric.test.networking.NetworkingTestmods;
 
 public class KeybindPayload implements CustomPacketPayload {
 	public static final KeybindPayload INSTANCE = new KeybindPayload();

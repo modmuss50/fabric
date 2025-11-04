@@ -17,13 +17,15 @@
 package net.fabricmc.fabric.impl.client.particle;
 
 import java.util.List;
-import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleResources;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.util.RandomSource;
+
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
 
 public record FabricSpriteProviderImpl(ParticleResources.MutableSpriteSet delegate) implements FabricSpriteProvider {
 	@Override

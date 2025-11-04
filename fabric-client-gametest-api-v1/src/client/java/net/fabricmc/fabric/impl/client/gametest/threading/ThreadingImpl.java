@@ -25,8 +25,10 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
+
 import net.minecraft.client.Minecraft;
+
+import net.fabricmc.fabric.impl.client.gametest.TestSystemProperties;
 
 /**
  * <h1>Implementation notes</h1>

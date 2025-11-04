@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.client.rendering;
 
 import java.util.Comparator;
+
 import net.minecraft.resources.Identifier;
 
 public class DebugOptionsComparator implements Comparator<Identifier> {

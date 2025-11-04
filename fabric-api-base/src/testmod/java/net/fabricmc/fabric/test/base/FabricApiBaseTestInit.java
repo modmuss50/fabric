@@ -19,6 +19,7 @@ package net.fabricmc.fabric.test.base;
 import static net.minecraft.commands.Commands.literal;
 
 import org.spongepowered.asm.mixin.MixinEnvironment;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 

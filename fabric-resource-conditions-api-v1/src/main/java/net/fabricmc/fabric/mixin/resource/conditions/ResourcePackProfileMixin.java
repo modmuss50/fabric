@@ -24,9 +24,11 @@ import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import net.fabricmc.fabric.impl.resource.conditions.OverlayConditionsMetadata;
+
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.repository.Pack;
+
+import net.fabricmc.fabric.impl.resource.conditions.OverlayConditionsMetadata;
 
 @Mixin(Pack.class)
 public class ResourcePackProfileMixin {

@@ -19,10 +19,12 @@ package net.fabricmc.fabric.mixin.datagen;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import net.minecraft.data.HashCache;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import net.minecraft.data.HashCache;
 
 @Mixin(HashCache.class)
 public abstract class DataCacheMixin {

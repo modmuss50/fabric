@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.api.registry;
 
-import net.fabricmc.fabric.api.util.Block2ObjectMap;
-import net.fabricmc.fabric.impl.content.registry.FlammableBlockRegistryImpl;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+
+import net.fabricmc.fabric.api.util.Block2ObjectMap;
+import net.fabricmc.fabric.impl.content.registry.FlammableBlockRegistryImpl;
 
 public interface FlammableBlockRegistry extends Block2ObjectMap<FlammableBlockRegistry.Entry> {
 	static FlammableBlockRegistry getDefaultInstance() {

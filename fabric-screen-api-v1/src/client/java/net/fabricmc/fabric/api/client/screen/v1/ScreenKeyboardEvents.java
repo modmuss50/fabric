@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.api.client.screen.v1;
 
 import java.util.Objects;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
+
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
 
 /**
  * Events related to use of the keyboard in a {@link Screen}.

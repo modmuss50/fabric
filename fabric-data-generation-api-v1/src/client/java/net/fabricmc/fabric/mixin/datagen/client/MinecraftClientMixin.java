@@ -20,8 +20,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
+
 import net.minecraft.client.Minecraft;
+
+import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
 
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {

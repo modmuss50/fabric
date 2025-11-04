@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.test.lookup.item;
 
-import net.fabricmc.fabric.test.lookup.api.Inspectable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+
+import net.fabricmc.fabric.test.lookup.api.Inspectable;
 
 public class InspectableItem extends Item implements Inspectable {
 	private final String inspectionResult;

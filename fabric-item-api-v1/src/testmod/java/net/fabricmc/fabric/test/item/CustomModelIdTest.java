@@ -16,13 +16,14 @@
 
 package net.fabricmc.fabric.test.item;
 
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+
+import net.fabricmc.api.ModInitializer;
 
 public class CustomModelIdTest implements ModInitializer {
 	public static final ResourceKey<Item> NOT_A_DIAMOND_KEY = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("fabric-item-api-v1-testmod", "not_a_diamond"));

@@ -22,9 +22,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
 @Mixin(targets = "net/minecraft/server/level/ServerLevel$EntityCallbacks")
 abstract class ServerWorldServerEntityHandlerMixin {

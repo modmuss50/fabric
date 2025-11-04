@@ -19,9 +19,11 @@ package net.fabricmc.fabric.impl.item;
 import java.util.WeakHashMap;
 
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.world.item.Item;
+
 import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
 import net.fabricmc.fabric.api.item.v1.EquipmentSlotProvider;
-import net.minecraft.world.item.Item;
 
 public final class FabricItemInternals {
 	private static final WeakHashMap<Item.Properties, ExtraData> extraData = new WeakHashMap<>();

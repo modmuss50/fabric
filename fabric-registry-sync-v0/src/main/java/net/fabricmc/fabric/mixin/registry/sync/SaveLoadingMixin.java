@@ -21,9 +21,11 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+
 import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.server.WorldLoader;
+
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 
 // Implements dynamic registry loading.
 @Mixin(WorldLoader.class)

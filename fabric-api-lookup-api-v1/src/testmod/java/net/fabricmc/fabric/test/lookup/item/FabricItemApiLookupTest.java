@@ -18,9 +18,6 @@ package net.fabricmc.fabric.test.lookup.item;
 
 import static net.fabricmc.fabric.test.lookup.FabricApiLookupTest.ensureException;
 
-import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
-import net.fabricmc.fabric.test.lookup.FabricApiLookupTest;
-import net.fabricmc.fabric.test.lookup.api.Inspectable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -28,6 +25,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+
+import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
+import net.fabricmc.fabric.test.lookup.FabricApiLookupTest;
+import net.fabricmc.fabric.test.lookup.api.Inspectable;
 
 public class FabricItemApiLookupTest {
 	public static final ItemApiLookup<Inspectable, Void> INSPECTABLE =

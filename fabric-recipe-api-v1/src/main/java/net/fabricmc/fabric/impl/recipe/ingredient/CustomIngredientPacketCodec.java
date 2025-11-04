@@ -19,12 +19,14 @@ package net.fabricmc.fabric.impl.recipe.ingredient;
 import java.util.Set;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
-import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 
 public class CustomIngredientPacketCodec implements StreamCodec<RegistryFriendlyByteBuf, Ingredient> {
 	static final int PACKET_MARKER = -1;

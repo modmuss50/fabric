@@ -17,9 +17,11 @@
 package net.fabricmc.fabric.api.datagen.v1.loot;
 
 import com.google.common.base.Preconditions;
+
+import net.minecraft.data.loot.BlockLootSubProvider;
+
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.impl.datagen.loot.ConditionBlockLootTableGenerator;
-import net.minecraft.data.loot.BlockLootSubProvider;
 
 /**
  * Fabric-provided extensions for {@link BlockLootSubProvider}.

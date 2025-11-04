@@ -17,9 +17,10 @@
 package net.fabricmc.fabric.mixin.client.model.loading;
 
 import com.google.gson.Gson;
-import net.minecraft.client.renderer.block.model.BlockModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.client.renderer.block.model.BlockModel;
 
 @Mixin(BlockModel.class)
 public interface JsonUnbakedModelAccessor {

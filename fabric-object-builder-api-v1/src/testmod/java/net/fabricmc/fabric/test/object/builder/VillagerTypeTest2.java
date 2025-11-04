@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.test.object.builder;
 
+import net.minecraft.world.entity.npc.VillagerProfession;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
-import net.minecraft.world.entity.npc.VillagerProfession;
 
 /*
  * Second entrypoint to validate class loading does not break this.

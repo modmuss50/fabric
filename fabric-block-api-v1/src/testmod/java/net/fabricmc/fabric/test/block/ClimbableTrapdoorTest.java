@@ -17,7 +17,7 @@
 package net.fabricmc.fabric.test.block;
 
 import java.util.function.Function;
-import net.fabricmc.api.ModInitializer;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,6 +34,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.fabricmc.api.ModInitializer;
 
 // Registers two blocks that can be used to test the fabric:can_climb_trapdoor_above tag.
 // - custom_ladder: a custom LadderBlock. You should be able to climb an open trapdoor above this block

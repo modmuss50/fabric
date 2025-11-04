@@ -24,11 +24,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
+
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
+
+import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
 
 public class UnbakedModelJsonDeserializer implements JsonDeserializer<UnbakedModel> {
 	private static final String TYPE_KEY = "fabric:type";

@@ -23,13 +23,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
-import net.fabricmc.fabric.impl.content.registry.FireBlockHooks;
-import net.fabricmc.fabric.impl.content.registry.FlammableBlockRegistryImpl;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.impl.content.registry.FireBlockHooks;
+import net.fabricmc.fabric.impl.content.registry.FlammableBlockRegistryImpl;
 
 @Mixin(FireBlock.class)
 public class FireBlockMixin implements FireBlockHooks {

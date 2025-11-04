@@ -18,6 +18,7 @@ package net.fabricmc.fabric.api.resource;
 
 import java.util.Collection;
 import java.util.Collections;
+
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 

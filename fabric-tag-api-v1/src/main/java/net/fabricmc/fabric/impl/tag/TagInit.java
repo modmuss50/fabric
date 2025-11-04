@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.impl.tag;
 
+import net.minecraft.server.packs.PackType;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.minecraft.server.packs.PackType;
 
 public final class TagInit implements ModInitializer {
 	@Override

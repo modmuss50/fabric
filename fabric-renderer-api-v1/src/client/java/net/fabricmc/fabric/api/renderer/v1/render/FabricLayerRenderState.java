@@ -18,9 +18,11 @@ package net.fabricmc.fabric.api.renderer.v1.render;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
 
 /**
  * Note: This interface is automatically implemented on {@link ItemStackRenderState.LayerRenderState} via Mixin and interface

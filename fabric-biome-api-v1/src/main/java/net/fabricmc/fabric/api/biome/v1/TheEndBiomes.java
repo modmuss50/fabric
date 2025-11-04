@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.api.biome.v1;
 
-import net.fabricmc.fabric.impl.biome.TheEndBiomeData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+
+import net.fabricmc.fabric.impl.biome.TheEndBiomeData;
 
 /**
  * API that exposes some internals of the minecraft default biome source for The End.

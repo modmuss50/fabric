@@ -23,12 +23,14 @@ import java.util.function.UnaryOperator;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.event.Event;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+
+import net.fabricmc.fabric.api.event.Event;
 
 /**
  * Marks all objects on which data can be attached using {@link AttachmentType}s.

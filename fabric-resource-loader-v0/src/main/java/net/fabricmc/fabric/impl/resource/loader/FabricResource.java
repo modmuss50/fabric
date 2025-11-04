@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.impl.resource.loader;
 
-import net.minecraft.server.packs.repository.PackSource;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.server.packs.repository.PackSource;
 
 /**
  * Extensions to {@link net.minecraft.server.packs.resources.Resource}.

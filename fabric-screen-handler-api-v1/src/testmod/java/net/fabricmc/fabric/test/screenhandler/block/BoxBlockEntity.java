@@ -16,9 +16,6 @@
 
 package net.fabricmc.fabric.test.screenhandler.block;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.fabric.test.screenhandler.ScreenHandlerTest;
-import net.fabricmc.fabric.test.screenhandler.screen.BoxScreenHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -27,6 +24,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.test.screenhandler.ScreenHandlerTest;
+import net.fabricmc.fabric.test.screenhandler.screen.BoxScreenHandler;
 
 public class BoxBlockEntity extends LootableContainerBlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
 	private NonNullList<ItemStack> items = NonNullList.withSize(size(), ItemStack.EMPTY);

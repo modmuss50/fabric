@@ -26,11 +26,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.networking.FabricCustomPayloadPacketCodec;
-import net.fabricmc.fabric.impl.networking.GenericPayloadAccessor;
-import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
-import net.fabricmc.fabric.impl.networking.splitter.FabricPacketSplitter;
-import net.fabricmc.fabric.impl.networking.splitter.SplittablePacket;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketEncoder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -38,6 +34,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+
+import net.fabricmc.fabric.impl.networking.FabricCustomPayloadPacketCodec;
+import net.fabricmc.fabric.impl.networking.GenericPayloadAccessor;
+import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
+import net.fabricmc.fabric.impl.networking.splitter.FabricPacketSplitter;
+import net.fabricmc.fabric.impl.networking.splitter.SplittablePacket;
 
 @Mixin(ServerboundCustomPayloadPacket.class)
 public class CustomPayloadC2SPacketMixin implements SplittablePacket, GenericPayloadAccessor {

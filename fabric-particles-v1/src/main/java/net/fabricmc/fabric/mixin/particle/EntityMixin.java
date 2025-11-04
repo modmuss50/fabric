@@ -20,10 +20,12 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.world.entity.Entity;
+
+import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
 
 @Mixin(Entity.class)
 abstract class EntityMixin {

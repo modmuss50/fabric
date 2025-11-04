@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.mixin.registry.sync;
 
 import java.util.List;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.DebugLevelSource;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.DebugLevelSource;
 
 @Mixin(DebugLevelSource.class)
 public interface DebugChunkGeneratorAccessor {

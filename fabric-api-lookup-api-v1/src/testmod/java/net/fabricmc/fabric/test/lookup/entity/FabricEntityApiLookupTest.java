@@ -16,11 +16,6 @@
 
 package net.fabricmc.fabric.test.lookup.entity;
 
-import net.fabricmc.fabric.api.lookup.v1.entity.EntityApiLookup;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.fabricmc.fabric.test.lookup.FabricApiLookupTest;
-import net.fabricmc.fabric.test.lookup.api.Inspectable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -30,6 +25,12 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Pig;
+
+import net.fabricmc.fabric.api.lookup.v1.entity.EntityApiLookup;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.fabric.test.lookup.FabricApiLookupTest;
+import net.fabricmc.fabric.test.lookup.api.Inspectable;
 
 public class FabricEntityApiLookupTest {
 	public static final ResourceKey<EntityType<?>> INSPECTABLE_PIG_KEY = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(FabricApiLookupTest.MOD_ID, "inspectable_pig"));

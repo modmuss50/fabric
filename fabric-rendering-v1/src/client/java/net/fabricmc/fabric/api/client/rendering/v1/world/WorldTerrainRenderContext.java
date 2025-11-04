@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1.world;
 
-import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
 
 @ApiStatus.NonExtendable
 public interface WorldTerrainRenderContext extends AbstractWorldRenderContext {

@@ -20,10 +20,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.object.builder.client.SignTypeTextureHelper;
+
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.properties.WoodType;
+
+import net.fabricmc.fabric.impl.object.builder.client.SignTypeTextureHelper;
 
 @Mixin(WoodType.class)
 abstract class WoodTypeMixin {

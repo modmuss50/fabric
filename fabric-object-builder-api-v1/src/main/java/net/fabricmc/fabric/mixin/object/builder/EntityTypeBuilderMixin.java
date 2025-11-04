@@ -30,13 +30,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
-import net.fabricmc.fabric.impl.object.builder.FabricEntityTypeImpl;
+
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
+import net.fabricmc.fabric.impl.object.builder.FabricEntityTypeImpl;
 
 @Mixin(EntityType.Builder.class)
 public abstract class EntityTypeBuilderMixin<T extends Entity> implements FabricEntityType.Builder<T>, FabricEntityTypeImpl.Builder {

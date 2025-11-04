@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.mixin.client.gametest.screenshot;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import org.lwjgl.system.MemoryUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import com.mojang.blaze3d.platform.NativeImage;
+
 import net.fabricmc.fabric.impl.client.gametest.screenshot.NativeImageHooks;
 
 @Mixin(NativeImage.class)

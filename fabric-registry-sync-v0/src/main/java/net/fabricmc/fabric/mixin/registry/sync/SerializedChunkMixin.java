@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.mixin.registry.sync;
 
-import net.minecraft.world.level.chunk.storage.SerializableChunkData;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import net.minecraft.world.level.chunk.storage.SerializableChunkData;
 
 @Mixin(SerializableChunkData.class)
 public class SerializedChunkMixin {

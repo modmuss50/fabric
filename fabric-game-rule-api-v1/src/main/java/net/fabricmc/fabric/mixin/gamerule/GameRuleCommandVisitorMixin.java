@@ -23,11 +23,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.world.level.gamerules.GameRule;
+
 import net.fabricmc.fabric.impl.gamerule.EnumRuleCommand;
 import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
 import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.world.level.gamerules.GameRule;
 
 @Mixin(targets = "net/minecraft/server/commands/GameRuleCommand$1")
 public abstract class GameRuleCommandVisitorMixin {

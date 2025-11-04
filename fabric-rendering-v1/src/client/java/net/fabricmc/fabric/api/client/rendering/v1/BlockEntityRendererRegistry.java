@@ -16,13 +16,14 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
 
 /**
  * Helper class for registering BlockEntityRenderers.

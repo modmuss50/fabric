@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.mixin.gamerule;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
+
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.commands.GameRuleCommand;
 import net.minecraft.world.level.gamerules.GameRule;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(GameRuleCommand.class)
 public interface GameRuleCommandAccessor {

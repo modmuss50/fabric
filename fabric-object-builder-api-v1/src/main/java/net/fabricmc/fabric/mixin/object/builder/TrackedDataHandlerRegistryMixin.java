@@ -20,10 +20,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.object.builder.FabricTrackedDataRegistryImpl;
-import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
+
+import net.fabricmc.fabric.impl.object.builder.FabricTrackedDataRegistryImpl;
+import net.fabricmc.loader.api.FabricLoader;
 
 @Mixin(EntityDataSerializers.class)
 abstract class TrackedDataHandlerRegistryMixin {

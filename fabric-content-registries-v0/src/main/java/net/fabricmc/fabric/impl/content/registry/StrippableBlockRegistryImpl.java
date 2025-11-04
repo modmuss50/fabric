@@ -23,11 +23,13 @@ import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.impl.content.registry.util.ImmutableCollectionUtils;
 import net.fabricmc.fabric.mixin.content.registry.AxeItemAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 
 public final class StrippableBlockRegistryImpl {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StrippableBlockRegistryImpl.class);

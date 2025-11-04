@@ -18,12 +18,13 @@ package net.fabricmc.fabric.mixin.registry.sync;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
 
 // Vanilla doesn't mark namespaces in the directories of tags and dynamic registry elements at all,
 // so we prepend the directories with the namespace if it's a modded registry id.

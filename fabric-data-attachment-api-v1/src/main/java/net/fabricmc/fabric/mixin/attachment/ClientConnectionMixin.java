@@ -21,9 +21,11 @@ import java.util.Set;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.impl.attachment.sync.SupportedAttachmentsClientConnection;
+
 import net.minecraft.network.Connection;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.attachment.sync.SupportedAttachmentsClientConnection;
 
 @Mixin(Connection.class)
 public class ClientConnectionMixin implements SupportedAttachmentsClientConnection {

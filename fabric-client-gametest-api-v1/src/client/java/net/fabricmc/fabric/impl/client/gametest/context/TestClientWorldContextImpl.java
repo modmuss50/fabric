@@ -17,16 +17,18 @@
 package net.fabricmc.fabric.impl.client.gametest.context;
 
 import java.util.Objects;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientChunkCache;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
+
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkManagerAccessor;
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkManagerClientChunkMapAccessor;
 import net.fabricmc.fabric.mixin.client.gametest.ClientWorldAccessor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientChunkCache;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
 
 public class TestClientWorldContextImpl implements TestClientWorldContext {
 	private final ClientGameTestContext context;

@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.blockview.client.RenderDataMapConsumer;
+
 import net.minecraft.client.renderer.chunk.RenderRegionCache;
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.core.BlockPos;
@@ -39,6 +39,8 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+
+import net.fabricmc.fabric.impl.blockview.client.RenderDataMapConsumer;
 
 @Mixin(RenderRegionCache.class)
 public abstract class ChunkRendererRegionBuilderMixin {

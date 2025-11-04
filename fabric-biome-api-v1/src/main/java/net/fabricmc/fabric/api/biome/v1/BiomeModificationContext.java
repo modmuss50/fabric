@@ -22,6 +22,7 @@ import java.util.OptionalInt;
 import java.util.function.BiPredicate;
 
 import org.jetbrains.annotations.UnmodifiableView;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.world.attribute.EnvironmentAttribute;

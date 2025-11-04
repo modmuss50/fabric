@@ -27,11 +27,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.api.loot.v3.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v3.FabricLootTableBuilder;
+
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+
+import net.fabricmc.fabric.api.loot.v3.FabricLootPoolBuilder;
+import net.fabricmc.fabric.api.loot.v3.FabricLootTableBuilder;
 
 /**
  * The implementation of the injected interface {@link FabricLootTableBuilder}.

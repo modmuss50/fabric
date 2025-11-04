@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.message.v1;
 
 import java.util.Objects;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+
 import net.minecraft.network.chat.ChatDecorator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
  * A class for registering a {@link ChatDecorator}. Check the message decorator documentation

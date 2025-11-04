@@ -22,12 +22,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
-import net.fabricmc.fabric.impl.networking.CustomPayloadTypeProvider;
-import net.fabricmc.fabric.impl.networking.FabricCustomPayloadPacketCodec;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.networking.CustomPayloadTypeProvider;
+import net.fabricmc.fabric.impl.networking.FabricCustomPayloadPacketCodec;
 
 @Mixin(targets = "net/minecraft/network/protocol/common/custom/CustomPacketPayload$1")
 public abstract class CustomPayloadPacketCodecMixin<B extends FriendlyByteBuf> implements StreamCodec<B, CustomPacketPayload>, FabricCustomPayloadPacketCodec<B> {

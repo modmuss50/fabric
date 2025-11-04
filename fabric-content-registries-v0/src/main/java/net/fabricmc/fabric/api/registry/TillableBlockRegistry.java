@@ -21,12 +21,14 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import com.mojang.datafixers.util.Pair;
-import net.fabricmc.fabric.mixin.content.registry.HoeItemAccessor;
+
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.mixin.content.registry.HoeItemAccessor;
 
 /**
  * A registry for hoe tilling interactions. A vanilla example is turning dirt to dirt paths.

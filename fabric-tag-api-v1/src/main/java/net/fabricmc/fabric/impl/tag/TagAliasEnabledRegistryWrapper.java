@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.tag;
 
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.tags.TagKey;
 
 /**

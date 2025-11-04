@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.test.item.gametest;
 
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.fabricmc.fabric.test.item.CustomDamageTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -29,6 +27,9 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.fabricmc.fabric.test.item.CustomDamageTest;
 
 public class BrewingStandGameTest {
 	private static final int BREWING_TIME = 800;

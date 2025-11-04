@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.test.networking;
 
-import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.resources.Identifier;
 
 public final class NetworkingTestmods {
 	public static final String ID = "fabric-networking-api-v1-testmod";

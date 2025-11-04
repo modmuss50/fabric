@@ -22,11 +22,13 @@ import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
-import net.fabricmc.fabric.impl.attachment.AttachmentTargetImpl;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
+
+import net.fabricmc.fabric.impl.attachment.AttachmentTargetImpl;
 
 @Mixin(ClientPacketListener.class)
 abstract class ClientPlayNetworkHandlerMixin {

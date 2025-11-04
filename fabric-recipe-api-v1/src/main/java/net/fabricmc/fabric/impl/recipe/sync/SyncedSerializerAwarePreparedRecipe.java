@@ -17,9 +17,11 @@
 package net.fabricmc.fabric.impl.recipe.sync;
 
 import java.util.List;
+
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import org.jspecify.annotations.Nullable;
 
 public interface SyncedSerializerAwarePreparedRecipe {
 	@Nullable

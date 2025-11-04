@@ -23,10 +23,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.resource.v1.FabricLifecycledResourceManager;
+
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
+
+import net.fabricmc.fabric.impl.resource.v1.FabricLifecycledResourceManager;
 
 @Mixin(MultiPackResourceManager.class)
 public class LifecycledResourceManagerImplMixin implements FabricLifecycledResourceManager {

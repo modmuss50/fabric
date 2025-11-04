@@ -19,6 +19,7 @@ package net.fabricmc.fabric.test.object.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;

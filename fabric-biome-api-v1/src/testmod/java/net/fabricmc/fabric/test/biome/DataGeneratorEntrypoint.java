@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.test.biome;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.RegistrySetBuilder;
@@ -38,6 +37,8 @@ import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 public class DataGeneratorEntrypoint implements net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> COMMON_DESERT_WELL = ResourceKey.create(

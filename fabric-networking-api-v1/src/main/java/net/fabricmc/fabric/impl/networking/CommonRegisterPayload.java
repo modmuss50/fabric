@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.networking;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

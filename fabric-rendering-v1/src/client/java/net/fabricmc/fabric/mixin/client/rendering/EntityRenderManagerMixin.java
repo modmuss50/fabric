@@ -21,10 +21,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
+
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.server.packs.resources.ResourceManager;
+
+import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 
 @Mixin(EntityRenderDispatcher.class)
 class EntityRenderManagerMixin {

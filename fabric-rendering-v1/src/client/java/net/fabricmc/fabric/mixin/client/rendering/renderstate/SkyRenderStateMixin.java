@@ -20,8 +20,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
+
 import net.minecraft.client.renderer.state.SkyRenderState;
+
+import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
 
 @Mixin(SkyRenderState.class)
 public class SkyRenderStateMixin {

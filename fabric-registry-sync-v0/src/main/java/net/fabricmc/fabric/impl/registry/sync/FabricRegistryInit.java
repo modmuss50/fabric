@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.registry.sync;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.event.registry.RegistryAttributeHolder;
@@ -23,7 +25,6 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.impl.registry.sync.packet.RegistrySyncPayload;
-import net.minecraft.core.registries.BuiltInRegistries;
 
 public class FabricRegistryInit implements ModInitializer {
 	private static final int MAX_PACKET_SIZE = Integer.getInteger("fabric.registry.sync.max_packet_size", 128 * 1024 * 1024);

@@ -17,9 +17,11 @@
 package net.fabricmc.fabric.api.client.rendering.v1;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.impl.client.rendering.AtlasSourceRegistryImpl;
+
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.client.rendering.AtlasSourceRegistryImpl;
 
 /**
  * A registry for custom {@link SpriteSource}s. Registered types will be automatically available for use in atlas definition JSON files.

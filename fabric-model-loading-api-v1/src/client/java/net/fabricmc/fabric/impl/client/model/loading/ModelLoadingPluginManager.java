@@ -24,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import org.jetbrains.annotations.UnmodifiableView;
+
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.Util;
 

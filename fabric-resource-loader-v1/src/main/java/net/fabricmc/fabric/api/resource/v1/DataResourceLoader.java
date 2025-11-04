@@ -19,13 +19,15 @@ package net.fabricmc.fabric.api.resource.v1;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.impl.resource.v1.DataResourceLoaderImpl;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.item.crafting.RecipeManager;
+
+import net.fabricmc.fabric.impl.resource.v1.DataResourceLoaderImpl;
 
 /**
  * Provides various hooks into the {@linkplain net.minecraft.server.packs.PackType#SERVER_DATA server data} resource loader.

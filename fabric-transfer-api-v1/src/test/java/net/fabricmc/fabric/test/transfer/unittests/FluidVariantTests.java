@@ -21,12 +21,14 @@ import static net.fabricmc.fabric.test.transfer.TestUtil.assertEquals;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 
 class FluidVariantTests extends AbstractTransferApiTest {

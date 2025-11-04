@@ -16,16 +16,6 @@
 
 package net.fabricmc.fabric.test.screenhandler;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.fabricmc.fabric.test.screenhandler.block.BoxBlock;
-import net.fabricmc.fabric.test.screenhandler.block.BoxBlockEntity;
-import net.fabricmc.fabric.test.screenhandler.item.BagItem;
-import net.fabricmc.fabric.test.screenhandler.item.PositionedBagItem;
-import net.fabricmc.fabric.test.screenhandler.screen.BagScreenHandler;
-import net.fabricmc.fabric.test.screenhandler.screen.BoxScreenHandler;
-import net.fabricmc.fabric.test.screenhandler.screen.PositionedBagScreenHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -40,6 +30,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.fabricmc.fabric.test.screenhandler.block.BoxBlock;
+import net.fabricmc.fabric.test.screenhandler.block.BoxBlockEntity;
+import net.fabricmc.fabric.test.screenhandler.item.BagItem;
+import net.fabricmc.fabric.test.screenhandler.item.PositionedBagItem;
+import net.fabricmc.fabric.test.screenhandler.screen.BagScreenHandler;
+import net.fabricmc.fabric.test.screenhandler.screen.BoxScreenHandler;
+import net.fabricmc.fabric.test.screenhandler.screen.PositionedBagScreenHandler;
 
 public class ScreenHandlerTest implements ModInitializer {
 	public static final String ID = "fabric-screen-handler-api-v1-testmod";

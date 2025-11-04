@@ -16,16 +16,18 @@
 
 package net.fabricmc.fabric.mixin.client.indigo.renderer;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.EmptyBlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
+
+import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
 
 @Mixin(ModelBlockRenderer.class)
 abstract class BlockModelRendererMixin {

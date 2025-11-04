@@ -23,13 +23,15 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+
+import net.minecraft.client.renderer.texture.SpriteLoader;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
 import net.fabricmc.fabric.api.renderer.v1.sprite.FabricStitchResult;
 import net.fabricmc.fabric.impl.renderer.SpriteFinderImpl;
 import net.fabricmc.fabric.impl.renderer.StitchResultExtension;
-import net.minecraft.client.renderer.texture.SpriteLoader;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.Identifier;
 
 @Mixin(SpriteLoader.Preparations.class)
 abstract class SpriteLoaderStitchResultMixin implements FabricStitchResult, StitchResultExtension {

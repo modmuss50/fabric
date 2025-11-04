@@ -27,9 +27,11 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.api.item.v1.FabricComponentMapBuilder;
+
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
+
+import net.fabricmc.fabric.api.item.v1.FabricComponentMapBuilder;
 
 @Mixin(DataComponentMap.Builder.class)
 abstract class ComponentMapBuilderMixin implements FabricComponentMapBuilder {

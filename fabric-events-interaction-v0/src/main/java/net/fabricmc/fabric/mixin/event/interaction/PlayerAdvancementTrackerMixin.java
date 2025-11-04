@@ -22,10 +22,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.entity.FakePlayer;
+
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
+
+import net.fabricmc.fabric.api.entity.FakePlayer;
 
 @Mixin(PlayerAdvancements.class)
 public class PlayerAdvancementTrackerMixin {

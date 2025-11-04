@@ -22,12 +22,7 @@ import java.util.stream.Stream;
 
 import com.mojang.serialization.MapCodec;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.block.v1.FabricBlockState;
-import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.test.renderer.Registration;
-import net.fabricmc.fabric.test.renderer.RendererTest;
+
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -40,6 +35,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.block.v1.FabricBlockState;
+import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.test.renderer.Registration;
+import net.fabricmc.fabric.test.renderer.RendererTest;
 
 /**
  * Very crude implementation of a pillar block model that connects with pillars above and below.

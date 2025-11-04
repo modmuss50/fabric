@@ -18,6 +18,7 @@ package net.fabricmc.fabric.api.recipe.v1;
 
 import java.util.Collection;
 import java.util.stream.Stream;
+
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;

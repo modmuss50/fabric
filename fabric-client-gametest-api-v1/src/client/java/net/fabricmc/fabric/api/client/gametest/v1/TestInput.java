@@ -16,12 +16,14 @@
 
 package net.fabricmc.fabric.api.client.gametest.v1;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import java.util.function.Function;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import org.jetbrains.annotations.ApiStatus;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import org.jetbrains.annotations.ApiStatus;
 
 /**
  * The client gametest input handler used to simulate inputs to the client.

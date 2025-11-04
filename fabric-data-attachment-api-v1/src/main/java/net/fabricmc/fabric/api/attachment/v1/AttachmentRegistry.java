@@ -21,10 +21,12 @@ import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.impl.attachment.AttachmentRegistryImpl;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.attachment.AttachmentRegistryImpl;
 
 /**
  * Class used to create and register {@link AttachmentType}s. To quickly create {@link AttachmentType}s, use one of the various

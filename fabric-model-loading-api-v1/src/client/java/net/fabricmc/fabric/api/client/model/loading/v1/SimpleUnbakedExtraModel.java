@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.client.model.loading.v1;
 
 import java.util.function.BiFunction;
+
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.model.SimpleModelWrapper;
 import net.minecraft.client.renderer.block.model.SingleVariant;

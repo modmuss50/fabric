@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.test.rendering.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -28,6 +27,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.Blocks;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
 public final class FeatureRendererTest implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FeatureRendererTest.class);

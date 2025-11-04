@@ -23,12 +23,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+
+import com.google.common.base.Preconditions;
+import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
-import com.google.common.base.Preconditions;
-import com.mojang.datafixers.util.Pair;
 
 /**
  * Internal data for modding Vanilla's {@link MultiNoiseBiomeSourceParameterList.Preset#NETHER}.

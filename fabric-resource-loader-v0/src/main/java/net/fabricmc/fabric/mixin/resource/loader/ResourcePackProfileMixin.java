@@ -25,12 +25,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
-import net.fabricmc.fabric.impl.resource.loader.ResourcePackSourceTracker;
+
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+
+import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
+import net.fabricmc.fabric.impl.resource.loader.ResourcePackSourceTracker;
 
 /**
  * Implements resource pack source tracking (for {@link net.fabricmc.fabric.impl.resource.loader.FabricResource}).

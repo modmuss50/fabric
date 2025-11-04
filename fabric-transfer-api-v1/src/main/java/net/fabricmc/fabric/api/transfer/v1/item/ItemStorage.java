@@ -19,6 +19,18 @@ package net.fabricmc.fabric.api.transfer.v1.item;
 import java.util.List;
 
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.WorldlyContainerHolder;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -32,16 +44,6 @@ import net.fabricmc.fabric.impl.transfer.item.BundleContentsStorage;
 import net.fabricmc.fabric.impl.transfer.item.ComposterWrapper;
 import net.fabricmc.fabric.impl.transfer.item.ContainerComponentStorage;
 import net.fabricmc.fabric.mixin.transfer.DoubleInventoryAccessor;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.WorldlyContainerHolder;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 
 /**
  * Access to {@link Storage Storage&lt;ItemVariant&gt;} instances.

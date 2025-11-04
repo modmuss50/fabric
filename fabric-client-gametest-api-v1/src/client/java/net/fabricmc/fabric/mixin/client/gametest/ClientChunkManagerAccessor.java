@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.mixin.client.gametest;
 
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.client.multiplayer.ClientChunkCache;
 
 @Mixin(ClientChunkCache.class)
 public interface ClientChunkManagerAccessor {

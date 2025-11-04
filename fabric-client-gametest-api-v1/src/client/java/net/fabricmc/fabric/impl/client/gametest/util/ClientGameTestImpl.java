@@ -26,6 +26,7 @@ import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.contents.TranslatableContents;
+
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 
 public final class ClientGameTestImpl {

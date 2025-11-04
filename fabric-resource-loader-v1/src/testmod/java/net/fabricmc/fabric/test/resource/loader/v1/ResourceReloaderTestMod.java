@@ -18,13 +18,7 @@ package net.fabricmc.fabric.test.resource.loader.v1;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
-import net.fabricmc.fabric.api.resource.v1.DataResourceStore;
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -32,6 +26,14 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.enchantment.Enchantments;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.DataResourceStore;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class ResourceReloaderTestMod implements ModInitializer {
 	public static final String NAMESPACE = "fabric-resource-loader-v1-testmod";

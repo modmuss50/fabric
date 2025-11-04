@@ -20,9 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.resources.Identifier;
-import org.junit.jupiter.api.Test;
 
 public class CommandSuggestionOrderTest {
 	@Test

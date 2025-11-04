@@ -20,11 +20,13 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 
 public class ArmorRendererRegistryImpl {
 	private static final HashMap<Item, ArmorRenderer.Factory> FACTORIES = new HashMap<>();

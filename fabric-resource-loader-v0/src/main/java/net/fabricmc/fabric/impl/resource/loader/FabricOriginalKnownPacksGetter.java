@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.resource.loader;
 
 import java.util.List;
+
 import net.minecraft.server.packs.repository.KnownPack;
 
 public interface FabricOriginalKnownPacksGetter {

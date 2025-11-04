@@ -17,8 +17,7 @@
 package net.fabricmc.fabric.test.renderer;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.block.v1.FabricBlock;
-import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -33,6 +32,9 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+
+import net.fabricmc.fabric.api.block.v1.FabricBlock;
+import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;
 
 // Need to implement FabricBlock manually because this is a testmod for another Fabric module, otherwise it would be injected.
 public class FrameBlock extends Block implements EntityBlock, FabricBlock {

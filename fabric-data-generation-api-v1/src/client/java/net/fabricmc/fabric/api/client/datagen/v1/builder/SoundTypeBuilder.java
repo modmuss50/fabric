@@ -21,6 +21,7 @@ import java.util.Objects;
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;

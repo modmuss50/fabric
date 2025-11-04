@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.impl.tag.convention.v2;
 
-import net.fabricmc.fabric.api.tag.convention.v2.TagUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -29,6 +28,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluid;
+
+import net.fabricmc.fabric.api.tag.convention.v2.TagUtil;
 
 public record TagRegistration<T>(ResourceKey<Registry<T>> registryKey) {
 	public static final TagRegistration<Item> ITEM_TAG = new TagRegistration<>(Registries.ITEM);

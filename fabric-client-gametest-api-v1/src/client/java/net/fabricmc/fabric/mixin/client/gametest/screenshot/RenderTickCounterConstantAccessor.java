@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.mixin.client.gametest.screenshot;
 
-import net.minecraft.client.DeltaTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
+
+import net.minecraft.client.DeltaTracker;
 
 @Mixin(DeltaTracker.DefaultValue.class)
 public interface RenderTickCounterConstantAccessor {

@@ -22,8 +22,7 @@ import java.util.Map;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
@@ -39,6 +38,9 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 
 public class FluidRenderHandlerRegistryImpl implements FluidRenderHandlerRegistry {
 	private final Map<Fluid, FluidRenderHandler> handlers = new IdentityHashMap<>();

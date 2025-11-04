@@ -19,11 +19,13 @@ package net.fabricmc.fabric.impl.registry.sync;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistryView;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
+
+import net.fabricmc.fabric.api.event.registry.DynamicRegistryView;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 
 public final class DynamicRegistryViewImpl implements DynamicRegistryView {
 	private final Map<ResourceKey<? extends Registry<?>>, Registry<?>> registries;

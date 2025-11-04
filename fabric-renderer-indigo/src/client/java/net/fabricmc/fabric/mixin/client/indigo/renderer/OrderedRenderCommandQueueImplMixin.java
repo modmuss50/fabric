@@ -16,12 +16,11 @@
 
 package net.fabricmc.fabric.mixin.client.indigo.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.List;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.spongepowered.asm.mixin.Mixin;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MeshView;
-import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessRenderCommandQueue;
+
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeStorage;
@@ -29,6 +28,9 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.ItemDisplayContext;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshView;
+import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessRenderCommandQueue;
 
 @Mixin(SubmitNodeStorage.class)
 abstract class OrderedRenderCommandQueueImplMixin implements SubmitNodeCollector, AccessRenderCommandQueue {

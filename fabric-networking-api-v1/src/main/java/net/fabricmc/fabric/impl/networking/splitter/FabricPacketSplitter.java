@@ -25,8 +25,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.EncoderException;
 import io.netty.handler.codec.MessageToMessageEncoder;
-import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
-import net.fabricmc.fabric.mixin.networking.accessor.EncoderHandlerAccessor;
+
 import net.minecraft.network.PacketEncoder;
 import net.minecraft.network.VarInt;
 import net.minecraft.network.protocol.Packet;
@@ -34,6 +33,9 @@ import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
+import net.fabricmc.fabric.mixin.networking.accessor.EncoderHandlerAccessor;
 
 public class FabricPacketSplitter extends MessageToMessageEncoder<Packet<?>> {
 	public static final int SAFE_S2C_SPLIT_SIZE = ClientboundCustomPayloadPacket.MAX_PAYLOAD_SIZE;

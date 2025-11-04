@@ -21,12 +21,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 
 // Applied a bit earlier than other mods to ensure changes and optimizations to default vanilla behavior
 @Mixin(value = WalkNodeEvaluator.class, priority = 999)

@@ -31,11 +31,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.recipe.sync.RecipeSyncImpl;
-import net.fabricmc.fabric.impl.recipe.sync.SyncedSerializerAwarePreparedRecipe;
+
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeMap;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+
+import net.fabricmc.fabric.impl.recipe.sync.RecipeSyncImpl;
+import net.fabricmc.fabric.impl.recipe.sync.SyncedSerializerAwarePreparedRecipe;
 
 @Mixin(RecipeMap.class)
 public class PreparedRecipesMixin implements SyncedSerializerAwarePreparedRecipe {

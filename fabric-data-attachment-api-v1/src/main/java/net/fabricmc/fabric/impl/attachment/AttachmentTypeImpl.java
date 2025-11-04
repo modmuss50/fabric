@@ -20,11 +20,13 @@ import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
 public record AttachmentTypeImpl<A>(
 		Identifier identifier,

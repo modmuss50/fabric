@@ -21,9 +21,11 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
+
 import net.minecraft.gametest.framework.GameTestServer;
 import net.minecraft.world.level.DataPackConfig;
+
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
 
 /**
  * @see ModResourcePackUtil#createTestServerSettings

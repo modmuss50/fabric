@@ -18,10 +18,12 @@ package net.fabricmc.fabric.api.client.rendering.v1.hud;
 
 import java.util.Objects;
 import java.util.function.Function;
-import net.fabricmc.fabric.impl.client.rendering.hud.HudStatusBarHeightRegistryImpl;
+
 import net.minecraft.client.gui.Gui;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+
+import net.fabricmc.fabric.impl.client.rendering.hud.HudStatusBarHeightRegistryImpl;
 
 /**
  * A registry for {@link StatusBarHeightProvider} instances, known as height providers. These providers define the

@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.impl.resource.v1;
 
-import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.flag.FeatureFlagSet;
+
+import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
 
 // Used to inject into the ResourceReloader store.
 public record SetupMarkerResourceReloader(ReloadableServerResources dataPackContents, FeatureFlagSet featureSet) implements ResourceManagerReloadListener {

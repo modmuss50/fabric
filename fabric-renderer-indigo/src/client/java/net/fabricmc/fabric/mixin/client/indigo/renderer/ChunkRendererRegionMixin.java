@@ -18,9 +18,11 @@ package net.fabricmc.fabric.mixin.client.indigo.renderer;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+
+import net.minecraft.client.renderer.chunk.RenderSectionRegion;
+
 import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessChunkRendererRegion;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
-import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 
 @Mixin(RenderSectionRegion.class)
 abstract class ChunkRendererRegionMixin implements AccessChunkRendererRegion {

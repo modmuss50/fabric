@@ -17,9 +17,11 @@
 package net.fabricmc.fabric.api.client.rendering.v1;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
+
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.world.level.block.Block;
+
+import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 
 public interface ColorProviderRegistry<T, Provider> {
 	ColorProviderRegistry<Block, BlockColor> BLOCK = ColorProviderRegistryImpl.BLOCK;

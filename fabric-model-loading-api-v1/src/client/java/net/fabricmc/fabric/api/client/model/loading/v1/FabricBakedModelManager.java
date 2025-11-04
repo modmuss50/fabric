@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.api.client.model.loading.v1;
 
-import net.minecraft.client.resources.model.ModelManager;
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.client.resources.model.ModelManager;
 
 /**
  * Fabric-provided helper methods for {@link ModelManager}.

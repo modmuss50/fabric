@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.api.client.datagen.v1.provider;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
 /**
  * Extend this class and implement {@link FabricModelProvider#generateBlockStateModels} and {@link FabricModelProvider#generateItemModels}.

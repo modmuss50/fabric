@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.mixin.transfer;
 
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.level.material.Fluid;
 
 @Mixin(BucketItem.class)
 public interface BucketItemAccessor {

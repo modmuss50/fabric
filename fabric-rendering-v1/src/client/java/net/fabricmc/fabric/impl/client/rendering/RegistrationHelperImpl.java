@@ -18,10 +18,12 @@ package net.fabricmc.fabric.impl.client.rendering;
 
 import java.util.Objects;
 import java.util.function.Function;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
 public final class RegistrationHelperImpl implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper {
 	private final Function<RenderLayer<?, ?>, Boolean> delegate;

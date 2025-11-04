@@ -31,13 +31,15 @@ import it.unimi.dsi.fastutil.objects.Reference2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import org.jetbrains.annotations.VisibleForTesting;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.base.toposort.NodeSorting;
-import net.fabricmc.fabric.impl.base.toposort.SortableNode;
-import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
+
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.base.toposort.NodeSorting;
+import net.fabricmc.fabric.impl.base.toposort.SortableNode;
+import net.fabricmc.fabric.mixin.client.particle.ParticleManagerAccessor;
 
 public final class ParticleRendererRegistryImpl {
 	public static final ParticleRendererRegistryImpl INSTANCE = new ParticleRendererRegistryImpl(ParticleManagerAccessor.getParticleTextureSheets());

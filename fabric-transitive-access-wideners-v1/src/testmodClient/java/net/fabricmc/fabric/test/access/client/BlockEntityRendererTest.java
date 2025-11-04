@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.test.access.client;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.test.access.SignBlockEntityTest;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.test.access.SignBlockEntityTest;
 
 public class BlockEntityRendererTest implements ClientModInitializer {
 	@Override

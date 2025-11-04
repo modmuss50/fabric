@@ -20,7 +20,7 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectArrayMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.CommonComponents;
@@ -33,6 +33,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
+
+import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 
 public sealed interface AttachmentTargetInfo<T> {
 	int MAX_SIZE_IN_BYTES = Byte.BYTES + Long.BYTES;

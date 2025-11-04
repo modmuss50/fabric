@@ -21,12 +21,14 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
-import net.fabricmc.fabric.api.renderer.v1.model.MeshBakedGeometry;
-import net.fabricmc.fabric.impl.renderer.BasicItemModelExtension;
+
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.resources.model.QuadCollection;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
+import net.fabricmc.fabric.api.renderer.v1.model.MeshBakedGeometry;
+import net.fabricmc.fabric.impl.renderer.BasicItemModelExtension;
 
 @Mixin(BlockModelWrapper.Unbaked.class)
 abstract class BasicItemModelUnbakedMixin {

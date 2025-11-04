@@ -18,9 +18,10 @@ package net.fabricmc.fabric.mixin.client.rendering;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+
+import net.minecraft.resources.Identifier;
 
 @Mixin(targets = "net/minecraft/client/gui/screens/debug/DebugOptionsScreen$OptionEntry")
 public abstract class DebugOptionsScreenEntryMixin {

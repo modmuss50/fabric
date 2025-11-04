@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.mixin.transfer;
 
-import net.minecraft.world.CompoundContainer;
-import net.minecraft.world.Container;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.world.CompoundContainer;
+import net.minecraft.world.Container;
 
 @Mixin(CompoundContainer.class)
 public interface DoubleInventoryAccessor {

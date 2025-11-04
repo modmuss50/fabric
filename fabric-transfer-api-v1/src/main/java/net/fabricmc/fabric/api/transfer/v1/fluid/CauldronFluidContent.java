@@ -19,8 +19,7 @@ package net.fabricmc.fabric.api.transfer.v1.fluid;
 import java.util.Collection;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap;
-import net.fabricmc.fabric.impl.transfer.fluid.CauldronStorage;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
@@ -28,6 +27,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+
+import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap;
+import net.fabricmc.fabric.impl.transfer.fluid.CauldronStorage;
 
 /**
  * Entrypoint to expose cauldrons to the Fluid Transfer API.

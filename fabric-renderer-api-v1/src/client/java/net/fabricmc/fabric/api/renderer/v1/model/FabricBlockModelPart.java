@@ -19,14 +19,16 @@ package net.fabricmc.fabric.api.renderer.v1.model;
 import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.impl.renderer.VanillaBlockModelPartEncoder;
+
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.impl.renderer.VanillaBlockModelPartEncoder;
 
 /**
  * Note: This interface is automatically implemented on {@link BlockModelPart} via Mixin and interface injection.

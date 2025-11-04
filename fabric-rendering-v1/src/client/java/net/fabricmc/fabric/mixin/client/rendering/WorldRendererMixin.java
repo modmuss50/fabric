@@ -33,10 +33,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
-import net.fabricmc.fabric.impl.client.rendering.world.WorldExtractionContextImpl;
-import net.fabricmc.fabric.impl.client.rendering.world.WorldRenderContextImpl;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -53,6 +50,11 @@ import net.minecraft.client.renderer.state.LevelRenderState;
 import net.minecraft.client.renderer.state.WorldBorderRenderState;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.phys.Vec3;
+
+import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
+import net.fabricmc.fabric.impl.client.rendering.world.WorldExtractionContextImpl;
+import net.fabricmc.fabric.impl.client.rendering.world.WorldRenderContextImpl;
 
 @Mixin(LevelRenderer.class)
 public abstract class WorldRendererMixin {

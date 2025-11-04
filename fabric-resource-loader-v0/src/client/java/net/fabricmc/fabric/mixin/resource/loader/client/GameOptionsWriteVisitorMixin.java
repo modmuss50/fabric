@@ -24,10 +24,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
+
+import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
 
 /**
  * Mixins to the anonymous class in #write method.

@@ -21,10 +21,12 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.command.client.ClientCommandInternals;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundCommandsPacket;
+
+import net.fabricmc.fabric.impl.command.client.ClientCommandInternals;
 
 /**
  * Manages client-sided commands and provides some related helper methods.

@@ -26,10 +26,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
+
 import net.minecraft.client.gui.screens.packs.PackSelectionModel;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
+
+import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
 
 @Mixin(PackSelectionModel.class)
 public class ResourcePackOrganizerMixin {

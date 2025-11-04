@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.content.registry;
 
 import java.util.Objects;
+
 import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WeatheringCopper;

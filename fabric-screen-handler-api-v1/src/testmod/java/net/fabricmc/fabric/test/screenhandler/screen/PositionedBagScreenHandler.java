@@ -17,7 +17,7 @@
 package net.fabricmc.fabric.test.screenhandler.screen;
 
 import java.util.Optional;
-import net.fabricmc.fabric.test.screenhandler.ScreenHandlerTest;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -25,6 +25,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
+
+import net.fabricmc.fabric.test.screenhandler.ScreenHandlerTest;
 
 public class PositionedBagScreenHandler extends BagScreenHandler implements PositionedScreenHandler {
 	private final BlockPos pos;

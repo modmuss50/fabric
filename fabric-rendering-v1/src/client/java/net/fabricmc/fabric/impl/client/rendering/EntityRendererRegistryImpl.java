@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.client.rendering;
 
 import java.util.HashMap;
 import java.util.function.BiConsumer;
+
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

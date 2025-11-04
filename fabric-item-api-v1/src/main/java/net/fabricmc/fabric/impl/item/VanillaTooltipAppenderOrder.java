@@ -32,7 +32,7 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.service.MixinService;
-import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +40,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+
+import net.fabricmc.loader.api.FabricLoader;
 
 public final class VanillaTooltipAppenderOrder {
 	private static final List<DataComponentType<?>> VANILLA_ORDER = scrapeVanillaOrder();

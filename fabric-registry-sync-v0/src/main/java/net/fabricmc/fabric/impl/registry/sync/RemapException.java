@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.impl.registry.sync;
 
-import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.network.chat.Component;
 
 public class RemapException extends Exception {
 	@Nullable

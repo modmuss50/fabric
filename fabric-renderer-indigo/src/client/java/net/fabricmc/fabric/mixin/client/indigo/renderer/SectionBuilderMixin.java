@@ -31,8 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessChunkRendererRegion;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
+
 import net.minecraft.client.renderer.SectionBufferBuilderPack;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -45,6 +44,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessChunkRendererRegion;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 
 /**
  * Implements the main hooks for terrain rendering. Attempts to tread

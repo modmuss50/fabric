@@ -29,6 +29,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public final class LootGameTest {

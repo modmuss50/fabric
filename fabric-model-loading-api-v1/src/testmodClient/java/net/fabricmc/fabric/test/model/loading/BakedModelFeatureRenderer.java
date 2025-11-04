@@ -16,8 +16,12 @@
 
 package net.fabricmc.fabric.test.model.loading;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Supplier;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -27,8 +31,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
-import org.joml.AxisAngle4f;
-import org.joml.Quaternionf;
 
 public class BakedModelFeatureRenderer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 	private final Supplier<BlockStateModel> modelSupplier;

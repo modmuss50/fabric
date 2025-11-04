@@ -18,8 +18,7 @@ package net.fabricmc.fabric.impl.gamerule.widget;
 
 import java.util.List;
 import java.util.Locale;
-import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
-import net.fabricmc.fabric.mixin.gamerule.client.EditGameRulesScreenAccessor;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -27,6 +26,9 @@ import net.minecraft.client.gui.screens.worldselection.EditGameRulesScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.gamerules.GameRule;
+
+import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
+import net.fabricmc.fabric.mixin.gamerule.client.EditGameRulesScreenAccessor;
 
 public final class EnumRuleWidget<E extends Enum<E>> extends EditGameRulesScreen.GameRuleEntry {
 	private final Button buttonWidget;

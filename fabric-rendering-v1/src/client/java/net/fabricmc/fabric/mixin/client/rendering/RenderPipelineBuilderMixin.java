@@ -33,11 +33,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.renderer.ShaderDefines;
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderPipeline;
 import net.fabricmc.fabric.impl.client.rendering.FabricRenderPipelineImpl;
 import net.fabricmc.fabric.impl.client.rendering.FabricRenderPipelineInternals;
-import net.minecraft.client.renderer.ShaderDefines;
-import net.minecraft.resources.Identifier;
 
 @Mixin(RenderPipeline.Builder.class)
 class RenderPipelineBuilderMixin implements FabricRenderPipeline.Builder {

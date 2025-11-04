@@ -17,8 +17,7 @@
 package net.fabricmc.fabric.impl.renderer;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.renderer.v1.Renderer;
+
 import net.minecraft.client.gui.components.debug.DebugEntryCategory;
 import net.minecraft.client.gui.components.debug.DebugScreenDisplayer;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
@@ -26,6 +25,9 @@ import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
 
 public class DebugHudClient implements ClientModInitializer {
 	public static Identifier ACTIVE_RENDERER = DebugScreenEntries.register(Identifier.fromNamespaceAndPath("fabric", "active_renderer"), new ActiveRendererDebugHudEntry());

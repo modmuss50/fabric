@@ -34,12 +34,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
-import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
-import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
-import net.fabricmc.fabric.impl.client.model.loading.BakedModelsHooks;
-import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingEventDispatcher;
-import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingPluginManager;
+
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.client.resources.model.ClientItemInfoLoader;
@@ -49,6 +44,13 @@ import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
+import net.fabricmc.fabric.api.client.model.loading.v1.FabricBakedModelManager;
+import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
+import net.fabricmc.fabric.impl.client.model.loading.BakedModelsHooks;
+import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingEventDispatcher;
+import net.fabricmc.fabric.impl.client.model.loading.ModelLoadingPluginManager;
 
 @Mixin(ModelManager.class)
 abstract class BakedModelManagerMixin implements FabricBakedModelManager {

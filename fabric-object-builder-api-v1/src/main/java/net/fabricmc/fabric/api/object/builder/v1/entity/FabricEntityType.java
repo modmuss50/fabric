@@ -18,7 +18,7 @@ package net.fabricmc.fabric.api.object.builder.v1.entity;
 
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-import net.fabricmc.fabric.impl.object.builder.FabricEntityTypeImpl;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +27,8 @@ import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.levelgen.Heightmap;
+
+import net.fabricmc.fabric.impl.object.builder.FabricEntityTypeImpl;
 
 /**
  * General-purpose Fabric-provided extensions for {@link EntityType}.

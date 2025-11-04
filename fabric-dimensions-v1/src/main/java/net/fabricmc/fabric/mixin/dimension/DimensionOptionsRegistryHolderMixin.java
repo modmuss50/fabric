@@ -22,11 +22,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.impl.dimension.FailSoftMapCodec;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.WorldDimensions;
+
+import net.fabricmc.fabric.impl.dimension.FailSoftMapCodec;
 
 @Mixin(WorldDimensions.class)
 public class DimensionOptionsRegistryHolderMixin {

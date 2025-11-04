@@ -20,9 +20,11 @@ import java.util.Set;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.impl.recipe.sync.SyncedSerializerAwareClientConnection;
+
 import net.minecraft.network.Connection;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+
+import net.fabricmc.fabric.impl.recipe.sync.SyncedSerializerAwareClientConnection;
 
 @Mixin(Connection.class)
 public abstract class ClientConnectionMixin implements SyncedSerializerAwareClientConnection {

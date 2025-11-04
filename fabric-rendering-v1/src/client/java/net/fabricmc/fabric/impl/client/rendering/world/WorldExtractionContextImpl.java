@@ -19,7 +19,7 @@ package net.fabricmc.fabric.impl.client.rendering.world;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.client.rendering.v1.world.WorldExtractionContext;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -27,6 +27,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.LevelRenderState;
+
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldExtractionContext;
 
 public class WorldExtractionContextImpl implements WorldExtractionContext {
 	private GameRenderer gameRenderer;

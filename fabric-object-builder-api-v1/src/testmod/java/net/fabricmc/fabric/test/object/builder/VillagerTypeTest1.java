@@ -16,20 +16,22 @@
 
 package net.fabricmc.fabric.test.object.builder;
 
-import static net.minecraft.commands.arguments.EntityArgument.entity;
-import static net.minecraft.commands.arguments.EntityArgument.getEntity;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
+import static net.minecraft.commands.arguments.EntityArgument.entity;
+import static net.minecraft.commands.arguments.EntityArgument.getEntity;
 
 import java.util.Optional;
 
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import org.apache.commons.lang3.tuple.Pair;
+
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.npc.VillagerProfession;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.npc.VillagerProfession;
 
 public class VillagerTypeTest1 implements ModInitializer {
 	private static final Identifier FOOD_POOL_ID = ObjectBuilderTestConstants.id("food");

@@ -16,13 +16,14 @@
 
 package net.fabricmc.fabric.impl.transfer.item;
 
+import net.minecraft.core.Direction;
+import net.minecraft.world.WorldlyContainer;
+
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.impl.transfer.DebugMessages;
-import net.minecraft.core.Direction;
-import net.minecraft.world.WorldlyContainer;
 
 /**
  * Wrapper around an {@link InventorySlotWrapper}, with additional canInsert and canExtract checks.

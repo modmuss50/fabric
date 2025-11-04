@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.event.lifecycle;
 
 import java.util.Set;
+
 import net.minecraft.world.level.chunk.LevelChunk;
 
 /**

@@ -19,11 +19,13 @@ package net.fabricmc.fabric.mixin.datagen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricProvidedTagBuilder;
-import net.fabricmc.fabric.impl.datagen.FabricTagBuilder;
+
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagKey;
+
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricProvidedTagBuilder;
+import net.fabricmc.fabric.impl.datagen.FabricTagBuilder;
 
 /**
  * Extends ProvidedTagBuilder to support setting the replace field.

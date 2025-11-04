@@ -16,14 +16,16 @@
 
 package net.fabricmc.fabric.test.networking.client.keybindreciever;
 
-import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
+import org.lwjgl.glfw.GLFW;
+
+import net.minecraft.client.KeyMapping;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.test.networking.keybindreciever.KeybindPayload;
-import net.minecraft.client.KeyMapping;
 
 // Sends a packet to the server when a keybinding was pressed
 // The server in response will send a chat message to the client.

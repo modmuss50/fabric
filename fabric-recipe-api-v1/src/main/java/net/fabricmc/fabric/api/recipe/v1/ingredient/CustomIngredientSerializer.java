@@ -18,11 +18,13 @@ package net.fabricmc.fabric.api.recipe.v1.ingredient;
 
 import com.mojang.serialization.MapCodec;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientImpl;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientImpl;
 
 /**
  * Serializer for a {@link CustomIngredient}.

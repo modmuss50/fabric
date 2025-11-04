@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.render;
 
 import org.spongepowered.asm.mixin.Mixin;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockRenderManager;
+
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+
+import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockRenderManager;
 
 @Mixin(BlockRenderDispatcher.class)
 abstract class BlockRenderManagerMixin implements FabricBlockRenderManager {

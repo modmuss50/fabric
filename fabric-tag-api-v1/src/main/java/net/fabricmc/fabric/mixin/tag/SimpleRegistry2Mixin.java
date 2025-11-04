@@ -21,9 +21,11 @@ import java.util.Set;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.impl.tag.TagAliasEnabledRegistryWrapper;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.TagKey;
+
+import net.fabricmc.fabric.impl.tag.TagAliasEnabledRegistryWrapper;
 
 /**
  * Adds tag alias support to {@code SimpleRegistry$2}, which is the wrapper used

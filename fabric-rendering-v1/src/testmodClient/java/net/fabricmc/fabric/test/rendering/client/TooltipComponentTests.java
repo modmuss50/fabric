@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.test.rendering.client;
 
 import java.util.Objects;
+
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.fabricmc.fabric.test.rendering.TooltipComponentTestInit;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 
 public class TooltipComponentTests implements ClientModInitializer {
 	@Override

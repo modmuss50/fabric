@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.recipe.sync;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;

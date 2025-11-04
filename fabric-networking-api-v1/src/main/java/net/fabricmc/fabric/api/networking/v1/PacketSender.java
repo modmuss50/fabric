@@ -17,11 +17,12 @@
 package net.fabricmc.fabric.api.networking.v1;
 
 import io.netty.channel.ChannelFutureListener;
+import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import org.jetbrains.annotations.ApiStatus;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Represents something that supports sending packets to channels.

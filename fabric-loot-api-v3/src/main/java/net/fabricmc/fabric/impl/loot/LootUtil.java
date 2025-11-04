@@ -19,10 +19,7 @@ package net.fabricmc.fabric.impl.loot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import net.fabricmc.fabric.api.loot.v3.LootTableSource;
-import net.fabricmc.fabric.impl.resource.loader.BuiltinModResourcePackSource;
-import net.fabricmc.fabric.impl.resource.loader.FabricResource;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -31,6 +28,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.level.storage.loot.LootTable;
+
+import net.fabricmc.fabric.api.loot.v3.LootTableSource;
+import net.fabricmc.fabric.impl.resource.loader.BuiltinModResourcePackSource;
+import net.fabricmc.fabric.impl.resource.loader.FabricResource;
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
 
 public final class LootUtil {
 	public static final ThreadLocal<Map<Identifier, LootTableSource>> SOURCES = ThreadLocal.withInitial(HashMap::new);

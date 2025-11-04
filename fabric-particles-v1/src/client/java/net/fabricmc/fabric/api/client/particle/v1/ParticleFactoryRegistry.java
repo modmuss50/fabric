@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.client.particle.v1;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.fabricmc.fabric.impl.client.particle.ParticleFactoryRegistryImpl;
+
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.fabricmc.fabric.impl.client.particle.ParticleFactoryRegistryImpl;
 
 /**
  * Registry for adding particle factories on the client for

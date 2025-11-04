@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.model;
 
 import org.spongepowered.asm.mixin.Mixin;
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockModelPart;
+
 import net.minecraft.client.renderer.block.model.BlockModelPart;
+
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockModelPart;
 
 @Mixin(BlockModelPart.class)
 interface BlockModelPartMixin extends FabricBlockModelPart {

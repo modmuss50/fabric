@@ -26,7 +26,7 @@ import java.util.Set;
 
 import io.netty.channel.ChannelFutureListener;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
+
 import net.minecraft.network.Connection;
 import net.minecraft.network.ConnectionProtocol;
 import net.minecraft.network.chat.Component;
@@ -34,6 +34,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.RunningOnDifferentThreadException;
+
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 
 /**
  * A network addon which is aware of the channels the other side may receive.

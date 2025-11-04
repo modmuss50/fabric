@@ -22,12 +22,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.CollisionGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.PathfindingContext;
+
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 
 @Mixin(PathfindingContext.class)
 public abstract class PathContextMixin {

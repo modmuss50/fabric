@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.api.client.rendering.v1.hud;
 
 import java.util.function.ToIntFunction;
-import net.minecraft.world.entity.player.Player;
+
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Define the vertical space occupied by HUD elements, known as status bars, which are positioned on the left and right

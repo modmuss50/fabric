@@ -16,10 +16,10 @@
 
 package net.fabricmc.fabric.api.renderer.v1.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Predicate;
-import net.fabricmc.fabric.api.renderer.v1.Renderer;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -29,6 +29,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.EmptyBlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 
 /**
  * Note: This interface is automatically implemented on {@link BlockRenderDispatcher} via Mixin and interface injection.

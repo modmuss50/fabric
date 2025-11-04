@@ -17,9 +17,11 @@
 package net.fabricmc.fabric.api.datagen.v1.loot;
 
 import com.google.common.base.Preconditions;
+
+import net.minecraft.data.loot.EntityLootSubProvider;
+
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.impl.datagen.loot.ConditionEntityLootTableGenerator;
-import net.minecraft.data.loot.EntityLootSubProvider;
 
 public interface FabricEntityLootTableGenerator {
 	/**

@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.impl.transfer.item;
 
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.world.item.ItemStack;
+
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 
 /**
  * Internal class that allows inventory instances to defer special logic until {@link InventorySlotWrapper#onFinalCommit()} is called.

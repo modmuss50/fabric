@@ -26,8 +26,10 @@ import com.mojang.datafixers.types.templates.TypeTemplate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.impl.dimension.TaggedChoiceExtension;
+
 import net.minecraft.util.datafix.schemas.V2832;
+
+import net.fabricmc.fabric.impl.dimension.TaggedChoiceExtension;
 
 @Mixin(V2832.class)
 public class Schema2832Mixin {

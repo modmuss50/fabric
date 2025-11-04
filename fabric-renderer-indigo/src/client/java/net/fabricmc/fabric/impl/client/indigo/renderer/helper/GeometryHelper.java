@@ -19,12 +19,14 @@ package net.fabricmc.fabric.impl.client.indigo.renderer.helper;
 import static net.minecraft.util.Mth.equal;
 
 import org.joml.Vector3fc;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
+
 import net.minecraft.client.renderer.FaceInfo;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 
 /**
  * Static routines of general utility for renderer implementations.

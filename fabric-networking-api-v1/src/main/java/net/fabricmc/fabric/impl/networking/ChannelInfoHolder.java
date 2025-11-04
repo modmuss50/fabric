@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.networking;
 
 import java.util.Collection;
+
 import net.minecraft.network.ConnectionProtocol;
 import net.minecraft.resources.Identifier;
 

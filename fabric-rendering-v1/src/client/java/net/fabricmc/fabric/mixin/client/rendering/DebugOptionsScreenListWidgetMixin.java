@@ -24,9 +24,11 @@ import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.impl.client.rendering.DebugOptionsComparator;
+
 import net.minecraft.client.gui.components.debug.DebugScreenEntry;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.client.rendering.DebugOptionsComparator;
 
 @Mixin(targets = "net/minecraft/client/gui/screens/debug/DebugOptionsScreen$OptionList")
 public class DebugOptionsScreenListWidgetMixin {

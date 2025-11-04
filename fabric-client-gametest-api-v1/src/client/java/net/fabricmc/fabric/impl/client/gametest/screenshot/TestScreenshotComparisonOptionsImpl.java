@@ -27,10 +27,12 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.datafixers.util.Either;
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.client.renderer.Rect2i;
+
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
 import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions;
 import net.fabricmc.fabric.impl.client.gametest.FabricClientGameTestRunner;
-import net.minecraft.client.renderer.Rect2i;
 
 public final class TestScreenshotComparisonOptionsImpl extends TestScreenshotCommonOptionsImpl<TestScreenshotComparisonOptions> implements TestScreenshotComparisonOptions {
 	private final Either<String, NativeImage> templateImage;

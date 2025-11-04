@@ -25,11 +25,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
+
 import net.minecraft.client.multiplayer.KnownPacksManager;
 import net.minecraft.server.packs.repository.KnownPack;
 import net.minecraft.server.packs.repository.PackRepository;
+
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
 
 @Mixin(KnownPacksManager.class)
 public class ClientDataPackManagerMixin {

@@ -18,8 +18,9 @@ package net.fabricmc.fabric.test.serialization;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * A delegating WriteView, used to force usage of fallback implementation of FabricWriteView.

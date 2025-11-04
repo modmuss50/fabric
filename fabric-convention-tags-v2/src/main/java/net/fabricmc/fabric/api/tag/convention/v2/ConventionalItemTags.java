@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.api.tag.convention.v2;
 
-import net.fabricmc.fabric.impl.tag.convention.v2.TagRegistration;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+
+import net.fabricmc.fabric.impl.tag.convention.v2.TagRegistration;
 
 /**
  * See {@link net.minecraft.tags.ItemTags} for vanilla tags.

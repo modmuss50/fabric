@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.test.lookup.compat;
 
 import java.util.function.Predicate;
-import net.fabricmc.fabric.test.lookup.api.ItemExtractable;
-import net.fabricmc.fabric.test.lookup.api.ItemInsertable;
+
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+
+import net.fabricmc.fabric.test.lookup.api.ItemExtractable;
+import net.fabricmc.fabric.test.lookup.api.ItemInsertable;
 
 final class WrappedInventory implements ItemInsertable, ItemExtractable {
 	private final Container inv;

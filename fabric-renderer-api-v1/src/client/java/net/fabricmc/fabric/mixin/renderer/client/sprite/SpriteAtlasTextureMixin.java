@@ -26,14 +26,16 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
-import net.fabricmc.fabric.api.renderer.v1.sprite.FabricSpriteAtlasTexture;
-import net.fabricmc.fabric.impl.renderer.SpriteFinderImpl;
-import net.fabricmc.fabric.impl.renderer.StitchResultExtension;
+
 import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
+import net.fabricmc.fabric.api.renderer.v1.sprite.FabricSpriteAtlasTexture;
+import net.fabricmc.fabric.impl.renderer.SpriteFinderImpl;
+import net.fabricmc.fabric.impl.renderer.StitchResultExtension;
 
 @Mixin(TextureAtlas.class)
 abstract class SpriteAtlasTextureMixin implements FabricSpriteAtlasTexture {

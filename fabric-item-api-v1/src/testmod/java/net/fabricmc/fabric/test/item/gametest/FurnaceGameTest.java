@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.test.item.gametest;
 
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.fabricmc.fabric.test.item.CustomDamageTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +23,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.fabricmc.fabric.test.item.CustomDamageTest;
 
 public class FurnaceGameTest {
 	private static final int COOK_TIME = 200;

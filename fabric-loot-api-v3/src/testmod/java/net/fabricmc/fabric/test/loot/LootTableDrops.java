@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.test.loot;
 
 import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;

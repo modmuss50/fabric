@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.VisibleForTesting;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.pip.GuiBannerResultRenderer;
 import net.minecraft.client.gui.render.pip.GuiBookModelRenderer;
@@ -42,6 +42,8 @@ import net.minecraft.client.gui.render.state.pip.GuiSkinRenderState;
 import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+
+import net.fabricmc.fabric.api.client.rendering.v1.SpecialGuiElementRegistry;
 
 public final class SpecialGuiElementRegistryImpl {
 	private static final List<SpecialGuiElementRegistry.Factory> FACTORIES = new ArrayList<>();

@@ -20,11 +20,13 @@ import java.util.Locale;
 import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.client.particle.ParticleRendererRegistryImpl;
+
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.client.particle.ParticleRendererRegistryImpl;
 
 /**
  * A registry for custom {@link ParticleGroup}s.

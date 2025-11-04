@@ -20,10 +20,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 
 @Mixin(MouseHandler.class)
 abstract class MouseMixin {

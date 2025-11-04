@@ -17,9 +17,10 @@
 package net.fabricmc.fabric.api.client.rendering.v1.world;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import org.jetbrains.annotations.ApiStatus;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.NonExtendable
 public interface WorldRenderContext extends WorldTerrainRenderContext {

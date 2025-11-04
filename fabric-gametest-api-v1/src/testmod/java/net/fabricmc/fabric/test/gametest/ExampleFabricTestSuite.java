@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.test.gametest;
 
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class ExampleFabricTestSuite {
 	@GameTest(structure = "fabric-gametest-api-v1-testmod:exampletestsuite.diamond")

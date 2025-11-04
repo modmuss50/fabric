@@ -33,11 +33,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.loot.v3.FabricLootTableBuilder;
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.fabricmc.fabric.api.loot.v3.LootTableSource;
-import net.fabricmc.fabric.impl.loot.FabricLootTable;
-import net.fabricmc.fabric.impl.loot.LootUtil;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.LayeredRegistryAccess;
 import net.minecraft.core.Registry;
@@ -51,6 +47,12 @@ import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraft.world.level.storage.loot.LootTable;
+
+import net.fabricmc.fabric.api.loot.v3.FabricLootTableBuilder;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableSource;
+import net.fabricmc.fabric.impl.loot.FabricLootTable;
+import net.fabricmc.fabric.impl.loot.LootUtil;
 
 /**
  * Implements the events from {@link LootTableEvents}.

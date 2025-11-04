@@ -20,12 +20,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import io.netty.util.AsciiString;
+
 import net.minecraft.IdentifierException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
-import io.netty.util.AsciiString;
 
 public record RegistrationPayload(Type<RegistrationPayload> id, List<Identifier> channels) implements CustomPacketPayload {
 	public static final CustomPacketPayload.Type<RegistrationPayload> REGISTER = new CustomPacketPayload.Type<>(NetworkingImpl.REGISTER_CHANNEL);

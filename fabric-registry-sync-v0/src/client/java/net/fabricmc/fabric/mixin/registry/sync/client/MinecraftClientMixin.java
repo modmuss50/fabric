@@ -24,15 +24,17 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.registry.sync.RemapException;
-import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
-import net.fabricmc.fabric.impl.registry.sync.trackers.vanilla.BlockInitTracker;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
+
+import net.fabricmc.fabric.impl.registry.sync.RemapException;
+import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
+import net.fabricmc.fabric.impl.registry.sync.trackers.vanilla.BlockInitTracker;
 
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {

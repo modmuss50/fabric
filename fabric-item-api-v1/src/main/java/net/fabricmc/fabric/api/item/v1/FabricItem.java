@@ -18,7 +18,7 @@ package net.fabricmc.fabric.api.item.v1;
 
 import java.util.Optional;
 import java.util.Set;
-import net.fabricmc.fabric.impl.item.FabricItemInternals;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
@@ -31,6 +31,8 @@ import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.TippedArrowItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
+
+import net.fabricmc.fabric.impl.item.FabricItemInternals;
 
 /**
  * General-purpose Fabric-provided extensions for {@link Item} subclasses.

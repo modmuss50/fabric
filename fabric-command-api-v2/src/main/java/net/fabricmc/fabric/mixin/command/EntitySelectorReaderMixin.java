@@ -21,9 +21,11 @@ import java.util.Set;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.api.command.v2.FabricEntitySelectorReader;
+
 import net.minecraft.commands.arguments.selector.EntitySelectorParser;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.command.v2.FabricEntitySelectorReader;
 
 @Mixin(EntitySelectorParser.class)
 public class EntitySelectorReaderMixin implements FabricEntitySelectorReader {

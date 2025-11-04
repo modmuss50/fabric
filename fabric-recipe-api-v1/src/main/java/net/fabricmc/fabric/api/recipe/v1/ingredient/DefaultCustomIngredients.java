@@ -19,16 +19,18 @@ package net.fabricmc.fabric.api.recipe.v1.ingredient;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.AllIngredient;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.AnyIngredient;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.ComponentsIngredient;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.CustomDataIngredient;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.DifferenceIngredient;
+
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.fabricmc.fabric.impl.recipe.ingredient.builtin.AllIngredient;
+import net.fabricmc.fabric.impl.recipe.ingredient.builtin.AnyIngredient;
+import net.fabricmc.fabric.impl.recipe.ingredient.builtin.ComponentsIngredient;
+import net.fabricmc.fabric.impl.recipe.ingredient.builtin.CustomDataIngredient;
+import net.fabricmc.fabric.impl.recipe.ingredient.builtin.DifferenceIngredient;
 
 /**
  * Factory methods for the custom ingredients directly provided by Fabric API.

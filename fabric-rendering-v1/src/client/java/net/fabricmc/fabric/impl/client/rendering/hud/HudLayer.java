@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.impl.client.rendering.hud;
 
 import java.util.function.Function;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
+
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 
 public interface HudLayer {
 	Identifier id();

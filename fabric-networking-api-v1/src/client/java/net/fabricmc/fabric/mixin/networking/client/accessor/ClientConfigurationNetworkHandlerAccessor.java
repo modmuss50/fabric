@@ -17,9 +17,10 @@
 package net.fabricmc.fabric.mixin.networking.client.accessor;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
 
 @Mixin(ClientConfigurationPacketListenerImpl.class)
 public interface ClientConfigurationNetworkHandlerAccessor {

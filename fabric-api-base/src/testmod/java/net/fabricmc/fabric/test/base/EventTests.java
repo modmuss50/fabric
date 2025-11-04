@@ -24,10 +24,12 @@ import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.impl.base.toposort.NodeSorting;
-import net.minecraft.resources.Identifier;
 
 public class EventTests {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-api-base");

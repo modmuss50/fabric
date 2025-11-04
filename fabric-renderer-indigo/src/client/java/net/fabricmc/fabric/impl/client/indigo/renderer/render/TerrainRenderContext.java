@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.impl.client.indigo.renderer.render;
 
+import java.util.Arrays;
+import java.util.function.Function;
+
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import java.util.Arrays;
-import java.util.function.Function;
-import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.AoLuminanceFix;
+
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -35,6 +36,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
+import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.AoLuminanceFix;
 
 /**
  * Used during section block buffering to invoke {@link BlockStateModel#emitQuads}.

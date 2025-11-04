@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.test.item.client;
 
 import java.util.Optional;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.loader.api.FabricLoader;

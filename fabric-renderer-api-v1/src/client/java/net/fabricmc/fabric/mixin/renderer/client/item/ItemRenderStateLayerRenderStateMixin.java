@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.mixin.renderer.client.item;
 
 import org.spongepowered.asm.mixin.Mixin;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricLayerRenderState;
+
 import net.minecraft.client.renderer.item.ItemStackRenderState;
+
+import net.fabricmc.fabric.api.renderer.v1.render.FabricLayerRenderState;
 
 @Mixin(ItemStackRenderState.LayerRenderState.class)
 abstract class ItemRenderStateLayerRenderStateMixin implements FabricLayerRenderState {

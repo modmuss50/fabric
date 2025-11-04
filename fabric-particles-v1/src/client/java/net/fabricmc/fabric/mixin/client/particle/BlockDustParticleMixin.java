@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleRenderEvents;
+
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.TerrainParticle;
@@ -32,6 +32,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.client.particle.v1.ParticleRenderEvents;
 
 // Implements ParticleRenderEvents.ALLOW_BLOCK_DUST_TINT
 @Mixin(TerrainParticle.class)

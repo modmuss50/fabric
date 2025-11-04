@@ -20,10 +20,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
+
 import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.packs.resources.ResourceProvider;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 
 @Mixin(ClientConfigurationPacketListenerImpl.class)
 public class ClientConfigurationNetworkHandlerMixin {

@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.screenhandler.v1;
 
 import java.util.Objects;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.MenuProvider;

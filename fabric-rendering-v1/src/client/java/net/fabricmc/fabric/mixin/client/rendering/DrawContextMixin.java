@@ -21,10 +21,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.rendering.v1.DrawItemStackOverlayCallback;
+
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
+
+import net.fabricmc.fabric.api.client.rendering.v1.DrawItemStackOverlayCallback;
 
 @Mixin(GuiGraphics.class)
 abstract class DrawContextMixin {

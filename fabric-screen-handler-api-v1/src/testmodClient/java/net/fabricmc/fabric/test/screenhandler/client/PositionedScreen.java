@@ -17,7 +17,7 @@
 package net.fabricmc.fabric.test.screenhandler.client;
 
 import java.util.Optional;
-import net.fabricmc.fabric.test.screenhandler.screen.PositionedScreenHandler;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -26,6 +26,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+
+import net.fabricmc.fabric.test.screenhandler.screen.PositionedScreenHandler;
 
 public class PositionedScreen extends AbstractContainerScreen<AbstractContainerMenu> {
 	private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/dispenser.png");

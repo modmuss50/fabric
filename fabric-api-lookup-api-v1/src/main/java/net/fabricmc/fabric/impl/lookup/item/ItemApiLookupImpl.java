@@ -23,14 +23,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.fabricmc.fabric.api.lookup.v1.custom.ApiLookupMap;
-import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap;
-import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+
+import net.fabricmc.fabric.api.lookup.v1.custom.ApiLookupMap;
+import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap;
+import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
 
 public class ItemApiLookupImpl<A, C> implements ItemApiLookup<A, C> {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-api-lookup-api-v1/item");

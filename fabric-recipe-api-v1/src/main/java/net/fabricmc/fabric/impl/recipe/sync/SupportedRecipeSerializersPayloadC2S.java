@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.recipe.sync;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;

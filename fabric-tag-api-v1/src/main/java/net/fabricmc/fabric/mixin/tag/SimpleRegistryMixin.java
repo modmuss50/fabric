@@ -28,14 +28,16 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.impl.tag.SimpleRegistryExtension;
-import net.fabricmc.fabric.impl.tag.TagAliasEnabledRegistryWrapper;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+
+import net.fabricmc.fabric.impl.tag.SimpleRegistryExtension;
+import net.fabricmc.fabric.impl.tag.TagAliasEnabledRegistryWrapper;
 
 /**
  * Adds tag alias support to {@code SimpleRegistry}, the primary registry implementation.

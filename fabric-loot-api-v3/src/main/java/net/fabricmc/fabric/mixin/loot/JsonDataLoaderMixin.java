@@ -26,13 +26,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.loot.LootUtil;
+
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.world.level.storage.loot.LootDataType;
+
+import net.fabricmc.fabric.impl.loot.LootUtil;
 
 @Mixin(SimpleJsonResourceReloadListener.class)
 public class JsonDataLoaderMixin {

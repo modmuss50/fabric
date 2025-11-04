@@ -20,12 +20,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
-import net.minecraft.client.color.block.BlockTintCache;
-import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.world.level.ColorResolver;
+
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import org.jetbrains.annotations.UnmodifiableView;
+
+import net.minecraft.client.color.block.BlockTintCache;
+import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.world.level.ColorResolver;
 
 public final class ColorResolverRegistryImpl {
 	// Includes vanilla resolvers

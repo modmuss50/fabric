@@ -19,14 +19,16 @@ package net.fabricmc.fabric.api.resource;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
-import net.fabricmc.loader.api.ModContainer;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
+
+import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
+import net.fabricmc.loader.api.ModContainer;
 
 /**
  * Helper for working with {@link ResourceManager} instances, and other resource loader generalities.

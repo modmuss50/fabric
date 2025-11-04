@@ -24,10 +24,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
+
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
 
 @Mixin(BlockEntityRenderers.class)
 public abstract class BlockEntityRendererFactoriesMixin {

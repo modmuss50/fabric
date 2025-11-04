@@ -18,8 +18,10 @@ package net.fabricmc.fabric.api.client.rendering.v1.hud;
 
 import java.util.Objects;
 import java.util.function.Function;
-import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
+
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
 
 /**
  * A registry of identified hud layers with methods to add layers in specific positions.

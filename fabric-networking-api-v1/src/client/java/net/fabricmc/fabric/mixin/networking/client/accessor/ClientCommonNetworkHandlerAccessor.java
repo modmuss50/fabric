@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.mixin.networking.client.accessor;
 
-import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
-import net.minecraft.network.Connection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+import net.minecraft.network.Connection;
 
 @Mixin(ClientCommonPacketListenerImpl.class)
 public interface ClientCommonNetworkHandlerAccessor {

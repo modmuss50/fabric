@@ -19,14 +19,16 @@ package net.fabricmc.fabric.impl.transfer.item;
 import java.util.Objects;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.impl.transfer.TransferApiImpl;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.impl.transfer.TransferApiImpl;
 
 public class ItemVariantImpl implements ItemVariant {
 	public static ItemVariant of(Item item, DataComponentPatch components) {

@@ -21,9 +21,11 @@ import java.util.Optional;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderPipeline;
+
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderPipeline;
 
 public class RenderPipelineGuiVertexFormatTest {
 	@Test

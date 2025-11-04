@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.mixin.attachment;
 
-import net.minecraft.network.VarInt;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.network.VarInt;
 
 @Mixin(VarInt.class)
 public interface VarIntsAccessor {

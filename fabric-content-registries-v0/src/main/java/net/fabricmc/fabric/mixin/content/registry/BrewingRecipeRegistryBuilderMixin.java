@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
+
 import net.minecraft.core.Holder;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
@@ -32,6 +32,8 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 
 @Mixin(PotionBrewing.Builder.class)
 public abstract class BrewingRecipeRegistryBuilderMixin implements FabricBrewingRecipeRegistryBuilder {

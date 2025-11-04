@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.client.render.fluid.v1;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.client.rendering.fluid.FluidRenderHandlerRegistryImpl;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.material.Fluid;
+
+import net.fabricmc.fabric.impl.client.rendering.fluid.FluidRenderHandlerRegistryImpl;
 
 /**
  * Registry for {@link FluidRenderHandler} instances.

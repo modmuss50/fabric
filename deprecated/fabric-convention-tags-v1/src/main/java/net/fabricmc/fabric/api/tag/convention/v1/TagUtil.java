@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.tag.convention.v1;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.tags.TagKey;
-import org.jspecify.annotations.Nullable;
 
 /**
  * @deprecated Please use {@link net.fabricmc.fabric.api.tag.convention.v2.TagUtil}

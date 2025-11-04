@@ -18,9 +18,11 @@ package net.fabricmc.fabric.impl.client.rendering;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.world.level.block.Block;
+
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 
 public abstract class ColorProviderRegistryImpl<T, Provider, Underlying> implements ColorProviderRegistry<T, Provider> {

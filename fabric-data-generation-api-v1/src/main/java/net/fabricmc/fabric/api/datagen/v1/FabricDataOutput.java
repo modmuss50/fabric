@@ -19,8 +19,10 @@ package net.fabricmc.fabric.api.datagen.v1;
 import java.nio.file.Path;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.loader.api.ModContainer;
+
 import net.minecraft.data.PackOutput;
+
+import net.fabricmc.loader.api.ModContainer;
 
 /**
  * Extends {@link PackOutput} to keep track of the {@link ModContainer} that it originated from.

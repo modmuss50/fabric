@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.test.recipe.sync;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
-import net.minecraft.core.registries.BuiltInRegistries;
 
 public class RecipeSyncTest implements ModInitializer {
 	@Override

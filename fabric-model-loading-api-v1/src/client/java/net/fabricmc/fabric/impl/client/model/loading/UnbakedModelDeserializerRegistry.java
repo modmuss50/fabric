@@ -22,11 +22,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.google.gson.JsonParseException;
-import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
-import net.fabricmc.fabric.mixin.client.model.loading.JsonUnbakedModelAccessor;
+
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
+
+import net.fabricmc.fabric.api.client.model.loading.v1.UnbakedModelDeserializer;
+import net.fabricmc.fabric.mixin.client.model.loading.JsonUnbakedModelAccessor;
 
 public class UnbakedModelDeserializerRegistry {
 	private static final Map<Identifier, UnbakedModelDeserializer> DESERIALIZERS = new HashMap<>();

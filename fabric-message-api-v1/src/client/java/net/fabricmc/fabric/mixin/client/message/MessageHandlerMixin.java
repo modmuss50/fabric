@@ -28,11 +28,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+
 import net.minecraft.client.multiplayer.chat.ChatListener;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.PlayerChatMessage;
+
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 
 @Mixin(ChatListener.class)
 public abstract class MessageHandlerMixin {

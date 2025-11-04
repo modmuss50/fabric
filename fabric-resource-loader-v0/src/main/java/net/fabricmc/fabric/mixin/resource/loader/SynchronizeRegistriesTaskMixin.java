@@ -30,11 +30,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
+
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.configuration.ClientboundSelectKnownPacks;
 import net.minecraft.server.network.config.SynchronizeRegistriesTask;
 import net.minecraft.server.packs.repository.KnownPack;
+
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
 
 @Mixin(SynchronizeRegistriesTask.class)
 public abstract class SynchronizeRegistriesTaskMixin {

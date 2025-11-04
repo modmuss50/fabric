@@ -24,9 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.impl.base.toposort.NodeSorting;
-import net.minecraft.resources.Identifier;
 
 class ArrayBackedEvent<T> extends Event<T> {
 	private final Function<T[], T> invokerFactory;

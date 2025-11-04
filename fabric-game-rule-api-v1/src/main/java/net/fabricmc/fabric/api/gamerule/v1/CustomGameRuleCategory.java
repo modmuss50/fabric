@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.api.gamerule.v1;
 
 import java.util.Optional;
-import net.fabricmc.fabric.impl.gamerule.RuleCategoryExtensions;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.gamerules.GameRule;
+
+import net.fabricmc.fabric.impl.gamerule.RuleCategoryExtensions;
 
 /**
  * Utility class for creating custom game rule categories with full control over the name.

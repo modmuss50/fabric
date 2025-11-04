@@ -28,6 +28,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
+
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.AtlasManager;
 import net.minecraft.client.resources.model.ModelManager;

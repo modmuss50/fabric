@@ -19,6 +19,7 @@ package net.fabricmc.fabric.test.base;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.asm.mixin.MixinEnvironment;
+
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
 

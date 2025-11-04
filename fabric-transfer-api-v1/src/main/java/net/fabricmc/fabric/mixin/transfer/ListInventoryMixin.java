@@ -20,8 +20,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.transfer.item.SpecialLogicAccess;
+
 import net.minecraft.world.level.block.entity.ListBackedContainer;
+
+import net.fabricmc.fabric.impl.transfer.item.SpecialLogicAccess;
 
 @Mixin(ListBackedContainer.class)
 interface ListInventoryMixin extends ListBackedContainer, SpecialLogicAccess {

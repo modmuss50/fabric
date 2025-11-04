@@ -16,8 +16,10 @@
 
 package net.fabricmc.fabric.impl.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Function;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;

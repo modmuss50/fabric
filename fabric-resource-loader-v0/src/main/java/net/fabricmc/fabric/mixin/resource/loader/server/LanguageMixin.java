@@ -32,10 +32,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import net.minecraft.locale.Language;
+
 import net.fabricmc.fabric.impl.resource.loader.ServerLanguageUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.locale.Language;
 
 @Mixin(Language.class)
 class LanguageMixin {

@@ -19,9 +19,11 @@ package net.fabricmc.fabric.impl.biome;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import com.google.common.base.Preconditions;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
-import com.google.common.base.Preconditions;
 
 /**
  * Picks entries with arbitrary double weights using a binary search.

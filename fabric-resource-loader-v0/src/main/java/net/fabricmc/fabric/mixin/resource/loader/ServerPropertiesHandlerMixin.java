@@ -19,9 +19,11 @@ package net.fabricmc.fabric.mixin.resource.loader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
+
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 import net.minecraft.world.level.WorldDataConfiguration;
+
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
 
 @Mixin(DedicatedServerProperties.class)
 public class ServerPropertiesHandlerMixin {

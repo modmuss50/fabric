@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.test.resource.loader;
 
-import net.fabricmc.api.DedicatedServerModInitializer;
 import net.minecraft.network.chat.Component;
+
+import net.fabricmc.api.DedicatedServerModInitializer;
 
 public class LanguageTestMod implements DedicatedServerModInitializer {
 	@Override

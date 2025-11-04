@@ -22,10 +22,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
+
 import net.minecraft.client.resources.ClientPackSource;
 import net.minecraft.server.packs.repository.BuiltInPackSource;
 import net.minecraft.server.packs.repository.Pack;
+
+import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
 
 @Mixin(BuiltInPackSource.class)
 public class VanillaResourcePackProviderMixin {

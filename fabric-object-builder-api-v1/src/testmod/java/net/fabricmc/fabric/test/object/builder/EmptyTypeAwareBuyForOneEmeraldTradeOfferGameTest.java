@@ -17,13 +17,15 @@
 package net.fabricmc.fabric.test.object.builder;
 
 import com.google.common.collect.ImmutableMap;
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
+
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.VillagerType;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class EmptyTypeAwareBuyForOneEmeraldTradeOfferGameTest {
 	@GameTest

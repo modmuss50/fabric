@@ -18,13 +18,15 @@ package net.fabricmc.fabric.impl.recipe.sync.client;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+
+import net.minecraft.world.item.crafting.RecipeHolder;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.recipe.v1.sync.ClientRecipeSynchronizedEvent;
 import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
 import net.fabricmc.fabric.impl.recipe.sync.RecipeSyncPayloadS2C;
 import net.fabricmc.fabric.impl.recipe.sync.SynchronizedRecipesImpl;
-import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class RecipeSyncImplClient implements ClientModInitializer {
 	@Override

@@ -26,8 +26,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.impl.registry.sync.RemovableIdList;
+
 import net.minecraft.core.IdMapper;
+
+import net.fabricmc.fabric.impl.registry.sync.RemovableIdList;
 
 @Mixin(IdMapper.class)
 public class IdListMixin<T> implements RemovableIdList<T> {

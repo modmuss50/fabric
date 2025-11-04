@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.impl.renderer;
 
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 
 /**
  * Handles most texture-baking use cases for model loaders and model libraries

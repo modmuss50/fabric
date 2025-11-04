@@ -28,8 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import net.fabricmc.fabric.impl.client.particle.ParticleRendererRegistryImpl;
+
 import net.minecraft.client.particle.ParticleRenderType;
+
+import net.fabricmc.fabric.impl.client.particle.ParticleRendererRegistryImpl;
 
 public class ParticleRendererRegistryTest {
 	List<ParticleRenderType> sheets = getVanillaSheets();

@@ -19,11 +19,13 @@ package net.fabricmc.fabric.test.item;
 import java.util.List;
 
 import it.unimi.dsi.fastutil.ints.IntList;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 
 public class DefaultItemComponentTest implements ModInitializer {
 	@Override

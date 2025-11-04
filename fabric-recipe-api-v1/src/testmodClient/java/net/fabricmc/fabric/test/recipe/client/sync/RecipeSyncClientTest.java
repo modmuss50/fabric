@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.test.recipe.client.sync;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.recipe.v1.sync.ClientRecipeSynchronizedEvent;
-import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.recipe.v1.sync.ClientRecipeSynchronizedEvent;
+import net.fabricmc.fabric.api.recipe.v1.sync.SynchronizedRecipes;
 
 public class RecipeSyncClientTest implements ClientModInitializer {
 	private static void compareWithLocalServer(Minecraft client, SynchronizedRecipes synchronizedRecipes) {

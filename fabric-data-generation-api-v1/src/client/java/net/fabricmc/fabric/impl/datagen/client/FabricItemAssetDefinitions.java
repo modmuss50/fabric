@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.datagen.client;
 
 import java.util.Set;
+
 import net.minecraft.world.level.block.Block;
 
 public interface FabricItemAssetDefinitions extends FabricModelProviderDefinitions {

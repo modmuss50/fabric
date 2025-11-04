@@ -20,10 +20,12 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.mixin.loot.LootTableAccessor;
+
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+
+import net.fabricmc.fabric.mixin.loot.LootTableAccessor;
 
 /**
  * Convenience extensions to {@link LootTable.Builder}

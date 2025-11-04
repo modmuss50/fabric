@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -29,6 +29,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 
 /**
  * A simple implementation of {@link BlockStateModel} that delegates all method calls to the {@link #wrapped} field.

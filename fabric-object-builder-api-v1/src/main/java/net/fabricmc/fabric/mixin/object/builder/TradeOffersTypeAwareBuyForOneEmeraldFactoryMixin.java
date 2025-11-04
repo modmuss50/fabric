@@ -18,17 +18,19 @@ package net.fabricmc.fabric.mixin.object.builder;
 
 import java.util.Set;
 import java.util.stream.Stream;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.npc.VillagerType;
-import net.minecraft.world.item.trading.ItemCost;
-import net.minecraft.world.item.trading.MerchantOffer;
+
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
 
 @Mixin(VillagerTrades.EmeraldsForVillagerTypeItem.class)
 public abstract class TradeOffersTypeAwareBuyForOneEmeraldFactoryMixin {

@@ -19,12 +19,7 @@ package net.fabricmc.fabric.api.renderer.v1.model;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
-import net.fabricmc.fabric.api.renderer.v1.sprite.FabricErrorCollectingSpriteGetter;
-import net.fabricmc.fabric.api.renderer.v1.sprite.FabricSpriteAtlasTexture;
-import net.fabricmc.fabric.api.renderer.v1.sprite.FabricStitchResult;
+
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.SpriteGetter;
@@ -33,6 +28,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
+import net.fabricmc.fabric.api.renderer.v1.sprite.FabricErrorCollectingSpriteGetter;
+import net.fabricmc.fabric.api.renderer.v1.sprite.FabricSpriteAtlasTexture;
+import net.fabricmc.fabric.api.renderer.v1.sprite.FabricStitchResult;
 
 /**
  * Indexes a texture atlas to allow fast lookup of {@link TextureAtlasSprite}s from baked texture coordinates.

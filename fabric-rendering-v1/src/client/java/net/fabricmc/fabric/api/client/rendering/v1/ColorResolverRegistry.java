@@ -19,10 +19,12 @@ package net.fabricmc.fabric.api.client.rendering.v1;
 import java.util.Set;
 
 import org.jetbrains.annotations.UnmodifiableView;
-import net.fabricmc.fabric.impl.client.rendering.ColorResolverRegistryImpl;
+
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ColorResolver;
+
+import net.fabricmc.fabric.impl.client.rendering.ColorResolverRegistryImpl;
 
 /**
  * The registry for custom {@link ColorResolver}s. Custom resolvers must be registered during client initialization for

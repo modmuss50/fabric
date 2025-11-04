@@ -30,6 +30,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.registries.RegistryPatchGenerator;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.resources.Identifier;
+
 import net.fabricmc.loader.api.ModContainer;
 
 /**

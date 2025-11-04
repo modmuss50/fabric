@@ -16,14 +16,15 @@
 
 package net.fabricmc.fabric.impl.datagen.loot;
 
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
-import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
-import net.fabricmc.fabric.mixin.datagen.loot.EntityLootTableGeneratorAccessor;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.storage.loot.LootTable;
+
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
+import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
+import net.fabricmc.fabric.mixin.datagen.loot.EntityLootTableGeneratorAccessor;
 
 public class ConditionEntityLootTableGenerator extends EntityLootSubProvider {
 	private final EntityLootSubProvider parent;

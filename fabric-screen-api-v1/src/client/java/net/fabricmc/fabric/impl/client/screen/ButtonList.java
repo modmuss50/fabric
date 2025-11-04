@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.client.screen;
 
 import java.util.AbstractList;
 import java.util.List;
+
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;

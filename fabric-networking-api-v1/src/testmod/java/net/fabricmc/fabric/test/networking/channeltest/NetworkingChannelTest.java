@@ -16,12 +16,11 @@
 
 package net.fabricmc.fabric.test.networking.channeltest;
 
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 import static net.minecraft.commands.arguments.EntityArgument.getPlayer;
 import static net.minecraft.commands.arguments.EntityArgument.player;
 import static net.minecraft.commands.arguments.IdentifierArgument.getId;
-import static net.minecraft.commands.arguments.IdentifierArgument.id;
-import static net.minecraft.commands.Commands.argument;
-import static net.minecraft.commands.Commands.literal;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,10 +31,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
+
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -43,6 +39,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
 
 public final class NetworkingChannelTest implements ModInitializer {
 	@Override

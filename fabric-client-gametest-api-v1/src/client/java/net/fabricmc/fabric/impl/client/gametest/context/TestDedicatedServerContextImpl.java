@@ -16,16 +16,17 @@
 
 package net.fabricmc.fabric.impl.client.gametest.context;
 
+import net.minecraft.client.gui.screens.ConnectScreen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.server.dedicated.DedicatedServer;
+
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestClientWorldContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerConnection;
 import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 import net.fabricmc.fabric.impl.client.gametest.util.ClientGameTestImpl;
-import net.minecraft.client.gui.screens.ConnectScreen;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.multiplayer.resolver.ServerAddress;
-import net.minecraft.server.dedicated.DedicatedServer;
 
 public class TestDedicatedServerContextImpl extends TestServerContextImpl implements TestDedicatedServerContext {
 	private final ClientGameTestContext context;

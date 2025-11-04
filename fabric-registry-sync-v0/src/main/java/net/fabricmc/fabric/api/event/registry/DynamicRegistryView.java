@@ -18,10 +18,12 @@ package net.fabricmc.fabric.api.event.registry;
 
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.ApiStatus;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.ApiStatus;
 
 /**
  * A view providing access to the registries that are currently being loaded. This is passed to

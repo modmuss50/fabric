@@ -18,6 +18,7 @@ package net.fabricmc.fabric.test.registry.sync;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
 

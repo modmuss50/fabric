@@ -17,14 +17,16 @@
 package net.fabricmc.fabric.impl.particle;
 
 import java.util.Set;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.impl.networking.FabricRegistryByteBuf;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.impl.networking.FabricRegistryByteBuf;
 
 public class ExtendedBlockStateParticleEffectSync implements ModInitializer {
 	private static final Identifier PACKET_ID = Identifier.fromNamespaceAndPath("fabric", "extended_block_state_particle_effect_sync");

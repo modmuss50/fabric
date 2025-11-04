@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.test.screenhandler.item;
 
 import java.util.List;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;

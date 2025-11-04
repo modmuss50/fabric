@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.test.command;
 
 import java.util.Locale;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class EntitySelectorGameTest {

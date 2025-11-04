@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.client.keybinding;
 
 import java.util.Comparator;
+
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 

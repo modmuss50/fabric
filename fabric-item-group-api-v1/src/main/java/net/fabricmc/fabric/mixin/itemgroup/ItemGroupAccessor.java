@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.mixin.itemgroup;
 
-import net.minecraft.world.item.CreativeModeTab;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.world.item.CreativeModeTab;
 
 @Mixin(CreativeModeTab.class)
 public interface ItemGroupAccessor {

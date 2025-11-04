@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.api.object.builder.v1.entity;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.object.builder.FabricTrackedDataRegistryImpl;
+
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.object.builder.FabricTrackedDataRegistryImpl;
 
 /**
  * Allows registering custom {@link EntityDataSerializer}s in a reliable way.

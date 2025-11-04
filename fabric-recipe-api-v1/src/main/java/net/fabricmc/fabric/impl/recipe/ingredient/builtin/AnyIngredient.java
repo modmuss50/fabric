@@ -20,12 +20,14 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 
 public class AnyIngredient extends CombinedIngredient {
 	private static final MapCodec<AnyIngredient> CODEC = Ingredient.CODEC

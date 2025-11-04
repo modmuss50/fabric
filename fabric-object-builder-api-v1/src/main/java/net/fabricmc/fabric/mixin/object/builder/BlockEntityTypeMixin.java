@@ -27,10 +27,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityType;
 
 @Mixin(BlockEntityType.class)
 public class BlockEntityTypeMixin<T extends BlockEntity> implements FabricBlockEntityType {

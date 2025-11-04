@@ -21,12 +21,14 @@ import java.util.List;
 
 import com.google.common.collect.Iterables;
 import org.slf4j.Logger;
+
+import net.minecraft.world.entity.Entity;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.test.event.lifecycle.ServerLifecycleTests;
-import net.minecraft.world.entity.Entity;
 
 /**
  * Tests related to the lifecycle of entities.

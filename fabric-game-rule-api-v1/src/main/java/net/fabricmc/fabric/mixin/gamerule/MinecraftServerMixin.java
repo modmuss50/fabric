@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.gamerules.GameRule;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.fabricmc.fabric.impl.gamerule.GameRuleEventsImpl;

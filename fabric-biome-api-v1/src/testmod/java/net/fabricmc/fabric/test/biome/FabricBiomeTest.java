@@ -20,6 +20,7 @@ import static net.fabricmc.fabric.test.biome.DataGeneratorEntrypoint.PLACED_COMM
 import static net.fabricmc.fabric.test.biome.DataGeneratorEntrypoint.PLACED_COMMON_ORE;
 
 import com.google.common.base.Preconditions;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -28,6 +29,7 @@ import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.GenerationStep;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;

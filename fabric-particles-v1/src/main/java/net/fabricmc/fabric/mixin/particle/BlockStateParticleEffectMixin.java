@@ -21,13 +21,15 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.api.particle.v1.FabricBlockStateParticleEffect;
-import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
-import net.fabricmc.fabric.impl.particle.ExtendedBlockStateParticleEffectPacketCodec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+
+import net.fabricmc.fabric.api.particle.v1.FabricBlockStateParticleEffect;
+import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
+import net.fabricmc.fabric.impl.particle.ExtendedBlockStateParticleEffectPacketCodec;
 
 @Mixin(BlockParticleOption.class)
 abstract class BlockStateParticleEffectMixin implements FabricBlockStateParticleEffect, BlockStateParticleEffectExtension {

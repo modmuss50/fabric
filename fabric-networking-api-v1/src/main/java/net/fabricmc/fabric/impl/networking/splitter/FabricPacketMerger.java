@@ -24,16 +24,18 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.networking.GenericPayloadAccessor;
-import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
-import net.fabricmc.fabric.impl.networking.VanillaPacketTypes;
-import net.fabricmc.fabric.mixin.networking.accessor.DecoderHandlerAccessor;
+
 import net.minecraft.network.PacketDecoder;
 import net.minecraft.network.VarInt;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketType;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.networking.GenericPayloadAccessor;
+import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
+import net.fabricmc.fabric.impl.networking.VanillaPacketTypes;
+import net.fabricmc.fabric.mixin.networking.accessor.DecoderHandlerAccessor;
 
 public class FabricPacketMerger extends MessageToMessageDecoder<Packet<?>> {
 	private final PacketDecoder<?> decoderHandler;

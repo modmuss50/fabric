@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.fabricmc.fabric.impl.client.rendering.EntityRendererRegistryImpl;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+
+import net.fabricmc.fabric.impl.client.rendering.EntityRendererRegistryImpl;
 
 /**
  * Helper class for registering EntityRenderers.

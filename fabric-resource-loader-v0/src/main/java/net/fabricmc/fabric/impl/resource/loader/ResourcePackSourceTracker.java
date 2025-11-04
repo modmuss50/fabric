@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.resource.loader;
 
 import java.util.WeakHashMap;
+
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.repository.PackSource;
 

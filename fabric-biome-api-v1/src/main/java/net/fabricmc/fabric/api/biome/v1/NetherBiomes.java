@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.api.biome.v1;
 
-import net.fabricmc.fabric.impl.biome.NetherBiomeData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
+
+import net.fabricmc.fabric.impl.biome.NetherBiomeData;
 
 /**
  * API that exposes the internals of Minecraft's nether biome code.

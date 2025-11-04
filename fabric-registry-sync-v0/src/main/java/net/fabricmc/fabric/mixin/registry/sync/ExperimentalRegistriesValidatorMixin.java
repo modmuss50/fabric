@@ -21,9 +21,11 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+
 import net.minecraft.data.registries.RegistryPatchGenerator;
 import net.minecraft.resources.RegistryDataLoader;
+
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 
 @Mixin(RegistryPatchGenerator.class)
 class ExperimentalRegistriesValidatorMixin {

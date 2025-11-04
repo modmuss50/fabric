@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.impl.networking;
 
 import java.util.ArrayList;
+
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.network.ProtocolInfo;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.PacketType;
 import net.minecraft.network.protocol.configuration.ConfigurationProtocols;
 import net.minecraft.network.protocol.game.GameProtocols;
-import org.jspecify.annotations.Nullable;
 
 public record VanillaPacketTypes(PacketType<?>[] ids) {
 	public static final VanillaPacketTypes PLAY_S2C = of(GameProtocols.CLIENTBOUND_TEMPLATE);

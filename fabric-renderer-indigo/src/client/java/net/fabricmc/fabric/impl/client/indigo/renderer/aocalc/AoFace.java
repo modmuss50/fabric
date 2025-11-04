@@ -18,8 +18,9 @@ package net.fabricmc.fabric.impl.client.indigo.renderer.aocalc;
 
 import static net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.AoVertexClampFunction.CLAMP_FUNC;
 
-import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.QuadViewImpl;
 import net.minecraft.core.Direction;
+
+import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.QuadViewImpl;
 
 /**
  * Adapted from vanilla BlockModelRenderer.NeighborData and BlockModelRenderer.Translation.

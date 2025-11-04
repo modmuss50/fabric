@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.datagen.v1;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An entry point for data generation.

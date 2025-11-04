@@ -20,9 +20,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-import net.minecraft.util.StringRepresentable;
+
 import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.util.StringRepresentable;
 
 /**
  * Represents a boolean value which can be true, false or refer to a default value.

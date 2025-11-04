@@ -18,8 +18,7 @@ package net.fabricmc.fabric.test.item.gametest;
 
 import java.util.List;
 import java.util.Optional;
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.fabricmc.fabric.test.item.CustomEnchantmentEffectsTest;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -39,6 +38,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.GameType;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.fabricmc.fabric.test.item.CustomEnchantmentEffectsTest;
 
 public class CustomEnchantmentEffectsGameTest {
 	@GameTest

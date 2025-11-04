@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.registry;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.entity.FuelValues;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
  * Contains events to aid in modifying fuels.

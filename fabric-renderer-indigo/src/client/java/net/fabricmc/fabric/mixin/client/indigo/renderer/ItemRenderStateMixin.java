@@ -28,10 +28,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+
 import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessLayerRenderState;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableMeshImpl;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.QuadToPosPipe;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
 
 @Mixin(ItemStackRenderState.class)
 abstract class ItemRenderStateMixin {

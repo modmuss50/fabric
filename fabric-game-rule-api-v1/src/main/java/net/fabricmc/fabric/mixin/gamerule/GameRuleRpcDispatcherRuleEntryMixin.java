@@ -30,13 +30,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
-import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
-import net.fabricmc.fabric.impl.gamerule.rpc.FabricTypedRule;
+
 import net.minecraft.server.jsonrpc.methods.GameRulesService;
 import net.minecraft.server.jsonrpc.methods.InvalidParameterJsonRpcException;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.gamerules.GameRule;
+
+import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
+import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
+import net.fabricmc.fabric.impl.gamerule.rpc.FabricTypedRule;
 
 @Mixin(GameRulesService.GameRuleUpdate.class)
 public abstract class GameRuleRpcDispatcherRuleEntryMixin implements FabricTypedRule {

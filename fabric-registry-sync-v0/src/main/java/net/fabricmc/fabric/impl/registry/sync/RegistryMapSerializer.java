@@ -18,10 +18,12 @@ package net.fabricmc.fabric.impl.registry.sync;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 
 public class RegistryMapSerializer {
 	public static final int VERSION = 1;

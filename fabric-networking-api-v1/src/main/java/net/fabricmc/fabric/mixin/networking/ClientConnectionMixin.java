@@ -31,13 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.networking.ChannelInfoHolder;
-import net.fabricmc.fabric.impl.networking.NetworkHandlerExtensions;
-import net.fabricmc.fabric.impl.networking.PacketCallbackListener;
-import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
-import net.fabricmc.fabric.impl.networking.VanillaPacketTypes;
-import net.fabricmc.fabric.impl.networking.splitter.FabricPacketMerger;
-import net.fabricmc.fabric.impl.networking.splitter.FabricPacketSplitter;
+
 import net.minecraft.network.Connection;
 import net.minecraft.network.ConnectionProtocol;
 import net.minecraft.network.PacketDecoder;
@@ -48,6 +42,14 @@ import net.minecraft.network.UnconfiguredPipelineHandler;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.networking.ChannelInfoHolder;
+import net.fabricmc.fabric.impl.networking.NetworkHandlerExtensions;
+import net.fabricmc.fabric.impl.networking.PacketCallbackListener;
+import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
+import net.fabricmc.fabric.impl.networking.VanillaPacketTypes;
+import net.fabricmc.fabric.impl.networking.splitter.FabricPacketMerger;
+import net.fabricmc.fabric.impl.networking.splitter.FabricPacketSplitter;
 
 @Mixin(Connection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder {

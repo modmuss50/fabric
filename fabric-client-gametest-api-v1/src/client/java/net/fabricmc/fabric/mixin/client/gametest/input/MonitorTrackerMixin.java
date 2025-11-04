@@ -21,6 +21,7 @@ import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.blaze3d.platform.Window;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+
 import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
 
 @Mixin(ScreenManager.class)

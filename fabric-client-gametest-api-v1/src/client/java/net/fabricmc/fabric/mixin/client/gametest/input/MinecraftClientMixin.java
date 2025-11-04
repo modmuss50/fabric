@@ -22,8 +22,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
+
 import net.minecraft.client.Minecraft;
+
+import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
 
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {

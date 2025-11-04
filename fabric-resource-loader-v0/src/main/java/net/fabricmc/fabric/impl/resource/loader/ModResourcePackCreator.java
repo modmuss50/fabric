@@ -24,8 +24,7 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.VisibleForTesting;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.resource.ModResourcePack;
-import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -33,6 +32,9 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+
+import net.fabricmc.fabric.api.resource.ModResourcePack;
+import net.fabricmc.loader.api.FabricLoader;
 
 /**
  * Represents a resource pack provider for mods and built-in mods resource packs.

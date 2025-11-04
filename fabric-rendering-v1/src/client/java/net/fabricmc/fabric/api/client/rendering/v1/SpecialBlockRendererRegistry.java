@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.fabricmc.fabric.impl.client.rendering.SpecialBlockRendererRegistryImpl;
 import net.minecraft.client.renderer.SpecialBlockModelRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.level.block.Block;
+
+import net.fabricmc.fabric.impl.client.rendering.SpecialBlockRendererRegistryImpl;
 
 /**
  * Allows registering special renderers for certain blocks, such that they are used when

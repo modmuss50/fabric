@@ -35,11 +35,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
-import net.fabricmc.fabric.api.item.v1.FabricItemStack;
-import net.fabricmc.fabric.impl.item.ComponentTooltipAppenderRegistryImpl;
-import net.fabricmc.fabric.impl.item.ItemExtensions;
-import net.fabricmc.fabric.impl.item.VanillaTooltipAppenderOrder;
+
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -52,6 +48,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+
+import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
+import net.fabricmc.fabric.api.item.v1.FabricItemStack;
+import net.fabricmc.fabric.impl.item.ComponentTooltipAppenderRegistryImpl;
+import net.fabricmc.fabric.impl.item.ItemExtensions;
+import net.fabricmc.fabric.impl.item.VanillaTooltipAppenderOrder;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements FabricItemStack {

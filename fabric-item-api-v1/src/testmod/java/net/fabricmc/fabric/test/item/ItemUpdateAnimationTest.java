@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.test.item;
 
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,6 +25,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
+
+import net.fabricmc.api.ModInitializer;
 
 public class ItemUpdateAnimationTest implements ModInitializer {
 	public static final DataComponentType<Integer> TICKS = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath("fabric-item-api-v1-testmod", "ticks"),

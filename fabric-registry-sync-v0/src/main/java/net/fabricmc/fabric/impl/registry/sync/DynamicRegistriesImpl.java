@@ -24,11 +24,13 @@ import java.util.Set;
 
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.Unmodifiable;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySynchronization;
 import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceKey;
+
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 
 public final class DynamicRegistriesImpl {
 	private static final List<RegistryDataLoader.RegistryData<?>> DYNAMIC_REGISTRIES = new ArrayList<>(RegistryDataLoader.WORLDGEN_REGISTRIES);

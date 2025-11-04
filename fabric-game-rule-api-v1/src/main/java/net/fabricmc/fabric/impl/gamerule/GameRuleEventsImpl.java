@@ -21,10 +21,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.world.level.gamerules.GameRule;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
-import net.minecraft.world.level.gamerules.GameRule;
 
 public final class GameRuleEventsImpl {
 	private GameRuleEventsImpl() {

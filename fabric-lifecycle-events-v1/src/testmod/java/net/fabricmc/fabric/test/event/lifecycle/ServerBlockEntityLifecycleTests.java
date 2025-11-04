@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
+
+import net.minecraft.world.level.block.entity.BlockEntity;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.impl.event.lifecycle.LoadedChunksCache;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 public final class ServerBlockEntityLifecycleTests implements ModInitializer {
 	private static final boolean PRINT_SERVER_BLOCKENTITY_MESSAGES = System.getProperty("fabric-lifecycle-events-testmod.printServerBlockEntityMessages") != null;

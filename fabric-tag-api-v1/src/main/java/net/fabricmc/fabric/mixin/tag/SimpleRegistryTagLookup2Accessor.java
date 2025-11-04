@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.mixin.tag;
 
 import java.util.Map;
-import net.minecraft.core.HolderSet;
-import net.minecraft.tags.TagKey;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
+
+import net.minecraft.core.HolderSet;
+import net.minecraft.tags.TagKey;
 
 @Mixin(targets = "net.minecraft.core.MappedRegistry$TagSet$2")
 public interface SimpleRegistryTagLookup2Accessor<T> {

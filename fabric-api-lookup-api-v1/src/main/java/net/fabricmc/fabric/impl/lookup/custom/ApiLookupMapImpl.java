@@ -21,8 +21,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import net.fabricmc.fabric.api.lookup.v1.custom.ApiLookupMap;
+
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.lookup.v1.custom.ApiLookupMap;
 
 public final class ApiLookupMapImpl<L> implements ApiLookupMap<L> {
 	private final Map<Identifier, StoredLookup<L>> lookups = new HashMap<>();

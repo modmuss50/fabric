@@ -17,9 +17,7 @@
 package net.fabricmc.fabric.test.resource.conditions;
 
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -33,6 +31,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.biome.Biomes;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 
 public class DefaultResourceConditionsTest {
 	private static final String TESTMOD_ID = "fabric-resource-conditions-api-v1-testmod";

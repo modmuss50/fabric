@@ -20,12 +20,14 @@ import java.time.Instant;
 
 import com.mojang.authlib.GameProfile;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
+
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.PlayerChatMessage;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
  * Contains client-side events triggered when receiving messages.

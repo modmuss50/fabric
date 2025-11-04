@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.api.particle.v1;
 
 import java.util.function.Function;
+
+import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import com.mojang.serialization.MapCodec;
 
 /**
  * Methods for creating particle types, both simple and using an existing attribute factory.

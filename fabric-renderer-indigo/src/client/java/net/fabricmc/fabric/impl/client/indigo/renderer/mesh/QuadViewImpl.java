@@ -36,14 +36,16 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
+
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.core.Direction;
+
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.ShadeMode;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.NormalHelper;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.core.Direction;
 
 /**
  * Base class for all quads / quad makers. Handles the ugly bits

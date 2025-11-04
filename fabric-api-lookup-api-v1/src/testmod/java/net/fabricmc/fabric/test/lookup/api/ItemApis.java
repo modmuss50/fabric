@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.test.lookup.api;
 
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 
 public final class ItemApis {
 	public static final BlockApiLookup<ItemInsertable, Direction> INSERTABLE =

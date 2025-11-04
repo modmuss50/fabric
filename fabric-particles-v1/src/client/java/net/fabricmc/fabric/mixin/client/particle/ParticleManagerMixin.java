@@ -28,10 +28,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import net.fabricmc.fabric.impl.client.particle.ParticleRendererRegistryImpl;
+
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.particle.ParticleRenderType;
+
+import net.fabricmc.fabric.impl.client.particle.ParticleRendererRegistryImpl;
 
 @Mixin(ParticleEngine.class)
 public abstract class ParticleManagerMixin {

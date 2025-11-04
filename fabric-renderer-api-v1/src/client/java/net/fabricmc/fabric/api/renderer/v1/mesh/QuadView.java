@@ -16,19 +16,21 @@
 
 package net.fabricmc.fabric.api.renderer.v1.mesh;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
-import net.fabricmc.fabric.api.util.TriState;
+
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+
+import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
+import net.fabricmc.fabric.api.util.TriState;
 
 /**
  * Interface for reading quad data encoded in {@link Mesh}es.

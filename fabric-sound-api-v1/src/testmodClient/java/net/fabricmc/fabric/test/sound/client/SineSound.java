@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.test.sound.client;
 
 import java.util.concurrent.CompletableFuture;
+
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.AudioStream;
 import net.minecraft.client.sounds.SoundBufferLibrary;

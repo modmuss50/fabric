@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.mixin.loot.v2;
 
 import org.spongepowered.asm.mixin.Mixin;
-import net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder;
+
 import net.minecraft.world.level.storage.loot.LootPool;
+
+import net.fabricmc.fabric.api.loot.v2.FabricLootPoolBuilder;
 
 /**
  * The v3 module injects all the necessary methods into the target class.

@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.impl.client.model.loading;
 
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
-import net.minecraft.resources.Identifier;
 
 /**
  * Register builtin custom unbaked block state models.

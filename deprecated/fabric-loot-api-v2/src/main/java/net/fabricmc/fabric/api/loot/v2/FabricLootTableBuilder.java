@@ -18,10 +18,12 @@ package net.fabricmc.fabric.api.loot.v2;
 
 import java.util.Collection;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.ApiStatus;
+
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
-import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Convenience extensions to {@link LootTable.Builder}

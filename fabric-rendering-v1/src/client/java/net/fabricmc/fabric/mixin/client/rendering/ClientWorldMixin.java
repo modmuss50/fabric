@@ -24,12 +24,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.client.rendering.ColorResolverRegistryImpl;
+
 import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ColorResolver;
+
+import net.fabricmc.fabric.impl.client.rendering.ColorResolverRegistryImpl;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientWorldMixin {

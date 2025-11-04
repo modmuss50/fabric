@@ -20,8 +20,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+
 import net.minecraft.client.multiplayer.ClientLevel;
+
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientWorldMixin {

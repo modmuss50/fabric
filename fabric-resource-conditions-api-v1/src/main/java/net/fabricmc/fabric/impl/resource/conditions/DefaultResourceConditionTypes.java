@@ -17,6 +17,9 @@
 package net.fabricmc.fabric.impl.resource.conditions;
 
 import com.mojang.serialization.MapCodec;
+
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.AllModsLoadedResourceCondition;
@@ -28,7 +31,6 @@ import net.fabricmc.fabric.impl.resource.conditions.conditions.OrResourceConditi
 import net.fabricmc.fabric.impl.resource.conditions.conditions.RegistryContainsResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.TagsPopulatedResourceCondition;
 import net.fabricmc.fabric.impl.resource.conditions.conditions.TrueResourceCondition;
-import net.minecraft.resources.Identifier;
 
 public class DefaultResourceConditionTypes {
 	public static final ResourceConditionType<TrueResourceCondition> TRUE = createResourceConditionType("true", TrueResourceCondition.CODEC);

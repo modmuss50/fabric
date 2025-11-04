@@ -21,17 +21,19 @@ import static net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHel
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Vector3fc;
+
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+
 import net.fabricmc.fabric.api.renderer.v1.mesh.ShadeMode;
 import net.fabricmc.fabric.impl.client.indigo.Indigo;
 import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.AoCalculator;
 import net.fabricmc.fabric.impl.client.indigo.renderer.aocalc.AoConfig;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableQuadViewImpl;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class AbstractTerrainRenderContext extends AbstractRenderContext {
 	protected final BlockRenderInfo blockInfo = new BlockRenderInfo();

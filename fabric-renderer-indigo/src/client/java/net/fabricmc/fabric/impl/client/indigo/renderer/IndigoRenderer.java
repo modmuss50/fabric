@@ -17,17 +17,7 @@
 package net.fabricmc.fabric.impl.client.indigo.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.fabric.api.renderer.v1.Renderer;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableMesh;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.render.BlockVertexConsumerProvider;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
-import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessLayerRenderState;
-import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableMeshImpl;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.SimpleBlockRenderContext;
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainLikeRenderContext;
-import net.fabricmc.fabric.mixin.client.indigo.renderer.BlockRenderManagerAccessor;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -39,6 +29,18 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableMesh;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.render.BlockVertexConsumerProvider;
+import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
+import net.fabricmc.fabric.impl.client.indigo.renderer.accessor.AccessLayerRenderState;
+import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableMeshImpl;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.SimpleBlockRenderContext;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainLikeRenderContext;
+import net.fabricmc.fabric.mixin.client.indigo.renderer.BlockRenderManagerAccessor;
 
 /**
  * The Fabric default renderer implementation. Supports all features defined in the API.

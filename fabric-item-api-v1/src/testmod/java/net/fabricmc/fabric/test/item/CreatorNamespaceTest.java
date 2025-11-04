@@ -21,7 +21,7 @@ import java.util.function.UnaryOperator;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.fabricmc.api.ModInitializer;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,6 +31,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
+import net.fabricmc.api.ModInitializer;
 
 public class CreatorNamespaceTest implements ModInitializer {
 	public static final Codec<String> NAMESPACE_CODEC = Codec.STRING.validate((string) -> {

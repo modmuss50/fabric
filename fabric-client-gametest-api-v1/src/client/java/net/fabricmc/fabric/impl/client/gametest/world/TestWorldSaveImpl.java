@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.client.gametest.world;
 import java.nio.file.Path;
 
 import com.google.common.base.Preconditions;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 

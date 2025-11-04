@@ -32,6 +32,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
+
 import net.fabricmc.fabric.api.client.rendering.v1.FabricModel;
 
 @Mixin(Model.class)

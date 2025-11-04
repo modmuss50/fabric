@@ -22,14 +22,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
-import net.fabricmc.fabric.impl.recipe.sync.RecipeSyncImpl;
-import net.fabricmc.fabric.impl.recipe.sync.SupportedRecipeSerializersPayloadC2S;
+
 import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.configuration.ClientboundSelectKnownPacks;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
+import net.fabricmc.fabric.impl.recipe.sync.RecipeSyncImpl;
+import net.fabricmc.fabric.impl.recipe.sync.SupportedRecipeSerializersPayloadC2S;
 
 @Mixin(ClientConfigurationPacketListenerImpl.class)
 public class ClientConfigurationNetworkHandlerMixin {

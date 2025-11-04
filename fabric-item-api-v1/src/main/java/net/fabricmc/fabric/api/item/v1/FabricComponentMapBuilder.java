@@ -19,8 +19,10 @@ package net.fabricmc.fabric.api.item.v1;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import net.minecraft.core.component.DataComponentType;
+
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.core.component.DataComponentType;
 
 /**
  * Fabric-provided extensions for {@link net.minecraft.core.component.DataComponentMap.Builder}.

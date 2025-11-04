@@ -23,11 +23,13 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+
+import net.fabricmc.fabric.api.resource.v1.DataResourceLoader;
 
 public final class DataResourceLoaderImpl extends ResourceLoaderImpl implements DataResourceLoader {
 	public static final DataResourceLoaderImpl INSTANCE = new DataResourceLoaderImpl();

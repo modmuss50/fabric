@@ -17,14 +17,16 @@
 package net.fabricmc.fabric.impl.networking.client;
 
 import java.util.Collections;
-import net.fabricmc.fabric.impl.networking.AbstractChanneledNetworkAddon;
-import net.fabricmc.fabric.impl.networking.GlobalReceiverRegistry;
-import net.fabricmc.fabric.impl.networking.NetworkingImpl;
-import net.fabricmc.fabric.impl.networking.RegistrationPayload;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.Connection;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.networking.AbstractChanneledNetworkAddon;
+import net.fabricmc.fabric.impl.networking.GlobalReceiverRegistry;
+import net.fabricmc.fabric.impl.networking.NetworkingImpl;
+import net.fabricmc.fabric.impl.networking.RegistrationPayload;
 
 abstract class ClientCommonNetworkAddon<H, T extends ClientCommonPacketListenerImpl> extends AbstractChanneledNetworkAddon<H> {
 	protected final T handler;

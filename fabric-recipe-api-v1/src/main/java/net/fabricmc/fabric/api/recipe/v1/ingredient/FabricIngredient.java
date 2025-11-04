@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.recipe.v1.ingredient;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Fabric-provided extensions for {@link Ingredient}.

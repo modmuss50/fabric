@@ -22,8 +22,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.tag.SimpleRegistryExtension;
+
 import net.minecraft.core.MappedRegistry;
+
+import net.fabricmc.fabric.impl.tag.SimpleRegistryExtension;
 
 /**
  * This is a mixin to the Registry.PendingTagLoad implementation in SimpleRegistry.

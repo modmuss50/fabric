@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.test.resource.conditions;
 
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -27,6 +26,8 @@ import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.storage.loot.LootTable;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class ConditionalResourcesTest {
 	private static final String MOD_ID = "fabric-resource-conditions-api-v1-testmod";

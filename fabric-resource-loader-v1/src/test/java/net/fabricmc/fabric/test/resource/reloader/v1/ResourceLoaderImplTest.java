@@ -21,15 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
-import net.fabricmc.fabric.impl.resource.v1.ResourceLoaderImpl;
+
 import net.minecraft.client.PeriodicNotificationManager;
 import net.minecraft.client.resources.SplashManager;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
+import net.fabricmc.fabric.impl.resource.v1.ResourceLoaderImpl;
 
 public class ResourceLoaderImplTest {
 	@Test

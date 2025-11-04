@@ -18,8 +18,9 @@ package net.fabricmc.fabric.test.rendering.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+
+import net.minecraft.world.phys.AABB;
 
 public class TestRenderUtils {
 	public static void drawFilledBox(PoseStack matrices, VertexConsumer vertexConsumers, AABB box, int color) {

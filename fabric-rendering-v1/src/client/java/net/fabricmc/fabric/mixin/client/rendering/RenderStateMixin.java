@@ -22,8 +22,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
-import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
+
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -35,6 +34,9 @@ import net.minecraft.client.renderer.state.MapRenderState;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.state.WeatherRenderState;
 import net.minecraft.client.renderer.state.WorldBorderRenderState;
+
+import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 
 @Mixin({
 		EntityRenderState.class,

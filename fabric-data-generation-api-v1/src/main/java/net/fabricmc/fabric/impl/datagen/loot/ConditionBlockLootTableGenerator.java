@@ -17,13 +17,15 @@
 package net.fabricmc.fabric.impl.datagen.loot;
 
 import java.util.Collections;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
-import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
-import net.fabricmc.fabric.mixin.datagen.loot.BlockLootTableGeneratorAccessor;
+
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
+
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
+import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
+import net.fabricmc.fabric.mixin.datagen.loot.BlockLootTableGeneratorAccessor;
 
 public class ConditionBlockLootTableGenerator extends BlockLootSubProvider {
 	private final BlockLootSubProvider parent;

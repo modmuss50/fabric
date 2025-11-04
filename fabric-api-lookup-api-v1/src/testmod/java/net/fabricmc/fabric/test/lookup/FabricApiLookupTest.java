@@ -16,15 +16,6 @@
 
 package net.fabricmc.fabric.test.lookup;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.test.lookup.api.ItemApis;
-import net.fabricmc.fabric.test.lookup.api.ItemInsertable;
-import net.fabricmc.fabric.test.lookup.compat.InventoryExtractableProvider;
-import net.fabricmc.fabric.test.lookup.compat.InventoryInsertableProvider;
-import net.fabricmc.fabric.test.lookup.entity.FabricEntityApiLookupTest;
-import net.fabricmc.fabric.test.lookup.item.FabricItemApiLookupTest;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -36,6 +27,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.test.lookup.api.ItemApis;
+import net.fabricmc.fabric.test.lookup.api.ItemInsertable;
+import net.fabricmc.fabric.test.lookup.compat.InventoryExtractableProvider;
+import net.fabricmc.fabric.test.lookup.compat.InventoryInsertableProvider;
+import net.fabricmc.fabric.test.lookup.entity.FabricEntityApiLookupTest;
+import net.fabricmc.fabric.test.lookup.item.FabricItemApiLookupTest;
 
 public class FabricApiLookupTest implements ModInitializer {
 	public static final String MOD_ID = "fabric-lookup-api-v1-testmod";

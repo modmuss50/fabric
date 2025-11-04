@@ -22,13 +22,15 @@ import java.util.Objects;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.impl.client.registry.sync.ClientRegistrySyncHandler;
 import net.fabricmc.fabric.impl.registry.sync.RemapException;
 import net.fabricmc.fabric.impl.registry.sync.packet.RegistrySyncPayload;
-import net.minecraft.resources.Identifier;
 
 public class RegistrySyncClientTest implements ClientModInitializer {
 	@Override

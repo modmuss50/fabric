@@ -20,12 +20,14 @@ import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.impl.content.registry.OxidizableBlocksRegistryImpl;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.block.state.properties.Property;
+
+import net.fabricmc.fabric.impl.content.registry.OxidizableBlocksRegistryImpl;
 
 @Mixin(BlockBehaviour.BlockStateBase.class)
 public abstract class AbstractBlockAbstractBlockStateMixin extends StateHolder<Block, BlockState> implements OxidizableBlocksRegistryImpl.RandomTickCacheRefresher {

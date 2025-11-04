@@ -18,7 +18,7 @@ package net.fabricmc.fabric.test.rendering;
 
 import java.util.Map;
 import java.util.Optional;
-import net.fabricmc.api.ModInitializer;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -32,6 +32,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
+
+import net.fabricmc.api.ModInitializer;
 
 public class TooltipComponentTestInit implements ModInitializer {
 	public static final ResourceKey<Item> CUSTOM_TOOLTIP_ITEM_KEY = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("fabric-rendering-v1-testmod", "custom_tooltip"));

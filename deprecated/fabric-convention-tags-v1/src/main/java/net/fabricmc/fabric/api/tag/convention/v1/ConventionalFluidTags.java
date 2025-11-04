@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.tag.convention.v1;
 
-import net.fabricmc.fabric.impl.tag.convention.TagRegistration;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
+
+import net.fabricmc.fabric.impl.tag.convention.TagRegistration;
 
 /**
  * @deprecated Please use {@link net.fabricmc.fabric.api.tag.convention.v2.ConventionalFluidTags}

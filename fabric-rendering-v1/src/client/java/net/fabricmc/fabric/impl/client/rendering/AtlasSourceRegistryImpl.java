@@ -19,9 +19,11 @@ package net.fabricmc.fabric.impl.client.rendering;
 import java.util.Objects;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.mixin.client.rendering.AtlasSourceManagerAccessor;
+
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.mixin.client.rendering.AtlasSourceManagerAccessor;
 
 public final class AtlasSourceRegistryImpl {
 	private AtlasSourceRegistryImpl() {

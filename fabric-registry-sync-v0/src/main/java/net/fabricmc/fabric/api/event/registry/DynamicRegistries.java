@@ -20,10 +20,12 @@ import java.util.List;
 
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.Unmodifiable;
-import net.fabricmc.fabric.impl.registry.sync.DynamicRegistriesImpl;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceKey;
+
+import net.fabricmc.fabric.impl.registry.sync.DynamicRegistriesImpl;
 
 /**
  * Contains methods for registering and accessing dynamic {@linkplain Registry registries}.

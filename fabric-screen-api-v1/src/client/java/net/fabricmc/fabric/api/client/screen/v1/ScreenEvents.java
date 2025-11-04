@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.api.client.screen.v1;
 
 import java.util.Objects;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
 
 /**
  * Holds events related to {@link Screen}s.

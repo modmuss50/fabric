@@ -18,10 +18,12 @@ package net.fabricmc.fabric.test.event.lifecycle;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 /**
  * Test related to ticking events on the server.

@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.test.lookup.entity;
 
-import net.fabricmc.fabric.test.lookup.api.Inspectable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.level.Level;
+
+import net.fabricmc.fabric.test.lookup.api.Inspectable;
 
 public class InspectablePigEntity extends Pig implements Inspectable {
 	public InspectablePigEntity(EntityType<? extends Pig> entityType, Level world) {

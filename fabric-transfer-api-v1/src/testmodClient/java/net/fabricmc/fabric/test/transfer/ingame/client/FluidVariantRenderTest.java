@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.test.transfer.ingame.client;
 
 import java.util.List;
+
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
-import net.minecraft.resources.Identifier;
 
 /**
  * Renders the water sprite in the top left of the screen, to make sure that it correctly depends on the position.

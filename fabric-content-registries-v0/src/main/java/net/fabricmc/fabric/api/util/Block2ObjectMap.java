@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.util;
 
+import org.jspecify.annotations.NullMarked;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public interface Block2ObjectMap<V> {

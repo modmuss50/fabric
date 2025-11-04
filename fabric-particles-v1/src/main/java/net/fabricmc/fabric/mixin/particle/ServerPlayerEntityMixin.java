@@ -19,11 +19,13 @@ package net.fabricmc.fabric.mixin.particle;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
 
 @Mixin(ServerPlayer.class)
 abstract class ServerPlayerEntityMixin {

@@ -22,10 +22,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
+
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+
+import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 
 @Mixin(ServerEntity.class)
 abstract class EntityTrackerEntryMixin {

@@ -19,12 +19,14 @@ package net.fabricmc.fabric.api.object.builder.v1.entity;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Objects;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * A registry for {@linkplain MinecartComparatorLogic custom minecart comparator logic}.

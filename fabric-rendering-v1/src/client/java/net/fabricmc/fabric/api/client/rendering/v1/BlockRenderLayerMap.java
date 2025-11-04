@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.fabricmc.fabric.impl.client.rendering.BlockRenderLayerMapImpl;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+
+import net.fabricmc.fabric.impl.client.rendering.BlockRenderLayerMapImpl;
 
 /**
  * Use to associate blocks or fluids with block render layer other than default (solid).

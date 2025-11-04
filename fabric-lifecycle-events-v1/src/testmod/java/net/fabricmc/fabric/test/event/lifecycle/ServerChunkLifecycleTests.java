@@ -23,12 +23,14 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.slf4j.Logger;
+
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.FullChunkStatus;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.FullChunkStatus;
 
 public final class ServerChunkLifecycleTests implements ModInitializer {
 	private static final Logger LOGGER = LogUtils.getLogger();

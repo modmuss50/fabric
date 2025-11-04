@@ -20,10 +20,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import net.fabricmc.fabric.api.item.v1.FabricItem;
+
 import net.minecraft.resources.DependantName;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+
+import net.fabricmc.fabric.api.item.v1.FabricItem;
 
 @Mixin(Item.Properties.class)
 public class ItemSettingsMixin implements FabricItem.Settings {

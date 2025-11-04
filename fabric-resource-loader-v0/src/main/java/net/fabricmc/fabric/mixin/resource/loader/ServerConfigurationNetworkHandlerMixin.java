@@ -21,12 +21,14 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+
 import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerCommonPacketListenerImpl;
 import net.minecraft.server.network.ServerConfigurationPacketListenerImpl;
 import net.minecraft.server.packs.repository.KnownPack;
+
 import net.fabricmc.fabric.impl.resource.loader.FabricOriginalKnownPacksGetter;
 
 @Mixin(ServerConfigurationPacketListenerImpl.class)

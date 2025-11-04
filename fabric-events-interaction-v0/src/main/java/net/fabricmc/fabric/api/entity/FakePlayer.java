@@ -24,7 +24,7 @@ import java.util.UUID;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.impl.event.interaction.FakePlayerNetworkHandler;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
@@ -37,6 +37,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.scores.PlayerTeam;
+
+import net.fabricmc.fabric.impl.event.interaction.FakePlayerNetworkHandler;
 
 /**
  * A "fake player" is a {@link ServerPlayer} that is not a human player.

@@ -22,6 +22,7 @@ import java.nio.file.Files;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
 import net.minecraft.gametest.framework.JUnitLikeTestReporter;
 
 /**

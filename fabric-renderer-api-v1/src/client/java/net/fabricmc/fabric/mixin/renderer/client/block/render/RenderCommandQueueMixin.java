@@ -17,8 +17,10 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.render;
 
 import org.spongepowered.asm.mixin.Mixin;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricRenderCommandQueue;
+
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+
+import net.fabricmc.fabric.api.renderer.v1.render.FabricRenderCommandQueue;
 
 @Mixin(OrderedSubmitNodeCollector.class)
 interface RenderCommandQueueMixin extends FabricRenderCommandQueue {

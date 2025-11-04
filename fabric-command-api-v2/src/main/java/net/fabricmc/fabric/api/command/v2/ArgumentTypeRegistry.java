@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.command.v2;
 
 import com.mojang.brigadier.arguments.ArgumentType;
-import net.fabricmc.fabric.mixin.command.ArgumentTypesAccessor;
+
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.mixin.command.ArgumentTypesAccessor;
 
 public final class ArgumentTypeRegistry {
 	/**

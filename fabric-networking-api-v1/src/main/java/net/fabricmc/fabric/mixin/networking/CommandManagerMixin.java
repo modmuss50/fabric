@@ -29,6 +29,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.commands.DebugConfigCommand;
+
 import net.fabricmc.loader.api.FabricLoader;
 
 @Mixin(Commands.class)

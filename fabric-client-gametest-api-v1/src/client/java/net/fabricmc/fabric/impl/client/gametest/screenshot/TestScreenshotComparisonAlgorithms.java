@@ -23,9 +23,11 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.NativeImage;
 import org.joml.Vector2i;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
+
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+
+import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm;
 
 public class TestScreenshotComparisonAlgorithms {
 	public record MeanSquaredDifference(float maxMeanSquaredDifference) implements TestScreenshotComparisonAlgorithm {

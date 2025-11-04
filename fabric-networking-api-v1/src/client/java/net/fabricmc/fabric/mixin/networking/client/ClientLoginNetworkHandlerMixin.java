@@ -23,13 +23,15 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.impl.networking.NetworkHandlerExtensions;
-import net.fabricmc.fabric.impl.networking.client.ClientLoginNetworkAddon;
-import net.fabricmc.fabric.impl.networking.payload.PacketByteBufLoginQueryRequestPayload;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.login.ClientboundCustomQueryPacket;
+
+import net.fabricmc.fabric.impl.networking.NetworkHandlerExtensions;
+import net.fabricmc.fabric.impl.networking.client.ClientLoginNetworkAddon;
+import net.fabricmc.fabric.impl.networking.payload.PacketByteBufLoginQueryRequestPayload;
 
 @Mixin(ClientHandshakePacketListenerImpl.class)
 abstract class ClientLoginNetworkHandlerMixin implements NetworkHandlerExtensions {

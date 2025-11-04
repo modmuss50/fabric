@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.impl.attachment.sync.s2c;
 
 import java.util.List;
-import net.fabricmc.fabric.impl.attachment.sync.AttachmentChange;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.attachment.sync.AttachmentChange;
 
 public record AttachmentSyncPayloadS2C(List<AttachmentChange> attachments) implements CustomPacketPayload {
 	public static final StreamCodec<FriendlyByteBuf, AttachmentSyncPayloadS2C> CODEC = StreamCodec.composite(

@@ -17,12 +17,14 @@
 package net.fabricmc.fabric.impl.recipe.ingredient;
 
 import java.util.Optional;
-import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
-import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
+
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
 
 public class OptionalCustomIngredientPacketCodec implements StreamCodec<RegistryFriendlyByteBuf, Optional<Ingredient>> {
 	private final StreamCodec<RegistryFriendlyByteBuf, Optional<Ingredient>> fallback;

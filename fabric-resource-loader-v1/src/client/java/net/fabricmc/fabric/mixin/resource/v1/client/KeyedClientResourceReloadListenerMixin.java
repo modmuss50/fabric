@@ -20,8 +20,7 @@ import java.util.Locale;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
-import net.fabricmc.fabric.impl.resource.v1.FabricResourceReloader;
+
 import net.minecraft.client.PeriodicNotificationManager;
 import net.minecraft.client.gui.font.FontManager;
 import net.minecraft.client.particle.ParticleResources;
@@ -44,6 +43,9 @@ import net.minecraft.client.resources.model.EquipmentAssetManager;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
+import net.fabricmc.fabric.impl.resource.v1.FabricResourceReloader;
 
 @Mixin({
 		/* public */

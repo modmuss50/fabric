@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.event.registry;
 
 import java.util.function.Consumer;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.impl.registry.sync.ListenableRegistry;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.impl.registry.sync.ListenableRegistry;
 
 /**
  * An event for when an entry is added to a registry.

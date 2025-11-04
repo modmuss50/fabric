@@ -24,8 +24,10 @@ import com.mojang.blaze3d.opengl.GlCommandEncoder;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
+
 import net.minecraft.client.Minecraft;
+
+import net.fabricmc.fabric.impl.client.gametest.util.WindowHooks;
 
 @Mixin(GlCommandEncoder.class)
 public class GlCommandEncoderMixin {

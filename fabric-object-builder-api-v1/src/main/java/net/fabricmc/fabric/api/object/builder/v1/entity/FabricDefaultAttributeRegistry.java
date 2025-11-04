@@ -20,11 +20,13 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.fabricmc.fabric.mixin.object.builder.DefaultAttributeRegistryAccessor;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+
+import net.fabricmc.fabric.mixin.object.builder.DefaultAttributeRegistryAccessor;
 
 /**
  * Allows registering custom default attributes for living entities.

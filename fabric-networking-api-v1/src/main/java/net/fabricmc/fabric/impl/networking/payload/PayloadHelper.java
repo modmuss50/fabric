@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.impl.networking.payload;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.FriendlyByteBuf;
+
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 
 public class PayloadHelper {
 	public static void write(FriendlyByteBuf byteBuf, FriendlyByteBuf data) {

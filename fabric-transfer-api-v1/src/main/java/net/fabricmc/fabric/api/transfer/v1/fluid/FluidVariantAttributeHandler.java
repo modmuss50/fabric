@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.transfer.v1.fluid;
 import java.util.Optional;
 
 import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;

@@ -20,11 +20,13 @@ import static net.fabricmc.fabric.test.transfer.TestUtil.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.material.Fluids;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.level.material.Fluids;
 
 /**
  * Test that fluid attributes for vanilla fluids have the correct values.

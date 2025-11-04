@@ -21,17 +21,19 @@ import java.util.List;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.world.item.enchantment.Enchantment;
+
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantmentSource;
 import net.fabricmc.fabric.impl.resource.loader.BuiltinModResourcePackSource;
 import net.fabricmc.fabric.impl.resource.loader.FabricResource;
 import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
 import net.fabricmc.fabric.mixin.item.EnchantmentBuilderAccessor;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.world.item.enchantment.Enchantment;
 
 public class EnchantmentUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnchantmentUtil.class);

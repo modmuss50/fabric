@@ -18,12 +18,14 @@ package net.fabricmc.fabric.api.lookup.v1.item;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
-import net.fabricmc.fabric.impl.lookup.item.ItemApiLookupImpl;
+
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.fabricmc.fabric.impl.lookup.item.ItemApiLookupImpl;
 
 /**
  * An object that allows retrieving APIs from item stacks.

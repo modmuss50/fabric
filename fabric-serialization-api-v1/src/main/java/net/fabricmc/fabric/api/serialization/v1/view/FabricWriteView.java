@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.api.serialization.v1.view;
 
-import net.fabricmc.fabric.impl.serialization.SpecialCodecs;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import net.fabricmc.fabric.impl.serialization.SpecialCodecs;
 
 /**
  * Fabric provided extension of WriteView.

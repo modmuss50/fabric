@@ -18,7 +18,7 @@ package net.fabricmc.fabric.test.renderer;
 
 import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.blockview.v2.RenderDataBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,6 +31,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import net.fabricmc.fabric.api.blockview.v2.RenderDataBlockEntity;
 
 public class FrameBlockEntity extends BlockEntity implements RenderDataBlockEntity {
 	private static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec();

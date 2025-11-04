@@ -19,8 +19,10 @@ package net.fabricmc.fabric.api.serialization.v1.view;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import net.fabricmc.fabric.impl.serialization.SpecialCodecs;
+
 import net.minecraft.world.level.storage.ValueInput;
+
+import net.fabricmc.fabric.impl.serialization.SpecialCodecs;
 
 /**
  * Fabric provided extension of ReadView.

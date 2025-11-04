@@ -16,13 +16,16 @@
 
 package net.fabricmc.fabric.impl.client.indigo.renderer.accessor;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.List;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MeshView;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.ItemDisplayContext;
+
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshView;
 
 public interface AccessRenderCommandQueue {
 	void fabric_submitItem(PoseStack matrices, ItemDisplayContext displayContext, int light, int overlay, int outlineColors, int[] tintLayers, List<BakedQuad> quads, RenderType renderLayer, ItemStackRenderState.FoilType glintType, MeshView mesh);

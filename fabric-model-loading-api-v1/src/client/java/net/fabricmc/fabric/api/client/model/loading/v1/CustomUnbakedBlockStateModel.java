@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.client.model.loading.v1;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.impl.client.model.loading.CustomUnbakedBlockStateModelRegistry;
+
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.model.SingleVariant;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.impl.client.model.loading.CustomUnbakedBlockStateModelRegistry;
 
 /**
  * Allows defining custom unbaked block state model types which can be used within {@code blockstates/} files. <b>It is

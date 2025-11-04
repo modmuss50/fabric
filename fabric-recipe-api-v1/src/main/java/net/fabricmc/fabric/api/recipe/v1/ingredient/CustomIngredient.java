@@ -19,12 +19,14 @@ package net.fabricmc.fabric.api.recipe.v1.ingredient;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientImpl;
+
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
+
+import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientImpl;
 
 /**
  * Interface that modders can implement to create new behaviors for {@link Ingredient}s.

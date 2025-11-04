@@ -17,10 +17,12 @@
 package net.fabricmc.fabric.test.serialization;
 
 import java.util.Optional;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.world.level.storage.ValueInput;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.level.storage.ValueInput;
 
 /**
  * A delegating ReadView, used to force usage of fallback implementation of FabricReadView.

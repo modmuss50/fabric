@@ -17,7 +17,7 @@
 package net.fabricmc.fabric.impl.biome.modification;
 
 import java.util.Optional;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -29,6 +29,8 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
+
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 
 public class BiomeSelectionContextImpl implements BiomeSelectionContext {
 	private final RegistryAccess dynamicRegistries;

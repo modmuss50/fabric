@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.client.particle.v1;
 
 import java.util.List;
+
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlas;

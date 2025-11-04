@@ -26,12 +26,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
-import net.fabricmc.fabric.impl.renderer.BatchingRenderCommandQueueExtension;
-import net.fabricmc.fabric.impl.renderer.DelegatingBlockVertexConsumerProviderImpl;
-import net.fabricmc.fabric.impl.renderer.ExtendedBlockCommand;
-import net.fabricmc.fabric.impl.renderer.ExtendedBlockStateModelCommand;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.OutlineBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollection;
@@ -42,6 +37,13 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.feature.BlockFeatureRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
+import net.fabricmc.fabric.impl.renderer.BatchingRenderCommandQueueExtension;
+import net.fabricmc.fabric.impl.renderer.DelegatingBlockVertexConsumerProviderImpl;
+import net.fabricmc.fabric.impl.renderer.ExtendedBlockCommand;
+import net.fabricmc.fabric.impl.renderer.ExtendedBlockStateModelCommand;
 
 @Mixin(BlockFeatureRenderer.class)
 abstract class FallingBlockCommandRendererMixin {

@@ -25,6 +25,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
+
 import net.fabricmc.fabric.api.datagen.v1.loot.FabricBlockLootTableGenerator;
 import net.fabricmc.fabric.api.datagen.v1.loot.FabricEntityLootTableGenerator;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;

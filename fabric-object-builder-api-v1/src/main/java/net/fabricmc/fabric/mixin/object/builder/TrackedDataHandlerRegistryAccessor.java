@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.mixin.object.builder;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.util.CrudeIncrementalIntIdentityHashBiMap;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(EntityDataSerializers.class)
 public interface TrackedDataHandlerRegistryAccessor {

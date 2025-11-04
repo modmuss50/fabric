@@ -19,6 +19,10 @@ package net.fabricmc.fabric.api.object.builder.v1.entity;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+
+import com.google.common.collect.ImmutableSet;
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -32,8 +36,6 @@ import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
-import com.google.common.collect.ImmutableSet;
-import org.jspecify.annotations.Nullable;
 
 /**
  * @deprecated replace with {@link EntityType.Builder}

@@ -23,14 +23,16 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.material.Fluid;
+
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributeHandler;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 import net.fabricmc.fabric.impl.transfer.fluid.FluidVariantCache;
 import net.fabricmc.fabric.impl.transfer.fluid.FluidVariantImpl;
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.material.Fluid;
 
 /**
  * <ul>

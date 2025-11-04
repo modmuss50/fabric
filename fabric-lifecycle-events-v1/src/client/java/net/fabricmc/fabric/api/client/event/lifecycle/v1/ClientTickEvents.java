@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 public final class ClientTickEvents {
 	private ClientTickEvents() {

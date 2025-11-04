@@ -18,7 +18,7 @@ package net.fabricmc.fabric.test.content.registry;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -40,6 +40,8 @@ import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class ContentRegistryGameTest {
 	@GameTest

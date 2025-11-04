@@ -18,12 +18,14 @@ package net.fabricmc.fabric.test.resource.loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 
 public class BuiltinResourcePackTestMod implements ModInitializer {
 	public static final String MODID = "fabric-resource-loader-v0-testmod";

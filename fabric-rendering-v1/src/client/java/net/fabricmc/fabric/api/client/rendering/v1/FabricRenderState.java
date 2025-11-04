@@ -16,6 +16,9 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
+import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -27,8 +30,6 @@ import net.minecraft.client.renderer.state.MapRenderState;
 import net.minecraft.client.renderer.state.SkyRenderState;
 import net.minecraft.client.renderer.state.WeatherRenderState;
 import net.minecraft.client.renderer.state.WorldBorderRenderState;
-import org.jetbrains.annotations.ApiStatus;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Fabric-provided extensions for render states, allowing for the addition of extra render data.

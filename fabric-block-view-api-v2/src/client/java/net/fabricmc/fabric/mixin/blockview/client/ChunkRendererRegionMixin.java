@@ -22,12 +22,14 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import net.fabricmc.fabric.impl.blockview.client.RenderDataMapConsumer;
+
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+
+import net.fabricmc.fabric.impl.blockview.client.RenderDataMapConsumer;
 
 @Mixin(RenderSectionRegion.class)
 public abstract class ChunkRendererRegionMixin implements BlockRenderView, RenderDataMapConsumer {

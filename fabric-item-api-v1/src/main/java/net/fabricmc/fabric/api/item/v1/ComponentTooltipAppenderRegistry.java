@@ -18,9 +18,11 @@ package net.fabricmc.fabric.api.item.v1;
 
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.ApiStatus;
-import net.fabricmc.fabric.impl.item.ComponentTooltipAppenderRegistryImpl;
+
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.component.TooltipProvider;
+
+import net.fabricmc.fabric.impl.item.ComponentTooltipAppenderRegistryImpl;
 
 /**
  * A registry of {@link TooltipProvider} item components. Adding your item component to this registry will render the

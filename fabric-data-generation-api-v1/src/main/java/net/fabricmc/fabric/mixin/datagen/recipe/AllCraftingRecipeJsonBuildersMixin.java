@@ -16,6 +16,10 @@
 
 package net.fabricmc.fabric.mixin.datagen.recipe;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -24,9 +28,6 @@ import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.recipes.TransmuteRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.Recipe;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin({
 		SimpleCookingRecipeBuilder.class,

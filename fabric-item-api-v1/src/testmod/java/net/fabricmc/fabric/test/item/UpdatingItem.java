@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.item;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +32,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jspecify.annotations.Nullable;
 
 public class UpdatingItem extends Item {
 	private static final Identifier PLUS_FIVE_ID = Identifier.fromNamespaceAndPath("fabric-item-api-v1-testmod", "plus_five");

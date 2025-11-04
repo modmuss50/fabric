@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.test.renderer;
 
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.api.ModInitializer;
 
 /**
  * The testmod for the Fabric Renderer API. These tests are used to validate that

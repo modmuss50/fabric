@@ -17,11 +17,13 @@
 package net.fabricmc.fabric.api.client.rendering.v1;
 
 import java.util.Objects;
-import net.fabricmc.fabric.impl.client.rendering.EntityModelLayerImpl;
-import net.fabricmc.fabric.mixin.client.rendering.EntityModelLayersAccessor;
+
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
+
+import net.fabricmc.fabric.impl.client.rendering.EntityModelLayerImpl;
+import net.fabricmc.fabric.mixin.client.rendering.EntityModelLayersAccessor;
 
 /**
  * A helpers for registering entity model layers and providers for the layer's textured model data.

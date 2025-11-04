@@ -16,10 +16,11 @@
 
 package net.fabricmc.fabric.api.event.client.player;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
  * This event fires every tick when the attack key (left mouse button by default) is pressed

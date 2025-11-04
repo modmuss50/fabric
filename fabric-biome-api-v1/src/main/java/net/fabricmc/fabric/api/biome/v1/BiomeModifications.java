@@ -17,6 +17,9 @@
 package net.fabricmc.fabric.api.biome.v1;
 
 import java.util.function.Predicate;
+
+import com.google.common.base.Preconditions;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -26,7 +29,6 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import com.google.common.base.Preconditions;
 
 /**
  * Provides an API to modify Biomes after they have been loaded and before they are used in the World.

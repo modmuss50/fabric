@@ -16,9 +16,9 @@
 
 package net.fabricmc.fabric.test.object.builder.client;
 
-import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.fabric.test.object.builder.TrackStackEntity;
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -30,6 +30,8 @@ import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityAttachment;
+
+import net.fabricmc.fabric.test.object.builder.TrackStackEntity;
 
 public class TrackStackEntityRenderer extends MobRenderer<TrackStackEntity, TrackStackEntityRenderer.RenderState, ChickenModel> {
 	public TrackStackEntityRenderer(EntityRendererProvider.Context context) {

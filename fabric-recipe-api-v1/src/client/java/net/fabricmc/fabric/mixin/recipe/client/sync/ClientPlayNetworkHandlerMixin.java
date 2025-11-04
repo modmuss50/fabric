@@ -22,9 +22,11 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import net.fabricmc.fabric.impl.recipe.sync.client.SynchronizedClientRecipesSetter;
+
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.ClientRecipeContainer;
+
+import net.fabricmc.fabric.impl.recipe.sync.client.SynchronizedClientRecipesSetter;
 
 @Mixin(ClientPacketListener.class)
 public class ClientPlayNetworkHandlerMixin {

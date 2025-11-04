@@ -18,13 +18,14 @@ package net.fabricmc.fabric.test.transfer.gametests;
 
 import static net.fabricmc.fabric.test.transfer.TestUtil.assertEquals;
 
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.material.Fluids;
+
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
-import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.material.Fluids;
 
 public class WorldDependentAttributesTest {
 	@GameTest

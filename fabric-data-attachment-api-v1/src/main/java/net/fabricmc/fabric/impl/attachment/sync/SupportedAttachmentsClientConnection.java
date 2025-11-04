@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.attachment.sync;
 
 import java.util.Set;
+
 import net.minecraft.network.Connection;
 import net.minecraft.resources.Identifier;
 

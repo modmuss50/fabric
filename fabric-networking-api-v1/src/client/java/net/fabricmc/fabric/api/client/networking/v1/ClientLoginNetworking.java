@@ -22,14 +22,16 @@ import java.util.function.Consumer;
 
 import io.netty.channel.ChannelFutureListener;
 import org.jspecify.annotations.Nullable;
-import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
-import net.fabricmc.fabric.impl.networking.client.ClientNetworkingImpl;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.Identifier;
+
+import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
+import net.fabricmc.fabric.impl.networking.client.ClientNetworkingImpl;
 
 /**
  * Offers access to login stage client-side networking functionalities.

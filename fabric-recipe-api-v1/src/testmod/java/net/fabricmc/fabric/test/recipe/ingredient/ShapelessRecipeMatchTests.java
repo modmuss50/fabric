@@ -19,7 +19,7 @@ package net.fabricmc.fabric.test.recipe.ingredient;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import net.fabricmc.fabric.api.gametest.v1.GameTest;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestAssertException;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -31,6 +31,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+
+import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
 public class ShapelessRecipeMatchTests {
 	/**

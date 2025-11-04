@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.test.attachment;
 
 import com.mojang.serialization.Codec;
+
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ImposterProtoChunk;

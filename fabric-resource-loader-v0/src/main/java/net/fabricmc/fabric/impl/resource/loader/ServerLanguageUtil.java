@@ -23,10 +23,12 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
+
 import net.minecraft.locale.Language;
 import net.minecraft.server.packs.PackType;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 
 public final class ServerLanguageUtil {
 	private static final String ASSETS_PREFIX = PackType.CLIENT_RESOURCES.getDirectory() + '/';

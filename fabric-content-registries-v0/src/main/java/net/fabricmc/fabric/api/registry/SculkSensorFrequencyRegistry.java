@@ -17,12 +17,13 @@
 package net.fabricmc.fabric.api.registry;
 
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.GameEventTags;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides a method for registering sculk sensor frequencies.

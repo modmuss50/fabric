@@ -22,6 +22,13 @@ import java.util.List;
 import java.util.Set;
 
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -30,11 +37,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.mixin.recipe.sync.ServerCommonNetworkHandlerAccessor;
 import net.fabricmc.fabric.mixin.recipe.sync.ServerRecipeManagerAccessor;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class RecipeSyncImpl implements ModInitializer {
 	// Recipe packet might contain a lot of data depending on mods, so it's best to increase it's max size to 64 MB.

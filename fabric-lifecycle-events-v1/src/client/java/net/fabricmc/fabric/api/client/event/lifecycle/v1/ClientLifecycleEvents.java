@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
+import net.minecraft.client.Minecraft;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.Minecraft;
 
 public final class ClientLifecycleEvents {
 	private ClientLifecycleEvents() {
