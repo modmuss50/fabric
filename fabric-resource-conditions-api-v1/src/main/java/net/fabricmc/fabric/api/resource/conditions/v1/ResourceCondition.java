@@ -21,6 +21,8 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
 
+import net.minecraft.resources.RegistryOps;
+
 /**
  * A resource condition. To create a custom condition type, implement this interface,
  * call {@link ResourceConditionType#create} and create the type, then register

@@ -23,6 +23,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
+
+import net.minecraft.commands.CommandSourceStack;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,16 +86,16 @@ public class GameRulesTestMod implements ModInitializer {
 
 		// Validate the EnumRule has registered its commands
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			RootCommandNode<ServerCommandSource> dispatcher = server.getCommandManager().getDispatcher().getRoot();
+			RootCommandNode<CommandSourceStack> dispatcher = server.getCommands().getDispatcher().getRoot();
 			// Find the GameRule node
-			CommandNode<ServerCommandSource> gamerule = dispatcher.getChild("gamerule");
+			CommandNode<CommandSourceStack> gamerule = dispatcher.getChild("gamerule");
 
 			if (gamerule == null) {
 				throw new AssertionError("Failed to find GameRule command node on server's command dispatcher");
 			}
 
 			// Find the literal corresponding to our enum rule, using cardinal directions here.
-			CommandNode<ServerCommandSource> cardinalDirection = gamerule.getChild("cardinal_direction");
+			CommandNode<CommandSourceStack> cardinalDirection = gamerule.getChild("cardinal_direction");
 
 			if (cardinalDirection == null) {
 				throw new AssertionError("Failed to find \"cardinal_direction\" literal node corresponding a rule.");
@@ -103,7 +106,7 @@ public class GameRulesTestMod implements ModInitializer {
 				throw new AssertionError("Expected to find a query command on \"cardinal_direction\" command node, but it was not present");
 			}
 
-			Collection<CommandNode<ServerCommandSource>> children = cardinalDirection.getChildren();
+			Collection<CommandNode<CommandSourceStack>> children = cardinalDirection.getChildren();
 
 			// There should only be 4 child nodes.
 			if (children.size() != 4) {
@@ -116,8 +119,8 @@ public class GameRulesTestMod implements ModInitializer {
 			});
 
 			// Verify we have all the correct nodes
-			for (CommandNode<ServerCommandSource> child : children) {
-				LiteralCommandNode<ServerCommandSource> node = (LiteralCommandNode<ServerCommandSource>) child;
+			for (CommandNode<CommandSourceStack> child : children) {
+				LiteralCommandNode<CommandSourceStack> node = (LiteralCommandNode<CommandSourceStack>) child;
 				String name = node.getName();
 				switch (name) {
 				case "north":

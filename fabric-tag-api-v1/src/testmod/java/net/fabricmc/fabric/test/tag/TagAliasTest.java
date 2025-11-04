@@ -22,6 +22,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.minecraft.world.item.Items;
+
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Blocks;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,13 +92,13 @@ public final class TagAliasTest implements ModInitializer {
 			assertTagContent(registries, List.of(BRICK_BLOCKS, MORE_BRICK_BLOCKS, BRICKS), TagAliasTest::getBlockKey,
 					Blocks.BRICKS, Blocks.STONE_BRICKS, Blocks.NETHER_BRICKS, Blocks.RED_NETHER_BRICKS);
 			assertTagContent(registries, List.of(CLASSIC_BIOMES, TRADITIONAL_BIOMES),
-					BiomeKeys.PLAINS, BiomeKeys.DESERT);
+					Biomes.PLAINS, Biomes.DESERT);
 
 			// The loot table registry isn't synced to the client.
 			if (!client) {
 				assertTagContent(registries, List.of(NETHER_BRICKS_1, NETHER_BRICKS_2),
-						Blocks.NETHER_BRICKS.getLootTableKey().orElseThrow(),
-						Blocks.RED_NETHER_BRICKS.getLootTableKey().orElseThrow());
+						Blocks.NETHER_BRICKS.getLootTable().orElseThrow(),
+						Blocks.RED_NETHER_BRICKS.getLootTable().orElseThrow());
 			}
 
 			LOGGER.info("Tag alias tests completed successfully!");

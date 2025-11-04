@@ -64,7 +64,7 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 
 			@Override
-			public void reload(ResourceManager manager) {
+			public void onResourceManagerReload(ResourceManager manager) {
 				if (!clientResources) {
 					throw new AssertionError("Second reload listener was called before the first!");
 				}
@@ -83,7 +83,7 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 
 			@Override
-			public void reload(ResourceManager manager) {
+			public void onResourceManagerReload(ResourceManager manager) {
 				clientResources = true;
 			}
 		});
@@ -97,7 +97,7 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 
 			@Override
-			public void reload(ResourceManager manager) {
+			public void onResourceManagerReload(ResourceManager manager) {
 				if (!serverResources) {
 					throw new AssertionError("Second reload listener was called before the first!");
 				}
@@ -116,7 +116,7 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 			}
 
 			@Override
-			public void reload(ResourceManager manager) {
+			public void onResourceManagerReload(ResourceManager manager) {
 				serverResources = true;
 			}
 		});
@@ -133,7 +133,7 @@ public class ResourceReloadListenerTestMod implements ModInitializer {
 		}
 
 		@Override
-		public void reload(ResourceManager manager) {
+		public void onResourceManagerReload(ResourceManager manager) {
 			Objects.requireNonNull(wrapperLookup);
 			wrapperLookup.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
 		}

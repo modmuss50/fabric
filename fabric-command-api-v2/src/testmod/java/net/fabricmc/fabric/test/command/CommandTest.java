@@ -23,6 +23,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
+
+import net.minecraft.world.entity.LivingEntity;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,12 +50,12 @@ public final class CommandTest implements ModInitializer {
 			// A command that exists on both types of servers
 			dispatcher.register(literal("fabric_common_test_command").executes(this::executeCommonCommand));
 
-			if (environment.dedicated) {
+			if (environment.includeDedicated) {
 				// The command here should only be present on a dedicated server
 				dispatcher.register(literal("fabric_dedicated_test_command").executes(this::executeDedicatedCommand));
 			}
 
-			if (environment.integrated) {
+			if (environment.includeIntegrated) {
 				// The command here should only be present on an integrated server
 				dispatcher.register(literal("fabric_integrated_test_command").executes(this::executeIntegratedCommand));
 			}
@@ -60,13 +63,13 @@ public final class CommandTest implements ModInitializer {
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			// Verify the commands actually exist in the command dispatcher.
-			final boolean dedicated = server.isDedicated();
-			final RootCommandNode<ServerCommandSource> rootNode = server.getCommandManager().getDispatcher().getRoot();
+			final boolean dedicated = server.isDedicatedServer();
+			final RootCommandNode<CommandSourceStack> rootNode = server.getCommands().getDispatcher().getRoot();
 
 			// Now we climb the tree
-			final CommandNode<ServerCommandSource> fabricCommonTestCommand = rootNode.getChild("fabric_common_test_command");
-			final CommandNode<ServerCommandSource> fabricDedicatedTestCommand = rootNode.getChild("fabric_dedicated_test_command");
-			final CommandNode<ServerCommandSource> fabricIntegratedTestCommand = rootNode.getChild("fabric_integrated_test_command");
+			final CommandNode<CommandSourceStack> fabricCommonTestCommand = rootNode.getChild("fabric_common_test_command");
+			final CommandNode<CommandSourceStack> fabricDedicatedTestCommand = rootNode.getChild("fabric_dedicated_test_command");
+			final CommandNode<CommandSourceStack> fabricIntegratedTestCommand = rootNode.getChild("fabric_integrated_test_command");
 
 			// Verify the common command exists
 			if (fabricCommonTestCommand == null) {

@@ -23,10 +23,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.biome.Biome;
 
 @Mixin(MovingBlockRenderState.class)
-abstract class MovingBlockRenderStateMixin implements BlockRenderView {
+abstract class MovingBlockRenderStateMixin implements BlockAndTintGetter {
 	@Shadow
 	@Nullable
 	public Holder<Biome> biome;

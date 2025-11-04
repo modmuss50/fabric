@@ -97,7 +97,7 @@ public class GameOptionsMixin {
 		Set<String> resourcePacks = new LinkedHashSet<>(this.resourcePacks);
 
 		List<Pack> profiles = new ArrayList<>();
-		ModResourcePackCreator.CLIENT_RESOURCE_PACK_PROVIDER.register(profiles::add);
+		ModResourcePackCreator.CLIENT_RESOURCE_PACK_PROVIDER.loadPacks(profiles::add);
 
 		for (Pack profile : profiles) {
 			// Always add "Fabric Mods" pack to enabled resource packs.
@@ -108,10 +108,10 @@ public class GameOptionsMixin {
 
 			try (PackResources pack = profile.open()) {
 				if (pack instanceof ModNioResourcePack builtinPack && builtinPack.getActivationType().isEnabledByDefault()) {
-					if (trackedPacks.add(builtinPack.getId())) {
+					if (trackedPacks.add(builtinPack.packId())) {
 						resourcePacks.add(profile.getId());
 					} else {
-						removedPacks.remove(builtinPack.getId());
+						removedPacks.remove(builtinPack.packId());
 					}
 				}
 			}

@@ -96,7 +96,7 @@ public final class FluidVariantRendering {
 
 		// If advanced tooltips are enabled, render the fluid id
 		if (type.isAdvanced()) {
-			tooltip.add(Component.literal(BuiltInRegistries.FLUID.getKey(fluidVariant.getFluid()).toString()).formatted(ChatFormatting.DARK_GRAY));
+			tooltip.add(Component.literal(BuiltInRegistries.FLUID.getKey(fluidVariant.getFluid()).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 
 		// TODO: consider adding an event to append to tooltips?

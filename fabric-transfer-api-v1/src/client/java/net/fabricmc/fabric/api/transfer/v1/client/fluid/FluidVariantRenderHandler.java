@@ -58,7 +58,7 @@ public interface FluidVariantRenderHandler {
 		FluidRenderHandler fluidRenderHandler = FluidRenderHandlerRegistry.INSTANCE.get(fluidVariant.getFluid());
 
 		if (fluidRenderHandler != null) {
-			return fluidRenderHandler.getFluidSprites(null, null, fluidVariant.getFluid().getDefaultState());
+			return fluidRenderHandler.getFluidSprites(null, null, fluidVariant.getFluid().defaultFluidState());
 		} else {
 			return null;
 		}
@@ -78,7 +78,7 @@ public interface FluidVariantRenderHandler {
 		FluidRenderHandler fluidRenderHandler = FluidRenderHandlerRegistry.INSTANCE.get(fluidVariant.getFluid());
 
 		if (fluidRenderHandler != null) {
-			return fluidRenderHandler.getFluidColor(view, pos, fluidVariant.getFluid().getDefaultState()) | 255 << 24;
+			return fluidRenderHandler.getFluidColor(view, pos, fluidVariant.getFluid().defaultFluidState()) | 255 << 24;
 		} else {
 			return -1;
 		}

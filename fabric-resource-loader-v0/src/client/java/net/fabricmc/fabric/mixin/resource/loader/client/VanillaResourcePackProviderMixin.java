@@ -36,7 +36,7 @@ public class VanillaResourcePackProviderMixin {
 		// Register mod and built-in resource packs after the vanilla built-in resource packs are registered.
 		// noinspection ConstantConditions
 		if ((Object) this instanceof ClientPackSource) {
-			ModResourcePackCreator.CLIENT_RESOURCE_PACK_PROVIDER.register(consumer);
+			ModResourcePackCreator.CLIENT_RESOURCE_PACK_PROVIDER.loadPacks(consumer);
 		}
 	}
 }

@@ -49,9 +49,9 @@ public abstract class EditGameRulesScreenRuleListWidgetMixin extends AbstractSel
 	@Inject(method = "<init>(Lnet/minecraft/client/gui/screens/worldselection/EditGameRulesScreen;Lnet/minecraft/world/level/gamerules/GameRules;)V", at = @At("TAIL"))
 	private void initializeFabricGameruleCategories(EditGameRulesScreen screen, GameRules gameRules, CallbackInfo ci) {
 		this.fabricCategories.forEach((category, widgetList) -> {
-			this.addEntry(screen.new RuleCategoryWidget(category.getName()));
+			this.addEntry(screen.new CategoryRuleEntry(category.getName()));
 
-			for (EditGameRulesScreen.AbstractRuleWidget widget : widgetList) {
+			for (EditGameRulesScreen.RuleEntry widget : widgetList) {
 				this.addEntry(widget);
 			}
 		});
