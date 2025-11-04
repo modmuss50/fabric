@@ -16,30 +16,29 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1.world;
 
+import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.culling.Frustum;
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix4fc;
-
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.world.ClientWorld;
 
 @ApiStatus.NonExtendable
 public interface WorldExtractionContext extends AbstractWorldRenderContext {
 	/**
-	 * Convenient access to {@link WorldRenderer#world}.
+	 * Convenient access to {@link LevelRenderer#world}.
 	 *
 	 * @return the world renderer's client world instance
 	 */
 	@SuppressWarnings("JavadocReference")
-	ClientWorld world();
+	ClientLevel world();
 
 	Camera camera();
 
 	Frustum frustum();
 
-	RenderTickCounter tickCounter();
+	DeltaTracker tickCounter();
 
 	Matrix4fc viewMatrix();
 

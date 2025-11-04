@@ -21,17 +21,15 @@ import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.random.Random;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.test.networking.NetworkingTestmods;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.util.RandomSource;
 
 public class NetworkingSplitterTest implements ModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(NetworkingSplitterTest.class);
@@ -40,8 +38,8 @@ public class NetworkingSplitterTest implements ModInitializer {
 
 	// 20 MB of random data source
 	private static final int[][] RANDOM_DATA = {
-			IntStream.generate(Random.create(24534)::nextInt).limit(20).toArray(),
-			IntStream.generate(Random.create(24533)::nextInt).limit(DATA_SIZE / 4).toArray()
+			IntStream.generate(RandomSource.create(24534)::nextInt).limit(20).toArray(),
+			IntStream.generate(RandomSource.create(24533)::nextInt).limit(DATA_SIZE / 4).toArray()
 	};
 
 	@Override
@@ -71,11 +69,11 @@ public class NetworkingSplitterTest implements ModInitializer {
 
 	// A payload registered on both sides
 	// This tests that the server can send a large packet to the client, and then receive a response from the client
-	public record LargePayload(int index, int[] data) implements CustomPayload {
-		public static final Id<LargePayload> ID = new Id<>(NetworkingTestmods.id("large_packet"));
-		public static final PacketCodec<PacketByteBuf, LargePayload> CODEC = PacketCodec.of(LargePayload::write, LargePayload::read);
+	public record LargePayload(int index, int[] data) implements CustomPacketPayload {
+		public static final Type<LargePayload> ID = new Type<>(NetworkingTestmods.id("large_packet"));
+		public static final StreamCodec<FriendlyByteBuf, LargePayload> CODEC = StreamCodec.ofMember(LargePayload::write, LargePayload::read);
 
-		private static LargePayload read(PacketByteBuf buf) {
+		private static LargePayload read(FriendlyByteBuf buf) {
 			int index = buf.readVarInt();
 			var data = new int[buf.readVarInt()];
 
@@ -86,7 +84,7 @@ public class NetworkingSplitterTest implements ModInitializer {
 			return new LargePayload(index, data);
 		}
 
-		private void write(PacketByteBuf buf) {
+		private void write(FriendlyByteBuf buf) {
 			buf.writeVarInt(this.index);
 			buf.writeVarInt(this.data.length);
 
@@ -96,7 +94,7 @@ public class NetworkingSplitterTest implements ModInitializer {
 		}
 
 		@Override
-		public Id<? extends CustomPayload> getId() {
+		public Type<? extends CustomPacketPayload> type() {
 			return ID;
 		}
 	}

@@ -19,16 +19,14 @@ package net.fabricmc.fabric.api.transfer.v1.client.fluid;
 import java.util.List;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockRenderView;
-
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockAndTintGetter;
 
 /**
  * Defines how {@linkplain FluidVariant fluid variants} of a given Fluid should be displayed to clients.
@@ -41,7 +39,7 @@ public interface FluidVariantRenderHandler {
 	 * <p>The name of the fluid, and its identifier if the tooltip context is advanced, should not be appended.
 	 * They are already added by {@link FluidVariantRendering#getTooltip}.
 	 */
-	default void appendTooltip(FluidVariant fluidVariant, List<Text> tooltip, TooltipType tooltipType) {
+	default void appendTooltip(FluidVariant fluidVariant, List<Component> tooltip, TooltipFlag tooltipType) {
 	}
 
 	/**
@@ -53,7 +51,7 @@ public interface FluidVariantRenderHandler {
 	 * they may not be null.
 	 */
 	@Nullable
-	default Sprite[] getSprites(FluidVariant fluidVariant) {
+	default TextureAtlasSprite[] getSprites(FluidVariant fluidVariant) {
 		// Use the fluid render handler by default.
 		FluidRenderHandler fluidRenderHandler = FluidRenderHandlerRegistry.INSTANCE.get(fluidVariant.getFluid());
 
@@ -73,7 +71,7 @@ public interface FluidVariantRenderHandler {
 	 * If they are provided, this method may return a color that depends on the location.
 	 * For example, water returns the biome-dependent color if the context parameters are specified, or its default color if one of them is null.
 	 */
-	default int getColor(FluidVariant fluidVariant, @Nullable BlockRenderView view, @Nullable BlockPos pos) {
+	default int getColor(FluidVariant fluidVariant, @Nullable BlockAndTintGetter view, @Nullable BlockPos pos) {
 		// Use the fluid render handler by default.
 		FluidRenderHandler fluidRenderHandler = FluidRenderHandlerRegistry.INSTANCE.get(fluidVariant.getFluid());
 

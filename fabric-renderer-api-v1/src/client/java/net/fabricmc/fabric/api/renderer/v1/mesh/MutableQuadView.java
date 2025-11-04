@@ -21,20 +21,18 @@ import org.joml.Vector2fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.item.ItemRenderState;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.fabric.impl.renderer.QuadSpriteBaker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * A mutable {@link QuadView} instance. The base interface for
@@ -53,25 +51,25 @@ public interface MutableQuadView extends QuadView {
 	/**
 	 * When enabled, causes texture to appear with no rotation. This is the default and does not have to be specified
 	 * explicitly. Can be overridden by other rotation flags.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 */
 	int BAKE_ROTATE_NONE = 0;
 
 	/**
 	 * When enabled, causes texture to appear rotated 90 degrees clockwise.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 */
 	int BAKE_ROTATE_90 = 1;
 
 	/**
 	 * When enabled, causes texture to appear rotated 180 degrees.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 */
 	int BAKE_ROTATE_180 = 2;
 
 	/**
 	 * When enabled, causes texture to appear rotated 270 degrees clockwise.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 */
 	int BAKE_ROTATE_270 = 3;
 
@@ -79,7 +77,7 @@ public interface MutableQuadView extends QuadView {
 	 * When enabled, texture coordinates are assigned based on vertex positions and the
 	 * {@linkplain #nominalFace() nominal face}.
 	 * Any existing UV coordinates will be replaced and the {@link #BAKE_NORMALIZED} flag will be ignored.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 *
 	 * <p>UV lock derives texture coordinates based on {@linkplain #nominalFace() nominal face} by projecting the quad
 	 * onto it, even when the quad is not co-planar with it. This flag is ignored if the normal face is {@code null}.
@@ -92,7 +90,7 @@ public interface MutableQuadView extends QuadView {
 	 * and texture mapping scenarios. Results are different from what
 	 * can be obtained via rotation and both can be applied. Any
 	 * rotation is applied before this flag.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 */
 	int BAKE_FLIP_U = 8;
 
@@ -106,7 +104,7 @@ public interface MutableQuadView extends QuadView {
 	 * with conventional Minecraft model format. This is scaled to 0-1 during
 	 * baking before interpolation. Model loaders that already have 0-1 coordinates
 	 * can avoid wasteful multiplication/division by passing 0-1 coordinates directly.
-	 * Pass in bakeFlags parameter to {@link #spriteBake(Sprite, int)}.
+	 * Pass in bakeFlags parameter to {@link #spriteBake(TextureAtlasSprite, int)}.
 	 */
 	int BAKE_NORMALIZED = 32;
 
@@ -185,7 +183,7 @@ public interface MutableQuadView extends QuadView {
 	 * interpolation, etc. Control this behavior by passing additive combinations of the BAKE_ flags defined in this
 	 * interface.
 	 */
-	default MutableQuadView spriteBake(Sprite sprite, int bakeFlags) {
+	default MutableQuadView spriteBake(TextureAtlasSprite sprite, int bakeFlags) {
 		QuadSpriteBaker.bakeSprite(this, sprite, bakeFlags);
 		return this;
 	}
@@ -244,7 +242,7 @@ public interface MutableQuadView extends QuadView {
 	 * but if set, should be the expected value of {@link #lightFace()}. It may be used to shortcut geometric analysis,
 	 * if the provided value was correct; otherwise, it is ignored.
 	 *
-	 * <p>The nominal face is also used for {@link #spriteBake(Sprite, int)} with {@link #BAKE_LOCK_UV}.
+	 * <p>The nominal face is also used for {@link #spriteBake(TextureAtlasSprite, int)} with {@link #BAKE_LOCK_UV}.
 	 *
 	 * <p>When {@link #cullFace(Direction)} is called, it also sets the nominal face.
 	 *
@@ -258,7 +256,7 @@ public interface MutableQuadView extends QuadView {
 	 * Sets the cull face. This quad will not be rendered if its cull face is non-null and the block is occluded by
 	 * another block in the direction of the cull face.
 	 *
-	 * <p>The cull face is different from {@link BakedQuad#face()}, which is equivalent to {@link #lightFace()}. The
+	 * <p>The cull face is different from {@link BakedQuad#direction()}, which is equivalent to {@link #lightFace()}. The
 	 * light face is computed based on geometry and must be non-null.
 	 *
 	 * <p>When called, sets {@link #nominalFace(Direction)} to the same value.
@@ -272,17 +270,17 @@ public interface MutableQuadView extends QuadView {
 	/**
 	 * Controls how this quad's pixels should be blended with the scene.
 	 *
-	 * <p>If set to {@code null}, {@link RenderLayers#getBlockLayer(BlockState)} will be used to retrieve the render
+	 * <p>If set to {@code null}, {@link RenderTypes#getBlockLayer(BlockState)} will be used to retrieve the render
 	 * layer in block contexts and
-	 * {@linkplain ItemRenderState.LayerRenderState#setRenderLayer(RenderLayer) the render layer of the state layer}
+	 * {@linkplain ItemStackRenderState.LayerRenderState#setRenderType(RenderType) the render layer of the state layer}
 	 * will be used in item contexts. Set to another value to override this behavior.
 	 *
 	 * <p>In block contexts, a non-null value will be used directly. In item contexts, a non-null value will be
-	 * converted to a {@link RenderLayer} using {@link RenderLayerHelper#getEntityBlockLayer(BlockRenderLayer)}.
+	 * converted to a {@link RenderType} using {@link RenderLayerHelper#getEntityBlockLayer(ChunkSectionLayer)}.
 	 *
 	 * <p>The default value is {@code null}.
 	 */
-	MutableQuadView renderLayer(@Nullable BlockRenderLayer renderLayer);
+	MutableQuadView renderLayer(@Nullable ChunkSectionLayer renderLayer);
 
 	/**
 	 * When true, this quad will be rendered at full brightness.
@@ -312,9 +310,9 @@ public interface MutableQuadView extends QuadView {
 	 * Controls whether vertex colors should be modified for ambient occlusion.
 	 *
 	 * <p>If set to {@link TriState#DEFAULT}, ambient occlusion will be used if the block state has
-	 * {@linkplain BlockState#getLuminance() a luminance} of 0. Set to {@link TriState#TRUE} or {@link TriState#FALSE}
+	 * {@linkplain BlockState#getLightEmission() a luminance} of 0. Set to {@link TriState#TRUE} or {@link TriState#FALSE}
 	 * to override this behavior. {@link TriState#TRUE} will not have an effect if
-	 * {@linkplain MinecraftClient#isAmbientOcclusionEnabled() ambient occlusion is disabled globally}.
+	 * {@linkplain Minecraft#useAmbientOcclusion() ambient occlusion is disabled globally}.
 	 *
 	 * <p>The default value is {@link TriState#DEFAULT}.
 	 *
@@ -326,7 +324,7 @@ public interface MutableQuadView extends QuadView {
 	 * Controls how glint should be applied.
 	 *
 	 * <p>If set to {@code null}, glint will be applied in item contexts based on
-	 * {@linkplain ItemRenderState.LayerRenderState#setGlint(ItemRenderState.Glint) the glint type of the layer}. Set
+	 * {@linkplain ItemStackRenderState.LayerRenderState#setFoilType(ItemStackRenderState.FoilType) the glint type of the layer}. Set
 	 * to another value to override this behavior.
 	 *
 	 * <p>The default value is {@code null}.
@@ -334,7 +332,7 @@ public interface MutableQuadView extends QuadView {
 	 * <p>This property is guaranteed to be respected in item contexts. Some renderers may also respect it in block
 	 * contexts, but this is not guaranteed.
 	 */
-	MutableQuadView glint(ItemRenderState.@Nullable Glint glint);
+	MutableQuadView glint(ItemStackRenderState.@Nullable FoilType glint);
 
 	/**
 	 * A hint to the renderer about how this quad is intended to be shaded, for example through ambient occlusion and
@@ -373,7 +371,7 @@ public interface MutableQuadView extends QuadView {
 	/**
 	 * Sets this quad's vertex data for all vertices using data in given array, starting at the given index. The array
 	 * must have at least {@link #VANILLA_QUAD_STRIDE} elements starting at the given index. The format of the data must
-	 * be the same as {@link BakedQuad#vertexData()}. This quad's lightmap values and normals will be set even though
+	 * be the same as {@link BakedQuad#vertices()}. This quad's lightmap values and normals will be set even though
 	 * vanilla does not decode them from packed vertex data.
 	 *
 	 * <p>Prefer using {@link #fromBakedQuad(BakedQuad)} instead if you have a {@link BakedQuad}.

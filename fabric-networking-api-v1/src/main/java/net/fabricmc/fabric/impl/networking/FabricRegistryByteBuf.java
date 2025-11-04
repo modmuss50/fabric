@@ -17,10 +17,8 @@
 package net.fabricmc.fabric.impl.networking;
 
 import java.util.Set;
-
+import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.util.Identifier;
 
 public interface FabricRegistryByteBuf {
 	void fabric_setSendableConfigurationChannels(Set<Identifier> globalChannels);

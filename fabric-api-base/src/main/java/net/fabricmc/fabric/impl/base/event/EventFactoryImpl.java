@@ -28,10 +28,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 import com.google.common.collect.MapMaker;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.event.Event;
+import net.minecraft.resources.Identifier;
 
 public final class EventFactoryImpl {
 	private static final Set<ArrayBackedEvent<?>> ARRAY_BACKED_EVENTS

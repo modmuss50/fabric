@@ -17,11 +17,9 @@
 package net.fabricmc.fabric.mixin.datagen.loot;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.data.loottable.BlockLootTableGenerator;
-
 import net.fabricmc.fabric.api.datagen.v1.loot.FabricBlockLootTableGenerator;
+import net.minecraft.data.loot.BlockLootSubProvider;
 
-@Mixin(BlockLootTableGenerator.class)
+@Mixin(BlockLootSubProvider.class)
 public class BlockLootTableGeneratorMixin implements FabricBlockLootTableGenerator {
 }

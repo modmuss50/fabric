@@ -20,13 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -34,6 +27,11 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedSlottedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.mixin.transfer.ContainerComponentAccessor;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 
 public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVariant, SingleSlotStorage<ItemVariant>> {
 	final ContainerItemContext ctx;
@@ -53,8 +51,8 @@ public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVarian
 		parts = Collections.unmodifiableList(backingList);
 	}
 
-	ContainerComponent container() {
-		return ctx.getItemVariant().getComponentMap().getOrDefault(DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT);
+	ItemContainerContents container() {
+		return ctx.getItemVariant().getComponentMap().getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
 	}
 
 	ContainerComponentAccessor containerAccessor() {
@@ -89,8 +87,8 @@ public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVarian
 
 			ContainerItemContext ctx = ContainerComponentStorage.this.ctx;
 
-			ItemVariant newVariant = ctx.getItemVariant().withComponentChanges(ComponentChanges.builder()
-							.add(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks))
+			ItemVariant newVariant = ctx.getItemVariant().withComponentChanges(DataComponentPatch.builder()
+							.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(stacks))
 							.build());
 
 			return ctx.exchange(newVariant, 1, transaction) == 1;
@@ -104,7 +102,7 @@ public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVarian
 
 			ItemStack currentStack = getStack();
 
-			if ((insertedVariant.matches(currentStack) || currentStack.isEmpty()) && insertedVariant.getItem().canBeNested()) {
+			if ((insertedVariant.matches(currentStack) || currentStack.isEmpty()) && insertedVariant.getItem().canFitInsideContainerItems()) {
 				int insertedAmount = (int) Math.min(maxAmount, getCapacity() - currentStack.getCount());
 
 				if (insertedAmount > 0) {
@@ -113,7 +111,7 @@ public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVarian
 					if (currentStack.isEmpty()) {
 						currentStack = insertedVariant.toStack(insertedAmount);
 					} else {
-						currentStack.increment(insertedAmount);
+						currentStack.grow(insertedAmount);
 					}
 
 					if (!setStack(currentStack, transaction)) return 0;
@@ -138,7 +136,7 @@ public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVarian
 
 				if (extracted > 0) {
 					currentStack = getStack().copy();
-					currentStack.decrement(extracted);
+					currentStack.shrink(extracted);
 
 					if (!setStack(currentStack, transaction)) return 0;
 
@@ -166,7 +164,7 @@ public class ContainerComponentStorage extends CombinedSlottedStorage<ItemVarian
 
 		@Override
 		public long getCapacity() {
-			return getStack().getItem().getMaxCount();
+			return getStack().getItem().getDefaultMaxStackSize();
 		}
 
 		@Override

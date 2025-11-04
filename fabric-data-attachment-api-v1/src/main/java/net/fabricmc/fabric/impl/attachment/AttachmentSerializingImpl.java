@@ -26,13 +26,11 @@ import com.mojang.serialization.DataResult;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class AttachmentSerializingImpl {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-data-attachment-api-v1");
@@ -53,7 +51,7 @@ public class AttachmentSerializingImpl {
 				Function.identity()
 	);
 
-	public static void serializeAttachmentData(WriteView view, @Nullable IdentityHashMap<AttachmentType<?>, Object> attachments) {
+	public static void serializeAttachmentData(ValueOutput view, @Nullable IdentityHashMap<AttachmentType<?>, Object> attachments) {
 		if (attachments == null || attachments.isEmpty()) {
 			return;
 		}
@@ -71,11 +69,11 @@ public class AttachmentSerializingImpl {
 			return;
 		}
 
-		view.put(AttachmentTarget.NBT_ATTACHMENT_KEY, CODEC, attachmentsToSerialize);
+		view.store(AttachmentTarget.NBT_ATTACHMENT_KEY, CODEC, attachmentsToSerialize);
 	}
 
 	@Nullable
-	public static IdentityHashMap<AttachmentType<?>, Object> deserializeAttachmentData(@Nullable ReadView data) {
+	public static IdentityHashMap<AttachmentType<?>, Object> deserializeAttachmentData(@Nullable ValueInput data) {
 		return data == null ? null : data.read(AttachmentTarget.NBT_ATTACHMENT_KEY, CODEC).filter(m -> !m.isEmpty()).orElse(null);
 	}
 

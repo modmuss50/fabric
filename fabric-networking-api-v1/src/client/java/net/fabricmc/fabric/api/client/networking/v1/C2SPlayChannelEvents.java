@@ -17,14 +17,12 @@
 package net.fabricmc.fabric.api.client.networking.v1;
 
 import java.util.List;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.resources.Identifier;
 
 /**
  * Offers access to events related to the indication of a connected server's ability to receive packets in certain channels.
@@ -58,7 +56,7 @@ public final class C2SPlayChannelEvents {
 	 */
 	@FunctionalInterface
 	public interface Register {
-		void onChannelRegister(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client, List<Identifier> channels);
+		void onChannelRegister(ClientPacketListener handler, PacketSender sender, Minecraft client, List<Identifier> channels);
 	}
 
 	/**
@@ -66,6 +64,6 @@ public final class C2SPlayChannelEvents {
 	 */
 	@FunctionalInterface
 	public interface Unregister {
-		void onChannelUnregister(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client, List<Identifier> channels);
+		void onChannelUnregister(ClientPacketListener handler, PacketSender sender, Minecraft client, List<Identifier> channels);
 	}
 }

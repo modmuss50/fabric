@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.api.resource;
 
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
+import net.minecraft.resources.Identifier;
 
 /**
  * This class contains default keys for various Minecraft resource reload listeners.

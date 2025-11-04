@@ -16,34 +16,20 @@
 
 package net.fabricmc.fabric.test.object.builder;
 
-import static net.minecraft.command.argument.EntityArgumentType.entity;
-import static net.minecraft.command.argument.EntityArgumentType.getEntity;
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.arguments.EntityArgument.entity;
+import static net.minecraft.commands.arguments.EntityArgument.getEntity;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 import java.util.Optional;
 
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import org.apache.commons.lang3.tuple.Pair;
-
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.WanderingTraderEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
-import net.minecraft.village.TradedItem;
-import net.minecraft.village.VillagerProfession;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.npc.VillagerProfession;
 
 public class VillagerTypeTest1 implements ModInitializer {
 	private static final Identifier FOOD_POOL_ID = ObjectBuilderTestConstants.id("food");

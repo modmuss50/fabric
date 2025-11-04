@@ -28,14 +28,12 @@ import org.joml.Matrix3x2fStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
 
 public class HudElementRegistryTest {
 	private final List<String> drawnLayers = new ArrayList<>();
@@ -163,15 +161,15 @@ public class HudElementRegistryTest {
 	}
 
 	private Identifier testIdentifier(String name) {
-		return Identifier.of("test", name);
+		return Identifier.fromNamespaceAndPath("test", name);
 	}
 
 	private void assertOrder(List<String> expectedLayers) {
-		DrawContext drawContext = mock(DrawContext.class);
-		RenderTickCounter tickCounter = mock(RenderTickCounter.class);
+		GuiGraphics drawContext = mock(GuiGraphics.class);
+		DeltaTracker tickCounter = mock(DeltaTracker.class);
 		Matrix3x2fStack matrixStack = mock(Matrix3x2fStack.class);
 
-		when(drawContext.getMatrices()).thenReturn(matrixStack);
+		when(drawContext.pose()).thenReturn(matrixStack);
 
 		drawnLayers.clear();
 

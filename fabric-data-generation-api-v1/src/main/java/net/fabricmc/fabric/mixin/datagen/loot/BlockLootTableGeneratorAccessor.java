@@ -16,14 +16,13 @@
 
 package net.fabricmc.fabric.mixin.datagen.loot;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.data.loottable.BlockLootTableGenerator;
-import net.minecraft.registry.RegistryWrapper;
-
-@Mixin(BlockLootTableGenerator.class)
+@Mixin(BlockLootSubProvider.class)
 public interface BlockLootTableGeneratorAccessor {
 	@Accessor()
-	RegistryWrapper.WrapperLookup getRegistries();
+	HolderLookup.Provider getRegistries();
 }

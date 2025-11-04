@@ -21,17 +21,15 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.util.math.BlockPos;
-
 import net.fabricmc.fabric.api.particle.v1.FabricBlockStateParticleEffect;
 import net.fabricmc.fabric.impl.particle.BlockStateParticleEffectExtension;
 import net.fabricmc.fabric.impl.particle.ExtendedBlockStateParticleEffectPacketCodec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
-@Mixin(BlockStateParticleEffect.class)
+@Mixin(BlockParticleOption.class)
 abstract class BlockStateParticleEffectMixin implements FabricBlockStateParticleEffect, BlockStateParticleEffectExtension {
 	@Nullable
 	@Unique
@@ -48,8 +46,8 @@ abstract class BlockStateParticleEffectMixin implements FabricBlockStateParticle
 		blockPos = pos;
 	}
 
-	@ModifyReturnValue(method = "createPacketCodec", at = @At("RETURN"))
-	private static PacketCodec<? super RegistryByteBuf, BlockStateParticleEffect> modifyPacketCodec(PacketCodec<? super RegistryByteBuf, BlockStateParticleEffect> codec) {
+	@ModifyReturnValue(method = "streamCodec", at = @At("RETURN"))
+	private static StreamCodec<? super RegistryFriendlyByteBuf, BlockParticleOption> modifyPacketCodec(StreamCodec<? super RegistryFriendlyByteBuf, BlockParticleOption> codec) {
 		return new ExtendedBlockStateParticleEffectPacketCodec(codec);
 	}
 }

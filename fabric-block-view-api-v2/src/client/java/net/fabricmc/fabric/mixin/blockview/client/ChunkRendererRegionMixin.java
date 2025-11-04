@@ -22,21 +22,18 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-
-import net.minecraft.client.render.chunk.ChunkRendererRegion;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-
 import net.fabricmc.fabric.impl.blockview.client.RenderDataMapConsumer;
+import net.minecraft.client.renderer.chunk.RenderSectionRegion;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
-@Mixin(ChunkRendererRegion.class)
+@Mixin(RenderSectionRegion.class)
 public abstract class ChunkRendererRegionMixin implements BlockRenderView, RenderDataMapConsumer {
 	@Shadow
 	@Final
-	protected World world;
+	protected Level level;
 
 	@Unique
 	@Nullable
@@ -61,7 +58,7 @@ public abstract class ChunkRendererRegionMixin implements BlockRenderView, Rende
 	}
 
 	@Override
-	public RegistryEntry<Biome> getBiomeFabric(BlockPos pos) {
-		return world.getBiome(pos);
+	public Holder<Biome> getBiomeFabric(BlockPos pos) {
+		return level.getBiome(pos);
 	}
 }

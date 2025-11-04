@@ -19,13 +19,11 @@ package net.fabricmc.fabric.api.item.v1;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-
+import net.minecraft.core.component.DataComponentType;
 import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.component.ComponentType;
-
 /**
- * Fabric-provided extensions for {@link net.minecraft.component.ComponentMap.Builder}.
+ * Fabric-provided extensions for {@link net.minecraft.core.component.DataComponentMap.Builder}.
  *
  * <p>Note: This interface is automatically implemented on all component map builders via Mixin and interface injection.
  */
@@ -39,9 +37,9 @@ public interface FabricComponentMapBuilder {
 	 *                 may not be null.
 	 * @param <T>      The type of the component data
 	 * @return Returns the current value in the map builder, or the default value provided by the fallback if not present
-	 * @see #getOrEmpty(ComponentType)
+	 * @see #getOrEmpty(DataComponentType)
 	 */
-	default <T> T getOrCreate(ComponentType<T> type, Supplier<T> fallback) {
+	default <T> T getOrCreate(DataComponentType<T> type, Supplier<T> fallback) {
 		throw new AssertionError("Implemented in Mixin");
 	}
 
@@ -53,7 +51,7 @@ public interface FabricComponentMapBuilder {
 	 * @param <T>          The type of the component data
 	 * @return Returns the current value in the map builder, or the default value if not present
 	 */
-	default <T> T getOrDefault(ComponentType<T> type, T defaultValue) {
+	default <T> T getOrDefault(DataComponentType<T> type, T defaultValue) {
 		Objects.requireNonNull(defaultValue, "Cannot insert null values to component map builder");
 		return getOrCreate(type, () -> defaultValue);
 	}
@@ -67,7 +65,7 @@ public interface FabricComponentMapBuilder {
 	 * @param <T>  The type of the component entry data
 	 * @return Returns a mutable list of values for the type.
 	 */
-	default <T> List<T> getOrEmpty(ComponentType<List<T>> type) {
+	default <T> List<T> getOrEmpty(DataComponentType<List<T>> type) {
 		throw new AssertionError("Implemented in Mixin");
 	}
 
@@ -77,7 +75,7 @@ public interface FabricComponentMapBuilder {
 	 * @param type The component type to check
 	 * @return Returns true if the type has been registered to this builder, false otherwise
 	 */
-	default boolean contains(ComponentType<?> type) {
+	default boolean contains(DataComponentType<?> type) {
 		throw new AssertionError("Implemented in Mixin");
 	}
 }

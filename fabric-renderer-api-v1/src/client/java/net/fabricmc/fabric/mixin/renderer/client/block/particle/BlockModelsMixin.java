@@ -17,11 +17,9 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.particle;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.client.render.block.BlockModels;
-
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBlockModels;
+import net.minecraft.client.renderer.block.BlockModelShaper;
 
-@Mixin(BlockModels.class)
+@Mixin(BlockModelShaper.class)
 abstract class BlockModelsMixin implements FabricBlockModels {
 }

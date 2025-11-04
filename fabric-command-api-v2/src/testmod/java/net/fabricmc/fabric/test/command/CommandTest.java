@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.test.command;
 
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.literal;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -25,22 +25,19 @@ import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.command.v2.EntitySelectorOptionRegistry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 public final class CommandTest implements ModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommandTest.class);
-	static final Identifier SELECTOR_ID = Identifier.of("fabric-command-api-v2-testmod", "min_health");
-	private static final SimpleCommandExceptionType WRONG_SIDE_SHOULD_BE_INTEGRATED = new SimpleCommandExceptionType(Text.literal("This command was registered incorrectly. Should only be present on an integrated server but was ran on a dedicated server!"));
-	private static final SimpleCommandExceptionType WRONG_SIDE_SHOULD_BE_DEDICATED = new SimpleCommandExceptionType(Text.literal("This command was registered incorrectly. Should only be present on an dedicated server but was ran on an integrated server!"));
+	static final Identifier SELECTOR_ID = Identifier.fromNamespaceAndPath("fabric-command-api-v2-testmod", "min_health");
+	private static final SimpleCommandExceptionType WRONG_SIDE_SHOULD_BE_INTEGRATED = new SimpleCommandExceptionType(Component.literal("This command was registered incorrectly. Should only be present on an integrated server but was ran on a dedicated server!"));
+	private static final SimpleCommandExceptionType WRONG_SIDE_SHOULD_BE_DEDICATED = new SimpleCommandExceptionType(Component.literal("This command was registered incorrectly. Should only be present on an dedicated server but was ran on an integrated server!"));
 
 	@Override
 	public void onInitialize() {
@@ -102,7 +99,7 @@ public final class CommandTest implements ModInitializer {
 
 		EntitySelectorOptionRegistry.registerNonRepeatable(
 				SELECTOR_ID,
-				Text.literal("Minimum entity health"),
+				Component.literal("Minimum entity health"),
 				(reader) -> {
 					final float minHealth = reader.getReader().readFloat();
 
@@ -113,36 +110,36 @@ public final class CommandTest implements ModInitializer {
 		);
 	}
 
-	private int executeCommonCommand(CommandContext<ServerCommandSource> context) {
-		final ServerCommandSource source = context.getSource();
-		source.sendFeedback(() -> Text.literal("Common test command is working."), false);
-		source.sendFeedback(() -> Text.literal("Server Is Dedicated: " + source.getServer().isDedicated()), false);
+	private int executeCommonCommand(CommandContext<CommandSourceStack> context) {
+		final CommandSourceStack source = context.getSource();
+		source.sendSuccess(() -> Component.literal("Common test command is working."), false);
+		source.sendSuccess(() -> Component.literal("Server Is Dedicated: " + source.getServer().isDedicatedServer()), false);
 
 		return 1;
 	}
 
-	private int executeDedicatedCommand(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		final ServerCommandSource source = context.getSource();
+	private int executeDedicatedCommand(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		final CommandSourceStack source = context.getSource();
 
-		if (!source.getServer().isDedicated()) {
+		if (!source.getServer().isDedicatedServer()) {
 			throw WRONG_SIDE_SHOULD_BE_DEDICATED.create();
 		}
 
-		source.sendFeedback(() -> Text.literal("Dedicated test command is working."), false);
-		source.sendFeedback(() -> Text.literal("Server Is Dedicated: " + source.getServer().isDedicated()), false);
+		source.sendSuccess(() -> Component.literal("Dedicated test command is working."), false);
+		source.sendSuccess(() -> Component.literal("Server Is Dedicated: " + source.getServer().isDedicatedServer()), false);
 
 		return 1;
 	}
 
-	private int executeIntegratedCommand(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		final ServerCommandSource source = context.getSource();
+	private int executeIntegratedCommand(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		final CommandSourceStack source = context.getSource();
 
-		if (source.getServer().isDedicated()) {
+		if (source.getServer().isDedicatedServer()) {
 			throw WRONG_SIDE_SHOULD_BE_INTEGRATED.create();
 		}
 
-		source.sendFeedback(() -> Text.literal("Integrated test command is working."), false);
-		source.sendFeedback(() -> Text.literal("Server Is Integrated: " + !source.getServer().isDedicated()), false);
+		source.sendSuccess(() -> Component.literal("Integrated test command is working."), false);
+		source.sendSuccess(() -> Component.literal("Server Is Integrated: " + !source.getServer().isDedicatedServer()), false);
 
 		return 1;
 	}

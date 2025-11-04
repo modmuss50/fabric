@@ -22,16 +22,13 @@ import java.util.List;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.registry.RegistryOps;
-import net.minecraft.resource.featuretoggle.FeatureFlag;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.fabricmc.fabric.impl.resource.conditions.DefaultResourceConditionTypes;
 import net.fabricmc.fabric.impl.resource.conditions.ResourceConditionsImpl;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.flag.FeatureFlag;
+import net.minecraft.world.flag.FeatureFlags;
 
 public record FeaturesEnabledResourceCondition(Collection<Identifier> features) implements ResourceCondition {
 	public static final MapCodec<FeaturesEnabledResourceCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -43,7 +40,7 @@ public record FeaturesEnabledResourceCondition(Collection<Identifier> features) 
 	}
 
 	public FeaturesEnabledResourceCondition(FeatureFlag... flags) {
-		this(FeatureFlags.FEATURE_MANAGER.toId(FeatureFlags.FEATURE_MANAGER.featureSetOf(flags)));
+		this(FeatureFlags.REGISTRY.toNames(FeatureFlags.REGISTRY.subset(flags)));
 	}
 
 	@Override
@@ -52,7 +49,7 @@ public record FeaturesEnabledResourceCondition(Collection<Identifier> features) 
 	}
 
 	@Override
-	public boolean test(RegistryOps.@Nullable RegistryInfoGetter registryInfo) {
+	public boolean test(RegistryOps.@Nullable RegistryInfoLookup registryInfo) {
 		return ResourceConditionsImpl.featuresEnabled(this.features());
 	}
 }

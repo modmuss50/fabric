@@ -18,18 +18,16 @@ package net.fabricmc.fabric.test.event.lifecycle.client;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.world.World;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.test.event.lifecycle.ServerLifecycleTests;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 public final class ClientTickTests implements ClientModInitializer {
 	private boolean tagsLoadedCalled;
-	private final Map<RegistryKey<World>, Integer> tickTracker = new HashMap<>();
+	private final Map<ResourceKey<Level>, Integer> tickTracker = new HashMap<>();
 	private int ticks;
 
 	@Override

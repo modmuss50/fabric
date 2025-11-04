@@ -22,24 +22,22 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.block.entity.ChiseledBookshelfBlockEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
-
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.fabricmc.fabric.impl.transfer.item.SpecialLogicInventory;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
 /**
  * This mixin tracks the last interacted slot for transaction support, defers block state updates,
- * and allows setting empty stacks via {@link Inventory#setStack} in a transfer API context (needed for extractions).
+ * and allows setting empty stacks via {@link Container#setItem} in a transfer API context (needed for extractions).
  */
-@Mixin(ChiseledBookshelfBlockEntity.class)
+@Mixin(ChiseledBookShelfBlockEntity.class)
 public class ChiseledBookshelfBlockEntityMixin implements SpecialLogicInventory {
 	@Shadow
-	private DefaultedList<ItemStack> heldStacks;
+	private NonNullList<ItemStack> items;
 	@Shadow
 	private int lastInteractedSlot; // last interacted slot
 	@Unique
@@ -50,10 +48,10 @@ public class ChiseledBookshelfBlockEntityMixin implements SpecialLogicInventory 
 		fabric_suppressSpecialLogic = suppress;
 	}
 
-	@Inject(at = @At("HEAD"), method = "setStack", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "setItem", cancellable = true)
 	public void setStackBypass(int slot, ItemStack stack, CallbackInfo ci) {
 		if (fabric_suppressSpecialLogic) {
-			heldStacks.set(slot, stack);
+			items.set(slot, stack);
 			ci.cancel();
 		}
 	}

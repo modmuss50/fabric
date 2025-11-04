@@ -22,16 +22,14 @@ import java.util.function.Consumer;
 
 import io.netty.channel.ChannelFutureListener;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientLoginNetworkHandler;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.listener.PacketListener;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
 import net.fabricmc.fabric.impl.networking.client.ClientNetworkingImpl;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
+import net.minecraft.network.Connection;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketListener;
+import net.minecraft.resources.Identifier;
 
 /**
  * Offers access to login stage client-side networking functionalities.
@@ -96,13 +94,13 @@ public final class ClientLoginNetworking {
 	 * @throws IllegalStateException if the client is not logging in
 	 */
 	public static boolean registerReceiver(Identifier channelName, LoginQueryRequestHandler queryHandler) throws IllegalStateException {
-		final ClientConnection connection = ClientNetworkingImpl.getLoginConnection();
+		final Connection connection = ClientNetworkingImpl.getLoginConnection();
 
 		if (connection != null) {
 			final PacketListener packetListener = connection.getPacketListener();
 
-			if (packetListener instanceof ClientLoginNetworkHandler) {
-				return ClientNetworkingImpl.getAddon(((ClientLoginNetworkHandler) packetListener)).registerChannel(channelName, queryHandler);
+			if (packetListener instanceof ClientHandshakePacketListenerImpl) {
+				return ClientNetworkingImpl.getAddon(((ClientHandshakePacketListenerImpl) packetListener)).registerChannel(channelName, queryHandler);
 			}
 		}
 
@@ -120,13 +118,13 @@ public final class ClientLoginNetworking {
 	 */
 	@Nullable
 	public static LoginQueryRequestHandler unregisterReceiver(Identifier channelName) throws IllegalStateException {
-		final ClientConnection connection = ClientNetworkingImpl.getLoginConnection();
+		final Connection connection = ClientNetworkingImpl.getLoginConnection();
 
 		if (connection != null) {
 			final PacketListener packetListener = connection.getPacketListener();
 
-			if (packetListener instanceof ClientLoginNetworkHandler) {
-				return ClientNetworkingImpl.getAddon(((ClientLoginNetworkHandler) packetListener)).unregisterChannel(channelName);
+			if (packetListener instanceof ClientHandshakePacketListenerImpl) {
+				return ClientNetworkingImpl.getAddon(((ClientHandshakePacketListenerImpl) packetListener)).unregisterChannel(channelName);
 			}
 		}
 
@@ -142,7 +140,7 @@ public final class ClientLoginNetworking {
 		 * Handles an incoming query request from a server.
 		 *
 		 * <p>This method is executed on {@linkplain io.netty.channel.EventLoop netty's event loops}.
-		 * Modification to the game should be {@linkplain net.minecraft.util.thread.ThreadExecutor#submit(Runnable) scheduled} using the provided Minecraft client instance.
+		 * Modification to the game should be {@linkplain net.minecraft.util.thread.BlockableEventLoop#submit(Runnable) scheduled} using the provided Minecraft client instance.
 		 *
 		 * <p>The return value of this method is a completable future that may be used to delay the login process to the server until a task {@link CompletableFuture#isDone() is done}.
 		 * The future should complete in reasonably time to prevent disconnection by the server.
@@ -155,6 +153,6 @@ public final class ClientLoginNetworking {
 		 * @return a completable future which contains the payload to respond to the server with.
 		 * If the future contains {@code null}, then the server will be notified that the client did not understand the query.
 		 */
-		CompletableFuture<@Nullable PacketByteBuf> receive(MinecraftClient client, ClientLoginNetworkHandler handler, PacketByteBuf buf, Consumer<ChannelFutureListener> callbacksConsumer);
+		CompletableFuture<@Nullable FriendlyByteBuf> receive(Minecraft client, ClientHandshakePacketListenerImpl handler, FriendlyByteBuf buf, Consumer<ChannelFutureListener> callbacksConsumer);
 	}
 }

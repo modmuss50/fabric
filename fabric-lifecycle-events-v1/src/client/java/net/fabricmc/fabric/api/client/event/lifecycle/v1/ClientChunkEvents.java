@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.world.chunk.WorldChunk;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 public final class ClientChunkEvents {
 	private ClientChunkEvents() {
@@ -50,11 +49,11 @@ public final class ClientChunkEvents {
 
 	@FunctionalInterface
 	public interface Load {
-		void onChunkLoad(ClientWorld world, WorldChunk chunk);
+		void onChunkLoad(ClientLevel world, LevelChunk chunk);
 	}
 
 	@FunctionalInterface
 	public interface Unload {
-		void onChunkUnload(ClientWorld world, WorldChunk chunk);
+		void onChunkUnload(ClientLevel world, LevelChunk chunk);
 	}
 }

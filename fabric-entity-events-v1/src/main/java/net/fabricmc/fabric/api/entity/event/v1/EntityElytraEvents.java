@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.entity.event.v1;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.LivingEntity;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * Events related to elytra flight for living entities. Elytra flight is also known as "fall flying".
@@ -44,7 +43,7 @@ public final class EntityElytraEvents {
 	 * An event to grant elytra flight to living entities when some condition is met.
 	 * Will be called when players try to start elytra flight by pressing space in mid-air, and every tick for all flying living entities to check if elytra flight is still allowed.
 	 *
-	 * <p>Items that wish to enable custom elytra flight when worn in the chest equipment slot can add the {@link DataComponentTypes#GLIDER} component to an item.
+	 * <p>Items that wish to enable custom elytra flight when worn in the chest equipment slot can add the {@link DataComponents#GLIDER} component to an item.
 	 */
 	public static final Event<Custom> CUSTOM = EventFactory.createArrayBacked(Custom.class, listeners -> (entity, tickElytra) -> {
 		for (Custom listener : listeners) {

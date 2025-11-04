@@ -18,14 +18,13 @@ package net.fabricmc.fabric.mixin.client.rendering;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.util.Identifier;
-
-@Mixin(targets = "net/minecraft/client/gui/screen/DebugOptionsScreen$Entry")
+@Mixin(targets = "net/minecraft/client/gui/screens/debug/DebugOptionsScreen$OptionEntry")
 public abstract class DebugOptionsScreenEntryMixin {
-	@WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Identifier;getPath()Ljava/lang/String;"))
+	@WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/Identifier;getPath()Ljava/lang/String;"))
 	private String showNamespace(Identifier instance, Operation<String> original) {
 		if (!Identifier.DEFAULT_NAMESPACE.equals(instance.getNamespace())) {
 			return instance.toString();

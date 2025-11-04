@@ -16,17 +16,16 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1;
 
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.item.ItemStack;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
 
 @FunctionalInterface
 public interface DrawItemStackOverlayCallback {
 	/**
-	 * Fires at the end of {@link DrawContext#drawStackOverlay(TextRenderer, ItemStack, int, int, String)} and allows
+	 * Fires at the end of {@link GuiGraphics#renderItemDecorations(Font, ItemStack, int, int, String)} and allows
 	 * for drawing custom item stack decorations.
 	 *
 	 * <p>In vanilla these are: durability bar, cooldown overlay and stack count.
@@ -45,5 +44,5 @@ public interface DrawItemStackOverlayCallback {
 	 * @param x            the x-position of the item stack
 	 * @param y            the y-position of the item stack
 	 */
-	void onDrawItemStackOverlay(DrawContext context, TextRenderer textRenderer, ItemStack stack, int x, int y);
+	void onDrawItemStackOverlay(GuiGraphics context, Font textRenderer, ItemStack stack, int x, int y);
 }

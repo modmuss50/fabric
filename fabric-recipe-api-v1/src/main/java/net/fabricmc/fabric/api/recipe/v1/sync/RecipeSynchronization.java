@@ -17,13 +17,11 @@
 package net.fabricmc.fabric.api.recipe.v1.sync;
 
 import java.util.Objects;
-
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.impl.recipe.sync.RecipeSyncImpl;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 /**
  * Since Minecraft 1.21.2, vanilla no longer syncs all recipes to the client automatically,
@@ -56,7 +54,7 @@ public final class RecipeSynchronization {
 	 */
 	public static void synchronizeRecipeSerializer(RecipeSerializer<?> serializer) {
 		Objects.requireNonNull(serializer, "serializer can't be null!");
-		Objects.requireNonNull(serializer.packetCodec(), "PacketCodec can't be null!");
+		Objects.requireNonNull(serializer.streamCodec(), "PacketCodec can't be null!");
 
 		RecipeSyncImpl.addSynchronizedSerializer(serializer);
 	}

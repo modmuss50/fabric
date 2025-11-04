@@ -17,26 +17,24 @@
 package net.fabricmc.fabric.api.client.rendering.v1;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.tooltip.TooltipData;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 
 /**
- * Allows registering a mapping from {@link TooltipData} to {@link TooltipComponent}.
- * This allows custom tooltips for items: first, override {@link Item#getTooltipData} and return a custom {@code TooltipData}.
+ * Allows registering a mapping from {@link TooltipComponent} to {@link ClientTooltipComponent}.
+ * This allows custom tooltips for items: first, override {@link Item#getTooltipImage} and return a custom {@code TooltipData}.
  * Second, register a listener to this event and convert the data to your component implementation if it's an instance of your data class.
  *
  * <p>Note that failure to map some data to a component will throw an exception,
- * so make sure that any data you return in {@link Item#getTooltipData} will be handled by one of the callbacks.
+ * so make sure that any data you return in {@link Item#getTooltipImage} will be handled by one of the callbacks.
  */
 public interface TooltipComponentCallback {
 	Event<TooltipComponentCallback> EVENT = EventFactory.createArrayBacked(TooltipComponentCallback.class, listeners -> data -> {
 		for (TooltipComponentCallback listener : listeners) {
-			TooltipComponent component = listener.getComponent(data);
+			ClientTooltipComponent component = listener.getComponent(data);
 
 			if (component != null) {
 				return component;
@@ -50,5 +48,5 @@ public interface TooltipComponentCallback {
 	 * Return the tooltip component for the passed data, or null if none is available.
 	 */
 	@Nullable
-	TooltipComponent getComponent(TooltipData data);
+	ClientTooltipComponent getComponent(TooltipComponent data);
 }

@@ -16,14 +16,12 @@
 
 package net.fabricmc.fabric.api.client.gametest.v1;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import java.util.function.Function;
-
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
 
 /**
  * The client gametest input handler used to simulate inputs to the client.
@@ -37,11 +35,11 @@ public interface TestInput {
 	 * <p><strong>Most key bindings will only start reacting to this when a tick is waited.</strong>
 	 *
 	 * @param keyBinding The key binding to hold
-	 * @see #releaseKey(KeyBinding)
-	 * @see #pressKey(KeyBinding)
+	 * @see #releaseKey(KeyMapping)
+	 * @see #pressKey(KeyMapping)
 	 * @see #holdKey(Function)
 	 */
-	void holdKey(KeyBinding keyBinding);
+	void holdKey(KeyMapping keyBinding);
 
 	/**
 	 * Starts holding down a key binding. The key binding will be held until it is released. The key binding must be
@@ -52,9 +50,9 @@ public interface TestInput {
 	 * @param keyBindingGetter The function to get the key binding from the game options
 	 * @see #releaseKey(Function)
 	 * @see #pressKey(Function)
-	 * @see #holdKey(KeyBinding)
+	 * @see #holdKey(KeyMapping)
 	 */
-	void holdKey(Function<GameOptions, KeyBinding> keyBindingGetter);
+	void holdKey(Function<Options, KeyMapping> keyBindingGetter);
 
 	/**
 	 * Starts holding down a key or mouse button. The key will be held until it is released. Does nothing if the key or
@@ -63,10 +61,10 @@ public interface TestInput {
 	 * <p><strong>Most key bindings will only start reacting to this when a tick is waited.</strong>
 	 *
 	 * @param key The key or mouse button to hold
-	 * @see #releaseKey(InputUtil.Key)
-	 * @see #pressKey(InputUtil.Key)
+	 * @see #releaseKey(InputConstants.Key)
+	 * @see #pressKey(InputConstants.Key)
 	 */
-	void holdKey(InputUtil.Key key);
+	void holdKey(InputConstants.Key key);
 
 	/**
 	 * Starts holding down a key. The key will be held until it is released. Does nothing if the key is already being
@@ -94,7 +92,7 @@ public interface TestInput {
 
 	/**
 	 * Starts holding down left control, or left super on macOS. Suitable for triggering
-	 * {@link MinecraftClient#isCtrlPressed()}. The key will be held until it is released. Does nothing if the key is already
+	 * {@link Minecraft#hasControlDown()}. The key will be held until it is released. Does nothing if the key is already
 	 * being held.
 	 *
 	 * @see #releaseControl()
@@ -102,7 +100,7 @@ public interface TestInput {
 	void holdControl();
 
 	/**
-	 * Starts holding down left shift. Suitable for triggering {@link MinecraftClient#isShiftPressed()}. The key will be held until
+	 * Starts holding down left shift. Suitable for triggering {@link Minecraft#hasShiftDown()}. The key will be held until
 	 * it is released. Does nothing if the key is already being held.
 	 *
 	 * @see #releaseShift()
@@ -110,7 +108,7 @@ public interface TestInput {
 	void holdShift();
 
 	/**
-	 * Starts holding down left alt. Suitable for triggering {@link MinecraftClient#isAltPressed()}. The key will be held until it
+	 * Starts holding down left alt. Suitable for triggering {@link Minecraft#hasAltDown()}. The key will be held until it
 	 * is released. Does nothing if the key is already being held.
 	 *
 	 * @see #releaseAlt()
@@ -123,10 +121,10 @@ public interface TestInput {
 	 * <p><strong>Most key bindings will only react to this when a tick is waited.</strong>
 	 *
 	 * @param keyBinding The key binding to release
-	 * @see #holdKey(KeyBinding)
+	 * @see #holdKey(KeyMapping)
 	 * @see #releaseKey(Function)
 	 */
-	void releaseKey(KeyBinding keyBinding);
+	void releaseKey(KeyMapping keyBinding);
 
 	/**
 	 * Releases a key binding. The key binding must be bound. Does nothing if the key binding is not being held.
@@ -135,9 +133,9 @@ public interface TestInput {
 	 *
 	 * @param keyBindingGetter The function to get the key binding from the game options
 	 * @see #holdKey(Function)
-	 * @see #releaseKey(KeyBinding)
+	 * @see #releaseKey(KeyMapping)
 	 */
-	void releaseKey(Function<GameOptions, KeyBinding> keyBindingGetter);
+	void releaseKey(Function<Options, KeyMapping> keyBindingGetter);
 
 	/**
 	 * Releases a key or mouse button. Does nothing if the key or mouse button is not being held.
@@ -145,9 +143,9 @@ public interface TestInput {
 	 * <p><strong>Most key bindings will only react to this when a tick is waited.</strong>
 	 *
 	 * @param key The key or mouse button to release
-	 * @see #holdKey(InputUtil.Key)
+	 * @see #holdKey(InputConstants.Key)
 	 */
-	void releaseKey(InputUtil.Key key);
+	void releaseKey(InputConstants.Key key);
 
 	/**
 	 * Releases a key. Does nothing if the key is not being held.
@@ -170,7 +168,7 @@ public interface TestInput {
 	void releaseMouse(int button);
 
 	/**
-	 * Releases left control, or left super on macOS. Suitable for un-triggering {@link MinecraftClient#isCtrlPressed()}. Does
+	 * Releases left control, or left super on macOS. Suitable for un-triggering {@link Minecraft#hasControlDown()}. Does
 	 * nothing if the key is not being held.
 	 *
 	 * @see #holdControl()
@@ -178,7 +176,7 @@ public interface TestInput {
 	void releaseControl();
 
 	/**
-	 * Releases left shift. Suitable for un-triggering {@link MinecraftClient#isShiftPressed()}. Does nothing if the key is not
+	 * Releases left shift. Suitable for un-triggering {@link Minecraft#hasShiftDown()}. Does nothing if the key is not
 	 * being held.
 	 *
 	 * @see #holdShift()
@@ -186,7 +184,7 @@ public interface TestInput {
 	void releaseShift();
 
 	/**
-	 * Releases left alt. Suitable for un-triggering {@link MinecraftClient#isAltPressed()}. Does nothing if the key is not being
+	 * Releases left alt. Suitable for un-triggering {@link Minecraft#hasAltDown()}. Does nothing if the key is not being
 	 * held.
 	 *
 	 * @see #holdAlt()
@@ -197,13 +195,13 @@ public interface TestInput {
 	 * Presses and releases a key binding, then waits a tick. The key binding must be bound.
 	 *
 	 * <p>A tick is waited because most key bindings need a tick to happen to react to the press. If you don't want the
-	 * delay, use {@link #holdKeyFor(KeyBinding, int) holdKeyFor} with a tick count of {@code 0}.
+	 * delay, use {@link #holdKeyFor(KeyMapping, int) holdKeyFor} with a tick count of {@code 0}.
 	 *
 	 * @param keyBinding The key binding to press
-	 * @see #holdKey(KeyBinding)
+	 * @see #holdKey(KeyMapping)
 	 * @see #pressKey(Function)
 	 */
-	void pressKey(KeyBinding keyBinding);
+	void pressKey(KeyMapping keyBinding);
 
 	/**
 	 * Presses and releases a key binding, then waits a tick. The key binding must be bound.
@@ -213,20 +211,20 @@ public interface TestInput {
 	 *
 	 * @param keyBindingGetter The function to get the key binding from the game options
 	 * @see #holdKey(Function)
-	 * @see #pressKey(KeyBinding)
+	 * @see #pressKey(KeyMapping)
 	 */
-	void pressKey(Function<GameOptions, KeyBinding> keyBindingGetter);
+	void pressKey(Function<Options, KeyMapping> keyBindingGetter);
 
 	/**
 	 * Presses and releases a key or mouse button, then waits a tick.
 	 *
 	 * <p>A tick is waited because most key bindings need a tick to happen to react to the press. If you don't want the
-	 * delay, use {@link #holdKeyFor(InputUtil.Key, int) holdKeyFor} with a tick count of {@code 0}.
+	 * delay, use {@link #holdKeyFor(InputConstants.Key, int) holdKeyFor} with a tick count of {@code 0}.
 	 *
 	 * @param key The key or mouse button to press.
-	 * @see #holdKey(InputUtil.Key)
+	 * @see #holdKey(InputConstants.Key)
 	 */
-	void pressKey(InputUtil.Key key);
+	void pressKey(InputConstants.Key key);
 
 	/**
 	 * Presses and releases a key, then waits a tick.
@@ -262,10 +260,10 @@ public interface TestInput {
 	 *
 	 * @param keyBinding The key binding to hold
 	 * @param ticks The number of ticks to hold the key binding for
-	 * @see #holdKey(KeyBinding)
+	 * @see #holdKey(KeyMapping)
 	 * @see #holdKeyFor(Function, int)
 	 */
-	void holdKeyFor(KeyBinding keyBinding, int ticks);
+	void holdKeyFor(KeyMapping keyBinding, int ticks);
 
 	/**
 	 * Holds a key binding for the specified number of ticks and then releases it. Waits until this process is finished.
@@ -279,7 +277,7 @@ public interface TestInput {
 	 * @see #holdKey(Function)
 	 * @see #holdKeyFor(Function, int)
 	 */
-	void holdKeyFor(Function<GameOptions, KeyBinding> keyBindingGetter, int ticks);
+	void holdKeyFor(Function<Options, KeyMapping> keyBindingGetter, int ticks);
 
 	/**
 	 * Holds a key or mouse button for the specified number of ticks and then releases it. Waits until this process is
@@ -290,9 +288,9 @@ public interface TestInput {
 	 *
 	 * @param key The key or mouse button to hold
 	 * @param ticks The number of ticks to hold the key or mouse button for
-	 * @see #holdKey(InputUtil.Key)
+	 * @see #holdKey(InputConstants.Key)
 	 */
-	void holdKeyFor(InputUtil.Key key, int ticks);
+	void holdKeyFor(InputConstants.Key key, int ticks);
 
 	/**
 	 * Holds a key for the specified number of ticks and then releases it. Waits until this process is finished.
@@ -329,7 +327,7 @@ public interface TestInput {
 	 * @param codePoint The code point to type
 	 * @see #typeChars(String)
 	 * @see #pressKey(int)
-	 * @see #pressKey(KeyBinding)
+	 * @see #pressKey(KeyMapping)
 	 * @see #pressKey(Function)
 	 */
 	void typeChar(int codePoint);

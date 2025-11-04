@@ -16,16 +16,15 @@
 
 package net.fabricmc.fabric.test.lookup.api;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 
 public final class ItemApis {
 	public static final BlockApiLookup<ItemInsertable, Direction> INSERTABLE =
-			BlockApiLookup.get(Identifier.of("testmod", "item_insertable"), ItemInsertable.class, Direction.class);
+			BlockApiLookup.get(Identifier.fromNamespaceAndPath("testmod", "item_insertable"), ItemInsertable.class, Direction.class);
 	public static final BlockApiLookup<ItemExtractable, Direction> EXTRACTABLE =
-			BlockApiLookup.get(Identifier.of("testmod", "item_extractable"), ItemExtractable.class, Direction.class);
+			BlockApiLookup.get(Identifier.fromNamespaceAndPath("testmod", "item_extractable"), ItemExtractable.class, Direction.class);
 
 	private ItemApis() {
 	}

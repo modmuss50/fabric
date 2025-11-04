@@ -19,42 +19,40 @@ package net.fabricmc.fabric.mixin.attachment;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkStatus;
-
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.impl.attachment.AttachmentEntrypoint;
 import net.fabricmc.fabric.impl.attachment.AttachmentTargetImpl;
 import net.fabricmc.fabric.impl.attachment.sync.AttachmentTargetInfo;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 
-@Mixin(Chunk.class)
+@Mixin(ChunkAccess.class)
 abstract class ChunkMixin implements AttachmentTargetImpl {
 	@Shadow
 	@Final
-	protected ChunkPos pos;
+	protected ChunkPos chunkPos;
 
 	@Shadow
-	public abstract ChunkStatus getStatus();
+	public abstract ChunkStatus getPersistedStatus();
 
 	@Shadow
 	public abstract ChunkPos getPos();
 
 	@Shadow
-	public abstract void markNeedsSaving();
+	public abstract void markUnsaved();
 
 	@Override
 	public AttachmentTargetInfo<?> fabric_getSyncTargetInfo() {
-		return new AttachmentTargetInfo.ChunkTarget(this.pos);
+		return new AttachmentTargetInfo.ChunkTarget(this.chunkPos);
 	}
 
 	@Override
 	public void fabric_markChanged(AttachmentType<?> type) {
-		markNeedsSaving();
+		markUnsaved();
 
-		if (type.isPersistent() && this.getStatus().equals(ChunkStatus.EMPTY)) {
+		if (type.isPersistent() && this.getPersistedStatus().equals(ChunkStatus.EMPTY)) {
 			AttachmentEntrypoint.LOGGER.warn(
 					"Attaching persistent attachment {} to chunk {} with chunk status EMPTY. Attachment might be discarded.",
 					type.identifier(),
@@ -70,7 +68,7 @@ abstract class ChunkMixin implements AttachmentTargetImpl {
 	}
 
 	@Override
-	public DynamicRegistryManager fabric_getDynamicRegistryManager() {
+	public RegistryAccess fabric_getDynamicRegistryManager() {
 		// Should never happen as this is only used for sync
 		throw new UnsupportedOperationException("Chunk does not have a DynamicRegistryManager.");
 	}

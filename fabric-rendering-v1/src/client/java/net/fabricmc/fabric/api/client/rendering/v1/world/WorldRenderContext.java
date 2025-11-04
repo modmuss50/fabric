@@ -16,17 +16,16 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1.world;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.util.math.MatrixStack;
 
 @ApiStatus.NonExtendable
 public interface WorldRenderContext extends WorldTerrainRenderContext {
-	OrderedRenderCommandQueue commandQueue();
+	SubmitNodeCollector commandQueue();
 
-	MatrixStack matrices();
+	PoseStack matrices();
 
 	/**
 	 * The {@code VertexConsumerProvider} instance being used by the world renderer for most non-terrain renders.
@@ -40,5 +39,5 @@ public interface WorldRenderContext extends WorldTerrainRenderContext {
 	 * <p>Renders that cannot draw in one of the supported events must be drawn directly to the frame buffer,
 	 * preferably in {@link WorldRenderEvents#END_MAIN} to avoid being overdrawn or cleared.
 	 */
-	VertexConsumerProvider consumers();
+	MultiBufferSource consumers();
 }

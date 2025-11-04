@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.test.particle.client;
 
-import net.minecraft.registry.tag.FluidTags;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;

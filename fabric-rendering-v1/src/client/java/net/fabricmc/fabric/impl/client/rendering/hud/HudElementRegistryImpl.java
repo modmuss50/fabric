@@ -26,13 +26,11 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.VisibleForTesting;
-
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
 
 public class HudElementRegistryImpl {
 	@VisibleForTesting
@@ -210,7 +208,7 @@ public class HudElementRegistryImpl {
 			layers().add(HudLayer.ofVanilla(id));
 		}
 
-		public void render(DrawContext context, RenderTickCounter tickCounter, HudElement vanillaElement) {
+		public void render(GuiGraphics context, DeltaTracker tickCounter, HudElement vanillaElement) {
 			for (HudLayer layer : layers) {
 				if (!layer.isRemoved()) {
 					layer.element(vanillaElement).render(context, tickCounter);

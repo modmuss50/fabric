@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.api.client.rendering.v1.world;
 
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.client.render.SectionRenderState;
 
 @ApiStatus.NonExtendable
 public interface WorldTerrainRenderContext extends AbstractWorldRenderContext {
@@ -28,5 +27,5 @@ public interface WorldTerrainRenderContext extends AbstractWorldRenderContext {
 	 * <p>Render states contain information about the current frame used for rendering,
 	 * and should be used instead of accessing the world or other objects directly from rendering events.
 	 */
-	SectionRenderState sectionState();
+	ChunkSectionsToRender sectionState();
 }

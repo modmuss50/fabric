@@ -17,28 +17,25 @@
 package net.fabricmc.fabric.test.client.keybinding;
 
 import org.lwjgl.glfw.GLFW;
-
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.StickyKeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.ToggleKeyMapping;
+import net.minecraft.resources.Identifier;
 
 public class KeyBindingsTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		// Register 2 before 1, but in-game 1 should appear before 2 due to sorting. Both should appear after all vanilla categories.
-		KeyBinding.Category category2 = KeyBinding.Category.create(Identifier.of("fabric-key-binding-api-v1-testmod", "test_category_2"));
-		KeyBinding.Category category1 = KeyBinding.Category.create(Identifier.of("fabric-key-binding-api-v1-testmod", "test_category_1"));
+		KeyMapping.Category category2 = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("fabric-key-binding-api-v1-testmod", "test_category_2"));
+		KeyMapping.Category category1 = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("fabric-key-binding-api-v1-testmod", "test_category_1"));
 
-		KeyBinding binding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_1", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, category1));
-		KeyBinding binding2 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_2", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, category1));
-		KeyBinding stickyBinding = KeyBindingHelper.registerKeyBinding(new StickyKeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_sticky", GLFW.GLFW_KEY_R, category2, () -> true, false));
-		KeyBinding duplicateBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_duplicate", GLFW.GLFW_KEY_RIGHT_SHIFT, category2));
+		KeyMapping binding1 = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.fabric-key-binding-api-v1-testmod.test_keybinding_1", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_P, category1));
+		KeyMapping binding2 = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.fabric-key-binding-api-v1-testmod.test_keybinding_2", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_U, category1));
+		KeyMapping stickyBinding = KeyBindingHelper.registerKeyBinding(new ToggleKeyMapping("key.fabric-key-binding-api-v1-testmod.test_keybinding_sticky", GLFW.GLFW_KEY_R, category2, () -> true, false));
+		KeyMapping duplicateBinding = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.fabric-key-binding-api-v1-testmod.test_keybinding_duplicate", GLFW.GLFW_KEY_RIGHT_SHIFT, category2));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.player == null) return;

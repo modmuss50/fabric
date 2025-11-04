@@ -29,21 +29,19 @@ import com.mojang.serialization.JavaOps;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Nullables;
-import net.minecraft.world.rule.GameRule;
-import net.minecraft.world.rule.GameRuleCategory;
-import net.minecraft.world.rule.GameRuleType;
-import net.minecraft.world.rule.GameRuleVisitor;
-import net.minecraft.world.rule.GameRules;
-
 import net.fabricmc.fabric.impl.gamerule.RuleCategoryExtensions;
 import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
 import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
+import net.minecraft.Optionull;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.world.level.gamerules.GameRuleCategory;
+import net.minecraft.world.level.gamerules.GameRuleType;
+import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
+import net.minecraft.world.level.gamerules.GameRules;
 
 /**
  * A utility class containing classes and methods for building {@link GameRule}s.
@@ -73,10 +71,10 @@ public class GameRuleBuilder<T> {
 	@Nullable
 	protected ArgumentType<T> argumentType;
 
-	protected GameRules.Acceptor<T> acceptor;
+	protected GameRules.VisitorCaller<T> acceptor;
 	protected Codec<T> codec;
 	protected ToIntFunction<T> commandResultSupplier;
-	protected FeatureSet requiredFeatures = FeatureSet.empty();
+	protected FeatureFlagSet requiredFeatures = FeatureFlagSet.of();
 
 	protected GameRuleBuilder(T defaultValue) {
 		this.defaultValue = defaultValue;
@@ -129,7 +127,7 @@ public class GameRuleBuilder<T> {
 		return this;
 	}
 
-	public GameRuleBuilder<T> requiredFeatures(FeatureSet requiredFeatures) {
+	public GameRuleBuilder<T> requiredFeatures(FeatureFlagSet requiredFeatures) {
 		this.requiredFeatures = requiredFeatures;
 		return this;
 	}
@@ -170,17 +168,17 @@ public class GameRuleBuilder<T> {
 	 */
 	public GameRule<T> buildAndRegister(Identifier id) {
 		GameRule<T> rule = this.build();
-		return Registry.register(Registries.GAME_RULE, id, rule);
+		return Registry.register(BuiltInRegistries.GAME_RULE, id, rule);
 	}
 
 	// RULE VISITORS
-	private static void visitDouble(GameRuleVisitor visitor, GameRule<Double> rule) {
+	private static void visitDouble(GameRuleTypeVisitor visitor, GameRule<Double> rule) {
 		if (visitor instanceof FabricGameRuleVisitor) {
 			((FabricGameRuleVisitor) visitor).visitDouble(rule);
 		}
 	}
 
-	private static <E extends Enum<E>> void visitEnum(GameRuleVisitor visitor, GameRule<E> rule) {
+	private static <E extends Enum<E>> void visitEnum(GameRuleTypeVisitor visitor, GameRule<E> rule) {
 		if (visitor instanceof FabricGameRuleVisitor) {
 			((FabricGameRuleVisitor) visitor).visitEnum(rule);
 		}
@@ -190,7 +188,7 @@ public class GameRuleBuilder<T> {
 		BooleanRuleBuilder(boolean defaultValue) {
 			super(defaultValue);
 			this.type = GameRuleType.BOOL;
-			this.acceptor = GameRuleVisitor::visitBoolean;
+			this.acceptor = GameRuleTypeVisitor::visitBoolean;
 			this.argumentType = BoolArgumentType.bool();
 			this.codec = Codec.BOOL;
 			this.commandResultSupplier = bool -> bool ? 1 : 0;
@@ -225,7 +223,7 @@ public class GameRuleBuilder<T> {
 			return this;
 		}
 
-		public BooleanRuleBuilder requiredFeatures(FeatureSet requiredFeatures) {
+		public BooleanRuleBuilder requiredFeatures(FeatureFlagSet requiredFeatures) {
 			super.requiredFeatures(requiredFeatures);
 			return this;
 		}
@@ -244,7 +242,7 @@ public class GameRuleBuilder<T> {
 		IntegerRuleBuilder(int defaultValue) {
 			super(defaultValue);
 			this.type = GameRuleType.INT;
-			this.acceptor = GameRuleVisitor::visitInt;
+			this.acceptor = GameRuleTypeVisitor::visitInteger;
 			this.argumentType = IntegerArgumentType.integer();
 			this.codec = Codec.INT;
 			this.commandResultSupplier = integer -> integer;
@@ -281,7 +279,7 @@ public class GameRuleBuilder<T> {
 		}
 
 		@Override
-		public IntegerRuleBuilder requiredFeatures(FeatureSet requiredFeatures) {
+		public IntegerRuleBuilder requiredFeatures(FeatureFlagSet requiredFeatures) {
 			super.requiredFeatures(requiredFeatures);
 			return this;
 		}
@@ -342,7 +340,7 @@ public class GameRuleBuilder<T> {
 		}
 
 		@Override
-		public DoubleRuleBuilder requiredFeatures(FeatureSet requiredFeatures) {
+		public DoubleRuleBuilder requiredFeatures(FeatureFlagSet requiredFeatures) {
 			super.requiredFeatures(requiredFeatures);
 			return this;
 		}
@@ -410,14 +408,14 @@ public class GameRuleBuilder<T> {
 		}
 
 		@Override
-		public EnumRuleBuilder<E> requiredFeatures(FeatureSet requiredFeatures) {
+		public EnumRuleBuilder<E> requiredFeatures(FeatureFlagSet requiredFeatures) {
 			super.requiredFeatures(requiredFeatures);
 			return this;
 		}
 
 		@SafeVarargs
 		public final EnumRuleBuilder<E> supportedValues(E... supportedValues) {
-			if (Nullables.isEmpty(supportedValues)) throw new IllegalArgumentException("No values are supported!");
+			if (Optionull.isNullOrEmpty(supportedValues)) throw new IllegalArgumentException("No values are supported!");
 
 			if (!ArrayUtils.contains(supportedValues, this.defaultValue)) throw new IllegalArgumentException("Supported enum value must include the default " + this.defaultValue);
 

@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 public final class ClientTickEvents {
 	private ClientTickEvents() {
@@ -66,21 +65,21 @@ public final class ClientTickEvents {
 
 	@FunctionalInterface
 	public interface StartTick {
-		void onStartTick(MinecraftClient client);
+		void onStartTick(Minecraft client);
 	}
 
 	@FunctionalInterface
 	public interface EndTick {
-		void onEndTick(MinecraftClient client);
+		void onEndTick(Minecraft client);
 	}
 
 	@FunctionalInterface
 	public interface StartWorldTick {
-		void onStartTick(ClientWorld world);
+		void onStartTick(ClientLevel world);
 	}
 
 	@FunctionalInterface
 	public interface EndWorldTick {
-		void onEndTick(ClientWorld world);
+		void onEndTick(ClientLevel world);
 	}
 }

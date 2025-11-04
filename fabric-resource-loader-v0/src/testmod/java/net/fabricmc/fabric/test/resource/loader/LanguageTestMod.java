@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.test.resource.loader;
 
-import net.minecraft.text.Text;
-
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.minecraft.network.chat.Component;
 
 public class LanguageTestMod implements DedicatedServerModInitializer {
 	@Override
@@ -35,7 +34,7 @@ public class LanguageTestMod implements DedicatedServerModInitializer {
 	}
 
 	private static void testTranslationLoaded(String key, String expected) {
-		String actual = Text.translatable(key).getString();
+		String actual = Component.translatable(key).getString();
 
 		if (!expected.equals(actual)) {
 			throw new AssertionError("Expected " + key + " to translate to " + expected + ", but translated to " + actual);

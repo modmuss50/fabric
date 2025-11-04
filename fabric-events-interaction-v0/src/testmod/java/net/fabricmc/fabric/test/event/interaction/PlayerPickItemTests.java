@@ -16,12 +16,6 @@
 
 package net.fabricmc.fabric.test.event.interaction;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.mob.CreakingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerPickItemEvents;
 

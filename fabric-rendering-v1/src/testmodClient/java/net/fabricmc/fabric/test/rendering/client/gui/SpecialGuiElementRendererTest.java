@@ -20,19 +20,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import net.minecraft.block.WoodType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.ScreenRect;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.GuiRenderer;
-import net.minecraft.client.gui.render.SpecialGuiElementRenderer;
-import net.minecraft.client.gui.render.state.special.SignGuiElementRenderState;
-import net.minecraft.client.gui.render.state.special.SpecialGuiElementRenderState;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.render.state.pip.GuiSignRenderState;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.render.block.entity.SignBlockEntityRenderer;
-import net.minecraft.util.DyeColor;
-
+import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
@@ -75,9 +69,9 @@ public class SpecialGuiElementRendererTest implements ClientModInitializer, Fabr
 		});
 	}
 
-	private static SignGuiElementRenderState createSignState(int x, WoodType woodType) {
-		Model.SinglePartModel signModel = SignBlockEntityRenderer.createSignModel(MinecraftClient.getInstance().getLoadedEntityModels(), woodType, true);
-		return new SignGuiElementRenderState(signModel, woodType, x, 0, x + 20, 20, 10f, new ScreenRect(x, 0, x + 20, 20));
+	private static GuiSignRenderState createSignState(int x, WoodType woodType) {
+		Model.Simple signModel = SignRenderer.createSignModel(Minecraft.getInstance().getEntityModels(), woodType, true);
+		return new GuiSignRenderState(signModel, woodType, x, 0, x + 20, 20, 10f, new ScreenRectangle(x, 0, x + 20, 20));
 	}
 
 	@Override

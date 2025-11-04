@@ -27,18 +27,16 @@ import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-
-import net.minecraft.world.rule.GameRule;
-
 import net.fabricmc.fabric.api.gamerule.v1.CustomGameRuleCategory;
 import net.fabricmc.fabric.impl.gamerule.RuleCategoryExtensions;
 import net.fabricmc.fabric.impl.gamerule.RuleTypeExtensions;
 import net.fabricmc.fabric.impl.gamerule.rpc.FabricGameRuleType;
+import net.minecraft.world.level.gamerules.GameRule;
 
 @Mixin(GameRule.class)
 public abstract class GameRuleMixin<T> implements RuleCategoryExtensions, RuleTypeExtensions {
 	@Shadow
-	public abstract Class<T> getValueClass();
+	public abstract Class<T> valueClass();
 
 	@Unique
 	@Nullable
@@ -113,7 +111,7 @@ public abstract class GameRuleMixin<T> implements RuleCategoryExtensions, RuleTy
 		}
 
 		try {
-			Class<E> classType = (Class<E>) this.getValueClass();
+			Class<E> classType = (Class<E>) this.valueClass();
 			final E deserialized = Enum.valueOf(classType, value);
 
 			if (!this.enumSupportedValues.contains(deserialized)) {
@@ -122,7 +120,7 @@ public abstract class GameRuleMixin<T> implements RuleCategoryExtensions, RuleTy
 
 			return DataResult.success((T) deserialized);
 		} catch (IllegalArgumentException e) {
-			return DataResult.error(() -> "Failed to parse rule of value " + value + " for rule of type " + this.getValueClass());
+			return DataResult.error(() -> "Failed to parse rule of value " + value + " for rule of type " + this.valueClass());
 		}
 	}
 }

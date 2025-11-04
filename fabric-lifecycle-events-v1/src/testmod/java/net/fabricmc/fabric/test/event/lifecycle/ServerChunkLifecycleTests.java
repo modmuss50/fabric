@@ -23,19 +23,16 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.slf4j.Logger;
-
-import net.minecraft.server.world.ChunkLevelType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ChunkPos;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.FullChunkStatus;
 
 public final class ServerChunkLifecycleTests implements ModInitializer {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private record ChunkLevelTypeEvent(ChunkLevelType oldLevelType, ChunkLevelType newLevelType) { }
+	private record ChunkLevelTypeEvent(FullChunkStatus oldLevelType, FullChunkStatus newLevelType) { }
 
 	@Override
 	public void onInitialize() {
@@ -71,7 +68,7 @@ public final class ServerChunkLifecycleTests implements ModInitializer {
 	 * Moving into another chunk should trigger some logs.
 	 */
 	private static void setupChunkLevelTypeChangeTest() {
-		final Object2ObjectMap<Identifier, Object2IntMap<ChunkLevelType>> worldsChunkLevelEvents = new Object2ObjectOpenHashMap<>();
+		final Object2ObjectMap<Identifier, Object2IntMap<FullChunkStatus>> worldsChunkLevelEvents = new Object2ObjectOpenHashMap<>();
 		final Object2ObjectMap<Identifier, Long2ObjectOpenHashMap<ChunkLevelTypeEvent>> worldsChunkLevelTypeTracker = new Object2ObjectOpenHashMap<>();
 
 		ServerChunkEvents.CHUNK_LEVEL_TYPE_CHANGE.register((world, worldChunk, oldLevelType, newLevelType) -> {

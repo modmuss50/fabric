@@ -16,14 +16,13 @@
 
 package net.fabricmc.fabric.mixin.attachment;
 
+import net.minecraft.network.VarInt;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.network.encoding.VarInts;
-
-@Mixin(VarInts.class)
+@Mixin(VarInt.class)
 public interface VarIntsAccessor {
-	@Accessor("MAX_BYTES")
+	@Accessor("MAX_VARINT_SIZE")
 	static int getMaxByteSize() {
 		throw new UnsupportedOperationException("implemented via mixin");
 	}

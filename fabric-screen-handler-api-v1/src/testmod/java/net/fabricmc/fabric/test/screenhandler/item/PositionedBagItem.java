@@ -17,41 +17,35 @@
 package net.fabricmc.fabric.test.screenhandler.item;
 
 import java.util.Optional;
-
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.test.screenhandler.screen.PositionedBagScreenHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 
 public class PositionedBagItem extends BagItem {
-	public PositionedBagItem(Settings settings) {
+	public PositionedBagItem(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public ActionResult use(World world, PlayerEntity user, Hand hand) {
-		ItemStack stack = user.getStackInHand(hand);
-		user.openHandledScreen(createScreenHandlerFactory(stack, null));
-		return ActionResult.SUCCESS;
+	public InteractionResult use(Level world, Player user, InteractionHand hand) {
+		ItemStack stack = user.getItemInHand(hand);
+		user.openMenu(createScreenHandlerFactory(stack, null));
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
-		PlayerEntity user = context.getPlayer();
-		ItemStack stack = user.getStackInHand(context.getHand());
-		BlockPos pos = context.getBlockPos();
-		user.openHandledScreen(createScreenHandlerFactory(stack, pos));
-		return ActionResult.SUCCESS;
+	public InteractionResult useOn(UseOnContext context) {
+		Player user = context.getPlayer();
+		ItemStack stack = user.getItemInHand(context.getHand());
+		BlockPos pos = context.getClickedPos();
+		user.openMenu(createScreenHandlerFactory(stack, pos));
+		return InteractionResult.SUCCESS;
 	}
 
 	private ExtendedScreenHandlerFactory<PositionedBagScreenHandler.BagData> createScreenHandlerFactory(ItemStack stack, BlockPos pos) {

@@ -16,13 +16,12 @@
 
 package net.fabricmc.fabric.api.tag.convention.v2;
 
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.world.gen.structure.Structure;
-
 import net.fabricmc.fabric.impl.tag.convention.v2.TagRegistration;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 /**
- * See {@link net.minecraft.registry.tag.StructureTags} for vanilla tags.
+ * See {@link net.minecraft.tags.StructureTags} for vanilla tags.
  */
 public final class ConventionalStructureTags {
 	private ConventionalStructureTags() {

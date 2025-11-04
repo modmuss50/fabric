@@ -19,23 +19,6 @@ package net.fabricmc.fabric.test.model.loading;
 import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CropBlock;
-import net.minecraft.block.HorizontalConnectingBlock;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.render.model.MissingModel;
-import net.minecraft.client.render.model.SimpleBlockStateModel;
-import net.minecraft.client.render.model.json.ModelVariant;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
@@ -46,15 +29,26 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRe
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.model.SingleVariant;
+import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ModelTestModClient implements ClientModInitializer {
 	public static final String ID = "fabric-model-loading-api-v1-testmod";
 
 	public static final Identifier HALF_RED_SAND_MODEL_ID = id("half_red_sand");
 	public static final ExtraModelKey<BlockStateModel> HALF_RED_SAND_MODEL_KEY = ExtraModelKey.create(HALF_RED_SAND_MODEL_ID::toString);
-	public static final Identifier WHEAT_STAGE0_MODEL_ID = Identifier.ofVanilla("block/wheat_stage0");
-	public static final Identifier WHEAT_STAGE7_MODEL_ID = Identifier.ofVanilla("block/wheat_stage7");
-	public static final Identifier BROWN_GLAZED_TERRACOTTA_MODEL_ID = Identifier.ofVanilla("block/brown_glazed_terracotta");
+	public static final Identifier WHEAT_STAGE0_MODEL_ID = Identifier.withDefaultNamespace("block/wheat_stage0");
+	public static final Identifier WHEAT_STAGE7_MODEL_ID = Identifier.withDefaultNamespace("block/wheat_stage7");
+	public static final Identifier BROWN_GLAZED_TERRACOTTA_MODEL_ID = Identifier.withDefaultNamespace("block/brown_glazed_terracotta");
 
 	@Override
 	public void onInitializeClient() {
@@ -118,23 +112,23 @@ public class ModelTestModClient implements ClientModInitializer {
 			});
 		});
 
-		ResourceLoader resourceLoader = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
+		ResourceLoader resourceLoader = ResourceLoader.get(PackType.CLIENT_RESOURCES);
 		resourceLoader.registerReloader(SpecificModelReloadListener.ID, SpecificModelReloadListener.INSTANCE);
 		resourceLoader.addReloaderOrdering(ResourceReloaderKeys.Client.MODELS, SpecificModelReloadListener.ID);
 
 		LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
-			if (entityRenderer instanceof PlayerEntityRenderer playerRenderer) {
+			if (entityRenderer instanceof AvatarRenderer playerRenderer) {
 				registrationHelper.register(new BakedModelFeatureRenderer<>(playerRenderer, SpecificModelReloadListener.INSTANCE::getSpecificModel));
 			}
 		});
 	}
 
 	public static Identifier id(String path) {
-		return Identifier.of(ID, path);
+		return Identifier.fromNamespaceAndPath(ID, path);
 	}
 
-	private static BlockStateModel.UnbakedGrouped simpleUnbakedGroupedBlockStateModel(Identifier model) {
-		return new SimpleBlockStateModel.Unbaked(new ModelVariant(model)).cached();
+	private static BlockStateModel.UnbakedRoot simpleUnbakedGroupedBlockStateModel(Identifier model) {
+		return new SingleVariant.Unbaked(new Variant(model)).asRoot();
 	}
 
 	private static class DownQuadRemovingModel extends WrapperBlockStateModel {
@@ -143,7 +137,7 @@ public class ModelTestModClient implements ClientModInitializer {
 		}
 
 		@Override
-		public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
+		public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
 			emitter.pushTransform(q -> q.cullFace() != Direction.DOWN);
 			// Modify the cullTest as an example of how to achieve maximum performance
 			super.emitQuads(emitter, blockView, pos, state, random, cullFace -> {
@@ -158,7 +152,7 @@ public class ModelTestModClient implements ClientModInitializer {
 
 		@Override
 		@Nullable
-		public Object createGeometryKey(BlockRenderView blockView, BlockPos pos, BlockState state, Random random) {
+		public Object createGeometryKey(BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random) {
 			Object subkey = wrapped.createGeometryKey(blockView, pos, state, random);
 
 			if (subkey == null) {

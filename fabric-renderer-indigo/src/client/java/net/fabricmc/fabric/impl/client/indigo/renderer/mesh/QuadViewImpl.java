@@ -36,17 +36,14 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.item.ItemRenderState;
-import net.minecraft.util.math.Direction;
-
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.ShadeMode;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.NormalHelper;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.core.Direction;
 
 /**
  * Base class for all quads / quad makers. Handles the ugly bits
@@ -243,7 +240,7 @@ public class QuadViewImpl implements QuadView {
 
 	@Override
 	@Nullable
-	public BlockRenderLayer renderLayer() {
+	public ChunkSectionLayer renderLayer() {
 		return EncodingFormat.renderLayer(data[baseIndex + HEADER_BITS]);
 	}
 
@@ -263,7 +260,7 @@ public class QuadViewImpl implements QuadView {
 	}
 
 	@Override
-	public ItemRenderState.@Nullable Glint glint() {
+	public ItemStackRenderState.@Nullable FoilType glint() {
 		return EncodingFormat.glint(data[baseIndex + HEADER_BITS]);
 	}
 

@@ -17,12 +17,10 @@
 package net.fabricmc.fabric.impl.tag;
 
 import java.util.List;
-
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import com.mojang.serialization.Codec;
-
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.TagKey;
 
 /**
  * A wrapper record for tag alias groups.
@@ -38,8 +36,8 @@ public record TagAliasGroup<T>(List<TagKey<T>> tags) {
 	 * @param <T>         the entry type
 	 * @return the codec
 	 */
-	public static <T> Codec<TagAliasGroup<T>> codec(RegistryKey<? extends Registry<T>> registryKey) {
-		return TagKey.unprefixedCodec(registryKey)
+	public static <T> Codec<TagAliasGroup<T>> codec(ResourceKey<? extends Registry<T>> registryKey) {
+		return TagKey.codec(registryKey)
 				.listOf()
 				.fieldOf("tags")
 				.xmap(TagAliasGroup::new, TagAliasGroup::tags)

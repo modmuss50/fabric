@@ -21,8 +21,6 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
 
-import net.minecraft.registry.RegistryOps;
-
 /**
  * A resource condition. To create a custom condition type, implement this interface,
  * call {@link ResourceConditionType#create} and create the type, then register
@@ -59,5 +57,5 @@ public interface ResourceCondition {
 	 * @param registryInfo the registry lookup, or {@code null} in case registry is unavailable
 	 * @return whether the condition was successful
 	 */
-	boolean test(RegistryOps.@Nullable RegistryInfoGetter registryInfo);
+	boolean test(RegistryOps.@Nullable RegistryInfoLookup registryInfo);
 }

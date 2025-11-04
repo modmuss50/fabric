@@ -20,14 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.World;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -37,6 +29,10 @@ import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.test.networking.NetworkingTestmods;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class NetworkingCommonTest implements ModInitializer {
 	private boolean firstLoad = true;
@@ -96,12 +92,12 @@ public class NetworkingCommonTest implements ModInitializer {
 
 	// A payload registered on both sides, for play and configuration
 	// This tests that the server can send a packet to the client, and then receive a response from the client
-	public record CommonPayload(String data) implements CustomPayload {
-		public static final CustomPayload.Id<CommonPayload> ID = new Id<>(NetworkingTestmods.id("common_payload"));
-		public static final PacketCodec<PacketByteBuf, CommonPayload> CODEC = PacketCodecs.STRING.xmap(CommonPayload::new, CommonPayload::data).cast();
+	public record CommonPayload(String data) implements CustomPacketPayload {
+		public static final CustomPacketPayload.Type<CommonPayload> ID = new Type<>(NetworkingTestmods.id("common_payload"));
+		public static final StreamCodec<FriendlyByteBuf, CommonPayload> CODEC = ByteBufCodecs.STRING_UTF8.map(CommonPayload::new, CommonPayload::data).cast();
 
 		@Override
-		public Id<? extends CustomPayload> getId() {
+		public Type<? extends CustomPacketPayload> type() {
 			return ID;
 		}
 	}

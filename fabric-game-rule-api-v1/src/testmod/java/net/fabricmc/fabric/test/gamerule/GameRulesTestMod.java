@@ -25,26 +25,23 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.rule.GameRule;
-import net.minecraft.world.rule.GameRules;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.gamerule.v1.CustomGameRuleCategory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleBuilder;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.world.level.gamerules.GameRules;
 
 public class GameRulesTestMod implements ModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GameRulesTestMod.class);
 	public static final Direction[] CARDINAL_DIRECTIONS = Arrays.stream(Direction.values()).filter(direction -> direction != Direction.UP && direction != Direction.DOWN).toArray(Direction[]::new);
-	public static final CustomGameRuleCategory GREEN_CATEGORY = new CustomGameRuleCategory(Identifier.of("fabric", "green"), Text.literal("This One is Green").styled(style -> style.withBold(true).withColor(Formatting.DARK_GREEN)));
-	public static final CustomGameRuleCategory RED_CATEGORY = new CustomGameRuleCategory(Identifier.of("fabric", "red"), Text.literal("This One is Red").styled(style -> style.withBold(true).withColor(Formatting.DARK_RED)));
+	public static final CustomGameRuleCategory GREEN_CATEGORY = new CustomGameRuleCategory(Identifier.fromNamespaceAndPath("fabric", "green"), Component.literal("This One is Green").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_GREEN)));
+	public static final CustomGameRuleCategory RED_CATEGORY = new CustomGameRuleCategory(Identifier.fromNamespaceAndPath("fabric", "red"), Component.literal("This One is Red").withStyle(style -> style.withBold(true).withColor(ChatFormatting.DARK_RED)));
 
 	// Bounded, Integer, Double and Float rules
 	public static final GameRule<Integer> POSITIVE_ONLY_TEST_INT = GameRuleBuilder.forInteger(2)
@@ -62,7 +59,7 @@ public class GameRulesTestMod implements ModInitializer {
 	// Rules in custom categories
 	public static final GameRule<Boolean> RED_BOOLEAN = GameRuleBuilder.forBoolean(true)
 			.category(RED_CATEGORY)
-			.buildAndRegister(Identifier.of("fabric", "red_boolean"));
+			.buildAndRegister(Identifier.fromNamespaceAndPath("fabric", "red_boolean"));
 	public static final GameRule<Boolean> GREEN_BOOLEAN = GameRuleBuilder.forBoolean(false)
 			.category(GREEN_CATEGORY)
 			.buildAndRegister(id("green_boolean"));
@@ -75,7 +72,7 @@ public class GameRulesTestMod implements ModInitializer {
 	public static final AtomicBoolean FIRE_DAMAGE_CHANGED = new AtomicBoolean(false);
 
 	private static Identifier id(String name) {
-		return Identifier.ofVanilla(name); // TODO replace once MC-303846 is fixed
+		return Identifier.withDefaultNamespace(name); // TODO replace once MC-303846 is fixed
 	}
 
 	@Override

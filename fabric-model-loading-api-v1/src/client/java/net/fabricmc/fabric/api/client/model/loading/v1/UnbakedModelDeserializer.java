@@ -22,16 +22,14 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.client.render.model.UnbakedModel;
-import net.minecraft.client.render.model.json.JsonUnbakedModel;
-import net.minecraft.client.render.model.json.ModelElement;
-import net.minecraft.client.render.model.json.ModelElementFace;
-import net.minecraft.client.render.model.json.ModelTransformation;
-import net.minecraft.client.render.model.json.Transformation;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.client.model.loading.UnbakedModelDeserializerRegistry;
+import net.minecraft.client.renderer.block.model.BlockElement;
+import net.minecraft.client.renderer.block.model.BlockElementFace;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.block.model.ItemTransform;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.Identifier;
 
 /**
  * Allows creating custom unbaked models by overriding the parsing of JSON model files. <b>It is not necessary to
@@ -74,7 +72,7 @@ public interface UnbakedModelDeserializer {
 
 	/**
 	 * Deserializes an {@link UnbakedModel} from a {@link Reader}, respecting custom deserializers. Prefer using this
-	 * method to {@link JsonUnbakedModel#deserialize(Reader)}.
+	 * method to {@link BlockModel#fromStream(Reader)}.
 	 */
 	static UnbakedModel deserialize(Reader reader) throws JsonParseException {
 		return UnbakedModelDeserializerRegistry.deserialize(reader);
@@ -86,10 +84,10 @@ public interface UnbakedModelDeserializer {
 	 * <p>The provided deserialization context is able to deserialize objects of the following types:
 	 * <ul>
 	 *     <li>{@link UnbakedModel}</li>
-	 *     <li>{@link ModelElement}</li>
-	 *     <li>{@link ModelElementFace}</li>
-	 *     <li>{@link Transformation}</li>
-	 *     <li>{@link ModelTransformation}</li>
+	 *     <li>{@link BlockElement}</li>
+	 *     <li>{@link BlockElementFace}</li>
+	 *     <li>{@link ItemTransform}</li>
+	 *     <li>{@link ItemTransforms}</li>
 	 * </ul>
 	 *
 	 * <p>For example, to deserialize a nested {@link UnbakedModel}, use

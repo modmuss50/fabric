@@ -17,11 +17,9 @@
 package net.fabricmc.fabric.mixin.serialization;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.storage.ReadView;
-
 import net.fabricmc.fabric.api.serialization.v1.view.FabricReadView;
+import net.minecraft.world.level.storage.ValueInput;
 
-@Mixin(ReadView.class)
+@Mixin(ValueInput.class)
 public interface ReadViewMixin extends FabricReadView {
 }

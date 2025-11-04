@@ -16,9 +16,6 @@
 
 package net.fabricmc.fabric.test.networking.keybindreciever;
 
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;

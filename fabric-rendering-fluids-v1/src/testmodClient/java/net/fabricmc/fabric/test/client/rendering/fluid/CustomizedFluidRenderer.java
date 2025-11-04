@@ -16,15 +16,14 @@
 
 package net.fabricmc.fabric.test.client.rendering.fluid;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockRenderView;
-
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 
 public class CustomizedFluidRenderer extends SimpleFluidRenderHandler {
 	public CustomizedFluidRenderer(Identifier overlayTexture) {
@@ -32,7 +31,7 @@ public class CustomizedFluidRenderer extends SimpleFluidRenderHandler {
 	}
 
 	@Override
-	public void renderFluid(BlockPos pos, BlockRenderView world, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState) {
+	public void renderFluid(BlockPos pos, BlockAndTintGetter world, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState) {
 		int light = getLight(world, pos);
 		float u1 = sprites[2].getFrameU(0);
 		float v1 = sprites[2].getFrameV(0);
@@ -69,12 +68,12 @@ public class CustomizedFluidRenderer extends SimpleFluidRenderHandler {
 	}
 
 	private void vertex(VertexConsumer vertexConsumer, float x, float y, float z, float red, float green, float blue, float u, float v, int light) {
-		vertexConsumer.vertex(x, y, z).color(red, green, blue, 1.0F).texture(u, v).light(light).normal(0.0F, 1.0F, 0.0F);
+		vertexConsumer.addVertex(x, y, z).setColor(red, green, blue, 1.0F).setUv(u, v).setLight(light).setNormal(0.0F, 1.0F, 0.0F);
 	}
 
-	private int getLight(BlockRenderView world, BlockPos pos) {
-		int i = WorldRenderer.getLightmapCoordinates(world, pos);
-		int j = WorldRenderer.getLightmapCoordinates(world, pos.up());
+	private int getLight(BlockAndTintGetter world, BlockPos pos) {
+		int i = LevelRenderer.getLightColor(world, pos);
+		int j = LevelRenderer.getLightColor(world, pos.above());
 		int k = i & 255;
 		int l = j & 255;
 		int m = i >> 16 & 255;

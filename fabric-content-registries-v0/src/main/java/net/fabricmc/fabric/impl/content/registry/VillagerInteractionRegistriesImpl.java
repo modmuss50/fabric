@@ -20,13 +20,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.item.Item;
-
 import net.fabricmc.fabric.impl.content.registry.util.ImmutableCollectionUtils;
 import net.fabricmc.fabric.mixin.content.registry.FarmerWorkTaskAccessor;
 import net.fabricmc.fabric.mixin.content.registry.VillagerEntityAccessor;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.item.Item;
 
 public final class VillagerInteractionRegistriesImpl {
 	private static final Set<Item> GATHERABLE_ITEMS = new HashSet<>();
@@ -43,6 +41,6 @@ public final class VillagerInteractionRegistriesImpl {
 	}
 
 	public static Map<Item, Integer> getFoodRegistry() {
-		return ImmutableCollectionUtils.getAsMutableMap(() -> VillagerEntity.ITEM_FOOD_VALUES, VillagerEntityAccessor::fabric_setItemFoodValues);
+		return ImmutableCollectionUtils.getAsMutableMap(() -> Villager.FOOD_POINTS, VillagerEntityAccessor::fabric_setItemFoodValues);
 	}
 }

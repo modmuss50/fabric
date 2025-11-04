@@ -18,36 +18,27 @@ package net.fabricmc.fabric.test.entity.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.EquippableComponent;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.equipment.EquipmentAssetKeys;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Unit;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
@@ -59,30 +50,30 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 public final class EntityEventTests implements ModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityEventTests.class);
-	public static final RegistryKey<Block> TEST_BED_KEY = RegistryKey.of(
-			RegistryKeys.BLOCK,
-			Identifier.of("fabric-entity-events-v1-testmod", "test_bed")
+	public static final ResourceKey<Block> TEST_BED_KEY = ResourceKey.create(
+			Registries.BLOCK,
+			Identifier.fromNamespaceAndPath("fabric-entity-events-v1-testmod", "test_bed")
 	);
-	public static final Block TEST_BED = new TestBedBlock(AbstractBlock.Settings.create().strength(1, 1).registryKey(TEST_BED_KEY));
-	public static final RegistryKey<Item> DIAMOND_ELYTRA_KEY = RegistryKey.of(RegistryKeys.ITEM, Identifier.of("fabric-entity-events-v1-testmod", "diamond_elytra"));
-	public static final Item DIAMOND_ELYTRA = new Item(new Item.Settings()
-												.component(DataComponentTypes.GLIDER, Unit.INSTANCE)
+	public static final Block TEST_BED = new TestBedBlock(BlockBehaviour.Properties.of().strength(1, 1).setId(TEST_BED_KEY));
+	public static final ResourceKey<Item> DIAMOND_ELYTRA_KEY = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("fabric-entity-events-v1-testmod", "diamond_elytra"));
+	public static final Item DIAMOND_ELYTRA = new Item(new Item.Properties()
+												.component(DataComponents.GLIDER, Unit.INSTANCE)
 												.component(
-														DataComponentTypes.EQUIPPABLE,
-														EquippableComponent.builder(EquipmentSlot.CHEST)
-																.equipSound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA)
-																.model(EquipmentAssetKeys.ELYTRA)
-																.damageOnHurt(false)
+														DataComponents.EQUIPPABLE,
+														Equippable.builder(EquipmentSlot.CHEST)
+																.setEquipSound(SoundEvents.ARMOR_EQUIP_ELYTRA)
+																.setAsset(EquipmentAssets.ELYTRA)
+																.setDamageOnHurt(false)
 																.build()
-												).registryKey(DIAMOND_ELYTRA_KEY));
+												).setId(DIAMOND_ELYTRA_KEY));
 
-	private static final PlayerEntity.SleepFailureReason SLEEP_FAILURE_REASON = new PlayerEntity.SleepFailureReason(Text.literal("Cannot sleep while holding blue wool!"));
+	private static final Player.BedSleepingProblem SLEEP_FAILURE_REASON = new Player.BedSleepingProblem(Component.literal("Cannot sleep while holding blue wool!"));
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registries.BLOCK, TEST_BED_KEY, TEST_BED);
-		Registry.register(Registries.ITEM, TEST_BED_KEY.getValue(), new BlockItem(TEST_BED, new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, TEST_BED_KEY.getValue()))));
-		Registry.register(Registries.ITEM, DIAMOND_ELYTRA_KEY, DIAMOND_ELYTRA);
+		Registry.register(BuiltInRegistries.BLOCK, TEST_BED_KEY, TEST_BED);
+		Registry.register(BuiltInRegistries.ITEM, TEST_BED_KEY.identifier(), new BlockItem(TEST_BED, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, TEST_BED_KEY.identifier()))));
+		Registry.register(BuiltInRegistries.ITEM, DIAMOND_ELYTRA_KEY, DIAMOND_ELYTRA);
 
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((world, entity, killed, damageSource) -> {
 			LOGGER.info("Entity {} Killed: {}, source {}", entity, killed, damageSource);
@@ -241,27 +232,27 @@ public final class EntityEventTests implements ModInitializer {
 		});
 	}
 
-	private static void addSleepWools(PlayerEntity player) {
-		PlayerInventory inventory = player.getInventory();
-		inventory.offerOrDrop(createNamedItem(Items.BLUE_WOOL, "Can't start sleeping"));
-		inventory.offerOrDrop(createNamedItem(Items.YELLOW_WOOL, "Sleep whenever"));
-		inventory.offerOrDrop(createNamedItem(Items.GREEN_WOOL, "Allow nearby monsters"));
-		inventory.offerOrDrop(createNamedItem(Items.RED_WOOL, "Detect nearby monsters"));
-		inventory.offerOrDrop(createNamedItem(Items.WHITE_WOOL, "Don't set spawn"));
-		inventory.offerOrDrop(createNamedItem(Items.BLACK_WOOL, "Don't reset time"));
-		inventory.offerOrDrop(createNamedItem(Items.ORANGE_WOOL, "Don't set occupied state"));
-		inventory.offerOrDrop(createNamedItem(Items.CYAN_WOOL, "Wake up high above"));
+	private static void addSleepWools(Player player) {
+		Inventory inventory = player.getInventory();
+		inventory.placeItemBackInInventory(createNamedItem(Items.BLUE_WOOL, "Can't start sleeping"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.YELLOW_WOOL, "Sleep whenever"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.GREEN_WOOL, "Allow nearby monsters"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.RED_WOOL, "Detect nearby monsters"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.WHITE_WOOL, "Don't set spawn"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.BLACK_WOOL, "Don't reset time"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.ORANGE_WOOL, "Don't set occupied state"));
+		inventory.placeItemBackInInventory(createNamedItem(Items.CYAN_WOOL, "Wake up high above"));
 	}
 
 	private static void assertOnServerThread(MinecraftServer server) {
-		if (!server.isOnThread()) {
+		if (!server.isSameThread()) {
 			throw new AssertionError("Expected the game to be on the server thread, but found " + Thread.currentThread());
 		}
 	}
 
 	private static ItemStack createNamedItem(Item item, String name) {
 		ItemStack stack = new ItemStack(item);
-		stack.set(DataComponentTypes.CUSTOM_NAME, Text.literal(name));
+		stack.set(DataComponents.CUSTOM_NAME, Component.literal(name));
 		return stack;
 	}
 }

@@ -26,12 +26,10 @@ import com.mojang.datafixers.types.templates.TypeTemplate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import net.minecraft.datafixer.schema.Schema2832;
-
 import net.fabricmc.fabric.impl.dimension.TaggedChoiceExtension;
+import net.minecraft.util.datafix.schemas.V2832;
 
-@Mixin(Schema2832.class)
+@Mixin(V2832.class)
 public class Schema2832Mixin {
 	/**
 	 * Make the DSL.taggedChoiceLazy to ignore mod custom generator types and not cause deserialization failure.

@@ -18,12 +18,10 @@ package net.fabricmc.fabric.api.client.rendering.v1.hud;
 
 import java.util.Objects;
 import java.util.function.Function;
-
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.client.rendering.hud.HudStatusBarHeightRegistryImpl;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * A registry for {@link StatusBarHeightProvider} instances, known as height providers. These providers define the
@@ -70,8 +68,8 @@ public final class HudStatusBarHeightRegistry {
 	 *
 	 * @param id             the {@link Identifier}; must be registered with a corresponding {@link HudElement} in
 	 *                       {@link HudElementRegistry}.
-	 * @param heightProvider a {@link StatusBarHeightProvider} that takes a {@link PlayerEntity} from
-	 *                       {@link InGameHud#getCameraPlayer()} and returns the height.
+	 * @param heightProvider a {@link StatusBarHeightProvider} that takes a {@link Player} from
+	 *                       {@link Gui#getCameraPlayer()} and returns the height.
 	 */
 	public static void addLeft(Identifier id, StatusBarHeightProvider heightProvider) {
 		Objects.requireNonNull(id, "id is null");
@@ -98,8 +96,8 @@ public final class HudStatusBarHeightRegistry {
 	 *
 	 * @param id             the {@link Identifier}; must be registered with a corresponding {@link HudElement} in
 	 *                       {@link HudElementRegistry}.
-	 * @param heightProvider a {@link StatusBarHeightProvider} that takes a {@link PlayerEntity} from
-	 *                       {@link InGameHud#getCameraPlayer()} and returns the height.
+	 * @param heightProvider a {@link StatusBarHeightProvider} that takes a {@link Player} from
+	 *                       {@link Gui#getCameraPlayer()} and returns the height.
 	 */
 	public static void addRight(Identifier id, StatusBarHeightProvider heightProvider) {
 		Objects.requireNonNull(id, "id is null");

@@ -18,15 +18,6 @@ package net.fabricmc.fabric.impl.networking.client;
 
 import java.util.List;
 import java.util.Objects;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientConfigurationNetworkHandler;
-import net.minecraft.network.NetworkPhase;
-import net.minecraft.network.packet.BrandCustomPayload;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.client.networking.v1.C2SConfigurationChannelEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
@@ -36,18 +27,25 @@ import net.fabricmc.fabric.impl.networking.ChannelInfoHolder;
 import net.fabricmc.fabric.impl.networking.RegistrationPayload;
 import net.fabricmc.fabric.mixin.networking.client.accessor.ClientCommonNetworkHandlerAccessor;
 import net.fabricmc.fabric.mixin.networking.client.accessor.ClientConfigurationNetworkHandlerAccessor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientConfigurationPacketListenerImpl;
+import net.minecraft.network.ConnectionProtocol;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.custom.BrandPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
 
-public final class ClientConfigurationNetworkAddon extends ClientCommonNetworkAddon<ClientConfigurationNetworking.ConfigurationPayloadHandler<?>, ClientConfigurationNetworkHandler> {
+public final class ClientConfigurationNetworkAddon extends ClientCommonNetworkAddon<ClientConfigurationNetworking.ConfigurationPayloadHandler<?>, ClientConfigurationPacketListenerImpl> {
 	private final ContextImpl context;
 	private boolean sentInitialRegisterPacket;
 	private boolean hasStarted;
 
-	public ClientConfigurationNetworkAddon(ClientConfigurationNetworkHandler handler, MinecraftClient client) {
+	public ClientConfigurationNetworkAddon(ClientConfigurationPacketListenerImpl handler, Minecraft client) {
 		super(ClientNetworkingImpl.CONFIGURATION, ((ClientCommonNetworkHandlerAccessor) handler).getConnection(), "ClientPlayNetworkAddon for " + ((ClientConfigurationNetworkHandlerAccessor) handler).getProfile().name(), handler, client);
 		this.context = new ContextImpl(client, handler, this);
 
 		// Must register pending channels via lateinit
-		this.registerPendingChannels((ChannelInfoHolder) this.connection, NetworkPhase.CONFIGURATION);
+		this.registerPendingChannels((ChannelInfoHolder) this.connection, ConnectionProtocol.CONFIGURATION);
 	}
 
 	@Override
@@ -74,10 +72,10 @@ public final class ClientConfigurationNetworkAddon extends ClientCommonNetworkAd
 	}
 
 	@Override
-	public boolean handle(CustomPayload payload) {
+	public boolean handle(CustomPacketPayload payload) {
 		boolean result = super.handle(payload);
 
-		if (payload instanceof BrandCustomPayload) {
+		if (payload instanceof BrandPayload) {
 			// If we have received this without first receiving the registration packet, its likely a vanilla server.
 			invokeStartEvent();
 		}
@@ -99,13 +97,13 @@ public final class ClientConfigurationNetworkAddon extends ClientCommonNetworkAd
 	}
 
 	@Override
-	protected void receive(ClientConfigurationNetworking.ConfigurationPayloadHandler<?> handler, CustomPayload payload) {
+	protected void receive(ClientConfigurationNetworking.ConfigurationPayloadHandler<?> handler, CustomPacketPayload payload) {
 		((ClientConfigurationNetworking.ConfigurationPayloadHandler) handler).receive(payload, this.context);
 	}
 
 	// impl details
 	@Override
-	public Packet<?> createPacket(CustomPayload packet) {
+	public Packet<?> createPacket(CustomPacketPayload packet) {
 		return ClientPlayNetworking.createC2SPacket(packet);
 	}
 
@@ -134,7 +132,7 @@ public final class ClientConfigurationNetworkAddon extends ClientCommonNetworkAd
 		return (ChannelInfoHolder) ((ClientCommonNetworkHandlerAccessor) handler).getConnection();
 	}
 
-	private record ContextImpl(MinecraftClient client, ClientConfigurationNetworkHandler networkHandler, PacketSender responseSender) implements ClientConfigurationNetworking.Context {
+	private record ContextImpl(Minecraft client, ClientConfigurationPacketListenerImpl networkHandler, PacketSender responseSender) implements ClientConfigurationNetworking.Context {
 		private ContextImpl {
 			Objects.requireNonNull(client, "client");
 			Objects.requireNonNull(networkHandler, "networkHandler");

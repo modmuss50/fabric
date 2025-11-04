@@ -30,15 +30,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.SimpleRegistry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.thread.ThreadExecutor;
-
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.Bootstrap;
+import net.minecraft.util.thread.BlockableEventLoop;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.event.registry.RegistryAttributeHolder;
@@ -49,18 +47,18 @@ import net.fabricmc.fabric.impl.registry.sync.RemappableRegistry;
 import net.fabricmc.fabric.impl.registry.sync.packet.RegistrySyncPayload;
 
 public class RegistryRemapTest {
-	private RegistryKey<Registry<String>> testRegistryKey;
-	private SimpleRegistry<String> testRegistry;
+	private ResourceKey<Registry<String>> testRegistryKey;
+	private MappedRegistry<String> testRegistry;
 
 	@BeforeAll
 	static void beforeAll() {
-		SharedConstants.createGameVersion();
-		Bootstrap.initialize();
+		SharedConstants.tryDetectVersion();
+		Bootstrap.bootStrap();
 	}
 
 	@BeforeEach
 	void beforeEach() {
-		testRegistryKey = RegistryKey.ofRegistry(id(UUID.randomUUID().toString()));
+		testRegistryKey = ResourceKey.createRegistryKey(id(UUID.randomUUID().toString()));
 		testRegistry = FabricRegistryBuilder.createSimple(testRegistryKey)
 				.attribute(RegistryAttribute.SYNCED)
 				.buildAndRegister();
@@ -81,9 +79,9 @@ public class RegistryRemapTest {
 	void remapRegistry() throws RemapException {
 		RemappableRegistry remappableRegistry = (RemappableRegistry) testRegistry;
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 
 		Map<Identifier, Integer> idMap = Map.of(
 				id("zero"), 2,
@@ -92,24 +90,24 @@ public class RegistryRemapTest {
 		);
 		remappableRegistry.remap(asFastMap(idMap), RemappableRegistry.RemapMode.AUTHORITATIVE);
 
-		assertEquals(2, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(0, testRegistry.getRawId("two"));
+		assertEquals(2, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(0, testRegistry.getId("two"));
 
 		remappableRegistry.unmap();
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 	}
 
 	@Test
 	void remapRegistryViaPacket() throws RemapException {
 		RemappableRegistry remappableRegistry = (RemappableRegistry) testRegistry;
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 
 		Map<Identifier, Integer> idMap = Map.of(
 				id("two"), 0,
@@ -117,19 +115,19 @@ public class RegistryRemapTest {
 				id("zero"), 2
 		);
 
-		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.getValue(), asFastMap(idMap)));
+		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.identifier(), asFastMap(idMap)));
 
 		ClientRegistrySyncHandler.apply(payload);
 
-		assertEquals(2, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(0, testRegistry.getRawId("two"));
+		assertEquals(2, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(0, testRegistry.getId("two"));
 
 		remappableRegistry.unmap();
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 	}
 
 	@Test
@@ -141,7 +139,7 @@ public class RegistryRemapTest {
 				id("unknown"), 3
 		);
 
-		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.getValue(), asFastMap(idMap)));
+		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.identifier(), asFastMap(idMap)));
 
 		RemapException remapException = assertThrows(RemapException.class, () -> ClientRegistrySyncHandler.apply(payload));
 		assertTrue(remapException.getMessage().contains("unknown-remote"));
@@ -172,7 +170,7 @@ public class RegistryRemapTest {
 		RegistryAttributeImpl holder = (RegistryAttributeImpl) RegistryAttributeHolder.get(testRegistryKey);
 		holder.addAttribute(RegistryAttribute.OPTIONAL);
 
-		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.getValue(), asFastMap(idMap)));
+		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.identifier(), asFastMap(idMap)));
 
 		// Packet should be handled without issue.
 		ClientRegistrySyncHandler.apply(payload);
@@ -184,42 +182,42 @@ public class RegistryRemapTest {
 	void missingRemoteEntries() throws RemapException {
 		RemappableRegistry remappableRegistry = (RemappableRegistry) testRegistry;
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 
 		Map<Identifier, Integer> idMap = Map.of(
 				id("two"), 0,
 				id("zero"), 1
 		);
 
-		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.getValue(), asFastMap(idMap)));
+		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.identifier(), asFastMap(idMap)));
 
 		ClientRegistrySyncHandler.apply(payload);
 
-		assertEquals(0, testRegistry.getRawId("two"));
-		assertEquals(1, testRegistry.getRawId("zero"));
+		assertEquals(0, testRegistry.getId("two"));
+		assertEquals(1, testRegistry.getId("zero"));
 		// assigned an ID at the end of the registry
-		assertEquals(2, testRegistry.getRawId("one"));
+		assertEquals(2, testRegistry.getId("one"));
 
 		remappableRegistry.unmap();
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 	}
 
 	@Test
 	void remapRegistryFromPacketData() throws RemapException {
 		RemappableRegistry remappableRegistry = (RemappableRegistry) testRegistry;
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 
 		ClientRegistrySyncHandler.apply(new RegistrySyncPayload(
 				Map.of(
-					testRegistryKey.getValue(), asFastMap(Map.of(
+					testRegistryKey.identifier(), asFastMap(Map.of(
 						id("zero"), 2,
 						id("one"), 1,
 						id("two"), 0
@@ -228,50 +226,50 @@ public class RegistryRemapTest {
 				Map.of()
 		));
 
-		assertEquals(2, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(0, testRegistry.getRawId("two"));
+		assertEquals(2, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(0, testRegistry.getId("two"));
 
 		remappableRegistry.unmap();
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 	}
 
 	@Test
 	void remapRegistryFromPacketDataIgnoreOptional() throws RemapException {
 		RemappableRegistry remappableRegistry = (RemappableRegistry) testRegistry;
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 
 		ClientRegistrySyncHandler.apply(new RegistrySyncPayload(
 				Map.of(
-					testRegistryKey.getValue(), asFastMap(Map.of(
+					testRegistryKey.identifier(), asFastMap(Map.of(
 							id("zero"), 2,
 							id("one"), 1,
 							id("two"), 0
 					)),
-					Identifier.of("test", "optional"), asFastMap(Map.of(
+					Identifier.fromNamespaceAndPath("test", "optional"), asFastMap(Map.of(
 						id("test"), 0
 					))
 				),
 				Map.of(
-						Identifier.of("test", "optional"), EnumSet.of(RegistryAttribute.OPTIONAL)
+						Identifier.fromNamespaceAndPath("test", "optional"), EnumSet.of(RegistryAttribute.OPTIONAL)
 				)
 		));
 
-		assertEquals(2, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(0, testRegistry.getRawId("two"));
+		assertEquals(2, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(0, testRegistry.getId("two"));
 
 		remappableRegistry.unmap();
 
-		assertEquals(0, testRegistry.getRawId("zero"));
-		assertEquals(1, testRegistry.getRawId("one"));
-		assertEquals(2, testRegistry.getRawId("two"));
+		assertEquals(0, testRegistry.getId("zero"));
+		assertEquals(1, testRegistry.getId("one"));
+		assertEquals(2, testRegistry.getId("two"));
 	}
 
 	private static Object2IntMap<Identifier> asFastMap(Map<Identifier, Integer> map) {
@@ -281,11 +279,11 @@ public class RegistryRemapTest {
 	}
 
 	private static Identifier id(String path) {
-		return Identifier.of("registry_sync_test", path);
+		return Identifier.fromNamespaceAndPath("registry_sync_test", path);
 	}
 
 	// Run the task on the current thread instantly
-	private static class ThisThreadExecutor extends ThreadExecutor<Runnable> {
+	private static class ThisThreadExecutor extends BlockableEventLoop<Runnable> {
 		public static final ThisThreadExecutor INSTANCE = new ThisThreadExecutor();
 
 		private ThisThreadExecutor() {
@@ -293,17 +291,17 @@ public class RegistryRemapTest {
 		}
 
 		@Override
-		protected boolean canExecute(Runnable task) {
+		protected boolean shouldRun(Runnable task) {
 			return true;
 		}
 
 		@Override
-		protected Thread getThread() {
+		protected Thread getRunningThread() {
 			return Thread.currentThread();
 		}
 
 		@Override
-		public Runnable createTask(Runnable runnable) {
+		public Runnable wrapRunnable(Runnable runnable) {
 			return runnable;
 		}
 	}

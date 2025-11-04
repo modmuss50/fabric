@@ -17,23 +17,12 @@
 package net.fabricmc.fabric.test.transfer.ingame.client;
 
 import java.util.List;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.tooltip.HoveredTooltipPositioner;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
+import net.minecraft.resources.Identifier;
 
 /**
  * Renders the water sprite in the top left of the screen, to make sure that it correctly depends on the position.
@@ -43,7 +32,7 @@ public class FluidVariantRenderTest implements ClientModInitializer {
 	public void onInitializeClient() {
 		FluidVariantAttributes.enableColoredVanillaFluidNames();
 
-		HudElementRegistry.addLast(Identifier.of("fabric-transfer-api-v1-testmod", "fluid_variant"), (drawContext, tickDelta) -> {
+		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath("fabric-transfer-api-v1-testmod", "fluid_variant"), (drawContext, tickDelta) -> {
 			PlayerEntity player = MinecraftClient.getInstance().player;
 			if (player == null) return;
 

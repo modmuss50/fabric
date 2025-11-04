@@ -21,10 +21,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.biome.modification.BiomeModificationImpl;
+import net.minecraft.resources.Identifier;
 
 /**
  * Provides methods for modifying biomes. To create an instance, call

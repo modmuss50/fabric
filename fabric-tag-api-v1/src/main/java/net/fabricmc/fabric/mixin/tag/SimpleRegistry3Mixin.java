@@ -22,10 +22,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.registry.SimpleRegistry;
-
 import net.fabricmc.fabric.impl.tag.SimpleRegistryExtension;
+import net.minecraft.core.MappedRegistry;
 
 /**
  * This is a mixin to the Registry.PendingTagLoad implementation in SimpleRegistry.
@@ -34,13 +32,13 @@ import net.fabricmc.fabric.impl.tag.SimpleRegistryExtension;
  * (Tags run on their own data loading system separate from resource reloaders, so we need to inject them
  * once the tag and resource reloads are done, which is here.)
  */
-@Mixin(targets = "net.minecraft.registry.SimpleRegistry$3")
+@Mixin(targets = "net.minecraft.core.MappedRegistry$3")
 abstract class SimpleRegistry3Mixin {
 	@Shadow
 	@Final
-	SimpleRegistry<?> field_53689;
+	MappedRegistry<?> field_53689;
 
-	@Inject(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/registry/SimpleRegistry;refreshTags()V"))
+	@Inject(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/MappedRegistry;refreshTagsInHolders()V"))
 	private void applyTagAliases(CallbackInfo info) {
 		((SimpleRegistryExtension) field_53689).fabric_applyPendingTagAliases();
 	}

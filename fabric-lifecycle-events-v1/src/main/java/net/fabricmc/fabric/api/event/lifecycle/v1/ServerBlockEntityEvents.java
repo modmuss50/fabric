@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.event.lifecycle.v1;
 
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.server.world.ServerWorld;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public final class ServerBlockEntityEvents {
 	private ServerBlockEntityEvents() {
@@ -51,11 +50,11 @@ public final class ServerBlockEntityEvents {
 
 	@FunctionalInterface
 	public interface Load {
-		void onLoad(BlockEntity blockEntity, ServerWorld world);
+		void onLoad(BlockEntity blockEntity, ServerLevel world);
 	}
 
 	@FunctionalInterface
 	public interface Unload {
-		void onUnload(BlockEntity blockEntity, ServerWorld world);
+		void onUnload(BlockEntity blockEntity, ServerLevel world);
 	}
 }

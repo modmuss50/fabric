@@ -25,14 +25,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 abstract class MinecraftClientMixin {
 	@Unique
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-screen-api-v1");
@@ -40,10 +38,10 @@ abstract class MinecraftClientMixin {
 	private static final boolean DEBUG_SCREEN = FabricLoader.getInstance().isDevelopmentEnvironment() || Boolean.getBoolean("fabric.debugScreen");
 
 	@Shadow
-	public Screen currentScreen;
+	public Screen screen;
 
 	@Shadow
-	private Thread thread;
+	private Thread gameThread;
 	@Unique
 	private Screen tickingScreen;
 
@@ -51,31 +49,31 @@ abstract class MinecraftClientMixin {
 	private void checkThreadOnDev(@Nullable Screen screen, CallbackInfo ci) {
 		Thread currentThread = Thread.currentThread();
 
-		if (DEBUG_SCREEN && currentThread != this.thread) {
+		if (DEBUG_SCREEN && currentThread != this.gameThread) {
 			LOGGER.error("Attempted to set screen to \"{}\" outside the render thread (\"{}\"). This will likely follow a crash! Make sure to call setScreen on the render thread.", screen, currentThread.getName());
 		}
 	}
 
-	@Inject(method = "setScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;removed()V", shift = At.Shift.AFTER))
+	@Inject(method = "setScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;removed()V", shift = At.Shift.AFTER))
 	private void onScreenRemove(@Nullable Screen screen, CallbackInfo ci) {
-		ScreenEvents.remove(this.currentScreen).invoker().onRemove(this.currentScreen);
+		ScreenEvents.remove(this.screen).invoker().onRemove(this.screen);
 	}
 
-	@Inject(method = "stop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;removed()V", shift = At.Shift.AFTER))
+	@Inject(method = "destroy", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;removed()V", shift = At.Shift.AFTER))
 	private void onScreenRemoveBecauseStopping(CallbackInfo ci) {
-		ScreenEvents.remove(this.currentScreen).invoker().onRemove(this.currentScreen);
+		ScreenEvents.remove(this.screen).invoker().onRemove(this.screen);
 	}
 
 	// These two injections should be caught by the try-catch block if anything fails in an event and then rethrown in the crash report
-	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;tick()V"))
+	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;tick()V"))
 	private void beforeScreenTick(CallbackInfo ci) {
 		// Store the screen in a variable in case someone tries to change the screen during this before tick event.
 		// If someone changes the screen, the after tick event will likely have class cast exceptions or an NPE.
-		this.tickingScreen = this.currentScreen;
+		this.tickingScreen = this.screen;
 		ScreenEvents.beforeTick(this.tickingScreen).invoker().beforeTick(this.tickingScreen);
 	}
 
-	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;tick()V", shift = At.Shift.AFTER))
+	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;tick()V", shift = At.Shift.AFTER))
 	private void afterScreenTick(CallbackInfo ci) {
 		ScreenEvents.afterTick(this.tickingScreen).invoker().afterTick(this.tickingScreen);
 		// Finally set the currently ticking screen to null
@@ -84,15 +82,15 @@ abstract class MinecraftClientMixin {
 
 	// The LevelLoadingScreen is the odd screen that isn't ticked by the main tick loop, so we fire events for this screen.
 	// We Coerce the package-private inner class representing the world load action so we don't need an access widener.
-	@Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/LevelLoadingScreen;tick()V"))
+	@Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/LevelLoadingScreen;tick()V"))
 	private void beforeLoadingScreenTick(CallbackInfo ci) {
 		// Store the screen in a variable in case someone tries to change the screen during this before tick event.
 		// If someone changes the screen, the after tick event will likely have class cast exceptions or throw a NPE.
-		this.tickingScreen = this.currentScreen;
+		this.tickingScreen = this.screen;
 		ScreenEvents.beforeTick(this.tickingScreen).invoker().beforeTick(this.tickingScreen);
 	}
 
-	@Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"))
+	@Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;runTick(Z)V"))
 	private void afterLoadingScreenTick(CallbackInfo ci) {
 		ScreenEvents.afterTick(this.tickingScreen).invoker().afterTick(this.tickingScreen);
 		// Finally set the currently ticking screen to null

@@ -39,17 +39,15 @@ import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.GuiRenderer;
-import net.minecraft.client.gui.render.SpecialGuiElementRenderer;
+import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
 import net.minecraft.client.gui.render.state.GuiRenderState;
-import net.minecraft.client.gui.render.state.special.SpecialGuiElementRenderState;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.command.OrderedRenderCommandQueueImpl;
-import net.minecraft.client.render.command.RenderDispatcher;
-
+import net.minecraft.client.gui.render.state.pip.PictureInPictureRenderState;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 import net.fabricmc.fabric.impl.client.rendering.GuiRendererExtensions;
 import net.fabricmc.fabric.impl.client.rendering.SpecialGuiElementRegistryImpl;
 import net.fabricmc.fabric.impl.client.rendering.SpecialGuiElementRendererPool;
@@ -59,48 +57,48 @@ abstract class GuiRendererMixin implements GuiRendererExtensions {
 	@Shadow
 	@Final
 	@Mutable
-	private Map<Class<? extends SpecialGuiElementRenderState>, SpecialGuiElementRenderer<?>> specialElementRenderers;
+	private Map<Class<? extends PictureInPictureRenderState>, PictureInPictureRenderer<?>> pictureInPictureRenderers;
 	@Shadow
 	@Final
-	private VertexConsumerProvider.Immediate vertexConsumers;
+	private MultiBufferSource.BufferSource bufferSource;
 
 	@Unique
 	private boolean hasFabricInitialized = false;
 	@Unique
-	private final Map<Class<? extends SpecialGuiElementRenderState>, SpecialGuiElementRendererPool<?>> rendererPools = new HashMap<>();
+	private final Map<Class<? extends PictureInPictureRenderState>, SpecialGuiElementRendererPool<?>> rendererPools = new HashMap<>();
 	@Unique
-	private OrderedRenderCommandQueue orderedRenderCommandQueue = null;
+	private SubmitNodeCollector orderedRenderCommandQueue = null;
 
 	@Inject(method = "<init>", at = @At(value = "RETURN"))
-	private void mutableSpecialElementRenderers(GuiRenderState state, VertexConsumerProvider.Immediate vertexConsumers, OrderedRenderCommandQueue orderedRenderCommandQueue, RenderDispatcher renderDispatcher, List list, CallbackInfo ci) {
-		this.specialElementRenderers = new IdentityHashMap<>(this.specialElementRenderers);
+	private void mutableSpecialElementRenderers(GuiRenderState state, MultiBufferSource.BufferSource vertexConsumers, SubmitNodeCollector orderedRenderCommandQueue, FeatureRenderDispatcher renderDispatcher, List list, CallbackInfo ci) {
+		this.pictureInPictureRenderers = new IdentityHashMap<>(this.pictureInPictureRenderers);
 	}
 
 	@Override
-	public void fabric_onReady(OrderedRenderCommandQueueImpl entityRenderDispatcher) {
+	public void fabric_onReady(SubmitNodeStorage entityRenderDispatcher) {
 		this.orderedRenderCommandQueue = entityRenderDispatcher;
-		SpecialGuiElementRegistryImpl.onReady(MinecraftClient.getInstance(), vertexConsumers, entityRenderDispatcher, this.specialElementRenderers);
+		SpecialGuiElementRegistryImpl.onReady(Minecraft.getInstance(), bufferSource, entityRenderDispatcher, this.pictureInPictureRenderers);
 		this.hasFabricInitialized = true;
 	}
 
-	@Inject(method = "prepareSpecialElements", at = @At("HEAD"))
+	@Inject(method = "preparePictureInPicture", at = @At("HEAD"))
 	private void prePrepareSpecialElements(CallbackInfo ci) {
 		rendererPools.values().forEach(SpecialGuiElementRendererPool::newFrame);
 	}
 
-	@Inject(method = "prepareSpecialElements", at = @At("RETURN"))
+	@Inject(method = "preparePictureInPicture", at = @At("RETURN"))
 	private void postPrepareSpecialElements(CallbackInfo ci) {
 		rendererPools.values().forEach(SpecialGuiElementRendererPool::cleanUpUnusedRenderers);
 	}
 
-	@ModifyVariable(method = "prepareSpecialElement", at = @At("STORE"))
-	private <T extends SpecialGuiElementRenderState> SpecialGuiElementRenderer<T> substituteSpecialElementRenderer(SpecialGuiElementRenderer<T> original, T elementState) {
+	@ModifyVariable(method = "preparePictureInPictureState", at = @At("STORE"))
+	private <T extends PictureInPictureRenderState> PictureInPictureRenderer<T> substituteSpecialElementRenderer(PictureInPictureRenderer<T> original, T elementState) {
 		if (original == null || !hasFabricInitialized) {
 			return original;
 		}
 
-		SpecialGuiElementRendererPool<T> rendererPool = (SpecialGuiElementRendererPool<T>) rendererPools.computeIfAbsent(original.getElementClass(), k -> new SpecialGuiElementRendererPool<>());
-		return rendererPool.substitute(original, elementState, MinecraftClient.getInstance(), vertexConsumers, Objects.requireNonNull(orderedRenderCommandQueue, "renderDispatcher"));
+		SpecialGuiElementRendererPool<T> rendererPool = (SpecialGuiElementRendererPool<T>) rendererPools.computeIfAbsent(original.getRenderStateClass(), k -> new SpecialGuiElementRendererPool<>());
+		return rendererPool.substitute(original, elementState, Minecraft.getInstance(), bufferSource, Objects.requireNonNull(orderedRenderCommandQueue, "renderDispatcher"));
 	}
 
 	@Inject(method = "close", at = @At("RETURN"))
@@ -119,7 +117,7 @@ abstract class GuiRendererMixin implements GuiRendererExtensions {
 		RenderPipeline pipeline = draw.fabric$pipeline();
 
 		if (pipeline.usePipelineDrawModeForGui() && pipeline.getVertexFormatMode() != VertexFormat.DrawMode.QUADS) {
-			RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(pipeline.getVertexFormatMode());
+			RenderSystem.AutoStorageIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(pipeline.getVertexFormatMode());
 			buffer = shapeIndexBuffer.getIndexBuffer(draw.fabric$indexCount());
 			indexType = shapeIndexBuffer.getIndexType();
 		}

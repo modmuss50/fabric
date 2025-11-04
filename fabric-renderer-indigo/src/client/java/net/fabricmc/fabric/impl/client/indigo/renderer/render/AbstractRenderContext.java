@@ -19,10 +19,8 @@ package net.fabricmc.fabric.impl.client.indigo.renderer.render;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.util.math.MatrixStack;
-
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingFormat;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableQuadViewImpl;
@@ -43,7 +41,7 @@ public abstract class AbstractRenderContext {
 	private final Vector4f posVec = new Vector4f();
 	private final Vector3f normalVec = new Vector3f();
 
-	protected MatrixStack.Entry matrices;
+	protected PoseStack.Pose matrices;
 	protected int overlay;
 
 	protected QuadEmitter getEmitter() {
@@ -57,8 +55,8 @@ public abstract class AbstractRenderContext {
 	protected void bufferQuad(MutableQuadViewImpl quad, VertexConsumer vertexConsumer) {
 		final Vector4f posVec = this.posVec;
 		final Vector3f normalVec = this.normalVec;
-		final MatrixStack.Entry matrices = this.matrices;
-		final Matrix4f posMatrix = matrices.getPositionMatrix();
+		final PoseStack.Pose matrices = this.matrices;
+		final Matrix4f posMatrix = matrices.pose();
 		final boolean useNormals = quad.hasVertexNormals();
 
 		if (useNormals) {
@@ -76,7 +74,7 @@ public abstract class AbstractRenderContext {
 				matrices.transformNormal(normalVec, normalVec);
 			}
 
-			vertexConsumer.vertex(posVec.x(), posVec.y(), posVec.z(), quad.color(i), quad.u(i), quad.v(i), overlay, quad.lightmap(i), normalVec.x(), normalVec.y(), normalVec.z());
+			vertexConsumer.addVertex(posVec.x(), posVec.y(), posVec.z(), quad.color(i), quad.u(i), quad.v(i), overlay, quad.lightmap(i), normalVec.x(), normalVec.y(), normalVec.z());
 		}
 	}
 }

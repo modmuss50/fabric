@@ -17,11 +17,9 @@
 package net.fabricmc.fabric.mixin.recipe;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.recipe.RecipeManager;
-
 import net.fabricmc.fabric.api.recipe.v1.FabricRecipeManager;
+import net.minecraft.world.item.crafting.RecipeAccess;
 
-@Mixin(RecipeManager.class)
+@Mixin(RecipeAccess.class)
 public interface RecipeManagerMixin extends FabricRecipeManager {
 }

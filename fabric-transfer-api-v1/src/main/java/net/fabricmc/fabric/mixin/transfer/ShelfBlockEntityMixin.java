@@ -18,12 +18,10 @@ package net.fabricmc.fabric.mixin.transfer;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-
-import net.minecraft.block.entity.ShelfBlockEntity;
-import net.minecraft.item.ItemStack;
-
 import net.fabricmc.fabric.impl.transfer.item.SpecialLogicAccess;
 import net.fabricmc.fabric.impl.transfer.item.SpecialLogicInventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 
 @Mixin(ShelfBlockEntity.class)
 public abstract class ShelfBlockEntityMixin implements SpecialLogicInventory, SpecialLogicAccess {

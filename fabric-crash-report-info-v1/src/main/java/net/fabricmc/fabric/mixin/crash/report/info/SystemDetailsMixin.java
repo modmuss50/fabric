@@ -26,20 +26,18 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.util.SystemDetails;
-
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.SystemReport;
 
-@Mixin(SystemDetails.class)
+@Mixin(SystemReport.class)
 public abstract class SystemDetailsMixin {
 	@Shadow
-	public abstract void addSection(String string, Supplier<String> supplier);
+	public abstract void setDetail(String string, Supplier<String> supplier);
 
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void fillSystemDetails(CallbackInfo info) {
-		addSection("Fabric Mods", () -> {
+		setDetail("Fabric Mods", () -> {
 			ArrayList<ModContainer> topLevelMods = new ArrayList<>();
 
 			for (ModContainer container : FabricLoader.getInstance().getAllMods()) {

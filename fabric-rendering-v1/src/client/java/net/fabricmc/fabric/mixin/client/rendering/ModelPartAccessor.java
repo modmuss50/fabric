@@ -17,14 +17,12 @@
 package net.fabricmc.fabric.mixin.client.rendering;
 
 import java.util.function.BiConsumer;
-
+import net.minecraft.client.model.geom.ModelPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.client.model.ModelPart;
-
 @Mixin(ModelPart.class)
 public interface ModelPartAccessor {
-	@Invoker("forEachChild")
+	@Invoker("addAllChildren")
 	void fabric$callForEachChild(BiConsumer<String, ModelPart> partBiConsumer);
 }

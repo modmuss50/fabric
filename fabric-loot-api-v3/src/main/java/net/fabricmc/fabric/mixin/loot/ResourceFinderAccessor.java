@@ -16,13 +16,12 @@
 
 package net.fabricmc.fabric.mixin.loot;
 
+import net.minecraft.resources.FileToIdConverter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.resource.ResourceFinder;
-
-@Mixin(ResourceFinder.class)
+@Mixin(FileToIdConverter.class)
 public interface ResourceFinderAccessor {
 	@Accessor
-	String getDirectoryName();
+	String getPrefix();
 }

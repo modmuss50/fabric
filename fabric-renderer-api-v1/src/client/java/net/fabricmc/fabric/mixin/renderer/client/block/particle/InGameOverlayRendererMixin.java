@@ -17,6 +17,12 @@
 package net.fabricmc.fabric.mixin.renderer.client.block.particle;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.client.renderer.ScreenEffectRenderer;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,34 +31,27 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.hud.InGameOverlayRenderer;
-import net.minecraft.client.render.block.BlockModels;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-
-@Mixin(InGameOverlayRenderer.class)
+@Mixin(ScreenEffectRenderer.class)
 abstract class InGameOverlayRendererMixin {
 	@Unique
 	@Nullable
 	private static BlockPos pos;
 
-	@Redirect(method = "renderOverlays", at = @At(value = "INVOKE", target = "net/minecraft/client/render/block/BlockModels.getModelParticleSprite(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/texture/Sprite;"))
-	private static Sprite getModelParticleSpriteProxy(BlockModels models, BlockState state, @Local PlayerEntity playerEntity) {
+	@Redirect(method = "renderScreenEffect", at = @At(value = "INVOKE", target = "net/minecraft/client/render/block/BlockModels.getModelParticleSprite(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/texture/Sprite;"))
+	private static TextureAtlasSprite getModelParticleSpriteProxy(BlockModelShaper models, BlockState state, @Local Player playerEntity) {
 		if (pos != null) {
-			Sprite sprite = models.getModelParticleSprite(state, playerEntity.getEntityWorld(), pos);
+			TextureAtlasSprite sprite = models.getModelParticleSprite(state, playerEntity.level(), pos);
 			pos = null;
 			return sprite;
 		}
 
-		return models.getModelParticleSprite(state);
+		return models.getParticleIcon(state);
 	}
 
-	@Inject(method = "getInWallBlockState", at = @At("RETURN"))
-	private static void onReturnGetInWallBlockState(CallbackInfoReturnable<@Nullable BlockState> cir, @Local BlockPos.Mutable mutable) {
+	@Inject(method = "getViewBlockingState", at = @At("RETURN"))
+	private static void onReturnGetInWallBlockState(CallbackInfoReturnable<@Nullable BlockState> cir, @Local BlockPos.MutableBlockPos mutable) {
 		if (cir.getReturnValue() != null) {
-			pos = mutable.toImmutable();
+			pos = mutable.immutable();
 		} else {
 			pos = null;
 		}

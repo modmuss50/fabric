@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 
 public final class ClientWorldEvents {
 	private ClientWorldEvents() {
@@ -43,6 +42,6 @@ public final class ClientWorldEvents {
 		 * @param client the client instance
 		 * @param world the new world instance
 		 */
-		void afterWorldChange(MinecraftClient client, ClientWorld world);
+		void afterWorldChange(Minecraft client, ClientLevel world);
 	}
 }

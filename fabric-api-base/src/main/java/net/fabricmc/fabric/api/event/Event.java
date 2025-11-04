@@ -16,9 +16,8 @@
 
 package net.fabricmc.fabric.api.event;
 
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.util.Identifier;
 
 /**
  * Base class for Fabric's event implementations.
@@ -60,7 +59,7 @@ public abstract class Event<T> {
 	 * The identifier of the default phase.
 	 * Have a look at {@link EventFactory#createWithPhases} for an explanation of event phases.
 	 */
-	public static final Identifier DEFAULT_PHASE = Identifier.of("fabric", "default");
+	public static final Identifier DEFAULT_PHASE = Identifier.fromNamespaceAndPath("fabric", "default");
 
 	/**
 	 * Register a listener to the event for the specified phase.

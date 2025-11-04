@@ -16,21 +16,19 @@
 
 package net.fabricmc.fabric.impl.renderer;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import java.util.function.Function;
-
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-
 import net.fabricmc.fabric.api.renderer.v1.render.BlockVertexConsumerProvider;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 public class DelegatingBlockVertexConsumerProviderImpl implements BlockVertexConsumerProvider {
-	public VertexConsumerProvider vertexConsumerProvider;
-	public Function<BlockRenderLayer, RenderLayer> renderLayerFunction;
+	public MultiBufferSource vertexConsumerProvider;
+	public Function<ChunkSectionLayer, RenderType> renderLayerFunction;
 
 	@Override
-	public VertexConsumer getBuffer(BlockRenderLayer layer) {
+	public VertexConsumer getBuffer(ChunkSectionLayer layer) {
 		return vertexConsumerProvider.getBuffer(renderLayerFunction.apply(layer));
 	}
 }

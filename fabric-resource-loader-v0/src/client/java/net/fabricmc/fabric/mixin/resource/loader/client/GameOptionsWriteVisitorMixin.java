@@ -24,25 +24,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.resource.ResourcePackManager;
-import net.minecraft.resource.ResourcePackProfile;
-
 import net.fabricmc.fabric.impl.resource.loader.FabricResourcePackProfile;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
 
 /**
  * Mixins to the anonymous class in #write method.
  */
-@Mixin(targets = "net/minecraft/client/option/GameOptions$3")
+@Mixin(targets = "net/minecraft/client/Options$3")
 public class GameOptionsWriteVisitorMixin {
 	@Unique
 	private static List<String> toPackListString(List<String> packs) {
 		List<String> copy = new ArrayList<>(packs.size());
-		ResourcePackManager manager = MinecraftClient.getInstance().getResourcePackManager();
+		PackRepository manager = Minecraft.getInstance().getResourcePackRepository();
 
 		for (String pack : packs) {
-			ResourcePackProfile profile = manager.getProfile(pack);
+			Pack profile = manager.getPack(pack);
 
 			// Nonexistent pack profiles should be handled in the same way as vanilla
 			if (profile == null || !((FabricResourcePackProfile) profile).fabric_isHidden()) copy.add(pack);

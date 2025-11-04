@@ -21,33 +21,31 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-
-import net.minecraft.client.resource.PeriodicNotificationManager;
-import net.minecraft.client.resource.SplashTextResourceSupplier;
-import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.resource.ResourceReloader;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.reloader.ResourceReloaderKeys;
 import net.fabricmc.fabric.impl.resource.v1.ResourceLoaderImpl;
+import net.minecraft.client.PeriodicNotificationManager;
+import net.minecraft.client.resources.SplashManager;
+import net.minecraft.client.resources.language.LanguageManager;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 public class ResourceLoaderImplTest {
 	@Test
 	public void testReloaderSorting() {
-		ResourceLoader resourceLoader = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
+		ResourceLoader resourceLoader = ResourceLoader.get(PackType.CLIENT_RESOURCES);
 
-		record Dummy(Identifier id, ResourceReloader reloader) {
+		record Dummy(Identifier id, PreparableReloadListener reloader) {
 			Dummy(Identifier id) {
 				this(id, new DummyResourceReloader());
 			}
 		}
 
-		var dummyReloader1 = new Dummy(Identifier.of("fabric", "dummy_reloader_1"));
-		var dummyReloader2 = new Dummy(Identifier.of("fabric", "dummy_reloader_2"));
-		var dummyReloader3 = new Dummy(Identifier.of("fabric", "dummy_reloader_3"));
-		var dummyReloader4 = new Dummy(Identifier.of("fabric", "dummy_reloader_4"));
+		var dummyReloader1 = new Dummy(Identifier.fromNamespaceAndPath("fabric", "dummy_reloader_1"));
+		var dummyReloader2 = new Dummy(Identifier.fromNamespaceAndPath("fabric", "dummy_reloader_2"));
+		var dummyReloader3 = new Dummy(Identifier.fromNamespaceAndPath("fabric", "dummy_reloader_3"));
+		var dummyReloader4 = new Dummy(Identifier.fromNamespaceAndPath("fabric", "dummy_reloader_4"));
 
 		resourceLoader.registerReloader(dummyReloader1.id, dummyReloader1.reloader);
 		resourceLoader.registerReloader(dummyReloader2.id, dummyReloader2.reloader);
@@ -62,10 +60,10 @@ public class ResourceLoaderImplTest {
 		var languageReloader = new LanguageManager(
 				"en_us", translationStorage -> {
 		});
-		var splashTextsReloader = new SplashTextResourceSupplier(null);
-		var periodicNotificationManager = new PeriodicNotificationManager(Identifier.of("a"), o -> true);
+		var splashTextsReloader = new SplashManager(null);
+		var periodicNotificationManager = new PeriodicNotificationManager(Identifier.parse("a"), o -> true);
 
-		List<ResourceReloader> sorted = ResourceLoaderImpl.sort(ResourceType.CLIENT_RESOURCES, List.of(
+		List<PreparableReloadListener> sorted = ResourceLoaderImpl.sort(PackType.CLIENT_RESOURCES, List.of(
 				languageReloader,
 				splashTextsReloader,
 				periodicNotificationManager

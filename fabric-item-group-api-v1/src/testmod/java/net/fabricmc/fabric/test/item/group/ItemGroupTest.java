@@ -17,37 +17,33 @@
 package net.fabricmc.fabric.test.item.group;
 
 import com.google.common.base.Supplier;
-
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemGroupTest implements ModInitializer {
 	private static final String MOD_ID = "fabric-item-group-api-v1-testmod";
-	private static final RegistryKey<Item> ITEM_KEY = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, "item_test_group"));
-	private static final Item TEST_ITEM = new Item(new Item.Settings().registryKey(ITEM_KEY));
+	private static final ResourceKey<Item> ITEM_KEY = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, "item_test_group"));
+	private static final Item TEST_ITEM = new Item(new Item.Properties().setId(ITEM_KEY));
 
-	private static final RegistryKey<ItemGroup> ITEM_GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MOD_ID, "test_group"));
+	private static final ResourceKey<CreativeModeTab> ITEM_GROUP = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MOD_ID, "test_group"));
 
 	@Override
 	public void onInitialize() {
-		Registry.register(Registries.ITEM, Identifier.of("fabric-item-groups-v0-testmod", "item_test_group"), TEST_ITEM);
+		Registry.register(BuiltInRegistries.ITEM, Identifier.fromNamespaceAndPath("fabric-item-groups-v0-testmod", "item_test_group"), TEST_ITEM);
 
-		Registry.register(Registries.ITEM_GROUP, ITEM_GROUP, FabricItemGroup.builder()
-				.displayName(Text.literal("Test Item Group"))
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ITEM_GROUP, FabricItemGroup.builder()
+				.displayName(Component.literal("Test Item Group"))
 				.icon(() -> new ItemStack(Items.DIAMOND))
 				.entries((context, entries) -> {
 					entries.addAll(Registries.ITEM.stream()
@@ -57,7 +53,7 @@ public class ItemGroupTest implements ModInitializer {
 				})
 				.build());
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register((content) -> {
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS).register((content) -> {
 			content.add(TEST_ITEM);
 
 			content.addBefore(Blocks.OAK_FENCE, Items.DIAMOND, Items.DIAMOND_BLOCK);
@@ -86,10 +82,10 @@ public class ItemGroupTest implements ModInitializer {
 		// Regression test for #3566
 		for (int j = 0; j < 20; j++) {
 			Registry.register(
-					Registries.ITEM_GROUP,
-					Identifier.of(MOD_ID, "empty_group_" + j),
+					BuiltInRegistries.CREATIVE_MODE_TAB,
+					Identifier.fromNamespaceAndPath(MOD_ID, "empty_group_" + j),
 					FabricItemGroup.builder()
-							.displayName(Text.literal("Empty Item Group: " + j))
+							.displayName(Component.literal("Empty Item Group: " + j))
 							.build()
 			);
 		}
@@ -97,9 +93,9 @@ public class ItemGroupTest implements ModInitializer {
 		for (int i = 0; i < 100; i++) {
 			final int index = i;
 
-			Registry.register(Registries.ITEM_GROUP, Identifier.of(MOD_ID, "test_group_" + i), FabricItemGroup.builder()
-					.displayName(Text.literal("Test Item Group: " + i))
-					.icon((Supplier<ItemStack>) () -> new ItemStack(Registries.BLOCK.get(index)))
+			Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MOD_ID, "test_group_" + i), FabricItemGroup.builder()
+					.displayName(Component.literal("Test Item Group: " + i))
+					.icon((Supplier<ItemStack>) () -> new ItemStack(BuiltInRegistries.BLOCK.byId(index)))
 					.entries((context, entries) -> {
 						var itemStack = new ItemStack(Registries.ITEM.get(index));
 

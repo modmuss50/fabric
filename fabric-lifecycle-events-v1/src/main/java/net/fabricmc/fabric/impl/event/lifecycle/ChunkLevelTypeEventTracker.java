@@ -16,15 +16,14 @@
 
 package net.fabricmc.fabric.impl.event.lifecycle;
 
-import net.minecraft.server.world.ChunkLevelType;
-
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
+import net.minecraft.server.level.FullChunkStatus;
 
 /**
  * A marker interface that tracks the current {@link ServerChunkEvents#CHUNK_LEVEL_TYPE_CHANGE} level type.
  */
 public interface ChunkLevelTypeEventTracker {
-	void fabric_setCurrentEventLevelType(ChunkLevelType levelType);
+	void fabric_setCurrentEventLevelType(FullChunkStatus levelType);
 
-	ChunkLevelType fabric_getCurrentEventLevelType();
+	FullChunkStatus fabric_getCurrentEventLevelType();
 }

@@ -16,13 +16,12 @@
 
 package net.fabricmc.fabric.test.transfer.mixin;
 
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 
 @Mixin(AbstractFurnaceBlockEntity.class)
 public interface AbstractFurnaceBlockEntityAccessor {
 	@Accessor
-	int getCookingTimeSpent();
+	int getCookingTimer();
 }

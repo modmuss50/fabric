@@ -16,19 +16,18 @@
 
 package net.fabricmc.fabric.impl.particle;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.util.math.BlockPos;
 
 public final class BlockStateParticleEffectFactoryImpl {
 	private BlockStateParticleEffectFactoryImpl() {
 	}
 
-	public static BlockStateParticleEffect create(ParticleType<BlockStateParticleEffect> type, BlockState blockState, @Nullable BlockPos blockPos) {
-		BlockStateParticleEffect effect = new BlockStateParticleEffect(type, blockState);
+	public static BlockParticleOption create(ParticleType<BlockParticleOption> type, BlockState blockState, @Nullable BlockPos blockPos) {
+		BlockParticleOption effect = new BlockParticleOption(type, blockState);
 		((BlockStateParticleEffectExtension) effect).fabric_setBlockPos(blockPos);
 		return effect;
 	}

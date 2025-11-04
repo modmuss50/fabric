@@ -19,11 +19,9 @@ package net.fabricmc.fabric.impl.biome;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import com.google.common.base.Preconditions;
-
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.noise.PerlinNoiseSampler;
 
 /**
  * Picks entries with arbitrary double weights using a binary search.
@@ -55,8 +53,8 @@ public final class WeightedPicker<T> {
 		return entries.size();
 	}
 
-	public T pickFromNoise(PerlinNoiseSampler sampler, double x, double y, double z) {
-		double target = MathHelper.clamp(Math.abs(sampler.sample(x, y, z)), 0, 1) * getCurrentWeightTotal();
+	public T pickFromNoise(ImprovedNoise sampler, double x, double y, double z) {
+		double target = Mth.clamp(Math.abs(sampler.noise(x, y, z)), 0, 1) * getCurrentWeightTotal();
 
 		return search(target).entry();
 	}

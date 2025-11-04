@@ -19,14 +19,12 @@ package net.fabricmc.fabric.impl.content.registry;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
-
-import net.minecraft.block.Block;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 
 public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 	private static final FlammableBlockRegistry.Entry REMOVED = new FlammableBlockRegistry.Entry(0, 0);
@@ -56,7 +54,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 			for (TagKey<Block> tag : registeredEntriesTag.keySet()) {
 				FlammableBlockRegistry.Entry entry = registeredEntriesTag.get(tag);
 
-				for (RegistryEntry<Block> block : Registries.BLOCK.iterateEntries(tag)) {
+				for (Holder<Block> block : BuiltInRegistries.BLOCK.getTagOrEmpty(tag)) {
 					ret.put(block.value(), entry);
 				}
 			}
@@ -77,7 +75,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 		if (entry != null) {
 			return entry;
 		} else {
-			return ((FireBlockHooks) key).fabric_getVanillaEntry(block.getDefaultState());
+			return ((FireBlockHooks) key).fabric_getVanillaEntry(block.defaultBlockState());
 		}
 	}
 

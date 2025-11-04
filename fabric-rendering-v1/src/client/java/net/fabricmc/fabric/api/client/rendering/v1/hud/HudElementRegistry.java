@@ -18,10 +18,8 @@ package net.fabricmc.fabric.api.client.rendering.v1.hud;
 
 import java.util.Objects;
 import java.util.function.Function;
-
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
+import net.minecraft.resources.Identifier;
 
 /**
  * A registry of identified hud layers with methods to add layers in specific positions.
@@ -29,7 +27,7 @@ import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
  * <p>Operations relative to a vanilla element will inherit that element's render condition.
  *
  * <p>The render condition for all vanilla layers except {@link VanillaHudElements#SLEEP} is
- * {@link net.minecraft.client.option.GameOptions#hudHidden}.
+ * {@link net.minecraft.client.Options#hideGui}.
  *
  * <p>Only {@link #addFirst(Identifier, HudElement)} and {@link #addLast(Identifier, HudElement)} will not inherit any
  * render condition.
@@ -62,7 +60,7 @@ import net.fabricmc.fabric.impl.client.rendering.hud.HudElementRegistryImpl;
  *     </tr>
  *     <tr>
  *         <td>Before {@link VanillaHudElements#CHAT CHAT}</td>
- *         <td>Render after the debug HUD, scoreboard, overlay message (action bar), and title and subtitle and before {@link net.minecraft.client.gui.hud.ChatHud ChatHud}, player list, and sound subtitles</td>
+ *         <td>Render after the debug HUD, scoreboard, overlay message (action bar), and title and subtitle and before {@link net.minecraft.client.gui.components.ChatComponent ChatHud}, player list, and sound subtitles</td>
  *     </tr>
  *     <tr>
  *         <td>After {@link VanillaHudElements#SUBTITLES SUBTITLES}</td>

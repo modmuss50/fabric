@@ -20,15 +20,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.client.particle.ParticleSpriteManager;
-
 import net.fabricmc.fabric.impl.client.particle.ParticleFactoryRegistryImpl;
+import net.minecraft.client.particle.ParticleResources;
 
-@Mixin(ParticleSpriteManager.class)
+@Mixin(ParticleResources.class)
 public abstract class ParticleSpriteManagerMixin {
-	@Inject(method = "init", at = @At("RETURN"))
+	@Inject(method = "registerProviders", at = @At("RETURN"))
 	private void onRegisterDefaultFactories(CallbackInfo info) {
-		ParticleFactoryRegistryImpl.INSTANCE.initialize((ParticleSpriteManager) (Object) this);
+		ParticleFactoryRegistryImpl.INSTANCE.initialize((ParticleResources) (Object) this);
 	}
 }

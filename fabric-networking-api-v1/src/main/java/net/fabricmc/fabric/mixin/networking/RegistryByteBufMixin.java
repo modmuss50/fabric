@@ -22,13 +22,11 @@ import java.util.Set;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.networking.FabricRegistryByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 
-@Mixin(RegistryByteBuf.class)
+@Mixin(RegistryFriendlyByteBuf.class)
 public class RegistryByteBufMixin implements FabricRegistryByteBuf {
 	@Unique
 	private Set<Identifier> sendableConfigurationChannels = null;

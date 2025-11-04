@@ -21,12 +21,10 @@ import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.ApiStatus;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.impl.attachment.AttachmentRegistryImpl;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 
 /**
  * Class used to create and register {@link AttachmentType}s. To quickly create {@link AttachmentType}s, use one of the various
@@ -157,7 +155,7 @@ public final class AttachmentRegistry {
 		 * @param syncPredicate an {@link AttachmentSyncPredicate} determining with which clients to synchronize data
 		 * @return the builder
 		 */
-		AttachmentRegistry.Builder<A> syncWith(PacketCodec<? super RegistryByteBuf, A> packetCodec, AttachmentSyncPredicate syncPredicate);
+		AttachmentRegistry.Builder<A> syncWith(StreamCodec<? super RegistryFriendlyByteBuf, A> packetCodec, AttachmentSyncPredicate syncPredicate);
 
 		/**
 		 * Builds and registers the {@link AttachmentType}.

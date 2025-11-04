@@ -22,15 +22,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.rule.GameRule;
-
+import net.minecraft.world.level.gamerules.GameRule;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.fabricmc.fabric.impl.gamerule.GameRuleEventsImpl;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-	@Inject(method = "onGameRuleUpdated", at = @At("RETURN"))
+	@Inject(method = "onGameRuleChanged", at = @At("RETURN"))
 	private <T> void handleGameRuleUpdate(GameRule<T> rule, T value, CallbackInfo ci) {
 		Event<GameRuleEvents.ValueUpdate<T>> event = GameRuleEventsImpl.getValueUpdate(rule);
 

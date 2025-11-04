@@ -18,21 +18,19 @@ package net.fabricmc.fabric.impl.screenhandler.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.impl.screenhandler.Networking;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 
 public final class ClientNetworking implements ClientModInitializer {
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-screen-handler-api-v1/client");
@@ -48,9 +46,9 @@ public final class ClientNetworking implements ClientModInitializer {
 	private <D> void openScreen(Networking.OpenScreenPayload<D> payload) {
 		Identifier typeId = payload.identifier();
 		int syncId = payload.syncId();
-		Text title = payload.title();
+		Component title = payload.title();
 
-		ScreenHandlerType<?> type = Registries.SCREEN_HANDLER.get(typeId);
+		MenuType<?> type = BuiltInRegistries.MENU.getValue(typeId);
 
 		if (type == null || payload.data() == null) {
 			LOGGER.warn("Unknown screen handler ID: {}", typeId);
@@ -62,11 +60,11 @@ public final class ClientNetworking implements ClientModInitializer {
 			return;
 		}
 
-		HandledScreens.Provider screenFactory = HandledScreens.getProvider(type);
+		MenuScreens.ScreenConstructor screenFactory = MenuScreens.getConstructor(type);
 
 		if (screenFactory != null) {
-			MinecraftClient client = MinecraftClient.getInstance();
-			PlayerEntity player = client.player;
+			Minecraft client = Minecraft.getInstance();
+			Player player = client.player;
 
 			Screen screen = screenFactory.create(
 					((ExtendedScreenHandlerType<?, D>) type).create(syncId, player.getInventory(), payload.data()),
@@ -74,7 +72,7 @@ public final class ClientNetworking implements ClientModInitializer {
 					title
 			);
 
-			player.currentScreenHandler = ((ScreenHandlerProvider<?>) screen).getScreenHandler();
+			player.containerMenu = ((MenuAccess<?>) screen).getMenu();
 			client.setScreen(screen);
 		} else {
 			LOGGER.warn("Screen not registered for screen handler {}!", typeId);

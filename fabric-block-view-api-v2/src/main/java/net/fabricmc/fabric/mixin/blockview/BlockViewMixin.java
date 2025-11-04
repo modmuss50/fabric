@@ -17,11 +17,9 @@
 package net.fabricmc.fabric.mixin.blockview;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.world.BlockView;
-
 import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;
+import net.minecraft.world.level.BlockGetter;
 
-@Mixin(BlockView.class)
+@Mixin(BlockGetter.class)
 public interface BlockViewMixin extends FabricBlockView {
 }

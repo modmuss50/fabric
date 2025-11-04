@@ -16,10 +16,6 @@
 
 package net.fabricmc.fabric.test.event.interaction;
 
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.village.VillagerProfession;
-
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 

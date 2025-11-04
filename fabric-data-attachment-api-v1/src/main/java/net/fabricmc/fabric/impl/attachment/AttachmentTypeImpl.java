@@ -20,19 +20,17 @@ import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.util.Identifier;
-
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
 
 public record AttachmentTypeImpl<A>(
 		Identifier identifier,
 		@Nullable Supplier<A> initializer,
 		@Nullable Codec<A> persistenceCodec,
-		@Nullable PacketCodec<? super RegistryByteBuf, A> packetCodec,
+		@Nullable StreamCodec<? super RegistryFriendlyByteBuf, A> packetCodec,
 		@Nullable AttachmentSyncPredicate syncPredicate,
 		boolean copyOnDeath
 ) implements AttachmentType<A> {

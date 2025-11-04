@@ -20,16 +20,14 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import org.jspecify.annotations.Nullable;
-
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.impl.attachment.sync.AttachmentChange;
 import net.fabricmc.fabric.impl.attachment.sync.AttachmentTargetInfo;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public interface AttachmentTargetImpl extends AttachmentTarget {
 	/**
@@ -60,11 +58,11 @@ public interface AttachmentTargetImpl extends AttachmentTarget {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
-	default void fabric_writeAttachmentsToNbt(WriteView view) {
+	default void fabric_writeAttachmentsToNbt(ValueOutput view) {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
-	default void fabric_readAttachmentsFromNbt(ReadView view) {
+	default void fabric_readAttachmentsFromNbt(ValueInput view) {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
@@ -80,7 +78,7 @@ public interface AttachmentTargetImpl extends AttachmentTarget {
 	/*
 	 * Computes changes that should be communicated to newcomers (i.e. clients that start tracking this target)
 	 */
-	default void fabric_computeInitialSyncChanges(ServerPlayerEntity player, Consumer<AttachmentChange> changeOutput) {
+	default void fabric_computeInitialSyncChanges(ServerPlayer player, Consumer<AttachmentChange> changeOutput) {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
@@ -94,5 +92,5 @@ public interface AttachmentTargetImpl extends AttachmentTarget {
 		throw new UnsupportedOperationException("Implemented via mixin");
 	}
 
-	DynamicRegistryManager fabric_getDynamicRegistryManager();
+	RegistryAccess fabric_getDynamicRegistryManager();
 }
