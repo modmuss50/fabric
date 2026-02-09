@@ -16,10 +16,15 @@
 
 package net.fabricmc.fabric.impl.client.renderer;
 
+import java.util.Comparator;
 import java.util.List;
+
+import org.jetbrains.annotations.VisibleForTesting;
 
 import net.fabricmc.fabric.api.client.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.client.renderer.v1.RendererProvider;
+import net.fabricmc.fabric.impl.base.toposort.NodeSorting;
+import net.fabricmc.fabric.impl.base.toposort.SortableNode;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 
@@ -46,21 +51,53 @@ public final class RendererManager {
 
 		List<EntrypointContainer<RendererProvider>> entrypoints = FabricLoader.getInstance()
 				.getEntrypointContainers("fabric-renderer-api-v1:renderer_provider", RendererProvider.class);
-		int highestPriority = Integer.MIN_VALUE;
-		EntrypointContainer<RendererProvider> rendererProvider = null;
 
-		for (EntrypointContainer<RendererProvider> next : entrypoints) {
-			if (next.getEntrypoint().priority() > highestPriority) {
-				rendererProvider = next;
-				highestPriority = next.getEntrypoint().priority();
+		return chosenRendererProvider = sortRenderProviders(entrypoints);
+	}
+
+	// TODO can be unit tested easily
+	@VisibleForTesting
+	public static EntrypointContainer<RendererProvider> sortRenderProviders(List<EntrypointContainer<RendererProvider>> entrypoints) {
+		List<SortableRenderProvider> sortedEntrypoints = entrypoints.stream()
+				.map(SortableRenderProvider::new)
+				.toList();
+
+		for (SortableRenderProvider node : sortedEntrypoints) {
+			for (String beforeModId : node.getRendererProvider().getLoadsBefore()) {
+				// TODO sortedEntrypoints could become a map
+				sortedEntrypoints.stream()
+						.filter(otherNode -> otherNode.getId().equals(beforeModId))
+						.forEach(otherNode -> SortableNode.link(node, otherNode));
 			}
 		}
 
-		if (rendererProvider != null) {
-			chosenRendererProvider = rendererProvider;
-			return rendererProvider;
-		} else {
+		NodeSorting.sort(sortedEntrypoints, "renderer providers", Comparator.comparing(SortableRenderProvider::getId));
+
+		if (sortedEntrypoints.isEmpty()) {
 			throw new NullPointerException("A renderer plug-in has not been provided before Minecraft has loaded. This is unsupported.");
+		}
+
+		return sortedEntrypoints.getFirst().provider;
+	}
+
+	private static class SortableRenderProvider extends SortableNode<SortableRenderProvider> {
+		private final EntrypointContainer<RendererProvider> provider;
+
+		public SortableRenderProvider(EntrypointContainer<RendererProvider> provider) {
+			this.provider = provider;
+		}
+
+		private String getId() {
+			return provider.getProvider().getMetadata().getId();
+		}
+
+		private RendererProvider getRendererProvider() {
+			return provider.getEntrypoint();
+		}
+
+		@Override
+		protected String getDescription() {
+			return getId();
 		}
 	}
 }

@@ -21,6 +21,8 @@ import org.jetbrains.annotations.ApiStatus;
 import net.fabricmc.fabric.impl.client.renderer.RendererManager;
 import net.fabricmc.loader.api.FabricLoader;
 
+import java.util.List;
+
 /**
  * An abstraction for registering {@link Renderer} implementations.
  *
@@ -53,16 +55,11 @@ public interface RendererProvider {
 	Renderer getRenderer();
 
 	/**
-	 * The higher a renderer's priority is, the more likely it is to be loaded. So, the
-	 * {@link RendererProvider} with the highest priority is loaded.
+	 * A list of mod IDs of {@link RendererProvider}s that should take a lower priority than this one.
 	 *
-	 * @return this renderer's priority.
-	 * @implSpec Implementations of {@link Renderer} should use priority {@code 1000} in most cases.
-	 * However, they may choose any priority or even change priorities based on some conditions.
-	 * Implementors should avoid priorities of {@code 0} or below as that is Indigo's priority.
+	 * @return A {@link List} of possible mod IDs that should take a lower priority than this.
 	 */
-	@ApiStatus.OverrideOnly
-	default int priority() {
-		return 1000;
+	default List<String> getLoadsBefore() {
+		return List.of("fabric-renderer-api-v1");
 	}
 }

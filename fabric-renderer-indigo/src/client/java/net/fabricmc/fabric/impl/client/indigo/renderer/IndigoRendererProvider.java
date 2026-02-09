@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.client.indigo.renderer;
 
+import java.util.List;
+
 import net.fabricmc.fabric.api.client.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.client.renderer.v1.RendererProvider;
 
@@ -26,7 +28,7 @@ public class IndigoRendererProvider implements RendererProvider {
 	}
 
 	@Override
-	public int priority() {
-		return 0; // This ensures other renderers override Indigo
+	public List<String> getLoadsBefore() {
+		return List.of();
 	}
 }
