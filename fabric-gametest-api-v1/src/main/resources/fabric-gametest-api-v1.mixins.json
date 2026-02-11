@@ -5,9 +5,7 @@
   "mixins": [
     "RegistryDataLoaderMixin",
     "StructureTemplateManagerMixin",
-    "GameTestServerMixin"
-  ],
-  "server": [
+    "GameTestServerMixin",
     "server.MainMixin"
   ],
   "injectors": {

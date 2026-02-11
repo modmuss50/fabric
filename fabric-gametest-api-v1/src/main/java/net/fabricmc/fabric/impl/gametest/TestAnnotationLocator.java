@@ -43,7 +43,7 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 
-final class TestAnnotationLocator {
+public final class TestAnnotationLocator {
 	private static final String ENTRYPOINT_KEY = "fabric-gametest";
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestAnnotationLocator.class);
 
@@ -51,7 +51,7 @@ final class TestAnnotationLocator {
 
 	private List<TestMethod> testMethods = null;
 
-	TestAnnotationLocator(FabricLoader fabricLoader) {
+	public TestAnnotationLocator(FabricLoader fabricLoader) {
 		this.fabricLoader = fabricLoader;
 	}
 

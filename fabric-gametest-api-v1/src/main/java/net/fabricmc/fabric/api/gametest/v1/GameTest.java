@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.junit.platform.commons.annotation.Testable;
+
 import net.minecraft.world.level.block.Rotation;
 
 /**
@@ -34,6 +36,7 @@ import net.minecraft.world.level.block.Rotation;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
+@Testable
 public @interface GameTest {
 	/**
 	 * A namespaced ID of an entry within the {@link net.minecraft.core.registries.Registries#TEST_ENVIRONMENT} registry.

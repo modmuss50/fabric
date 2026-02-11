@@ -40,7 +40,7 @@ public class MainMixin {
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;startTimerHackThread()V"), method = "main")
 	private static void afterModInit(CallbackInfo info) {
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER || true) {
 			// Freeze the registries on the server
 			LOGGER.debug("Freezing registries");
 
