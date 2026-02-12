@@ -37,13 +37,20 @@ testing.suites {
 	gametests(JvmTestSuite) {
 		useJUnitJupiter()
 
+		sources {
+			compileClasspath += project.sourceSets.main.compileClasspath
+			runtimeClasspath += project.sourceSets.main.runtimeClasspath
+		}
+
 		dependencies {
 			implementation project()
 		}
 
 		targets.all {
 			testTask.configure {
-				testDefinitionDirs.from("src/test/definitions")
+				jvmArgs("-Dfabric.side=server")
+				jvmArgs("-Dfabric-api.gametest=true")
+				workingDir(file("run"))
 			}
 		}
 	}
