@@ -23,8 +23,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import net.minecraft.client.renderer.texture.SpriteLoader;
-import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 
@@ -32,11 +30,8 @@ import net.fabricmc.fabric.api.client.renderer.v1.sprite.FabricMaterialBaker;
 import net.fabricmc.fabric.api.client.renderer.v1.sprite.SpriteFinder;
 import net.fabricmc.fabric.impl.client.renderer.MissingSpriteFinderImpl;
 
-@Mixin(ModelManager.MaterialBakerImpl.class)
+@Mixin(targets = "net.minecraft.client.resources.model.ModelManager$CombinedBlockItemMaterialBaker")
 abstract class ModelManagerMaterialBakerImplMixin implements FabricMaterialBaker {
-	@Shadow
-	@Final
-	private Material.Baked blockMissing;
 	@Shadow
 	@Final
 	private SpriteLoader.Preparations blockAtlas;
@@ -63,7 +58,7 @@ abstract class ModelManagerMaterialBakerImplMixin implements FabricMaterialBaker
 				result = missingSpriteFinder;
 
 				if (result == null) {
-					missingSpriteFinder = result = new MissingSpriteFinderImpl(blockMissing.sprite());
+					missingSpriteFinder = result = new MissingSpriteFinderImpl(blockAtlas.missing());
 				}
 			}
 		}

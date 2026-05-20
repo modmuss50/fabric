@@ -20,15 +20,12 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
@@ -53,23 +50,24 @@ abstract class SimpleModelWrapperMixin implements BlockStateModelPart {
 	@Final
 	private boolean useAmbientOcclusion;
 
-	@Inject(method = "bake", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/model/geometry/QuadCollection;getAll()Ljava/util/List;"))
-	private static void analyzeMesh(final ModelBaker modelBakery, final Identifier location, final ModelState state, CallbackInfoReturnable<BlockStateModelPart> cir, @Local(name = "geometry") QuadCollection geometry, @Local(name = "forbiddenSprites") LocalRef<Multimap<Identifier, Identifier>> forbiddenSpritesRef) {
+	@Redirect(method = "bake", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/model/SimpleModelWrapper;findNonBlockSprites(Lnet/minecraft/client/resources/model/geometry/QuadCollection;)Lcom/google/common/collect/Multimap;"))
+	private static @Nullable Multimap<Identifier, Identifier> analyzeMesh(final QuadCollection geometry, final ModelBaker modelBakery, final Identifier location, final ModelState state) {
+		final Multimap<Identifier, Identifier>[] forbiddenSprites = new Multimap[] { SimpleModelWrapper.findNonBlockSprites(geometry) };
+
 		if (geometry instanceof MeshQuadCollection meshQuadCollection) {
 			meshQuadCollection.getMesh().forEach(quad -> {
 				if (quad.atlas() != QuadAtlas.BLOCK) {
-					Multimap<Identifier, Identifier> forbiddenSprites = forbiddenSpritesRef.get();
-
-					if (forbiddenSprites == null) {
-						forbiddenSprites = HashMultimap.create();
-						forbiddenSpritesRef.set(forbiddenSprites);
+					if (forbiddenSprites[0] == null) {
+						forbiddenSprites[0] = HashMultimap.create();
 					}
 
-					TextureAtlasSprite sprite = modelBakery.materials().spriteFinder(quad.atlas()).find(quad);
-					forbiddenSprites.put(sprite.atlasLocation(), sprite.contents().name());
+					TextureAtlasSprite sprite = modelBakery.materials().spriteFinder(quad.atlas().getId()).find(quad);
+					forbiddenSprites[0].put(sprite.atlasLocation(), sprite.contents().name());
 				}
 			});
 		}
+
+		return forbiddenSprites[0];
 	}
 
 	@Override

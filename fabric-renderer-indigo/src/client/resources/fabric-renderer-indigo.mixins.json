@@ -4,9 +4,7 @@
   "compatibilityLevel": "JAVA_25",
   "plugin": "net.fabricmc.fabric.impl.client.indigo.IndigoMixinConfigPlugin",
   "client": [
-    "BlockModelLighterAccessor",
-    "ItemFeatureRendererAccessor",
-    "ItemFeatureRendererMixin"
+    "BlockModelLighterAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
