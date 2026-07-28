@@ -4,6 +4,8 @@ plugins {
 	id "maven-publish"
 	id "net.fabricmc.fabric-loom" version "1.16.2" apply false
 	id "com.diffplug.spotless" version "8.5.1"
+	id "net.ltgt.errorprone" version "5.1.0" apply false
+	id "net.ltgt.nullaway" version "3.1.0" apply false
 	id "me.modmuss50.remotesign" version "0.5.0" apply false
 	id "me.modmuss50.mod-publish-plugin" version "2.0.1"
 }
@@ -150,9 +152,22 @@ allprojects {
 	apply plugin: "checkstyle"
 	apply plugin: "net.fabricmc.fabric-loom"
 	apply plugin: "com.diffplug.spotless"
+	apply plugin: "net.ltgt.errorprone"
+	apply plugin: "net.ltgt.nullaway"
+
+	nullaway {
+		annotatedPackages.add("net.fabricmc")
+	}
 
 	tasks.withType(JavaCompile).configureEach {
 		it.options.release = 25
+		it.options.errorprone {
+			disableAllChecks = true
+			nullaway {
+				error()
+				excludedFieldAnnotations.add("org.spongepowered.asm.mixin.Shadow")
+			}
+		}
 	}
 
 	java {
@@ -237,6 +252,9 @@ allprojects {
 		testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
 		testImplementation sourceSets.testmodClient.output
 		testImplementation 'org.mockito:mockito-core:5.23.0'
+
+		errorprone "com.google.errorprone:error_prone_core:2.50.0"
+		errorprone "com.uber.nullaway:nullaway:0.13.8"
 	}
 
 	test {
