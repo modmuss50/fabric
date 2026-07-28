@@ -18,6 +18,7 @@ package net.fabricmc.fabric.api.client.renderer.v1.model;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.mojang.math.MatrixUtil;
 import com.mojang.math.Transformation;
@@ -85,12 +86,12 @@ public final class ModelStateHelper {
 
 			@Override
 			public Matrix4fc faceTransformation(Direction face) {
-				return faceTransformations.get(face);
+				return Objects.requireNonNull(faceTransformations.get(face));
 			}
 
 			@Override
 			public Matrix4fc inverseFaceTransformation(Direction face) {
-				return inverseFaceTransformations.get(face);
+				return Objects.requireNonNull(inverseFaceTransformations.get(face));
 			}
 		};
 	}
@@ -143,12 +144,12 @@ public final class ModelStateHelper {
 
 				@Override
 				public Matrix4fc faceTransformation(Direction face) {
-					return faceTransformations.get(face);
+					return Objects.requireNonNull(faceTransformations.get(face));
 				}
 
 				@Override
 				public Matrix4fc inverseFaceTransformation(Direction face) {
-					return inverseFaceTransformations.get(face);
+					return Objects.requireNonNull(inverseFaceTransformations.get(face));
 				}
 			};
 		}

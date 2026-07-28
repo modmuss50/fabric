@@ -18,8 +18,10 @@ package net.fabricmc.fabric.test.transfer;
 
 import java.util.Objects;
 
+import org.jspecify.annotations.Nullable;
+
 public class TestUtil {
-	public static <T> void assertEquals(T expected, T actual) {
+	public static <T> void assertEquals(@Nullable T expected, @Nullable T actual) {
 		if (!Objects.equals(expected, actual)) {
 			throw new AssertionError(String.format("assertEquals failed%nexpected: %s%n but was: %s", expected, actual));
 		}

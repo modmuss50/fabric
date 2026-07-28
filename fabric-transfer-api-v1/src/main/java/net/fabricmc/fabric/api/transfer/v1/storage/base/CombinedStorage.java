@@ -19,7 +19,10 @@ package net.fabricmc.fabric.api.transfer.v1.storage.base;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.StringJoiner;
+
+import org.jspecify.annotations.Nullable;
 
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
@@ -111,7 +114,7 @@ public class CombinedStorage<T, S extends Storage<T>> implements Storage<T> {
 	private class CombinedIterator implements Iterator<StorageView<T>> {
 		final Iterator<S> partIterator = parts.iterator();
 		// Always holds the next StorageView<T>, except during next() while the iterator is being advanced.
-		Iterator<? extends StorageView<T>> currentPartIterator = null;
+		@Nullable Iterator<? extends StorageView<T>> currentPartIterator = null;
 
 		CombinedIterator() {
 			advanceCurrentPartIterator();
@@ -128,6 +131,7 @@ public class CombinedStorage<T, S extends Storage<T>> implements Storage<T> {
 				throw new NoSuchElementException();
 			}
 
+			Iterator<? extends StorageView<T>> currentPartIterator = Objects.requireNonNull(this.currentPartIterator);
 			StorageView<T> returned = currentPartIterator.next();
 
 			// Advance the current part iterator

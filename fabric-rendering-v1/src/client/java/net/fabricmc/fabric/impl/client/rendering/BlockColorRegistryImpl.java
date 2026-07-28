@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.client.rendering;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jspecify.annotations.Nullable;
 
@@ -44,7 +45,7 @@ public final class BlockColorRegistryImpl {
 
 		BlockColorRegistryImpl.blockColors = blockColors;
 
-		map.forEach((block, color) -> blockColors.register(color, block));
+		Objects.requireNonNull(map).forEach((block, color) -> blockColors.register(color, block));
 		map = null;
 	}
 
@@ -61,7 +62,7 @@ public final class BlockColorRegistryImpl {
 			blockColors.register(layers, blocks);
 		} else {
 			for (Block block : blocks) {
-				map.put(block, layers);
+				Objects.requireNonNull(map).put(block, layers);
 			}
 		}
 	}

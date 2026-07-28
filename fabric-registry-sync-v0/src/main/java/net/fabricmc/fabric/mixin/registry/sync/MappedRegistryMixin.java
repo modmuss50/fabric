@@ -103,15 +103,17 @@ public abstract class MappedRegistryMixin<T> implements WritableRegistry<T>, Rem
 	private static final Logger FABRIC_LOGGER = LoggerFactory.getLogger(MappedRegistryMixin.class);
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private Event<RegistryEntryAddedCallback<T>> fabric_addObjectEvent;
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private Event<RegistryIdRemapCallback<T>> fabric_postRemapEvent;
 
 	@Unique
-	private Object2IntMap<Identifier> fabric_prevIndexedEntries;
+	private @Nullable Object2IntMap<Identifier> fabric_prevIndexedEntries;
 	@Unique
-	private BiMap<Identifier, Holder.Reference<T>> fabric_prevEntries;
+	private @Nullable BiMap<Identifier, Holder.Reference<T>> fabric_prevEntries;
 	@Unique
 	// invariant: the sets of keys and values are disjoint (every alias points to a 'deepest' non-alias ID)
 	private Map<Identifier, Identifier> aliases = new HashMap<>();
@@ -357,12 +359,14 @@ public abstract class MappedRegistryMixin<T> implements WritableRegistry<T>, Rem
 	@Override
 	public void unmap() throws RemapException {
 		if (fabric_prevIndexedEntries != null) {
+			Object2IntMap<Identifier> previousIndexedEntries = fabric_prevIndexedEntries;
+			BiMap<Identifier, Holder.Reference<T>> previousEntries = Objects.requireNonNull(fabric_prevEntries);
 			List<Identifier> addedIds = new ArrayList<>();
 
 			// Emit AddObject events for previously culled objects.
-			for (Identifier id : fabric_prevEntries.keySet()) {
+			for (Identifier id : previousEntries.keySet()) {
 				if (!byLocation.containsKey(id)) {
-					if (!fabric_prevIndexedEntries.containsKey(id)) {
+					if (!previousIndexedEntries.containsKey(id)) {
 						throw new IllegalStateException("id missing from previous indexed entries");
 					}
 
@@ -373,17 +377,17 @@ public abstract class MappedRegistryMixin<T> implements WritableRegistry<T>, Rem
 			byLocation.clear();
 			byKey.clear();
 
-			byLocation.putAll(fabric_prevEntries);
+			byLocation.putAll(previousEntries);
 
-			for (Map.Entry<Identifier, Holder.Reference<T>> entry : fabric_prevEntries.entrySet()) {
+			for (Map.Entry<Identifier, Holder.Reference<T>> entry : previousEntries.entrySet()) {
 				ResourceKey<T> entryKey = ResourceKey.create(key(), entry.getKey());
 				byKey.put(entryKey, entry.getValue());
 			}
 
-			remap(fabric_prevIndexedEntries, RemapMode.AUTHORITATIVE);
+			remap(previousIndexedEntries, RemapMode.AUTHORITATIVE);
 
 			for (Identifier id : addedIds) {
-				fabric_getAddObjectEvent().invoker().onEntryAdded(toId.getInt(byLocation.get(id)), id, getValue(id));
+				fabric_getAddObjectEvent().invoker().onEntryAdded(toId.getInt(byLocation.get(id)), id, Objects.requireNonNull(getValue(id)));
 			}
 
 			fabric_prevIndexedEntries = null;
@@ -416,7 +420,7 @@ public abstract class MappedRegistryMixin<T> implements WritableRegistry<T>, Rem
 			);
 		}
 
-		if (old.equals(aliases.get(newId))) {
+		if (Objects.equals(old, aliases.get(newId))) {
 			// since an alias corresponds to at most one identifier, this is the only way to create a cycle
 			// that doesn't already fall under the first condition
 			throw new IllegalArgumentException(
@@ -476,7 +480,7 @@ public abstract class MappedRegistryMixin<T> implements WritableRegistry<T>, Rem
 			at = @At("HEAD"),
 			argsOnly = true
 	)
-	private ResourceKey<T> aliasResourceKeyParameter(ResourceKey<T> original) {
+	private @Nullable ResourceKey<T> aliasResourceKeyParameter(@Nullable ResourceKey<T> original) {
 		if (original == null) {
 			return null;
 		}

@@ -33,6 +33,7 @@ final class ChannelScreen extends Screen {
 	private Button closeButton;
 	private ChannelList channelList;
 
+	@SuppressWarnings("NullAway")
 	ChannelScreen(NetworkingChannelClientTest mod) {
 		super(Component.literal("TODO"));
 		this.mod = mod;

@@ -59,7 +59,7 @@ public record PermissionMap(Map<Identifier, PermissionValue> permissions) {
 		return value != null ? value.get(codec) : null;
 	}
 
-	public Tag getRaw(Identifier identifier) {
+	public @Nullable Tag getRaw(Identifier identifier) {
 		PermissionValue value = this.permissions.get(identifier);
 		return value != null ? value.tag() : null;
 	}

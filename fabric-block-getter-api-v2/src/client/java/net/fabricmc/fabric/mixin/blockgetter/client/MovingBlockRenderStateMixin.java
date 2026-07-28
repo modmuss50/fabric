@@ -38,7 +38,7 @@ abstract class MovingBlockRenderStateMixin implements BlockAndTintGetter {
 	}
 
 	@Override
-	public Holder<Biome> getBiomeFabric(BlockPos pos) {
+	public @Nullable Holder<Biome> getBiomeFabric(BlockPos pos) {
 		return biome;
 	}
 }

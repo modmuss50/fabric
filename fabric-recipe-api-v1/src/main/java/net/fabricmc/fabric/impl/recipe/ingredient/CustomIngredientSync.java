@@ -19,6 +19,8 @@ package net.fabricmc.fabric.impl.recipe.ingredient;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.network.ConfigurationTask;
@@ -46,7 +48,7 @@ public class CustomIngredientSync implements ModInitializer {
 	public static final int PROTOCOL_VERSION_1 = 1;
 	public static final PacketContext.Key<Set<Identifier>> SUPPORTED_CUSTOM_INGREDIENTS = PacketContext.key(Identifier.fromNamespaceAndPath("fabric", "supported_custom_ingredients"));
 
-	public static ServerboundCustomIngredientPayload createResponsePayload(int serverProtocolVersion) {
+	public static @Nullable ServerboundCustomIngredientPayload createResponsePayload(int serverProtocolVersion) {
 		if (serverProtocolVersion < PROTOCOL_VERSION_1) {
 			// Not supposed to happen - notify the server that we didn't understand the query.
 			return null;

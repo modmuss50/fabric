@@ -72,11 +72,11 @@ public final class NetworkingPlayPacketTest implements ModInitializer {
 		dispatcher.register(literal("networktestcommand")
 				.then(argument("stuff", string()).executes(ctx -> {
 					String stuff = StringArgumentType.getString(ctx, "stuff");
-					sendToTestChannel(ctx.getSource().getPlayer(), stuff);
+					sendToTestChannel(Objects.requireNonNull(ctx.getSource().getPlayer()), stuff);
 					return Command.SINGLE_SUCCESS;
 				}))
 				.then(literal("unknown").executes(ctx -> {
-					sendToUnknownChannel(ctx.getSource().getPlayer());
+					sendToUnknownChannel(Objects.requireNonNull(ctx.getSource().getPlayer()));
 					return Command.SINGLE_SUCCESS;
 				}))
 				.then(literal("spamUnknown").executes(ctx -> {
@@ -85,7 +85,7 @@ public final class NetworkingPlayPacketTest implements ModInitializer {
 					return Command.SINGLE_SUCCESS;
 				}))
 				.then(literal("simple").executes(ctx -> {
-					ServerPlayNetworking.send(ctx.getSource().getPlayer(), new OverlayPacket(Component.literal("simple")));
+					ServerPlayNetworking.send(Objects.requireNonNull(ctx.getSource().getPlayer()), new OverlayPacket(Component.literal("simple")));
 					return Command.SINGLE_SUCCESS;
 				}))
 				.then(literal("bundled").executes(ctx -> {
@@ -96,11 +96,11 @@ public final class NetworkingPlayPacketTest implements ModInitializer {
 									ServerPlayNetworking.createClientboundPacket(new OverlayPacket(Component.literal("bundled #3")))
 							))
 					));
-					ServerPlayNetworking.getSender(ctx.getSource().getPlayer()).sendPacket(packet);
+					ServerPlayNetworking.getSender(Objects.requireNonNull(ctx.getSource().getPlayer())).sendPacket(packet);
 					return Command.SINGLE_SUCCESS;
 				}))
 				.then(literal("reconfigure").executes(ctx -> {
-					ServerPlayNetworking.reconfigure(ctx.getSource().getPlayer());
+					ServerPlayNetworking.reconfigure(Objects.requireNonNull(ctx.getSource().getPlayer()));
 					return Command.SINGLE_SUCCESS;
 				}))
 		);

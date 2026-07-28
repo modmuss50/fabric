@@ -31,6 +31,7 @@ import net.minecraft.resources.Identifier;
 public abstract class WrapperUnbakedModel implements UnbakedModel {
 	protected UnbakedModel wrapped;
 
+	@SuppressWarnings("NullAway")
 	protected WrapperUnbakedModel() {
 	}
 

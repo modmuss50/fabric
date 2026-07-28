@@ -53,9 +53,9 @@ public abstract class EntityTypeBuilderMixin<T extends Entity> implements Fabric
 	private Boolean canPotentiallyExecuteCommands = null;
 
 	@Unique
-	private FabricEntityTypeImpl.Builder.Living<? extends LivingEntity> livingBuilder = null;
+	private FabricEntityTypeImpl.Builder.@Nullable Living<? extends LivingEntity> livingBuilder;
 	@Unique
-	private FabricEntityTypeImpl.Builder.Mob<? extends net.minecraft.world.entity.Mob> mobBuilder = null;
+	private FabricEntityTypeImpl.Builder.@Nullable Mob<? extends net.minecraft.world.entity.Mob> mobBuilder;
 
 	@Override
 	public EntityType.Builder<T> alwaysUpdateVelocity(boolean alwaysUpdateVelocity) {

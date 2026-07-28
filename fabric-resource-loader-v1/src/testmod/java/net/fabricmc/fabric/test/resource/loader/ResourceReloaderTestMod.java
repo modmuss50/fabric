@@ -93,6 +93,7 @@ public class ResourceReloaderTestMod implements ModInitializer {
 		private static final DataResourceStore.Key<String> STORE_KEY = new DataResourceStore.Key<>();
 
 		@Override
+		@SuppressWarnings("NullAway")
 		public CompletableFuture<Void> reload(SharedState store, Executor prepareExecutor, PreparationBarrier reloadSynchronizer, Executor applyExecutor) {
 			HolderLookup.Provider registries = store.get(ResourceLoader.REGISTRY_LOOKUP_KEY);
 			registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
@@ -109,6 +110,7 @@ public class ResourceReloaderTestMod implements ModInitializer {
 		private static final Identifier ID = Constants.id("stateful_registry_reloader");
 
 		@Override
+		@SuppressWarnings("NullAway")
 		public CompletableFuture<Void> reload(SharedState store, Executor prepareExecutor, PreparationBarrier reloadSynchronizer, Executor applyExecutor) {
 			this.registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
 			this.registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.AXES);

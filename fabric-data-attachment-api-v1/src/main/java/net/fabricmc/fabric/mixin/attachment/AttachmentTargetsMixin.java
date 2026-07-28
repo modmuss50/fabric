@@ -174,7 +174,7 @@ abstract class AttachmentTargetsMixin implements AttachmentTargetImpl {
 	}
 
 	@Override
-	public Map<AttachmentType<?>, ?> fabric_getAttachments() {
+	public @Nullable Map<AttachmentType<?>, ?> fabric_getAttachments() {
 		return dataAttachments;
 	}
 
@@ -223,7 +223,7 @@ abstract class AttachmentTargetsMixin implements AttachmentTargetImpl {
 		}
 
 		for (Map.Entry<AttachmentType<?>, AttachmentChange> entry : syncedAttachments.entrySet()) {
-			if (((AttachmentTypeImpl<?>) entry.getKey()).syncPredicate().test(this, player)) {
+			if (Objects.requireNonNull(((AttachmentTypeImpl<?>) entry.getKey()).syncPredicate()).test(this, player)) {
 				changeOutput.accept(entry.getValue());
 			}
 		}
@@ -249,7 +249,7 @@ abstract class AttachmentTargetsMixin implements AttachmentTargetImpl {
 			List<AttachmentChange> syncableChanges = new ArrayList<>();
 
 			for (AttachmentChange change : deferredChanges) {
-				if (((AttachmentTypeImpl<?>) change.type()).syncPredicate().test(this, player)) {
+				if (Objects.requireNonNull(((AttachmentTypeImpl<?>) change.type()).syncPredicate()).test(this, player)) {
 					syncableChanges.add(change);
 				}
 			}

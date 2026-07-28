@@ -42,6 +42,7 @@ public abstract class CreateWorldScreenMixin extends Screen {
 	@Shadow
 	private PackRepository tempDataPackRepository;
 
+	@SuppressWarnings("NullAway")
 	private CreateWorldScreenMixin() {
 		super(null);
 	}

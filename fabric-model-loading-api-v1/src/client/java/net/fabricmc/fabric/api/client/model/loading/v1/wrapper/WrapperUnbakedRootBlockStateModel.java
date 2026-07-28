@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class WrapperUnbakedRootBlockStateModel implements BlockStateModel.UnbakedRoot {
 	protected BlockStateModel.UnbakedRoot wrapped;
 
+	@SuppressWarnings("NullAway")
 	protected WrapperUnbakedRootBlockStateModel() {
 	}
 

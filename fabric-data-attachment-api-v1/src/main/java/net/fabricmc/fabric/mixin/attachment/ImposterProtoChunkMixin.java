@@ -75,7 +75,7 @@ abstract class ImposterProtoChunkMixin extends AttachmentTargetsMixin {
 	}
 
 	@Override
-	public Map<AttachmentType<?>, ?> fabric_getAttachments() {
+	public @Nullable Map<AttachmentType<?>, ?> fabric_getAttachments() {
 		return ((AttachmentTargetImpl) this.wrapped).fabric_getAttachments();
 	}
 

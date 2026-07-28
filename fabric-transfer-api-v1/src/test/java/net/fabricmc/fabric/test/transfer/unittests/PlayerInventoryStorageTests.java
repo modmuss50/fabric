@@ -51,6 +51,7 @@ public class PlayerInventoryStorageTests extends AbstractTransferApiTest {
 		testStacking(playerInv -> playerInv::insert);
 	}
 
+	@SuppressWarnings("NullAway")
 	private void testStacking(Function<PlayerInventoryStorage, InsertionFunction> inserterBuilder) {
 		// A bit hacky... but nothing should try using the null player as long as we don't call drop.
 		Inventory inv = new Inventory(null, new EntityEquipment());

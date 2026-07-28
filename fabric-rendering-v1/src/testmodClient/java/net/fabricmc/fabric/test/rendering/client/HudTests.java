@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.rendering.client;
 
+import java.util.Objects;
+
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.DeltaTracker;
@@ -141,13 +143,13 @@ public class HudTests implements ClientModInitializer, FabricClientGameTest {
 			context.assertScreenshotEquals(TestScreenshotComparisonOptions.of("hud_layer_" + AFTER_HOTBAR_AND_BARS).withRegion(924, 924, 200, 80).save());
 
 			// The sleep overlay takes 100 ticks to fully appear, so we start sleeping and wait for 100 ticks
-			context.runOnClient(client -> client.player.setSleepingPos(new BlockPos(0, -59, 0)));
+			context.runOnClient(client -> Objects.requireNonNull(client.player).setSleepingPos(new BlockPos(0, -59, 0)));
 			context.waitTicks(100);
 
 			context.assertScreenshotEquals(TestScreenshotComparisonOptions.of("hud_layer_" + BEFORE_DEMO_TIMER).withRegion(1568, 492, 480, 40).save());
 			context.assertScreenshotEquals(TestScreenshotComparisonOptions.of("hud_layer_" + BEFORE_CHAT).withRegion(0, 924, 600, 20).save());
 
-			context.runOnClient(client -> client.player.clearSleepingPos());
+			context.runOnClient(client -> Objects.requireNonNull(client.player).clearSleepingPos());
 			context.waitTick();
 			context.getInput().holdKey(InputConstants.KEY_TAB); // Show player list
 			context.waitTick();

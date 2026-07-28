@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.google.common.collect.Maps;
@@ -72,7 +73,7 @@ public final class FabricLootTableProviderImpl {
 
 			for (Map.Entry<Identifier, LootTable> entry : builders.entrySet()) {
 				JsonObject tableJson = (JsonObject) LootTable.DIRECT_CODEC.encodeStart(ops, entry.getValue()).getOrThrow(IllegalStateException::new);
-				FabricDataGenHelper.addConditions(tableJson, conditionMap.remove(entry.getKey()));
+				FabricDataGenHelper.addConditions(tableJson, Objects.requireNonNull(conditionMap.remove(entry.getKey())));
 				futures.add(DataProvider.saveStable(cache, tableJson, getOutputPath(packOutput, entry.getKey())));
 			}
 

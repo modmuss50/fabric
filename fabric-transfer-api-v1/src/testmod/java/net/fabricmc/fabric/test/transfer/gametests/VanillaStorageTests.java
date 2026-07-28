@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.transfer.gametests;
 
+import java.util.Objects;
+
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.minecraft.core.BlockPos;
@@ -301,7 +303,7 @@ public class VanillaStorageTests {
 	@GameTest(structure = "fabric-transfer-api-v1-testmod:double_chest_comparators", skyAccess = true)
 	public void testDoubleChestComparator(GameTestHelper helper) {
 		BlockPos chestPos = new BlockPos(2, 1, 2);
-		Storage<ItemVariant> storage = ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(chestPos), Direction.UP);
+		Storage<ItemVariant> storage = Objects.requireNonNull(ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(chestPos), Direction.UP));
 		helper.assertTrue(storage != null, Component.literal("Storage must not be null"));
 
 		// Insert one item
@@ -311,7 +313,7 @@ public class VanillaStorageTests {
 		}
 
 		// Check that the inventory and slotted storages match
-		Container inventory = HopperBlockEntity.getContainerAt(helper.getLevel(), helper.absolutePos(chestPos));
+		Container inventory = Objects.requireNonNull(HopperBlockEntity.getContainerAt(helper.getLevel(), helper.absolutePos(chestPos)));
 		helper.assertTrue(inventory != null, Component.literal("Inventory must not be null"));
 
 		if (!(storage instanceof SlottedStorage<ItemVariant> slottedStorage)) {
@@ -358,7 +360,7 @@ public class VanillaStorageTests {
 
 		for (int i = 0; i < 200; ++i) { // Run many times as this can be random.
 			helper.setBlock(pos, Blocks.COMPOSTER.defaultBlockState());
-			Storage<ItemVariant> storage = ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(pos), Direction.UP);
+			Storage<ItemVariant> storage = Objects.requireNonNull(ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(pos), Direction.UP));
 
 			try (Transaction tx = Transaction.openOuter()) {
 				if (storage.insert(carrot, 1, tx) != 1) {
@@ -381,7 +383,7 @@ public class VanillaStorageTests {
 	public void testJukeboxState(GameTestHelper helper) {
 		BlockPos pos = new BlockPos(2, 2, 2);
 		helper.setBlock(pos, Blocks.JUKEBOX.defaultBlockState());
-		Storage<ItemVariant> storage = ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(pos), Direction.UP);
+		Storage<ItemVariant> storage = Objects.requireNonNull(ItemStorage.SIDED.find(helper.getLevel(), helper.absolutePos(pos), Direction.UP));
 
 		try (Transaction tx = Transaction.openOuter()) {
 			storage.insert(ItemVariant.of(Items.MUSIC_DISC_11), 1, tx);

@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.attachment.client;
 
+import java.util.Objects;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -39,7 +41,7 @@ public class AttachmentSyncClient implements ClientModInitializer {
 				ClientboundAttachmentSyncPayload.TYPE,
 				(payload, context) -> {
 					try {
-						payload.attachment().tryApply(context.client().level);
+						payload.attachment().tryApply(Objects.requireNonNull(context.client().level));
 					} catch (AttachmentSyncException e) {
 						AttachmentEntrypoint.LOGGER.error("Error accepting attachment changes", e);
 						context.responseSender().disconnect(e.getComponent());

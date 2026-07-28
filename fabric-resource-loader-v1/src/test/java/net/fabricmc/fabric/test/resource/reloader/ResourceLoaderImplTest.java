@@ -35,6 +35,7 @@ import net.fabricmc.fabric.impl.resource.ResourceLoaderImpl;
 
 public class ResourceLoaderImplTest {
 	@Test
+	@SuppressWarnings("NullAway")
 	public void testReloaderSorting() {
 		ResourceLoader resourceLoader = ResourceLoader.get(PackType.CLIENT_RESOURCES);
 

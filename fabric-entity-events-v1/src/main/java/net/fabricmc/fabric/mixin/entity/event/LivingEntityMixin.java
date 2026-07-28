@@ -61,7 +61,7 @@ abstract class LivingEntityMixin {
 	public abstract Optional<BlockPos> getSleepingPos();
 
 	@WrapOperation(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;killedEntity(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/damagesource/DamageSource;)Z"))
-	private boolean onEntityKilledOther(Entity entity, ServerLevel serverLevel, @Nullable LivingEntity attacker, DamageSource damageSource, Operation<Boolean> original) {
+	private boolean onEntityKilledOther(Entity entity, ServerLevel serverLevel, LivingEntity attacker, DamageSource damageSource, Operation<Boolean> original) {
 		boolean result = original.call(entity, serverLevel, attacker, damageSource);
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(serverLevel, entity, attacker, damageSource);
 		return result;
@@ -123,7 +123,7 @@ abstract class LivingEntityMixin {
 	}
 
 	@WrapOperation(method = "getBedOrientation", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/BedBlock;getBedOrientation(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/Direction;"))
-	private Direction onGetSleepingDirection(BlockGetter level, BlockPos sleepingPos, Operation<Direction> operation) {
+	private @Nullable Direction onGetSleepingDirection(BlockGetter level, BlockPos sleepingPos, Operation<Direction> operation) {
 		final Direction sleepingDirection = operation.call(level, sleepingPos);
 		return EntitySleepEvents.MODIFY_SLEEPING_DIRECTION.invoker().modifySleepDirection((LivingEntity) (Object) this, sleepingPos, sleepingDirection);
 	}

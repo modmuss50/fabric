@@ -59,7 +59,7 @@ public final class PacketContextImpl implements PacketContext {
 	}
 
 	@Override
-	public <T> void set(Key<T> key, T value) {
+	public <T> void set(Key<T> key, @Nullable T value) {
 		this.lock.writeLock().lock();
 
 		if (value == null) {

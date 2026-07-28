@@ -18,6 +18,7 @@ package net.fabricmc.fabric.mixin.networking;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,7 +35,7 @@ import net.fabricmc.fabric.impl.networking.FabricCustomPayloadStreamCodec;
 @Mixin(targets = "net.minecraft.network.protocol.common.custom.CustomPacketPayload$1")
 public abstract class CustomPayloadStreamCodecMixin<B extends FriendlyByteBuf> implements StreamCodec<B, CustomPacketPayload>, FabricCustomPayloadStreamCodec<B> {
 	@Unique
-	private CustomPayloadTypeProvider<B> customPayloadTypeProvider;
+	private @Nullable CustomPayloadTypeProvider<B> customPayloadTypeProvider;
 
 	@Override
 	public void fabric_setCustomPayloadTypeProvider(CustomPayloadTypeProvider<B> customPayloadTypeProvider) {

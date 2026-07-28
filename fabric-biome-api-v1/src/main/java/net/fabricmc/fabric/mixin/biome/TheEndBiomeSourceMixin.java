@@ -52,6 +52,7 @@ public class TheEndBiomeSourceMixin extends BiomeSourceMixin {
 	public static MapCodec<TheEndBiomeSource> CODEC;
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private Supplier<TheEndBiomeData.Overrides> overrides;
 
 	@Unique

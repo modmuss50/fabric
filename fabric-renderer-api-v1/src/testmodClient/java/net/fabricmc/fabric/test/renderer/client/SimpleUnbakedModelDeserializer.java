@@ -88,7 +88,7 @@ public class SimpleUnbakedModelDeserializer implements UnbakedModelDeserializer 
 		}
 	}
 
-	protected Identifier getParentLocation(final JsonObject object) {
+	protected @Nullable Identifier getParentLocation(final JsonObject object) {
 		String parentName = GsonHelper.getAsString(object, "parent", "");
 		return parentName.isEmpty() ? null : Identifier.parse(parentName);
 	}

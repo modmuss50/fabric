@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -35,7 +38,7 @@ import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 public class FabricClientGameTestRunner {
 	private static final String ENTRYPOINT_KEY = "fabric-client-gametest";
 
-	public static EntrypointContainer<FabricClientGameTest> currentlyRunningGameTest = null;
+	public static @Nullable EntrypointContainer<FabricClientGameTest> currentlyRunningGameTest = null;
 
 	public static void start() {
 		// make the game think the window is focused
@@ -106,16 +109,19 @@ public class FabricClientGameTestRunner {
 		context.getInput().setCursorPos(context.computeOnClient(client -> client.getWindow().getScreenWidth()) * 0.5, context.computeOnClient(client -> client.getWindow().getScreenHeight()) * 0.5);
 
 		if (ThreadingImpl.isServerRunning) {
-			throw new AssertionError("Client gametest %s finished while a server is still running".formatted(currentlyRunningGameTest.getDefinition()));
+			throw new AssertionError("Client gametest %s finished while a server is still running".formatted(Objects.requireNonNull(currentlyRunningGameTest).getDefinition()));
 		}
 
 		context.runOnClient(client -> {
 			if (client.level != null) {
-				throw new AssertionError("Client gametest %s finished while still connected to a server".formatted(currentlyRunningGameTest.getDefinition()));
+				throw new AssertionError("Client gametest %s finished while still connected to a server".formatted(Objects.requireNonNull(currentlyRunningGameTest).getDefinition()));
 			}
 
 			if (!(client.gui.screen() instanceof TitleScreen)) {
-				throw new AssertionError("Client gametest %s did not finish on the title screen. Current screen %s".formatted(currentlyRunningGameTest.getDefinition(), client.gui.screen().getClass().getName()));
+				throw new AssertionError("Client gametest %s did not finish on the title screen. Current screen %s".formatted(
+						Objects.requireNonNull(currentlyRunningGameTest).getDefinition(),
+						Objects.requireNonNull(client.gui.screen()).getClass().getName()
+				));
 			}
 		});
 	}

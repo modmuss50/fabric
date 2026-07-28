@@ -214,7 +214,7 @@ public abstract class FabricDynamicRegistryProvider implements DataProvider {
 		}
 	}
 
-	private record ConditionalEntry<T>(T value, @Nullable ResourceCondition... conditions) {
+	private record ConditionalEntry<T>(T value, ResourceCondition @Nullable [] conditions) {
 	}
 
 	private static class RegistryEntries<T> {
@@ -236,7 +236,7 @@ public abstract class FabricDynamicRegistryProvider implements DataProvider {
 			return new RegistryEntries<>(lookup, loaderEntry.key(), loaderEntry.elementCodec());
 		}
 
-		Holder<T> add(ResourceKey<T> key, T value, @Nullable ResourceCondition[] conditions) {
+		Holder<T> add(ResourceKey<T> key, T value, ResourceCondition @Nullable [] conditions) {
 			if (resources.put(key, new ConditionalEntry<>(value, conditions)) != null) {
 				throw new IllegalArgumentException("Trying to add resource key " + key + " more than once.");
 			}
@@ -282,7 +282,7 @@ public abstract class FabricDynamicRegistryProvider implements DataProvider {
 		return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
 	}
 
-	private static <E> CompletableFuture<?> writeToPath(Path path, CachedOutput cache, DynamicOps<JsonElement> json, Encoder<E> encoder, E value, @Nullable ResourceCondition[] conditions) {
+	private static <E> CompletableFuture<?> writeToPath(Path path, CachedOutput cache, DynamicOps<JsonElement> json, Encoder<E> encoder, E value, ResourceCondition @Nullable [] conditions) {
 		Optional<JsonElement> optional = encoder.encodeStart(json, value).resultOrPartial((error) -> {
 			LOGGER.error("Couldn't serialize element {}: {}", path, error);
 		});

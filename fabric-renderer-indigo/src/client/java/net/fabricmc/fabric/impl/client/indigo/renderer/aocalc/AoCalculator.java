@@ -21,6 +21,7 @@ import static net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHel
 import static net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper.LIGHT_FACE_FLAG;
 
 import java.util.BitSet;
+import java.util.Objects;
 
 import com.mojang.blaze3d.vertex.QuadInstance;
 import org.joml.Vector3f;
@@ -75,6 +76,7 @@ public class AoCalculator {
 	public final float[] ao = new float[4];
 	public final int[] light = new int[4];
 
+	@SuppressWarnings("NullAway")
 	public AoCalculator(BlockModelLighter.Cache lightCache) {
 		this.lightCache = lightCache;
 
@@ -91,6 +93,7 @@ public class AoCalculator {
 		completionFlags.clear();
 	}
 
+	@SuppressWarnings("NullAway")
 	public void clear() {
 		level = null;
 	}
@@ -143,6 +146,7 @@ public class AoCalculator {
 	private final Vector3f vanillaPos1 = new Vector3f();
 	private final Vector3f vanillaPos2 = new Vector3f();
 	private final Vector3f vanillaPos3 = new Vector3f();
+	@SuppressWarnings("NullAway")
 	private final BakedQuad.MaterialInfo vanillaMaterialInfo = new BakedQuad.MaterialInfo(null, ChunkSectionLayer.SOLID, Sheets.cutoutBlockItemSheet(), Sheets.cutoutBlockItemGlintSheet(), Sheets.cutoutBlockItemGlintSpecialSheet(), -1, null, 0);
 
 	private void calcVanilla(QuadViewImpl quad, float[] aoDest, int[] lightDest) {
@@ -282,7 +286,7 @@ public class AoCalculator {
 			float ao = 0, sky = 0, block = 0, maxAo = 0;
 			int maxSky = 0, maxBlock = 0;
 
-			final float x = normal.x();
+			final float x = Objects.requireNonNull(normal).x();
 
 			if (!Mth.equal(0f, x)) {
 				final Direction face = x > 0 ? Direction.EAST : Direction.WEST;

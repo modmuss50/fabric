@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.recipe.ingredient.client;
 
+import java.util.Objects;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.fabricmc.fabric.impl.recipe.ingredient.ClientboundCustomIngredientPayload;
@@ -28,7 +30,7 @@ public class CustomIngredientSyncClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientConfigurationNetworking.registerGlobalReceiver(ClientboundCustomIngredientPayload.TYPE, (payload, context) -> {
-			context.responseSender().sendPacket(CustomIngredientSync.createResponsePayload(payload.protocolVersion()));
+			context.responseSender().sendPacket(Objects.requireNonNull(CustomIngredientSync.createResponsePayload(payload.protocolVersion())));
 		});
 	}
 }

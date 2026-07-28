@@ -94,7 +94,7 @@ abstract class RenderStateMixin implements FabricRenderState {
 	}
 
 	@Override
-	public <T> void setData(RenderStateDataKey<T> key, T value) {
+	public <T> void setData(RenderStateDataKey<T> key, @Nullable T value) {
 		if (renderStateData == null) {
 			renderStateData = new Reference2ObjectOpenHashMap<>();
 		}

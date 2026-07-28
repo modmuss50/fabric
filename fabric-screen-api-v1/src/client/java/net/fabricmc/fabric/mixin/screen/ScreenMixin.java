@@ -18,6 +18,7 @@ package net.fabricmc.fabric.mixin.screen;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -55,65 +56,65 @@ abstract class ScreenMixin implements ScreenExtensions {
 	private List<Renderable> renderables;
 
 	@Unique
-	private List<AbstractWidget> fabricButtons;
+	private @Nullable List<AbstractWidget> fabricButtons;
 	@Unique
-	private Event<ScreenEvents.Remove> removeEvent;
+	private @Nullable Event<ScreenEvents.Remove> removeEvent;
 	@Unique
-	private Event<ScreenEvents.BeforeTick> beforeTickEvent;
+	private @Nullable Event<ScreenEvents.BeforeTick> beforeTickEvent;
 	@Unique
-	private Event<ScreenEvents.AfterTick> afterTickEvent;
+	private @Nullable Event<ScreenEvents.AfterTick> afterTickEvent;
 	@Unique
-	private Event<ScreenEvents.BeforeExtract> beforeRenderEvent;
+	private @Nullable Event<ScreenEvents.BeforeExtract> beforeRenderEvent;
 	@Unique
-	private Event<ScreenEvents.AfterBackground> afterBackgroundEvent;
+	private @Nullable Event<ScreenEvents.AfterBackground> afterBackgroundEvent;
 	@Unique
-	private Event<ScreenEvents.AfterExtract> afterRenderEvent;
+	private @Nullable Event<ScreenEvents.AfterExtract> afterRenderEvent;
 
 	// Keyboard
 	@Unique
-	private Event<ScreenKeyboardEvents.AllowKeyPress> allowKeyPressEvent;
+	private @Nullable Event<ScreenKeyboardEvents.AllowKeyPress> allowKeyPressEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.BeforeKeyPress> beforeKeyPressEvent;
+	private @Nullable Event<ScreenKeyboardEvents.BeforeKeyPress> beforeKeyPressEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.AfterKeyPress> afterKeyPressEvent;
+	private @Nullable Event<ScreenKeyboardEvents.AfterKeyPress> afterKeyPressEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.AllowKeyRelease> allowKeyReleaseEvent;
+	private @Nullable Event<ScreenKeyboardEvents.AllowKeyRelease> allowKeyReleaseEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.BeforeKeyRelease> beforeKeyReleaseEvent;
+	private @Nullable Event<ScreenKeyboardEvents.BeforeKeyRelease> beforeKeyReleaseEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.AfterKeyRelease> afterKeyReleaseEvent;
+	private @Nullable Event<ScreenKeyboardEvents.AfterKeyRelease> afterKeyReleaseEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.AllowCharType> allowCharTypeEvent;
+	private @Nullable Event<ScreenKeyboardEvents.AllowCharType> allowCharTypeEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.BeforeCharType> beforeCharTypeEvent;
+	private @Nullable Event<ScreenKeyboardEvents.BeforeCharType> beforeCharTypeEvent;
 	@Unique
-	private Event<ScreenKeyboardEvents.AfterCharType> afterCharTypeEvent;
+	private @Nullable Event<ScreenKeyboardEvents.AfterCharType> afterCharTypeEvent;
 
 	// Mouse
 	@Unique
-	private Event<ScreenMouseEvents.AllowMouseClick> allowMouseClickEvent;
+	private @Nullable Event<ScreenMouseEvents.AllowMouseClick> allowMouseClickEvent;
 	@Unique
-	private Event<ScreenMouseEvents.BeforeMouseClick> beforeMouseClickEvent;
+	private @Nullable Event<ScreenMouseEvents.BeforeMouseClick> beforeMouseClickEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AfterMouseClick> afterMouseClickEvent;
+	private @Nullable Event<ScreenMouseEvents.AfterMouseClick> afterMouseClickEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AllowMouseRelease> allowMouseReleaseEvent;
+	private @Nullable Event<ScreenMouseEvents.AllowMouseRelease> allowMouseReleaseEvent;
 	@Unique
-	private Event<ScreenMouseEvents.BeforeMouseRelease> beforeMouseReleaseEvent;
+	private @Nullable Event<ScreenMouseEvents.BeforeMouseRelease> beforeMouseReleaseEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AfterMouseRelease> afterMouseReleaseEvent;
+	private @Nullable Event<ScreenMouseEvents.AfterMouseRelease> afterMouseReleaseEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AllowMouseDrag> allowMouseDragEvent;
+	private @Nullable Event<ScreenMouseEvents.AllowMouseDrag> allowMouseDragEvent;
 	@Unique
-	private Event<ScreenMouseEvents.BeforeMouseDrag> beforeMouseDragEvent;
+	private @Nullable Event<ScreenMouseEvents.BeforeMouseDrag> beforeMouseDragEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AfterMouseDrag> afterMouseDragEvent;
+	private @Nullable Event<ScreenMouseEvents.AfterMouseDrag> afterMouseDragEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AllowMouseScroll> allowMouseScrollEvent;
+	private @Nullable Event<ScreenMouseEvents.AllowMouseScroll> allowMouseScrollEvent;
 	@Unique
-	private Event<ScreenMouseEvents.BeforeMouseScroll> beforeMouseScrollEvent;
+	private @Nullable Event<ScreenMouseEvents.BeforeMouseScroll> beforeMouseScrollEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AfterMouseScroll> afterMouseScrollEvent;
+	private @Nullable Event<ScreenMouseEvents.AfterMouseScroll> afterMouseScrollEvent;
 
 	@Inject(method = "extractRenderStateWithTooltipAndSubtitles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;extractBackground(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V", shift = At.Shift.AFTER))
 	public final void extractWithTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
@@ -195,7 +196,7 @@ abstract class ScreenMixin implements ScreenExtensions {
 	}
 
 	@Unique
-	private <T> Event<T> ensureEventsAreInitialized(Event<T> event) {
+	private <T> Event<T> ensureEventsAreInitialized(@Nullable Event<T> event) {
 		if (event == null) {
 			throw new IllegalStateException(String.format("[fabric-screen-api-v1] The current screen (%s) has not been correctly initialised, please send this crash log to the mod author. This is usually caused by calling setScreen on the wrong thread.", this.getClass().getName()));
 		}

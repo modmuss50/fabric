@@ -18,8 +18,6 @@ package net.fabricmc.fabric.impl.transfer.fluid;
 
 import java.util.Objects;
 
-import org.jspecify.annotations.Nullable;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
@@ -87,7 +85,7 @@ public class FluidVariantImpl implements FluidVariant {
 	}
 
 	@Override
-	public @Nullable DataComponentPatch getComponentsPatch() {
+	public DataComponentPatch getComponentsPatch() {
 		return components;
 	}
 

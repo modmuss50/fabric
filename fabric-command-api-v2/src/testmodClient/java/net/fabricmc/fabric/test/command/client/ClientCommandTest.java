@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.command.client;
 
+import java.util.Objects;
+
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
@@ -164,9 +166,9 @@ public final class ClientCommandTest implements ClientModInitializer {
 			}
 
 			Minecraft client = Minecraft.getInstance();
-			ClientSuggestionProvider suggestionsProvider = client.getConnection().getSuggestionsProvider();
+			ClientSuggestionProvider suggestionsProvider = Objects.requireNonNull(client.getConnection()).getSuggestionsProvider();
 
-			RootCommandNode<FabricClientCommandSource> rootNode = ClientCommands.getActiveDispatcher().getRoot();
+			RootCommandNode<FabricClientCommandSource> rootNode = Objects.requireNonNull(ClientCommands.getActiveDispatcher()).getRoot();
 			CommandNode<FabricClientCommandSource> hiddenClientCommand = rootNode.getChild("hidden_client_command");
 
 			if (!(suggestionsProvider instanceof FabricClientCommandSource)) {

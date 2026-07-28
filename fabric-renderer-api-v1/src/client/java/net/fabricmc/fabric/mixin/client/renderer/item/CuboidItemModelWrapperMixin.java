@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import org.joml.Matrix4fc;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -48,7 +49,7 @@ import net.fabricmc.fabric.api.client.renderer.v1.model.MeshQuadCollection;
 @Mixin(CuboidItemModelWrapper.class)
 abstract class CuboidItemModelWrapperMixin implements ItemModel {
 	@Unique
-	private Mesh mesh;
+	private @Nullable Mesh mesh;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void onReturnInit(List<ItemTintSource> tints, QuadCollection quads, ModelRenderProperties properties, Matrix4fc transformation, CallbackInfo ci) {

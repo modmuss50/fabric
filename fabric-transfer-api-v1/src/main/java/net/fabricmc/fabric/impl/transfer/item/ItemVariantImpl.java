@@ -67,7 +67,6 @@ public class ItemVariantImpl implements ItemVariant {
 		return item;
 	}
 
-	@Nullable
 	@Override
 	public DataComponentPatch getComponentsPatch() {
 		return components;

@@ -272,7 +272,7 @@ public final class HudStatusBarHeightRegistryImpl implements ClientModInitialize
 		SequencedSet<Identifier> orderedHeightProviders = new LinkedHashSet<>();
 
 		for (Identifier id : RESOLVED_VANILLA_HEIGHT_PROVIDERS.keySet()) {
-			for (HudLayer hudLayer : HudElementRegistryImpl.ROOT_ELEMENTS.get(id).layers()) {
+			for (HudLayer hudLayer : Objects.requireNonNull(HudElementRegistryImpl.ROOT_ELEMENTS.get(id)).layers()) {
 				addOrderedHeightProvider(hudLayer, heightProviderLookup, orderedHeightProviders::add);
 			}
 		}
@@ -304,7 +304,7 @@ public final class HudStatusBarHeightRegistryImpl implements ClientModInitialize
 				return heightProvider;
 			} else if (heightProviderLookup.containsKey(heightProviderLocation)) {
 				heightProvider = reduceToIntFunctions(heightProvider,
-						heightProviderLookup.get(heightProviderLocation),
+						Objects.requireNonNull(heightProviderLookup.get(heightProviderLocation)),
 						Integer::sum);
 			}
 		}
@@ -315,7 +315,7 @@ public final class HudStatusBarHeightRegistryImpl implements ClientModInitialize
 	private static ResolvedHeightProvider resolveMaximumHeightProvider(Identifier id, Map<Identifier, StatusBarHeightProvider> heightProviderLookup, SequencedCollection<Identifier> orderedHeightProviders) {
 		// combines all height providers "below" and including a hud element
 		ResolvedHeightProvider heightProvider = resolveHeightProvider(id, heightProviderLookup, orderedHeightProviders);
-		return reduceToIntFunctions(heightProviderLookup.get(id), heightProvider, Integer::sum);
+		return reduceToIntFunctions(Objects.requireNonNull(heightProviderLookup.get(id)), heightProvider, Integer::sum);
 	}
 
 	private static ResolvedHeightProvider reduceToIntFunctions(ToIntFunction<Player> first, ToIntFunction<Player> second, IntBinaryOperator operator) {

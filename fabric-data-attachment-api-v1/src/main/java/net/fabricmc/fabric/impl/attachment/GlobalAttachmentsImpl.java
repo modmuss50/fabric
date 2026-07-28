@@ -22,6 +22,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.attachment.v1.GlobalAttachments;
 import net.fabricmc.fabric.impl.attachment.sync.AttachmentChange;
@@ -46,7 +47,9 @@ public class GlobalAttachmentsImpl implements GlobalAttachments, AttachmentTarge
 				// if packet listener is not ServerGamePacketListenerImpl, then player is not in PLAY phase yet
 				// initial sync will handle it
 				if (connection.getPacketListener() instanceof ServerGamePacketListenerImpl serverGamePacketListener) {
-					if (((AttachmentTypeImpl<?>) type).syncPredicate().test(this, serverGamePacketListener.player)) {
+					AttachmentSyncPredicate predicate = ((AttachmentTypeImpl<?>) type).syncPredicate();
+
+					if (predicate != null && predicate.test(this, serverGamePacketListener.player)) {
 						AttachmentSync.trySync(change, serverGamePacketListener.player);
 					}
 				}

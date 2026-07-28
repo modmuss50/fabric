@@ -50,6 +50,7 @@ import net.fabricmc.fabric.impl.resource.pack.ModNioPackResources;
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin implements DataResourceStore, FabricOriginalKnownPacksGetter {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private List<KnownPack> originalKnownPacks;
 
 	@Shadow
@@ -79,7 +80,7 @@ public class MinecraftServerMixin implements DataResourceStore, FabricOriginalKn
 
 		Pack profile = resourcePackManager.getPack(profileId);
 
-		if (profile.getPackSource() instanceof BuiltinModPackSource) {
+		if (profile != null && profile.getPackSource() instanceof BuiltinModPackSource) {
 			boolean foundBuiltinPack = false;
 			boolean disabled = false;
 

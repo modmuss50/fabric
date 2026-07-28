@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.pipeline.MainTarget;
@@ -81,9 +82,9 @@ public class ClientGameTestTest implements FabricClientGameTest {
 			}
 
 			{
-				BlockPos chestPos = context.computeOnClient(client -> BlockPos.containing(client.player.position()).east().east().above().above());
+				BlockPos chestPos = context.computeOnClient(client -> BlockPos.containing(Objects.requireNonNull(client.player).position()).east().east().above().above());
 				singleplayer.getServer().runCommand("setblock %d %d %d minecraft:chest".formatted(chestPos.getX(), chestPos.getY(), chestPos.getZ()));
-				context.waitFor(client -> client.level.getBlockState(chestPos).is(Blocks.CHEST));
+				context.waitFor(client -> Objects.requireNonNull(client.level).getBlockState(chestPos).is(Blocks.CHEST));
 				context.getInput().lookAt(chestPos);
 				context.waitTick();
 				context.getInput().pressKey(options -> options.keyUse);

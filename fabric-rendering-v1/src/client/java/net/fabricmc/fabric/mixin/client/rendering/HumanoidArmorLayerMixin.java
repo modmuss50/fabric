@@ -38,6 +38,7 @@ import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<S extends HumanoidRenderState, M extends HumanoidModel<S>, A extends HumanoidModel<S>> extends RenderLayer<S, M> {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private HumanoidRenderState humanoidRenderState;
 
 	public HumanoidArmorLayerMixin(RenderLayerParent<S, M> renderLayerParent) {

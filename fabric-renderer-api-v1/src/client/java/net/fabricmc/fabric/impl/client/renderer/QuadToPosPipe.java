@@ -16,18 +16,20 @@
 
 package net.fabricmc.fabric.impl.client.renderer;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import org.jspecify.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadView;
 
 public class QuadToPosPipe implements Consumer<QuadView> {
 	private final Consumer<Vector3fc> posConsumer;
 	private final Vector3f vec;
-	public Matrix4fc matrix;
+	public @Nullable Matrix4fc matrix;
 
 	public QuadToPosPipe(Consumer<Vector3fc> posConsumer, Vector3f vec) {
 		this.posConsumer = posConsumer;
@@ -36,6 +38,8 @@ public class QuadToPosPipe implements Consumer<QuadView> {
 
 	@Override
 	public void accept(QuadView quad) {
+		Matrix4fc matrix = Objects.requireNonNull(this.matrix);
+
 		for (int i = 0; i < 4; i++) {
 			posConsumer.accept(quad.copyPos(i, vec).mulPosition(matrix));
 		}

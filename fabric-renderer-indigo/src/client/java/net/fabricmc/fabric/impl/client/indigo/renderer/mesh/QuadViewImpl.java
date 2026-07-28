@@ -30,6 +30,8 @@ import static net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingForma
 import static net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingFormat.VERTEX_Y;
 import static net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingFormat.VERTEX_Z;
 
+import java.util.Objects;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix4f;
@@ -63,7 +65,7 @@ public class QuadViewImpl implements QuadView {
 	protected final Vector3f faceNormal = new Vector3f();
 
 	/** Size and where it comes from will vary in subtypes. But in all cases quad is fully encoded to array. */
-	protected int[] data;
+	protected int[] data = new int[0];
 
 	/** Beginning of the quad. Also the header index. */
 	protected int baseIndex = 0;
@@ -214,7 +216,7 @@ public class QuadViewImpl implements QuadView {
 
 			final int normal = data[normalIndex(vertexIndex)];
 			NormalHelper.unpackNormal(normal, target);
-			return target;
+			return Objects.requireNonNull(target);
 		} else {
 			return null;
 		}
@@ -234,7 +236,7 @@ public class QuadViewImpl implements QuadView {
 	@Override
 	public final Direction lightFace() {
 		computeGeometry();
-		return EncodingFormat.lightFace(data[baseIndex + HEADER_BITS]);
+		return Objects.requireNonNull(EncodingFormat.lightFace(data[baseIndex + HEADER_BITS]));
 	}
 
 	@Override

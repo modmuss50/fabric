@@ -101,6 +101,7 @@ public final class ContentRegistryTest implements ModInitializer {
 	public static final TagKey<Fluid> WATER_LIKE_FLUID_KEY = TagKey.create(Registries.FLUID, id("water_like"));
 
 	@Override
+	@SuppressWarnings("NullAway")
 	public void onInitialize() {
 		// Expected behavior:
 		//  - diamond block is now flammable

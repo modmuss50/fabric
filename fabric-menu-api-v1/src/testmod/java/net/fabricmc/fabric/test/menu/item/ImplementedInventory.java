@@ -18,6 +18,8 @@ package net.fabricmc.fabric.test.menu.item;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -100,7 +102,7 @@ public interface ImplementedInventory extends WorldlyContainer {
 	 * @return true if the stack can be inserted
 	 */
 	@Override
-	default boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+	default boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
 		return true;
 	}
 

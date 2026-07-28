@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.impl.client.gametest.util;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,7 @@ public final class ClientGameTestImpl {
 		}
 	}
 
-	private static boolean isExperimentalWarningScreen(Screen screen) {
+	private static boolean isExperimentalWarningScreen(@Nullable Screen screen) {
 		if (!(screen instanceof ConfirmScreen)) {
 			return false;
 		}

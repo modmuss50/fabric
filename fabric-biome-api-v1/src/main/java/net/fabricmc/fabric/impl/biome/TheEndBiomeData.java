@@ -156,7 +156,7 @@ public final class TheEndBiomeData {
 			}
 		}
 
-		private <T extends Holder<Biome>> T pick(T key, T defaultValue, Map<T, WeightedPicker<T>> pickers, int x, int z, Climate.Sampler noise) {
+		private <T extends Holder<Biome>> T pick(T key, T defaultValue, @Nullable Map<T, WeightedPicker<T>> pickers, int x, int z, Climate.Sampler noise) {
 			if (pickers == null) return defaultValue;
 
 			WeightedPicker<T> picker = pickers.get(key);

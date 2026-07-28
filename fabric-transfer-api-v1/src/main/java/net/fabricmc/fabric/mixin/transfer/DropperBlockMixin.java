@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.transfer;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -51,7 +53,7 @@ public class DropperBlockMixin {
 			allow = 1
 	)
 	public void hookDispense(ServerLevel level, BlockState blockState, BlockPos pos, CallbackInfo ci) {
-		DispenserBlockEntity dispenser = (DispenserBlockEntity) level.getBlockEntity(pos);
+		DispenserBlockEntity dispenser = (DispenserBlockEntity) Objects.requireNonNull(level.getBlockEntity(pos));
 		Direction direction = dispenser.getBlockState().getValue(DispenserBlock.FACING);
 
 		Storage<ItemVariant> target = ItemStorage.SIDED.find(level, pos.relative(direction), direction.getOpposite());

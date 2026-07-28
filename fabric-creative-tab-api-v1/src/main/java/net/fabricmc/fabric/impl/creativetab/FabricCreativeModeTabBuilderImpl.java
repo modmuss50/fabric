@@ -24,7 +24,7 @@ public final class FabricCreativeModeTabBuilderImpl extends CreativeModeTab.Buil
 
 	public FabricCreativeModeTabBuilderImpl() {
 		// Set when building.
-		super(null, -1);
+		super(CreativeModeTab.Row.TOP, -1);
 	}
 
 	@Override

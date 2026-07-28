@@ -18,6 +18,8 @@ package net.fabricmc.fabric.test.menu.menu;
 
 import java.util.Optional;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -29,19 +31,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.fabricmc.fabric.test.menu.MenuTest;
 
 public class PositionedBagMenu extends BagMenu implements PositionedMenu {
-	private final BlockPos pos;
+	private final @Nullable BlockPos pos;
 
 	public PositionedBagMenu(int containerId, Inventory playerInventory, BagData data) {
 		this(containerId, playerInventory, new SimpleContainer(9), data.pos().orElse(null));
 	}
 
-	public PositionedBagMenu(int containerId, Inventory playerInventory, Container inventory, BlockPos pos) {
+	public PositionedBagMenu(int containerId, Inventory playerInventory, Container inventory, @Nullable BlockPos pos) {
 		super(MenuTest.POSITIONED_BAG_MENU, containerId, playerInventory, inventory);
 		this.pos = pos;
 	}
 
 	@Override
-	public BlockPos getPos() {
+	public @Nullable BlockPos getPos() {
 		return pos;
 	}
 

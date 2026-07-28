@@ -67,6 +67,7 @@ public abstract class ServerConfigurationPacketListenerImplMixin extends ServerC
 	public abstract void startConfiguration();
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private ServerConfigurationNetworkAddon addon;
 
 	@Unique

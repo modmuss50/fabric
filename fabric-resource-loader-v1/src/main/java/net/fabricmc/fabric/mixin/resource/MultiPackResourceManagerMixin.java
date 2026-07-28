@@ -33,6 +33,7 @@ import net.fabricmc.fabric.impl.resource.FabricMultiPackResourceManager;
 @Mixin(MultiPackResourceManager.class)
 public class MultiPackResourceManagerMixin implements FabricMultiPackResourceManager {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private PackType packType;
 
 	@Inject(method = "<init>", at = @At("TAIL"))

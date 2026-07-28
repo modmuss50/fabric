@@ -43,6 +43,7 @@ import net.fabricmc.fabric.impl.item.EnchantmentUtil;
 @Mixin(ResourceManagerRegistryLoadTask.class)
 public class ResourceManagerRegistryLoadTaskMixin {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private volatile RegistryOps.RegistryInfoLookup registryInfoLookup;
 
 	@WrapOperation(method = "lambda$load$2", at = @At(value = "NEW", target = "net/minecraft/resources/RegistryLoadTask$PendingRegistration"))

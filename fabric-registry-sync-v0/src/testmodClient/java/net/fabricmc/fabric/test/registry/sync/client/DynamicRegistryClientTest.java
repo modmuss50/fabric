@@ -21,6 +21,8 @@ import static net.fabricmc.fabric.test.registry.sync.CustomDynamicRegistryTest.T
 import static net.fabricmc.fabric.test.registry.sync.CustomDynamicRegistryTest.TEST_SYNCED_1_DYNAMIC_REGISTRY_KEY;
 import static net.fabricmc.fabric.test.registry.sync.CustomDynamicRegistryTest.TEST_SYNCED_2_DYNAMIC_REGISTRY_KEY;
 
+import java.util.Objects;
+
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
@@ -60,6 +62,8 @@ public final class DynamicRegistryClientTest implements ClientModInitializer {
 				didNotReceive(TEST_SYNCED_1_DYNAMIC_REGISTRY_KEY, SYNCED_ID);
 			}
 
+			synced1 = Objects.requireNonNull(synced1);
+
 			if (synced1.usesNetworkCodec()) {
 				throw new AssertionError("Entries in " + TEST_SYNCED_1_DYNAMIC_REGISTRY_KEY + " should not use network codec");
 			}
@@ -67,6 +71,8 @@ public final class DynamicRegistryClientTest implements ClientModInitializer {
 			if (synced2 == null) {
 				didNotReceive(TEST_SYNCED_2_DYNAMIC_REGISTRY_KEY, SYNCED_ID);
 			}
+
+			synced2 = Objects.requireNonNull(synced2);
 
 			// In 24w04a, dynamic registries are always serialized and sent even in singleplayer.
 			if (!synced2.usesNetworkCodec()) {

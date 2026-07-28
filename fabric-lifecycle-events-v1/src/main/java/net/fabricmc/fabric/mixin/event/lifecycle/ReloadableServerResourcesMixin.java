@@ -36,6 +36,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 @Mixin(ReloadableServerResources.class)
 public class ReloadableServerResourcesMixin {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private RegistryAccess layeredRegistries;
 
 	@Inject(method = "<init>", at = @At("TAIL"))

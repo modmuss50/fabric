@@ -40,6 +40,7 @@ import net.fabricmc.fabric.impl.attachment.GlobalAttachmentsImpl;
 @Mixin(ClientPacketListener.class)
 abstract class ClientPacketListenerMixin implements GlobalAttachmentsProvider {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private GlobalAttachmentsImpl globalAttachments;
 
 	@Override

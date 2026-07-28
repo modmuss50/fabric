@@ -17,15 +17,12 @@
 package net.fabricmc.fabric.test.transfer.unittests;
 
 import net.minecraft.SharedConstants;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentInitializers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.server.Bootstrap;
 
 public abstract class AbstractTransferApiTest {
-	private static HolderLookup.Provider registries;
-
 	protected static void bootstrap() {
 		SharedConstants.tryDetectVersion();
 		Bootstrap.bootStrap();

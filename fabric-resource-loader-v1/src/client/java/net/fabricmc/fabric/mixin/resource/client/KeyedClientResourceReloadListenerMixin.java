@@ -18,6 +18,7 @@ package net.fabricmc.fabric.mixin.resource.client;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -72,7 +73,7 @@ import net.fabricmc.fabric.impl.resource.FabricResourceReloader;
 })
 public abstract class KeyedClientResourceReloadListenerMixin implements FabricResourceReloader {
 	@Unique
-	private Identifier fabric$id;
+	private @Nullable Identifier fabric$id;
 
 	@Override
 	public Identifier fabric$getId() {

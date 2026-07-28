@@ -18,6 +18,7 @@ package net.fabricmc.fabric.mixin.resource;
 
 import java.util.Locale;
 
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -34,7 +35,7 @@ import net.fabricmc.fabric.impl.resource.FabricResourceReloader;
 })
 public abstract class ServerFunctionLibraryMixin implements FabricResourceReloader {
 	@Unique
-	private Identifier id;
+	private @Nullable Identifier id;
 
 	@Override
 	@SuppressWarnings({"ConstantConditions"})

@@ -56,8 +56,8 @@ public final class ClientNetworkingImpl {
 
 	public static final ScopedValue<Connection> CONNECTION_SCOPED_VALUE = ScopedValue.newInstance();
 
-	private static ClientPlayNetworkAddon currentPlayAddon;
-	private static ClientConfigurationNetworkAddon currentConfigurationAddon;
+	private static @Nullable ClientPlayNetworkAddon currentPlayAddon;
+	private static @Nullable ClientConfigurationNetworkAddon currentConfigurationAddon;
 
 	public static ClientPlayNetworkAddon getAddon(ClientPacketListener listener) {
 		return (ClientPlayNetworkAddon) ((PacketListenerExtensions) listener).getAddon();
@@ -121,7 +121,7 @@ public final class ClientNetworkingImpl {
 		return null;
 	}
 
-	public static void setClientPlayAddon(ClientPlayNetworkAddon addon) {
+	public static void setClientPlayAddon(@Nullable ClientPlayNetworkAddon addon) {
 		if (!(addon == null || currentConfigurationAddon == null)) {
 			throw new IllegalStateException();
 		}
@@ -129,7 +129,7 @@ public final class ClientNetworkingImpl {
 		currentPlayAddon = addon;
 	}
 
-	public static void setClientConfigurationAddon(ClientConfigurationNetworkAddon addon) {
+	public static void setClientConfigurationAddon(@Nullable ClientConfigurationNetworkAddon addon) {
 		currentConfigurationAddon = addon;
 	}
 
@@ -146,12 +146,12 @@ public final class ClientNetworkingImpl {
 		// Version packet
 		ClientConfigurationNetworking.registerGlobalReceiver(CommonVersionPayload.TYPE, (listener, context) -> {
 			int negotiatedVersion = handleVersionPacket(listener, context.responseSender());
-			ClientNetworkingImpl.getClientConfigurationAddon().onCommonVersionPacket(negotiatedVersion);
+			Objects.requireNonNull(ClientNetworkingImpl.getClientConfigurationAddon()).onCommonVersionPacket(negotiatedVersion);
 		});
 
 		// Register packet
 		ClientConfigurationNetworking.registerGlobalReceiver(CommonRegisterPayload.TYPE, (listener, context) -> {
-			ClientConfigurationNetworkAddon addon = ClientNetworkingImpl.getClientConfigurationAddon();
+			ClientConfigurationNetworkAddon addon = Objects.requireNonNull(ClientNetworkingImpl.getClientConfigurationAddon());
 
 			if (CommonRegisterPayload.PLAY_PROTOCOL.equals(listener.protocol())) {
 				if (listener.version() != addon.getNegotiatedVersion()) {

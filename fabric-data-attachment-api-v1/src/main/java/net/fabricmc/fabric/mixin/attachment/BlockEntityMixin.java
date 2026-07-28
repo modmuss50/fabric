@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.mixin.attachment;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.jspecify.annotations.Nullable;
@@ -118,7 +119,7 @@ abstract class BlockEntityMixin implements AttachmentTargetImpl {
 	@Override
 	public boolean fabric_shouldTryToSync() {
 		// Persistent attachments are read at a time with no level
-		return !this.hasLevel() || !this.level.isClientSide();
+		return this.level == null || !this.level.isClientSide();
 	}
 
 	@Override
@@ -128,6 +129,6 @@ abstract class BlockEntityMixin implements AttachmentTargetImpl {
 
 	@Override
 	public RegistryAccess fabric_getRegistryAccess() {
-		return this.level.registryAccess();
+		return Objects.requireNonNull(this.level).registryAccess();
 	}
 }

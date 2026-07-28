@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.attachment;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -63,6 +65,7 @@ abstract class ServerLevelMixin extends Level implements AttachmentTargetImpl {
 	}
 
 	@Inject(at = @At("TAIL"), method = "<init>")
+	@SuppressWarnings("NullAway")
 	private void createAttachmentsPersistentState(CallbackInfo ci) {
 		// Force persistent state creation
 		ServerLevel level = (ServerLevel) (Object) this;
@@ -80,7 +83,7 @@ abstract class ServerLevelMixin extends Level implements AttachmentTargetImpl {
 		if ((Object) this instanceof ServerLevel serverLevel) {
 			PlayerLookup.level(serverLevel)
 					.forEach(player -> {
-						if (((AttachmentTypeImpl<?>) type).syncPredicate().test(this, player)) {
+						if (Objects.requireNonNull(((AttachmentTypeImpl<?>) type).syncPredicate()).test(this, player)) {
 							AttachmentSync.trySync(change, player);
 						}
 					});

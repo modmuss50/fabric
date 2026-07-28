@@ -137,12 +137,11 @@ public final class PlayerLookup {
 	public static Collection<ServerPlayer> tracking(BlockEntity blockEntity) {
 		Objects.requireNonNull(blockEntity, "BlockEntity cannot be null");
 
-		//noinspection ConstantConditions - IJ intrinsics don't know hasLevel == true will result in no null
-		if (!blockEntity.hasLevel() || blockEntity.getLevel().isClientSide()) {
+		if (!(blockEntity.getLevel() instanceof ServerLevel level)) {
 			throw new IllegalArgumentException("Only supported on server levels!");
 		}
 
-		return tracking((ServerLevel) blockEntity.getLevel(), blockEntity.getBlockPos());
+		return tracking(level, blockEntity.getBlockPos());
 	}
 
 	/**

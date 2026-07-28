@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.screen;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,6 +40,7 @@ abstract class MinecraftMixin {
 	public Gui gui;
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private GuiExtensions guiExtensions;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
@@ -47,7 +50,8 @@ abstract class MinecraftMixin {
 
 	@Inject(method = "exitWorldAndClose", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;removed()V", shift = At.Shift.AFTER))
 	private void onScreenRemoveBecauseStopping(CallbackInfo ci) {
-		ScreenEvents.remove(this.gui.screen()).invoker().onRemove(this.gui.screen());
+		Screen screen = Objects.requireNonNull(this.gui.screen());
+		ScreenEvents.remove(screen).invoker().onRemove(screen);
 	}
 
 	// The LevelLoadingScreen is the odd screen that isn't ticked by the main tick loop, so we fire events for this screen.
@@ -56,14 +60,15 @@ abstract class MinecraftMixin {
 	private void beforeLoadingScreenTick(CallbackInfo ci) {
 		// Store the screen in a variable in case someone tries to change the screen during this before tick event.
 		// If someone changes the screen, the after tick event will likely have class cast exceptions or throw a NPE.
-		Screen screen = this.gui.screen();
+		Screen screen = Objects.requireNonNull(this.gui.screen());
 		guiExtensions.setTickingScreen(screen);
-		ScreenEvents.beforeTick(guiExtensions.getTickingScreen()).invoker().beforeTick(guiExtensions.getTickingScreen());
+		ScreenEvents.beforeTick(screen).invoker().beforeTick(screen);
 	}
 
 	@Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;renderFrame(Z)V"))
 	private void afterLoadingScreenTick(CallbackInfo ci) {
-		ScreenEvents.afterTick(guiExtensions.getTickingScreen()).invoker().afterTick(guiExtensions.getTickingScreen());
+		Screen screen = Objects.requireNonNull(guiExtensions.getTickingScreen());
+		ScreenEvents.afterTick(screen).invoker().afterTick(screen);
 		// Finally set the currently ticking screen to null
 		guiExtensions.setTickingScreen(null);
 	}

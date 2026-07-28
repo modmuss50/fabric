@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.attachment;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -70,7 +72,7 @@ abstract class EntityMixin implements AttachmentTargetImpl {
 	@Override
 	public void fabric_syncChange(AttachmentType<?> type, AttachmentChange change) {
 		if (!this.level().isClientSide()) {
-			AttachmentSyncPredicate predicate = ((AttachmentTypeImpl<?>) type).syncPredicate();
+			AttachmentSyncPredicate predicate = Objects.requireNonNull(((AttachmentTypeImpl<?>) type).syncPredicate());
 
 			if ((Object) this instanceof ServerPlayer self && predicate.test(this, self)) {
 				// Players do not track themselves

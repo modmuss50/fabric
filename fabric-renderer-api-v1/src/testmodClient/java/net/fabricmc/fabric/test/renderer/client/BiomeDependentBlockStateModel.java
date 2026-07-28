@@ -31,6 +31,7 @@ import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -54,7 +55,7 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 
 	@Override
 	public void emitQuads(QuadEmitter emitter, BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
-		if (((FabricBlockGetter) level).hasBiomes() && ((FabricBlockGetter) level).getBiomeFabric(pos).is(biomeTag)) {
+		if (isInBiome(level, pos)) {
 			biomeModel.emitQuads(emitter,
 					level, pos, state, random, cullTest);
 		} else {
@@ -66,7 +67,7 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 	@Override
 	@Nullable
 	public Object createGeometryKey(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
-		if (((FabricBlockGetter) level).hasBiomes() && ((FabricBlockGetter) level).getBiomeFabric(pos).is(biomeTag)) {
+		if (isInBiome(level, pos)) {
 			return biomeModel.createGeometryKey(level, pos, state, random);
 		} else {
 			return regularModel.createGeometryKey(level, pos, state, random);
@@ -75,7 +76,7 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 
 	@Override
 	public Material.Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
-		if (((FabricBlockGetter) level).hasBiomes() && ((FabricBlockGetter) level).getBiomeFabric(pos).is(biomeTag)) {
+		if (isInBiome(level, pos)) {
 			return biomeModel.particleMaterial(level, pos, state);
 		} else {
 			return regularModel.particleMaterial(level, pos, state);
@@ -85,7 +86,7 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 	@Override
 	@BakedQuad.MaterialFlags
 	public int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
-		if (((FabricBlockGetter) level).hasBiomes() && ((FabricBlockGetter) level).getBiomeFabric(pos).is(biomeTag)) {
+		if (isInBiome(level, pos)) {
 			return biomeModel.materialFlags(level, pos, state, random);
 		} else {
 			return regularModel.materialFlags(level, pos, state, random);
@@ -94,6 +95,17 @@ public class BiomeDependentBlockStateModel implements BlockStateModel {
 
 	@Override
 	public void collectParts(RandomSource random, List<BlockStateModelPart> parts) {
+	}
+
+	private boolean isInBiome(BlockAndTintGetter level, BlockPos pos) {
+		FabricBlockGetter blockGetter = (FabricBlockGetter) level;
+
+		if (!blockGetter.hasBiomes()) {
+			return false;
+		}
+
+		Holder<Biome> biome = blockGetter.getBiomeFabric(pos);
+		return biome != null && biome.is(biomeTag);
 	}
 
 	@Override

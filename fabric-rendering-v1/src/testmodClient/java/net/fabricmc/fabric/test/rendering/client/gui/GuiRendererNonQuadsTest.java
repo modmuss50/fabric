@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.test.rendering.client.gui;
 
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -68,7 +69,7 @@ public class GuiRendererNonQuadsTest implements ClientModInitializer {
 
 	record CustomTestState(Matrix3x2f matrix, ScreenRectangle bounds, @Nullable ScreenRectangle scissorArea, int x0, int y0, int x1, int y1, int x2, int y2) implements GuiElementRenderState {
 		CustomTestState(Matrix3x2f matrix, @Nullable ScreenRectangle scissorArea, int x0, int y0, int x1, int y1, int x2, int y2) {
-			this(matrix, createTriangleBounds(x0, y0, x1, y1, x2, y2, matrix, scissorArea), scissorArea, x0, y0, x1, y1, x2, y2);
+			this(matrix, Objects.requireNonNull(createTriangleBounds(x0, y0, x1, y1, x2, y2, matrix, scissorArea)), scissorArea, x0, y0, x1, y1, x2, y2);
 		}
 
 		private static final RenderPipeline PIPELINE = createPipeline();
@@ -103,7 +104,7 @@ public class GuiRendererNonQuadsTest implements ClientModInitializer {
 			return PIPELINE;
 		}
 
-		private static ScreenRectangle createTriangleBounds(int x0, int y0, int x1, int y1, int x2, int y2, Matrix3x2f matrix, @Nullable ScreenRectangle scissorArea) {
+		private static @Nullable ScreenRectangle createTriangleBounds(int x0, int y0, int x1, int y1, int x2, int y2, Matrix3x2f matrix, @Nullable ScreenRectangle scissorArea) {
 			int minX = Math.min(x0, Math.min(x1, x2));
 			int minY = Math.min(y0, Math.min(y1, y2));
 			int maxX = Math.max(x0, Math.max(x1, x2));

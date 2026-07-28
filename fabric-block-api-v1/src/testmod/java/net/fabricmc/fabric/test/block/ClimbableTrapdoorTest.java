@@ -45,13 +45,10 @@ import net.fabricmc.api.ModInitializer;
 public final class ClimbableTrapdoorTest implements ModInitializer {
 	private static final String MOD_ID = "fabric-block-api-v1-testmod";
 
-	public static Block customLadderBlock;
-	public static Block customNonLadderBlock;
-
 	@Override
 	public void onInitialize() {
-		customLadderBlock = registerBlock("custom_ladder", settings -> new LadderBlock(settings) { });
-		customNonLadderBlock = registerBlock("custom_non_ladder", NonLadderBlock::new);
+		registerBlock("custom_ladder", settings -> new LadderBlock(settings) { });
+		registerBlock("custom_non_ladder", NonLadderBlock::new);
 	}
 
 	private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> blockFactory) {

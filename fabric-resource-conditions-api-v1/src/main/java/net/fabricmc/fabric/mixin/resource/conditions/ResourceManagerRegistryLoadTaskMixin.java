@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.mixin.resource.conditions;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -28,7 +29,7 @@ import net.fabricmc.fabric.impl.resource.conditions.ResourceConditionsImpl;
 @Mixin(ResourceManagerRegistryLoadTask.class)
 public class ResourceManagerRegistryLoadTaskMixin {
 	@ModifyExpressionValue(method = "lambda$load$2", at = @At(value = "NEW", target = "net/minecraft/resources/RegistryLoadTask$PendingRegistration"))
-	private RegistryLoadTask.PendingRegistration<?> load(RegistryLoadTask.PendingRegistration<?> original) {
+	private RegistryLoadTask.@Nullable PendingRegistration<?> load(RegistryLoadTask.PendingRegistration<?> original) {
 		if (original.value().right().isPresent() && original.value().right().get() == ResourceConditionsImpl.DISABLED_RESOURCE_EXCEPTION) {
 			return null;
 		}

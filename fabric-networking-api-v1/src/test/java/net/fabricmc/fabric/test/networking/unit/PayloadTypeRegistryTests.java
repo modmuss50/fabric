@@ -50,6 +50,7 @@ public class PayloadTypeRegistryTests {
 	}
 
 	@Test
+	@SuppressWarnings("NullAway")
 	void serverboundPlay() {
 		RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(FriendlyByteBufs.create(), null);
 
@@ -66,6 +67,7 @@ public class PayloadTypeRegistryTests {
 	}
 
 	@Test
+	@SuppressWarnings("NullAway")
 	void clientboundPlay() {
 		RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(FriendlyByteBufs.create(), null);
 

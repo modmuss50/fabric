@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
@@ -134,7 +135,7 @@ public record RegistrySyncPayload(
 				buf.writeUtf(regId.getPath());
 				buf.writeByte(encodeRegistryAttributes(registryAttributes.getOrDefault(regId, EnumSet.noneOf(RegistryAttribute.class))));
 
-				Object2IntMap<Identifier> idMap = registryMap.get(regId);
+				Object2IntMap<Identifier> idMap = Objects.requireNonNull(registryMap.get(regId));
 
 				// Sort object ids by its namespace. We use linked map here to keep the original namespace ordering.
 				Map<String, List<Object2IntMap.Entry<Identifier>>> idNamespaceGroups = idMap.object2IntEntrySet().stream()

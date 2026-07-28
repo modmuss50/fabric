@@ -40,6 +40,7 @@ import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 public abstract class WrapperBlockStateModel implements BlockStateModel {
 	protected BlockStateModel wrapped;
 
+	@SuppressWarnings("NullAway")
 	protected WrapperBlockStateModel() {
 	}
 

@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.transfer.ingame;
 
+import java.util.Objects;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -44,7 +46,7 @@ public class ExtractStickItem extends Item {
 			if (stored == null) return InteractionResult.PASS;
 
 			// By now, storage can't be null :P
-			long extracted = storage.extract(stored, FluidConstants.BUCKET, transaction);
+			long extracted = Objects.requireNonNull(storage).extract(stored, FluidConstants.BUCKET, transaction);
 			// If sneaking, we require exact extraction (can be tested on cauldrons)
 			boolean requireExact = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
 

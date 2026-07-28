@@ -37,6 +37,7 @@ import net.fabricmc.fabric.impl.recipe.sync.SyncedSerializerAwarePreparedRecipe;
 @Mixin(RecipeMap.class)
 public class RecipeMapMixin implements SyncedSerializerAwarePreparedRecipe {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private Map<RecipeSerializer<?>, List<RecipeHolder<?>>> bySyncedSerializer;
 
 	@ModifyReturnValue(method = "create", at = @At("RETURN"))

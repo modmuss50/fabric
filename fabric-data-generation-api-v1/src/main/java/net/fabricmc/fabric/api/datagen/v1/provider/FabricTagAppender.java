@@ -95,6 +95,6 @@ public interface FabricTagAppender<T> {
 	}
 
 	default TagBuilder getBuilder() {
-		return null;
+		throw new AssertionError("Implemented via mixin");
 	}
 }

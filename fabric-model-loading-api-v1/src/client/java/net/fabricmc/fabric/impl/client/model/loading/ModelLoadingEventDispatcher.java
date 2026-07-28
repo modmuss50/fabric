@@ -164,7 +164,7 @@ public class ModelLoadingEventDispatcher {
 	}
 
 	private static class BlockStateResolverContext implements BlockStateResolver.Context {
-		private Block block;
+		private @Nullable Block block;
 		private final Reference2ReferenceMap<BlockState, BlockStateModel.UnbakedRoot> models = new Reference2ReferenceOpenHashMap<>();
 
 		private void prepare(Block block) {
@@ -174,7 +174,7 @@ public class ModelLoadingEventDispatcher {
 
 		@Override
 		public Block block() {
-			return block;
+			return Objects.requireNonNull(block);
 		}
 
 		@Override
@@ -182,8 +182,8 @@ public class ModelLoadingEventDispatcher {
 			Objects.requireNonNull(state, "state cannot be null");
 			Objects.requireNonNull(model, "model cannot be null");
 
-			if (!state.is(block)) {
-				throw new IllegalArgumentException("Attempted to set model for state " + state + " on block " + block);
+			if (!state.is(block())) {
+				throw new IllegalArgumentException("Attempted to set model for state " + state + " on block " + block());
 			}
 
 			if (models.putIfAbsent(state, model) != null) {
@@ -193,7 +193,7 @@ public class ModelLoadingEventDispatcher {
 	}
 
 	private static class OnLoadModifierContext implements ModelModifier.OnLoad.Context {
-		private Identifier id;
+		private @Nullable Identifier id;
 
 		private void prepare(Identifier id) {
 			this.id = id;
@@ -201,12 +201,12 @@ public class ModelLoadingEventDispatcher {
 
 		@Override
 		public Identifier id() {
-			return id;
+			return Objects.requireNonNull(id);
 		}
 	}
 
 	private static class OnLoadBlockModifierContext implements ModelModifier.OnLoadBlock.Context {
-		private BlockState state;
+		private @Nullable BlockState state;
 
 		private void prepare(BlockState state) {
 			this.state = state;
@@ -214,14 +214,14 @@ public class ModelLoadingEventDispatcher {
 
 		@Override
 		public BlockState state() {
-			return state;
+			return Objects.requireNonNull(state);
 		}
 	}
 
 	private static class BakeBlockModifierContext implements ModelModifier.BeforeBakeBlock.Context, ModelModifier.AfterBakeBlock.Context {
 		private final BlockState state;
 		private final ModelBaker baker;
-		private BlockStateModel.UnbakedRoot sourceModel;
+		private BlockStateModel.@Nullable UnbakedRoot sourceModel;
 
 		private BakeBlockModifierContext(BlockState state, ModelBaker baker) {
 			this.state = state;
@@ -244,7 +244,7 @@ public class ModelLoadingEventDispatcher {
 
 		@Override
 		public BlockStateModel.UnbakedRoot sourceModel() {
-			return sourceModel;
+			return Objects.requireNonNull(sourceModel);
 		}
 	}
 
@@ -252,7 +252,7 @@ public class ModelLoadingEventDispatcher {
 		private final Identifier itemId;
 		private final ItemModel.BakingContext bakeContext;
 		private final Matrix4fc transformation;
-		private ItemModel.Unbaked sourceModel;
+		private ItemModel.@Nullable Unbaked sourceModel;
 
 		private BakeItemModifierContext(Identifier itemId, ItemModel.BakingContext bakeContext, Matrix4fc transformation) {
 			this.itemId = itemId;
@@ -281,7 +281,7 @@ public class ModelLoadingEventDispatcher {
 
 		@Override
 		public ItemModel.Unbaked sourceModel() {
-			return sourceModel;
+			return Objects.requireNonNull(sourceModel);
 		}
 	}
 }

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.google.gson.JsonParseException;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.Identifier;
@@ -42,7 +43,7 @@ public class UnbakedModelDeserializerRegistry {
 		}
 	}
 
-	public static UnbakedModelDeserializer get(Identifier id) {
+	public static @Nullable UnbakedModelDeserializer get(Identifier id) {
 		Objects.requireNonNull(id, "id cannot be null");
 
 		return DESERIALIZERS.get(id);

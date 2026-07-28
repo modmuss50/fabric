@@ -55,6 +55,7 @@ public class TransferTestInitializer implements ModInitializer {
 	private static final Block FLUID_CHUTE = new FluidChuteBlock(BlockBehaviour.Properties.of().setId(FLUID_CHUTE_KEY));
 	private static final ResourceKey<Item> EXTRACT_STICK_KEY = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, "extract_stick"));
 	private static final Item EXTRACT_STICK = new ExtractStickItem(new Item.Properties().setId(EXTRACT_STICK_KEY));
+	@SuppressWarnings("NullAway")
 	public static BlockEntityType<FluidChuteBlockEntity> FLUID_CHUTE_TYPE;
 
 	@Override

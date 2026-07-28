@@ -79,6 +79,7 @@ public class AltModelBlockRendererImpl implements AltModelBlockRenderer, QuadTra
 	private BlockState blockState;
 	private boolean defaultAo;
 
+	@SuppressWarnings("NullAway")
 	public AltModelBlockRendererImpl(boolean ambientOcclusion, boolean cull, BlockColors blockColors) {
 		this.ambientOcclusion = ambientOcclusion;
 		this.cull = cull;
@@ -89,6 +90,7 @@ public class AltModelBlockRendererImpl implements AltModelBlockRenderer, QuadTra
 		flatLighter = new FlatLighter(lightCache);
 	}
 
+	@SuppressWarnings("NullAway")
 	@Override
 	public void tesselateBlock(QuadEmitter output, float x, float y, float z, BlockAndTintGetter level, BlockPos pos, BlockState blockState, BlockStateModel model, long seed) {
 		Vec3 offset = blockState.getOffset(pos);

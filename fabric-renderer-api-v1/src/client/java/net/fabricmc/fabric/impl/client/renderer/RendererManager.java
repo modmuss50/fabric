@@ -16,20 +16,24 @@
 
 package net.fabricmc.fabric.impl.client.renderer;
 
+import org.jspecify.annotations.Nullable;
+
 import net.fabricmc.fabric.api.client.renderer.v1.Renderer;
 
 public final class RendererManager {
-	private static Renderer activeRenderer;
+	private static @Nullable Renderer activeRenderer;
 
 	private RendererManager() {
 	}
 
 	public static Renderer getRenderer() {
-		if (activeRenderer == null) {
+		Renderer renderer = activeRenderer;
+
+		if (renderer == null) {
 			throw new UnsupportedOperationException("Attempted to retrieve active rendering plug-in before one was registered.");
 		}
 
-		return activeRenderer;
+		return renderer;
 	}
 
 	public static void registerRenderer(Renderer renderer) {

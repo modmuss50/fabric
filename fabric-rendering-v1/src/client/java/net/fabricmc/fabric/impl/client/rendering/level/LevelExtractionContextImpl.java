@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.client.rendering.level;
 
+import java.util.Objects;
+
 import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.Camera;
@@ -28,11 +30,11 @@ import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionContext;
 
 public class LevelExtractionContextImpl implements LevelExtractionContext {
-	private GameRenderer gameRenderer;
-	private LevelRenderer levelRenderer;
-	private LevelRenderState levelRenderState;
-	private ClientLevel level;
-	private Camera camera;
+	private @Nullable GameRenderer gameRenderer;
+	private @Nullable LevelRenderer levelRenderer;
+	private @Nullable LevelRenderState levelRenderState;
+	private @Nullable ClientLevel level;
+	private @Nullable Camera camera;
 	@Nullable
 	private DeltaTracker deltaTracker;
 
@@ -55,31 +57,31 @@ public class LevelExtractionContextImpl implements LevelExtractionContext {
 
 	@Override
 	public GameRenderer gameRenderer() {
-		return gameRenderer;
+		return Objects.requireNonNull(gameRenderer);
 	}
 
 	@Override
 	public LevelRenderer levelRenderer() {
-		return levelRenderer;
+		return Objects.requireNonNull(levelRenderer);
 	}
 
 	@Override
 	public LevelRenderState levelState() {
-		return levelRenderState;
+		return Objects.requireNonNull(levelRenderState);
 	}
 
 	@Override
 	public ClientLevel level() {
-		return level;
+		return Objects.requireNonNull(level);
 	}
 
 	@Override
 	public Camera camera() {
-		return camera;
+		return Objects.requireNonNull(camera);
 	}
 
 	@Override
 	public DeltaTracker deltaTracker() {
-		return this.deltaTracker;
+		return Objects.requireNonNull(this.deltaTracker);
 	}
 }

@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,8 +42,9 @@ import net.fabricmc.fabric.impl.datagen.client.FabricItemAssetDefinitions;
 @Mixin(ModelProvider.ItemInfoCollector.class)
 public class ModelProviderItemInfoCollectorMixin implements FabricItemAssetDefinitions {
 	@Unique
-	private FabricPackOutput fabricPackOutput;
+	private @Nullable FabricPackOutput fabricPackOutput;
 	@Unique
+	@SuppressWarnings("NullAway")
 	private Set<Block> processedBlocks;
 
 	@Override
@@ -76,6 +78,8 @@ public class ModelProviderItemInfoCollectorMixin implements FabricItemAssetDefin
 
 	@ModifyArg(method = "finalizeAndValidate", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;", ordinal = 0))
 	private Predicate<Holder.Reference<Item>> filterItemsForProcessingMod(Predicate<Holder.Reference<Item>> original) {
+		FabricPackOutput fabricPackOutput = this.fabricPackOutput;
+
 		if (fabricPackOutput != null) {
 			return original
 					.and(item -> fabricPackOutput.isStrictValidationEnabled())

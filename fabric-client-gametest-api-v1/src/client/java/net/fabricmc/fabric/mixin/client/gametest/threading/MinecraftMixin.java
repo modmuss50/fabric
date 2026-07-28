@@ -24,6 +24,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,7 +44,7 @@ import net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl;
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
 	@Unique
-	private Runnable deferredTask = null;
+	private @Nullable Runnable deferredTask;
 
 	@WrapMethod(method = "run")
 	private void onRun(Operation<Void> original) throws Throwable {

@@ -20,10 +20,12 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -84,8 +86,8 @@ public class SyncGametest implements FabricClientGameTest {
 
 		try (TestDedicatedServerContext serverContext = context.worldBuilder().createServer(serverProps)) {
 			var state = new Object() {
-				BlockPos furnacePos;
-				UUID villagerId;
+				@Nullable BlockPos furnacePos;
+				@Nullable UUID villagerId;
 			};
 
 			context.runOnClient(client -> {
@@ -142,7 +144,7 @@ public class SyncGametest implements FabricClientGameTest {
 					player.setAttached(AttachmentTestMod.SYNCED_RENDER_DISTANCE, 8);
 
 					// check that block entity deferred syncing works correctly
-					set(server.overworld().getBlockEntity(state.furnacePos), AttachmentTestMod.SYNCED_EXCEPT_TARGET);
+					set(Objects.requireNonNull(server.overworld().getBlockEntity(Objects.requireNonNull(state.furnacePos))), AttachmentTestMod.SYNCED_EXCEPT_TARGET);
 				});
 
 				connection.waitForClientboundPackets();
@@ -150,22 +152,23 @@ public class SyncGametest implements FabricClientGameTest {
 				LOGGER.info("Testing synced attachments (1/2)");
 				context.runOnClient(client -> {
 					ClientLevel level = connection.getClientLevel();
-					Entity villager = level.getEntity(state.villagerId);
-					BlockEntity furnace = level.getBlockEntity(state.furnacePos);
+					Entity villager = Objects.requireNonNull(level.getEntity(Objects.requireNonNull(state.villagerId)));
+					BlockEntity furnace = Objects.requireNonNull(level.getBlockEntity(Objects.requireNonNull(state.furnacePos)));
+					LocalPlayer player = Objects.requireNonNull(client.player);
 
 					assertHasSyncedWithAll(furnace);
 					assertHasSyncedWithAll(villager);
 					assertHasSyncedWithAll(level.getChunk(0, 0));
-					assertHasSyncedWithAll(client.player);
+					assertHasSyncedWithAll(player);
 					assertHasSyncedWithAll(level.globalAttachments());
-					assertHasSynced(client.player, AttachmentTestMod.SYNCED_CREATIVE_ONLY);
-					assertHasSynced(client.player, AttachmentTestMod.SYNCED_ITEM);
+					assertHasSynced(player, AttachmentTestMod.SYNCED_CREATIVE_ONLY);
+					assertHasSynced(player, AttachmentTestMod.SYNCED_ITEM);
 					assertHasSynced(villager, AttachmentTestMod.SYNCED_LARGE);
 					assertHasSynced(furnace, AttachmentTestMod.SYNCED_EXCEPT_TARGET);
 
 					// `level` is the overworld here
 					assertHasNotSynced(level, AttachmentTestMod.SYNCED_WITH_ALL);
-					assertHasNotSynced(client.player, AttachmentTestMod.SYNCED_EXCEPT_TARGET);
+					assertHasNotSynced(player, AttachmentTestMod.SYNCED_EXCEPT_TARGET);
 					assertHasNotSynced(villager, AttachmentTestMod.SYNCED_WITH_TARGET);
 
 					if (client.options.renderDistance().get() != 8) {
@@ -181,8 +184,8 @@ public class SyncGametest implements FabricClientGameTest {
 				connection.waitForClientboundPackets();
 				context.runOnClient(client -> {
 					ClientLevel level = connection.getClientLevel();
-					Entity villager = level.getEntity(state.villagerId);
-					ItemStack syncedItem = villager.getAttached(AttachmentTestMod.SYNCED_ITEM);
+					Entity villager = Objects.requireNonNull(level.getEntity(Objects.requireNonNull(state.villagerId)));
+					ItemStack syncedItem = Objects.requireNonNull(villager.getAttached(AttachmentTestMod.SYNCED_ITEM));
 
 					if (syncedItem.getItem() != Items.DIAMOND) {
 						throw new AssertionError("Unexpected synced item: %s".formatted(syncedItem.getItem()));
@@ -199,10 +202,11 @@ public class SyncGametest implements FabricClientGameTest {
 
 				LOGGER.info("Testing synced attachments (2/2)");
 				context.runOnClient(client -> {
-					assertHasSyncedWithAll(client.level);
-					assertHasSyncedWithAll(client.level.globalAttachments());
+					ClientLevel level = Objects.requireNonNull(client.level);
+					assertHasSyncedWithAll(level);
+					assertHasSyncedWithAll(level.globalAttachments());
 					// asserts the removal wasn't synced
-					assertPresence(client.player, AttachmentTestMod.SYNCED_CREATIVE_ONLY, true);
+					assertPresence(Objects.requireNonNull(client.player), AttachmentTestMod.SYNCED_CREATIVE_ONLY, true);
 				});
 
 				LOGGER.info("Done");

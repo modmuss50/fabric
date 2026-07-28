@@ -23,7 +23,7 @@ import net.fabricmc.fabric.api.item.v1.EquipmentSlotProvider;
 
 public interface ItemExtensions {
 	@Nullable EquipmentSlotProvider fabric_getEquipmentSlotProvider();
-	void fabric_setEquipmentSlotProvider(EquipmentSlotProvider equipmentSlotProvider);
+	void fabric_setEquipmentSlotProvider(@Nullable EquipmentSlotProvider equipmentSlotProvider);
 	@Nullable CustomDamageHandler fabric_getCustomDamageHandler();
-	void fabric_setCustomDamageHandler(CustomDamageHandler handler);
+	void fabric_setCustomDamageHandler(@Nullable CustomDamageHandler handler);
 }

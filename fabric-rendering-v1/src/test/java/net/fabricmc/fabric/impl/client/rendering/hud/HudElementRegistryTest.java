@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.joml.Matrix3x2fStack;
 import org.junit.jupiter.api.AfterEach;
@@ -176,7 +177,7 @@ public class HudElementRegistryTest {
 		drawnLayers.clear();
 
 		for (Identifier id : HudElementRegistryImpl.VANILLA_ELEMENT_IDS) {
-			HudElementRegistryImpl.ROOT_ELEMENTS.get(id).extractRenderState(
+			Objects.requireNonNull(HudElementRegistryImpl.ROOT_ELEMENTS.get(id)).extractRenderState(
 					graphics,
 					deltaTracker, (_, _) -> { });
 		}

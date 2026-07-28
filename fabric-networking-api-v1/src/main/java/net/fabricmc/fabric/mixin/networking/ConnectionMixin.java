@@ -62,6 +62,7 @@ abstract class ConnectionMixin implements ChannelInfoHolder, PacketContextProvid
 	private PacketListener packetListener;
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private Map<ConnectionProtocol, Collection<Identifier>> playChannels;
 
 	@Unique

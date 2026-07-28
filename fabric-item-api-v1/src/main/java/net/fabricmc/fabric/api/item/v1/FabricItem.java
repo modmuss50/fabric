@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.api.item.v1;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -157,10 +158,10 @@ public interface FabricItem {
 		Holder<?> holder = stack.typeHolder();
 
 		if ((this instanceof PotionItem || this instanceof TippedArrowItem) && stack.has(DataComponents.POTION_CONTENTS)) {
-			Optional<Holder<Potion>> potion = stack.get(DataComponents.POTION_CONTENTS).potion();
+			Optional<Holder<Potion>> potion = Objects.requireNonNull(stack.get(DataComponents.POTION_CONTENTS)).potion();
 			if (potion.isPresent()) holder = potion.get();
 		} else if (stack.is(Items.ENCHANTED_BOOK) && stack.has(DataComponents.STORED_ENCHANTMENTS)) {
-			Set<Holder<Enchantment>> enchantments = stack.get(DataComponents.STORED_ENCHANTMENTS).keySet();
+			Set<Holder<Enchantment>> enchantments = Objects.requireNonNull(stack.get(DataComponents.STORED_ENCHANTMENTS)).keySet();
 			if (enchantments.size() == 1) holder = enchantments.iterator().next();
 		}
 

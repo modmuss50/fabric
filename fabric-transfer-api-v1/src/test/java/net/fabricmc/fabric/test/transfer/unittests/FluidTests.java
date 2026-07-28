@@ -74,6 +74,8 @@ class FluidTests extends AbstractTransferApiTest {
 	static void beforeAll() {
 		bootstrap();
 
+		TEST = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(TransferTestInitializer.MOD_ID, "test"),
+				DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
 		DataComponentPatch components = DataComponentPatch.builder()
 				.set(TEST, 1)
 				.build();
@@ -81,8 +83,6 @@ class FluidTests extends AbstractTransferApiTest {
 		TAGGED_WATER_2 = FluidVariant.of(Fluids.WATER, components);
 		WATER = FluidVariant.of(Fluids.WATER);
 		LAVA = FluidVariant.of(Fluids.LAVA);
-		TEST = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(TransferTestInitializer.MOD_ID, "test"),
-								DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
 	}
 
 	@Test

@@ -38,6 +38,7 @@ import net.fabricmc.fabric.impl.networking.splitter.PassthroughPacket;
 @Mixin(value = PacketEncoder.class, priority = 500)
 public class PacketEncoderMixin implements PacketContextSetter {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private PacketContext packetContext;
 
 	@Inject(method = "encode(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/protocol/Packet;Lio/netty/buffer/ByteBuf;)V", at = @At("HEAD"), cancellable = true)

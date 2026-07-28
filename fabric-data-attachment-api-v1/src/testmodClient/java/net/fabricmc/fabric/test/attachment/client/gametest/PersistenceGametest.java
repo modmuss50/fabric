@@ -82,8 +82,8 @@ public class PersistenceGametest implements FabricClientGameTest {
 				level.setAttached(PERSISTENT, "level_data");
 				originChunk.setAttached(PERSISTENT, "chunk_data");
 
-				ProtoChunk farChunk = (ProtoChunk) level.getChunkSource()
-						.getChunk(FAR_CHUNK_POS.x(), FAR_CHUNK_POS.z(), ChunkStatus.STRUCTURE_STARTS, true);
+				ProtoChunk farChunk = Objects.requireNonNull((ProtoChunk) level.getChunkSource()
+						.getChunk(FAR_CHUNK_POS.x(), FAR_CHUNK_POS.z(), ChunkStatus.STRUCTURE_STARTS, true));
 				farChunk.setAttached(PERSISTENT, "protochunk_data");
 				LOGGER.info("Set persistent attachments");
 			});
@@ -105,15 +105,15 @@ public class PersistenceGametest implements FabricClientGameTest {
 				assertAttached(level, PERSISTENT, "level_data", "Level attachment did not persist");
 				assertAttached(originChunk, PERSISTENT, "chunk_data", "LevelChunk attachment did not persist");
 
-				ImposterProtoChunk imposterProtoChunk = (ImposterProtoChunk) level.getChunkSource()
-						.getChunk(0, 0, ChunkStatus.EMPTY, true);
+				ImposterProtoChunk imposterProtoChunk = Objects.requireNonNull((ImposterProtoChunk) level.getChunkSource()
+						.getChunk(0, 0, ChunkStatus.EMPTY, true));
 				assertAttached(
 						imposterProtoChunk, PERSISTENT, "chunk_data",
 						"Attachment is not accessible through ImposterProtoChunk"
 				);
 
-				ChunkAccess farChunk = level.getChunkSource()
-						.getChunk(FAR_CHUNK_POS.x(), FAR_CHUNK_POS.z(), ChunkStatus.EMPTY, true);
+				ChunkAccess farChunk = Objects.requireNonNull(level.getChunkSource()
+						.getChunk(FAR_CHUNK_POS.x(), FAR_CHUNK_POS.z(), ChunkStatus.EMPTY, true));
 
 				if (farChunk instanceof ImposterProtoChunk) {
 					LOGGER.warn("Far chunk already generated, can't test persistence in ProtoChunk.");

@@ -18,6 +18,8 @@ package net.fabricmc.fabric.test.menu.item;
 
 import java.util.Optional;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,13 +50,18 @@ public class PositionedBagItem extends BagItem {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player user = context.getPlayer();
+
+		if (user == null) {
+			return InteractionResult.PASS;
+		}
+
 		ItemStack stack = user.getItemInHand(context.getHand());
 		BlockPos pos = context.getClickedPos();
 		user.openMenu(createMenuProvider(stack, pos));
 		return InteractionResult.SUCCESS;
 	}
 
-	private ExtendedMenuProvider<PositionedBagMenu.BagData> createMenuProvider(ItemStack stack, BlockPos pos) {
+	private ExtendedMenuProvider<PositionedBagMenu.BagData> createMenuProvider(ItemStack stack, @Nullable BlockPos pos) {
 		return new ExtendedMenuProvider<>() {
 			@Override
 			public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
@@ -68,7 +75,7 @@ public class PositionedBagItem extends BagItem {
 
 			@Override
 			public PositionedBagMenu.BagData getScreenOpeningData(ServerPlayer player) {
-				return new PositionedBagMenu.BagData(Optional.of(pos));
+				return new PositionedBagMenu.BagData(Optional.ofNullable(pos));
 			}
 		};
 	}

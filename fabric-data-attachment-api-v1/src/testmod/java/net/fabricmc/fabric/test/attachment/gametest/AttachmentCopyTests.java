@@ -54,7 +54,7 @@ public class AttachmentCopyTests {
 	public void testCrossLevelTeleport(GameTestHelper helper) {
 		MinecraftServer server = helper.getLevel().getServer();
 		ServerLevel overworld = server.overworld();
-		ServerLevel end = server.getLevel(Level.END);
+		ServerLevel end = Objects.requireNonNull(server.getLevel(Level.END));
 		// using overworld and end to avoid portal code related to the nether
 
 		Entity entity = EntityTypes.PIG.create(overworld, EntitySpawnReason.SPAWN_ITEM_USE);

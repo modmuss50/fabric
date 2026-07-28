@@ -23,6 +23,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
+@SuppressWarnings("NullAway")
 public class ClientGameTestMixinConfigPlugin implements IMixinConfigPlugin {
 	static final boolean ENABLED = System.getProperty("fabric.client.gametest") != null;
 

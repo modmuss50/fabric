@@ -50,6 +50,7 @@ abstract class ServerLoginPacketListenerImplMixin implements PacketListenerExten
 	@Final
 	private Connection connection;
 	@Unique
+	@SuppressWarnings("NullAway")
 	private ServerLoginNetworkAddon addon;
 
 	@Inject(method = "<init>", at = @At("RETURN"))

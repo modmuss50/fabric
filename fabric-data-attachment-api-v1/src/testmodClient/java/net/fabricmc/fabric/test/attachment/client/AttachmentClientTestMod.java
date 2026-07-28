@@ -33,7 +33,7 @@ public class AttachmentClientTestMod implements ClientModInitializer {
 				entity.onAttachedSet(AttachmentTestMod.SYNCED_RENDER_DISTANCE).register((oldValue, newValue) -> {
 					OptionInstance<Integer> viewDistance = Minecraft.getInstance().options.renderDistance();
 
-					if (viewDistance.get() < newValue) {
+					if (newValue != null && viewDistance.get() < newValue) {
 						viewDistance.set(newValue);
 						Minecraft.getInstance().gui.hud.getChat().addClientSystemMessage(Component.nullToEmpty("The server requested to up the render distance to " + newValue));
 					}

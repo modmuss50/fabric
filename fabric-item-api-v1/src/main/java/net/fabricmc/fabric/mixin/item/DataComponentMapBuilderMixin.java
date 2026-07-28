@@ -57,7 +57,7 @@ abstract class DataComponentMapBuilderMixin implements FabricComponentMapBuilder
 			this.set(type, defaultValue);
 		}
 
-		return (T) this.map.get(type);
+		return Objects.requireNonNull((T) this.map.get(type));
 	}
 
 	@Override

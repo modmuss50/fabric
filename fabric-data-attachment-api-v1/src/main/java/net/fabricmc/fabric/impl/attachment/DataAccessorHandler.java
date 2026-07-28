@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.attachment;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import net.minecraft.world.level.storage.ValueInput;
 
@@ -55,14 +56,16 @@ public class DataAccessorHandler {
 			return;
 		}
 
+		IdentityHashMap<AttachmentType<?>, Object> attachments = Objects.requireNonNull(newAttachments);
+
 		// Update the new attachments
-		newAttachments.forEach((attachmentType, o) -> target.setAttached((AttachmentType) attachmentType, o));
+		attachments.forEach((attachmentType, o) -> target.setAttached((AttachmentType) attachmentType, o));
 
 		// Remove all of the removed attachments - copy keys to avoid ConcurrentModificationException
 		if (oldAttachments != null) {
 			oldAttachments.keySet().stream()
 					.filter(AttachmentType::isPersistent)
-					.filter(attachmentType -> !newAttachments.containsKey(attachmentType))
+					.filter(attachmentType -> !attachments.containsKey(attachmentType))
 					.toList()
 					.forEach(target::removeAttached);
 		}

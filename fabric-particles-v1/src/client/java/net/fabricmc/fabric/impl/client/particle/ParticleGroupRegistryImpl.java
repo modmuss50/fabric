@@ -62,7 +62,7 @@ public final class ParticleGroupRegistryImpl {
 			nodes.put(id, new ParticleTextureNode(renderType));
 
 			if (last != null) {
-				ParticleTextureNode.link(nodes.get(last), nodes.get(id));
+				ParticleTextureNode.link(Objects.requireNonNull(nodes.get(last)), Objects.requireNonNull(nodes.get(id)));
 			}
 
 			last = id;

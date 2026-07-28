@@ -35,6 +35,7 @@ import net.fabricmc.fabric.impl.networking.context.PacketContextSetter;
 @Mixin(value = PacketDecoder.class, priority = 500)
 public class PacketDecoderMixin implements PacketContextSetter {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private PacketContext packetContext;
 
 	@WrapMethod(method = "decode")

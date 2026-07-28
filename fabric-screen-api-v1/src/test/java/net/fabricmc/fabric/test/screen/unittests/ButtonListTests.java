@@ -178,6 +178,7 @@ public class ButtonListTests {
 		assertEquals(size, widgets.size());
 	}
 
+	@SuppressWarnings("NullAway")
 	private static Screen screen() {
 		// There must be more Button instances added via Screen::addRenderableOnly than via Screen::addWidget to properly test reliance on the backing Screen#renderables list.
 		return new Screen(null, null, CommonComponents.EMPTY) {

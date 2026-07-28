@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.item.client;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -48,7 +50,7 @@ public class ItemInHandRendererMixin {
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void modifyProgressAnimation(CallbackInfo ci) {
 		// Modify main hand
-		ItemStack newMainStack = minecraft.player.getMainHandItem();
+		ItemStack newMainStack = Objects.requireNonNull(minecraft.player).getMainHandItem();
 
 		if (mainHandItem.getItem() == newMainStack.getItem()) {
 			if (!mainHandItem.getItem().allowComponentsUpdateAnimation(minecraft.player, InteractionHand.MAIN_HAND, mainHandItem, newMainStack)) {

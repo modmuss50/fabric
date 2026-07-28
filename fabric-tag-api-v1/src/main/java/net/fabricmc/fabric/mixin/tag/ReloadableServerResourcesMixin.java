@@ -41,6 +41,7 @@ import net.fabricmc.fabric.impl.tag.TagAliasLoader;
 @Mixin(value = ReloadableServerResources.class, priority = 999)
 abstract class ReloadableServerResourcesMixin {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private LayeredRegistryAccess<RegistryLayer> dynamicRegistriesByType;
 
 	@Inject(method = "<init>", at = @At("RETURN"))

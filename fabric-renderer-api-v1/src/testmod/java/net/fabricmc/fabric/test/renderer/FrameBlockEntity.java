@@ -25,6 +25,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -54,9 +55,12 @@ public class FrameBlockEntity extends BlockEntity implements RenderDataBlockEnti
 			block = null;
 		}
 
-		if (this.getLevel() != null && this.getLevel().isClientSide()) {
+		Level level = this.getLevel();
+
+		if (level != null && level.isClientSide()) {
 			// This call forces a chunk remesh.
-			level.sendBlockUpdated(worldPosition, null, null, 0);
+			BlockState state = getBlockState();
+			level.sendBlockUpdated(worldPosition, state, state, 0);
 		}
 	}
 
@@ -76,8 +80,8 @@ public class FrameBlockEntity extends BlockEntity implements RenderDataBlockEnti
 	public void setChanged() {
 		super.setChanged();
 
-		if (this.hasLevel() && !this.getLevel().isClientSide()) {
-			((ServerLevel) level).getChunkSource().blockChanged(getBlockPos());
+		if (this.getLevel() instanceof ServerLevel level) {
+			level.getChunkSource().blockChanged(getBlockPos());
 		}
 	}
 

@@ -72,7 +72,7 @@ abstract class LevelChunkMixin {
 	// Use the slice to not redirect codepath where block entity is loaded
 	@Redirect(method = "getBlockEntity(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/chunk/LevelChunk$EntityCreationType;)Lnet/minecraft/world/level/block/entity/BlockEntity;", at = @At(value = "INVOKE", target = "Ljava/util/Map;remove(Ljava/lang/Object;)Ljava/lang/Object;"),
 			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/chunk/LevelChunk;createBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;")))
-	private <K, V> Object onRemoveBlockEntity(Map<K, V> map, K key) {
+	private <K, V> @Nullable Object onRemoveBlockEntity(Map<K, V> map, K key) {
 		@Nullable final V removed = map.remove(key);
 
 		if (removed != null && this.getLevel() instanceof ServerLevel) {

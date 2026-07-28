@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ final class TestAnnotationLocator {
 
 	private final FabricLoader fabricLoader;
 
-	private List<TestMethod> testMethods = null;
+	private @Nullable List<TestMethod> testMethods = null;
 
 	TestAnnotationLocator(FabricLoader fabricLoader) {
 		this.fabricLoader = fabricLoader;

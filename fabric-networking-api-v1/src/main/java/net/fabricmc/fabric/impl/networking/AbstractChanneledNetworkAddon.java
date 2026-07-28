@@ -161,7 +161,7 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet, ChannelFutureListener callback) {
+	public void sendPacket(Packet<?> packet, @Nullable ChannelFutureListener callback) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
 		this.connection.send(packet, callback);
@@ -225,7 +225,8 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 
 	@Override
 	public CommonRegisterPayload createRegisterPayload() {
-		return new CommonRegisterPayload(getNegotiatedVersion(), getProtocol(), this.getReceivableChannels());
+		String protocol = Objects.requireNonNull(getProtocol(), "Cannot create a register payload in this protocol phase");
+		return new CommonRegisterPayload(getNegotiatedVersion(), protocol, this.getReceivableChannels());
 	}
 
 	@Override

@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.particle.client;
 
+import java.util.Objects;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -60,7 +62,7 @@ public class ParticleGroupRegistryTests implements ClientModInitializer {
 
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
 				dispatcher.register(ClientCommands.literal("custom_particles").executes(context -> {
-					ClientLevel level = Minecraft.getInstance().level;
+					ClientLevel level = Objects.requireNonNull(Minecraft.getInstance().level);
 					RandomSource random = level.getRandom();
 					LocalPlayer player = context.getSource().getPlayer();
 

@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.mixin.attachment;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.spongepowered.asm.mixin.Final;
@@ -72,7 +73,7 @@ abstract class LevelChunkMixin extends AttachmentTargetsMixin implements Attachm
 			// can't shadow from Chunk because this already extends a supermixin
 			PlayerLookup.tracking(serverLevel, ((ChunkAccess) (Object) this).getPos())
 					.forEach(player -> {
-						if (((AttachmentTypeImpl<?>) type).syncPredicate().test(this, player)) {
+						if (Objects.requireNonNull(((AttachmentTypeImpl<?>) type).syncPredicate()).test(this, player)) {
 							AttachmentSync.trySync(change, player);
 						}
 					});

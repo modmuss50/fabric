@@ -213,7 +213,7 @@ public abstract class FabricLanguageProvider implements DataProvider {
 		 * @param value    The value of the entry.
 		 */
 		default void add(StatType<?> statType, String value) {
-			add("stat_type." + BuiltInRegistries.STAT_TYPE.getKey(statType).toString().replace(':', '.'), value);
+			add("stat_type." + Objects.requireNonNull(BuiltInRegistries.STAT_TYPE.getKey(statType)).toString().replace(':', '.'), value);
 		}
 
 		/**

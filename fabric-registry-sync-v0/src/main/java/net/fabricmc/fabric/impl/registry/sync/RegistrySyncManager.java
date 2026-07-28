@@ -161,7 +161,7 @@ public final class RegistrySyncManager {
 		Map<Identifier, Object2IntMap<Identifier>> map = new LinkedHashMap<>();
 
 		for (Identifier registryId : BuiltInRegistries.REGISTRY.keySet()) {
-			Registry registry = BuiltInRegistries.REGISTRY.getValue(registryId);
+			Registry registry = Objects.requireNonNull(BuiltInRegistries.REGISTRY.getValue(registryId));
 
 			if (DEBUG_WRITE_REGISTRY_DATA) {
 				File location = new File(".fabric" + File.separatorChar + "debug" + File.separatorChar + "registry");
@@ -174,7 +174,7 @@ public final class RegistrySyncManager {
 					}
 				}
 
-				if (c && registry != null) {
+				if (c) {
 					File file = new File(location, registryId.toString().replace(':', '.').replace('/', '.') + ".csv");
 
 					try (FileOutputStream stream = new FileOutputStream(file)) {
@@ -240,7 +240,7 @@ public final class RegistrySyncManager {
 							LOGGER.error("[fabric-registry-sync] Inconsistency detected in " + registryId + ": object " + o + " -> integer ID " + rawId + " -> object " + registry.byId(rawId) + "!");
 						}
 
-						if (!rawIdsFound.add(rawId)) {
+						if (!Objects.requireNonNull(rawIdsFound).add(rawId)) {
 							LOGGER.error("[fabric-registry-sync] Inconsistency detected in " + registryId + ": multiple objects hold the raw ID " + rawId + " (this one is " + id + ")");
 						}
 					}

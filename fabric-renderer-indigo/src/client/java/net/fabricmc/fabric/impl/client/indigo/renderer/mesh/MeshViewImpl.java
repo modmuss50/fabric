@@ -29,7 +29,7 @@ public class MeshViewImpl implements MeshView {
 	/** Used to satisfy external calls to {@link #forEach(Consumer)}. */
 	private static final ThreadLocal<ObjectArrayList<QuadViewImpl>> CURSOR_POOLS = ThreadLocal.withInitial(ObjectArrayList::new);
 
-	int[] data;
+	int[] data = new int[0];
 	int limit;
 
 	MeshViewImpl() {
@@ -73,7 +73,7 @@ public class MeshViewImpl implements MeshView {
 			index += EncodingFormat.TOTAL_STRIDE;
 		}
 
-		cursor.data = null;
+		cursor.data = new int[0];
 	}
 
 	// TODO: This could be optimized by checking if the emitter is that of a MutableMeshImpl and if

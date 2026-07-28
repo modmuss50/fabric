@@ -40,6 +40,7 @@ public abstract class AvatarRendererMixin<AvatarlikeEntity extends Avatar & Clie
 	private static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private BlockModelResolver blockModelResolver;
 
 	@Inject(method = "<init>", at = @At("RETURN"))

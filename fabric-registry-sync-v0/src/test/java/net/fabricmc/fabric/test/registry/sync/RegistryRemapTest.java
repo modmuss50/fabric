@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -144,7 +145,7 @@ public class RegistryRemapTest {
 		var payload = new RegistrySyncPayload(Map.of(testRegistryKey.identifier(), asFastMap(idMap)));
 
 		RemapException remapException = assertThrows(RemapException.class, () -> ClientRegistrySyncHandler.apply(payload));
-		assertTrue(remapException.getMessage().contains("unknown-remote"));
+		assertTrue(Objects.requireNonNull(remapException.getMessage()).contains("unknown-remote"));
 	}
 
 	@Test
@@ -158,7 +159,7 @@ public class RegistryRemapTest {
 		var payload = new RegistrySyncPayload(Map.of(id("unknown"), asFastMap(idMap)));
 
 		RemapException remapException = assertThrows(RemapException.class, () -> ClientRegistrySyncHandler.apply(payload));
-		assertTrue(remapException.getMessage().contains("unknown-registry"));
+		assertTrue(Objects.requireNonNull(remapException.getMessage()).contains("unknown-registry"));
 	}
 
 	@Test

@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.client.indigo.renderer.render;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -56,7 +57,7 @@ public class ExtendedBlockModelFeatureRenderer extends RenderTypeFeatureRenderer
 		}
 	};
 
-	private ExtendedBlockModelSubmit submit;
+	private @Nullable ExtendedBlockModelSubmit submit;
 
 	@Override
 	protected void buildGroup(FeatureFrameContext context, List<ExtendedBlockModelSubmit> submits) {
@@ -124,9 +125,10 @@ public class ExtendedBlockModelFeatureRenderer extends RenderTypeFeatureRenderer
 		if (quad.emissive()) {
 			quad.lightmap(LightCoordsUtil.FULL_BRIGHT, LightCoordsUtil.FULL_BRIGHT, LightCoordsUtil.FULL_BRIGHT, LightCoordsUtil.FULL_BRIGHT);
 		} else {
-			quad.minLightmap(submit.lightCoords());
+			quad.minLightmap(Objects.requireNonNull(submit).lightCoords());
 		}
 
+		ExtendedBlockModelSubmit submit = Objects.requireNonNull(this.submit);
 		int[] tintLayers = submit.tintLayers();
 		int baseTintColor = submit.tintColor();
 
@@ -137,7 +139,7 @@ public class ExtendedBlockModelFeatureRenderer extends RenderTypeFeatureRenderer
 	}
 
 	private class BufferCache {
-		private Function<ChunkSectionLayer, @Nullable RenderType> renderTypeFunction;
+		private @Nullable Function<ChunkSectionLayer, @Nullable RenderType> renderTypeFunction;
 		private PoseStack.@Nullable Pose sheetedDecalPose;
 
 		@Nullable
@@ -162,7 +164,7 @@ public class ExtendedBlockModelFeatureRenderer extends RenderTypeFeatureRenderer
 		public VertexConsumer getBuffer(ChunkSectionLayer layer) {
 			if (layer != lastLayer) {
 				lastLayer = layer;
-				RenderType renderType = renderTypeFunction.apply(layer);
+				RenderType renderType = Objects.requireNonNull(renderTypeFunction).apply(layer);
 
 				if (renderType == null) {
 					lastBuffer = null;

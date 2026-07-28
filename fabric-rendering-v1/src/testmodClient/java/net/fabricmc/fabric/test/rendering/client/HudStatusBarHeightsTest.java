@@ -70,7 +70,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				(HudElement _) -> (GuiGraphicsExtractor graphics, DeltaTracker _) -> {
 					Minecraft minecraft = Minecraft.getInstance();
 
-					if (minecraft.gameMode.canHurtPlayer()) {
+					if (canHurtPlayer(minecraft)) {
 						Hud hud = minecraft.gui.hud;
 						int width = graphics.guiWidth() / 2 - 91;
 						int height = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(
@@ -81,7 +81,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				});
 		HudStatusBarHeightRegistry.addLeft(VanillaHudElements.HEALTH_BAR, (Player player) -> {
 			Minecraft minecraft = Minecraft.getInstance();
-			return minecraft.gameMode.canHurtPlayer() ? 10 : 0;
+			return canHurtPlayer(minecraft) ? 10 : 0;
 		});
 	}
 
@@ -91,7 +91,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				(HudElement _) -> (GuiGraphicsExtractor graphics, DeltaTracker _) -> {
 					Minecraft minecraft = Minecraft.getInstance();
 
-					if (minecraft.gameMode.canHurtPlayer()) {
+					if (canHurtPlayer(minecraft)) {
 						Hud hud = minecraft.gui.hud;
 						int width = graphics.guiWidth() / 2 - 91;
 						int height = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(
@@ -105,7 +105,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 		if (false) {
 			HudStatusBarHeightRegistry.addLeft(VanillaHudElements.ARMOR_BAR, (Player player) -> {
 				Minecraft minecraft = Minecraft.getInstance();
-				return minecraft.gameMode.canHurtPlayer() && player.getArmorValue() > 0 ? 10 : 0;
+				return canHurtPlayer(minecraft) && player.getArmorValue() > 0 ? 10 : 0;
 			});
 		}
 	}
@@ -118,7 +118,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				(GuiGraphicsExtractor graphics, DeltaTracker _) -> {
 					Minecraft minecraft = Minecraft.getInstance();
 
-					if (minecraft.gameMode.canHurtPlayer()) {
+					if (canHurtPlayer(minecraft)) {
 						Hud hud = minecraft.gui.hud;
 						int width = graphics.guiWidth() / 2 - 91;
 						int height = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(id);
@@ -128,7 +128,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				});
 		HudStatusBarHeightRegistry.addLeft(id, (Player player) -> {
 			Minecraft minecraft = Minecraft.getInstance();
-			return minecraft.gameMode.canHurtPlayer()
+			return canHurtPlayer(minecraft)
 					&& Mth.floor(player.getAttributeValue(Attributes.ARMOR_TOUGHNESS)) > 0 ? 10 : 0;
 		});
 	}
@@ -141,7 +141,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				(GuiGraphicsExtractor graphics, DeltaTracker _) -> {
 					Minecraft minecraft = Minecraft.getInstance();
 
-					if (minecraft.gameMode.canHurtPlayer()) {
+					if (canHurtPlayer(minecraft)) {
 						Hud hud = minecraft.gui.hud;
 						LivingEntity livingEntity = ((HudAccessor) hud).fabric$callGetRiddenEntity();
 
@@ -158,7 +158,7 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 		HudStatusBarHeightRegistry.addRight(id, (Player player) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 
-			if (minecraft.gameMode.canHurtPlayer()) {
+			if (canHurtPlayer(minecraft)) {
 				Hud hud = minecraft.gui.hud;
 				LivingEntity livingEntity = ((HudAccessor) hud).fabric$callGetRiddenEntity();
 
@@ -263,5 +263,9 @@ public class HudStatusBarHeightsTest implements ClientModInitializer {
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, STAMINA_HALF_SPRITE, n, y, 9, 9);
 			}
 		}
+	}
+
+	private static boolean canHurtPlayer(Minecraft minecraft) {
+		return minecraft.gameMode != null && minecraft.gameMode.canHurtPlayer();
 	}
 }

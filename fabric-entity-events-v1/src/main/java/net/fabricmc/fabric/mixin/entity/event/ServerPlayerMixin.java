@@ -98,6 +98,7 @@ abstract class ServerPlayerMixin extends LivingEntityMixin {
 
 		if (dir == null) {
 			cir.setReturnValue(Either.left(Player.BedSleepingProblem.OTHER_PROBLEM));
+			return Direction.NORTH;
 		}
 
 		return dir;

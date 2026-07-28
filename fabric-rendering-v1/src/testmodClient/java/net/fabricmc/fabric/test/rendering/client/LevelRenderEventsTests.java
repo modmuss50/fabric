@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.rendering.client;
 
+import java.util.Objects;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.jspecify.annotations.Nullable;
 
@@ -48,9 +50,9 @@ public class LevelRenderEventsTests implements ClientModInitializer, FabricClien
 	@Nullable
 	private static BlockModelResolver blockModelResolver = null;
 
-	private static void extractBlockOutline(LevelExtractionContext context, HitResult hitResult) {
+	private static void extractBlockOutline(LevelExtractionContext context, @Nullable HitResult hitResult) {
 		if (hitResult instanceof BlockHitResult blockHitResult && blockHitResult.getType() != HitResult.Type.MISS && context.level().getBlockState(blockHitResult.getBlockPos()).is(Blocks.DIAMOND_BLOCK)) {
-			context.levelState().blockOutlineRenderState.setData(DIAMOND_BLOCK_OUTLINE, true);
+			Objects.requireNonNull(context.levelState().blockOutlineRenderState).setData(DIAMOND_BLOCK_OUTLINE, true);
 		}
 	}
 
@@ -147,7 +149,7 @@ public class LevelRenderEventsTests implements ClientModInitializer, FabricClien
 	}
 
 	private static void assertTerrainRenderContext(LevelTerrainRenderContext context) {
-		assertNotNull(context.sectionsToRender(), "sectionsToRender is null");
+		Objects.requireNonNull(context.sectionsToRender(), "sectionsToRender is null");
 	}
 
 	private static void assertAbstractRenderContext(AbstractLevelRenderContext context) {

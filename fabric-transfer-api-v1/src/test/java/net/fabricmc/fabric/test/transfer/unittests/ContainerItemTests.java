@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.transfer.unittests;
 
+import java.util.Objects;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,7 @@ class ContainerItemTests extends AbstractTransferApiTest {
 		Storage<ItemVariant> storage = ContainerItemContext.withConstant(stack).find(ItemStorage.ITEM);
 
 		Assertions.assertInstanceOf(SlottedStorage.class, storage);
-		Assertions.assertEquals(27, ((SlottedStorage<ItemVariant>) storage).getSlotCount());
+		Assertions.assertEquals(27, ((SlottedStorage<ItemVariant>) Objects.requireNonNull(storage)).getSlotCount());
 	}
 
 	@Test

@@ -69,8 +69,10 @@ public class GameRuleBuilder<T> {
 	@Nullable
 	protected ArgumentType<T> argumentType;
 
-	protected GameRules.VisitorCaller<T> acceptor;
+	protected GameRules.@Nullable VisitorCaller<T> acceptor;
+	@Nullable
 	protected Codec<T> codec;
+	@Nullable
 	protected ToIntFunction<T> commandResultSupplier;
 	protected FeatureFlagSet requiredFeatures = FeatureFlagSet.of();
 
@@ -128,19 +130,16 @@ public class GameRuleBuilder<T> {
 		Objects.requireNonNull(this.category, "GameRule category cannot be null! Consider using GameRuleCategory.MISC instead.");
 		Objects.requireNonNull(this.type, "GameRule type cannot be null! Consider using GameRuleType.INT instead.");
 
-		if (this.fabricType != FabricGameRuleType.ENUM) {
-			Objects.requireNonNull(this.argumentType, "GameRule argumentType cannot be null for non-enum rules!");
-		}
-
-		Objects.requireNonNull(this.acceptor, "GameRule acceptor cannot be null!");
-		Objects.requireNonNull(this.codec, "GameRule codec cannot be null!");
-		Objects.requireNonNull(this.commandResultSupplier, "GameRule commandResultSupplier cannot be null!");
+		ArgumentType<T> argumentType = Objects.requireNonNull(this.argumentType, "GameRule argumentType cannot be null!");
+		GameRules.VisitorCaller<T> acceptor = Objects.requireNonNull(this.acceptor, "GameRule acceptor cannot be null!");
+		Codec<T> codec = Objects.requireNonNull(this.codec, "GameRule codec cannot be null!");
+		ToIntFunction<T> commandResultSupplier = Objects.requireNonNull(this.commandResultSupplier, "GameRule commandResultSupplier cannot be null!");
 		Objects.requireNonNull(this.defaultValue, "GameRule defaultValue cannot be null!");
 		Objects.requireNonNull(this.requiredFeatures, "GameRule requiredFeatures cannot be null! Consider using FeatureSet.empty() instead.");
 
-		this.codec.encodeStart(JavaOps.INSTANCE, this.defaultValue).getOrThrow(error -> new IllegalStateException("Failed to serialize default value: " + error));
+		codec.encodeStart(JavaOps.INSTANCE, this.defaultValue).getOrThrow(error -> new IllegalStateException("Failed to serialize default value: " + error));
 
-		GameRule<T> rule = new GameRule<>(this.category, this.type, this.argumentType, this.acceptor, this.codec, this.commandResultSupplier, this.defaultValue, this.requiredFeatures);
+		GameRule<T> rule = new GameRule<>(this.category, this.type, argumentType, acceptor, codec, commandResultSupplier, this.defaultValue, this.requiredFeatures);
 
 		if (this.fabricType != null) {
 			((RuleTypeExtensions) (Object) rule).fabric_setType(this.fabricType);
@@ -337,7 +336,9 @@ public class GameRuleBuilder<T> {
 			super(defaultValue);
 			this.fabricType = FabricGameRuleType.ENUM;
 			this.acceptor = GameRuleBuilder::visitEnum;
-			this.argumentType = null;
+			this.argumentType = reader -> {
+				throw new IllegalStateException("Enum game rules are parsed by Fabric");
+			};
 			this.codec = createEnumCodec(defaultValue.getDeclaringClass());
 			this.commandResultSupplier = value -> {
 				// For now, we are going to use the ordinal as the command result. Could be changed or set to relate to something else entirely. -i509VCB

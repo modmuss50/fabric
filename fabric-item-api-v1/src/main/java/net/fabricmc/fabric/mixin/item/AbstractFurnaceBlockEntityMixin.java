@@ -18,6 +18,7 @@ package net.fabricmc.fabric.mixin.item;
 
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -39,7 +40,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
 	}
 
 	@Redirect(method = "consumeFuel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;getCraftingRemainder()Lnet/minecraft/world/item/ItemStackTemplate;"))
-	private static ItemStackTemplate getCraftingRemainder(Item item, @Share("itemStack") LocalRef<ItemStack> stack) {
+	private static @Nullable ItemStackTemplate getCraftingRemainder(Item item, @Share("itemStack") LocalRef<ItemStack> stack) {
 		return stack.get().getCraftingRemainder();
 	}
 }

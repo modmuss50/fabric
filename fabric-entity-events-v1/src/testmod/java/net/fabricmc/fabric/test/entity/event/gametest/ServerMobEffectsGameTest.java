@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.entity.event.gametest;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.InteractionHand;
@@ -55,7 +57,7 @@ public class ServerMobEffectsGameTest {
 	@GameTest
 	public void beforeAfterAdd(GameTestHelper context) {
 		var obj = new Object() { // Scoped events at home
-			GameTestHelper contextRef = context;
+			@Nullable GameTestHelper contextRef = context;
 		};
 		ServerMobEffectEvents.BEFORE_ADD.register((effectInstance, entity, ctx) -> {
 			if (!isThisTheSalmon(entity) || obj.contextRef == null) return;
@@ -111,7 +113,7 @@ public class ServerMobEffectsGameTest {
 	@GameTest
 	public void beforeAfterRemove(GameTestHelper context) {
 		var obj = new Object() { // Scoped events at home
-			GameTestHelper contextRef = context;
+			@Nullable GameTestHelper contextRef = context;
 		};
 		ServerMobEffectEvents.BEFORE_REMOVE.register((effectInstance, entity, ctx) -> {
 			if (!isThisTheSalmon(entity) || obj.contextRef == null) return;
@@ -132,7 +134,7 @@ public class ServerMobEffectsGameTest {
 	@GameTest
 	public void removeNoneExistentEffect(GameTestHelper context) {
 		var obj = new Object() { // Scoped events at home
-			GameTestHelper contextRef = context;
+			@Nullable GameTestHelper contextRef = context;
 		};
 		ServerMobEffectEvents.BEFORE_REMOVE.register((effectInstance, entity, ctx) -> {
 			if (!isThisTheSalmon(entity) || obj.contextRef == null) return;

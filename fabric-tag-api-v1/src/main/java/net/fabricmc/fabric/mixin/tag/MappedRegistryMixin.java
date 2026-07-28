@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Final;
@@ -50,7 +51,7 @@ abstract class MappedRegistryMixin<T> implements MappedRegistryExtension, TagAli
 	private static final Logger LOGGER = LoggerFactory.getLogger("fabric-tag-api-v1");
 
 	@Unique
-	private Map<TagKey<?>, Set<TagKey<?>>> pendingTagAliasGroups;
+	private @Nullable Map<TagKey<?>, Set<TagKey<?>>> pendingTagAliasGroups;
 
 	@Shadow
 	@Final

@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.client.rendering;
 
+import java.util.Objects;
+
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -108,7 +110,7 @@ public abstract class LevelRendererMixin {
 
 	@Inject(method = "submitBlockOutline", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/state/level/CameraRenderState;pos:Lnet/minecraft/world/phys/Vec3;", opcode = Opcodes.GETFIELD), cancellable = true)
 	private void beforeRenderBlockOutline(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, LevelRenderState levelRenderState, CallbackInfo ci) {
-		if (!LevelRenderEvents.BEFORE_BLOCK_OUTLINE.invoker().beforeBlockOutline(renderContext, renderContext.levelState().blockOutlineRenderState)) {
+		if (!LevelRenderEvents.BEFORE_BLOCK_OUTLINE.invoker().beforeBlockOutline(renderContext, Objects.requireNonNull(renderContext.levelState().blockOutlineRenderState))) {
 			ci.cancel();
 		}
 	}

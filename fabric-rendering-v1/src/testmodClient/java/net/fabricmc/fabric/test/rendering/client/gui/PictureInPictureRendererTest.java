@@ -18,6 +18,7 @@ package net.fabricmc.fabric.test.rendering.client.gui;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class PictureInPictureRendererTest implements ClientModInitializer, Fabri
 				ScreenEvents.afterExtract(screen).register((screen1, graphics, mouseX, mouseY, tickDelta) -> {
 					// no need to modify anything about this player, since they're in different locations they will be
 					// looking towards the mouse at different angles
-					InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, 26, 8, 75, 78, 30, 0.0625F, mouseX, mouseY, client.player);
+					InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, 26, 8, 75, 78, 30, 0.0625F, mouseX, mouseY, Objects.requireNonNull(client.player));
 				});
 			}
 		});

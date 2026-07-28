@@ -18,6 +18,7 @@ package net.fabricmc.fabric.impl.recipe.sync;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -73,7 +74,7 @@ public record ClientboundRecipeSyncPayload(List<Entry> entries) implements Custo
 		}
 
 		private void write(RegistryFriendlyByteBuf buf) {
-			buf.writeIdentifier(BuiltInRegistries.RECIPE_SERIALIZER.getKey(this.serializer));
+			buf.writeIdentifier(Objects.requireNonNull(BuiltInRegistries.RECIPE_SERIALIZER.getKey(this.serializer)));
 
 			buf.writeVarInt(this.recipes.size());
 

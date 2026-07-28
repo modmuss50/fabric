@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.google.common.base.Preconditions;
@@ -146,7 +147,7 @@ public final class TestScreenshotComparisonOptionsImpl extends TestScreenshotCom
 
 	@Nullable
 	private static NativeImage loadNativeImage(String templateImagePath) {
-		Path filePath = FabricClientGameTestRunner.currentlyRunningGameTest.getProvider()
+		Path filePath = Objects.requireNonNull(FabricClientGameTestRunner.currentlyRunningGameTest).getProvider()
 				.findPath("templates/" + templateImagePath + ".png")
 				.orElse(null);
 

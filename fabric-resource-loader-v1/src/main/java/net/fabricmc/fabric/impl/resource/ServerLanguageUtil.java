@@ -45,7 +45,7 @@ public final class ServerLanguageUtil {
 
 			final Map<PackType, Set<String>> map = ModNioPackResources.readNamespaces(mod.getRootPaths(), mod.getMetadata().getId());
 
-			for (String ns : map.get(PackType.CLIENT_RESOURCES)) {
+			for (String ns : map.getOrDefault(PackType.CLIENT_RESOURCES, Set.of())) {
 				mod.findPath(ASSETS_PREFIX + ns + "/lang/" + Language.DEFAULT + ".json")
 						.filter(Files::isRegularFile)
 						.ifPresent(paths::add);

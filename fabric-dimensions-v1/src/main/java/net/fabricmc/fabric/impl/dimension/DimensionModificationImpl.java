@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.dimension;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import net.minecraft.core.Holder;
@@ -65,7 +66,7 @@ public class DimensionModificationImpl implements ModInitializer {
 				// Re-freeze and apply certain cleanup actions
 				if (dimensions instanceof MappedRegistry<DimensionType> registry) {
 					Map<ResourceKey<DimensionType>, RegistrationInfo> registrationInfos = ((MappedRegistryAccessor<DimensionType>) registry).fabric_getRegistrationInfos();
-					RegistrationInfo info = registrationInfos.get(key);
+					RegistrationInfo info = Objects.requireNonNull(registrationInfos.get(key));
 					RegistrationInfo newInfo = new RegistrationInfo(Optional.empty(), info.lifecycle());
 					registrationInfos.put(key, newInfo);
 				}

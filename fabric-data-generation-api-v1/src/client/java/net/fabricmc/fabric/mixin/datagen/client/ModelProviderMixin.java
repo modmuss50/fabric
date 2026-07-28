@@ -42,6 +42,7 @@ import net.fabricmc.fabric.impl.datagen.client.FabricModelProviderDefinitions;
 @Mixin(ModelProvider.class)
 public class ModelProviderMixin {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private FabricPackOutput fabricPackOutput;
 
 	@Inject(method = "<init>", at = @At("RETURN"))

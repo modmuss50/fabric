@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.client.rendering.level;
 
+import java.util.Objects;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.jspecify.annotations.Nullable;
 
@@ -30,10 +32,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelTerrainRenderContext;
 
 public final class LevelRenderContextImpl implements AbstractLevelRenderContext, LevelTerrainRenderContext, LevelRenderContext {
-	private GameRenderer gameRenderer;
-	private LevelRenderer levelRenderer;
-	private LevelRenderState levelRenderState;
-	private SubmitNodeCollector nodeCollector;
+	private @Nullable GameRenderer gameRenderer;
+	private @Nullable LevelRenderer levelRenderer;
+	private @Nullable LevelRenderState levelRenderState;
+	private @Nullable SubmitNodeCollector nodeCollector;
 
 	@Nullable
 	private ChunkSectionsToRender sectionsToRender;
@@ -66,32 +68,31 @@ public final class LevelRenderContextImpl implements AbstractLevelRenderContext,
 
 	@Override
 	public GameRenderer gameRenderer() {
-		return gameRenderer;
+		return Objects.requireNonNull(gameRenderer);
 	}
 
 	@Override
 	public LevelRenderer levelRenderer() {
-		return levelRenderer;
+		return Objects.requireNonNull(levelRenderer);
 	}
 
 	@Override
 	public LevelRenderState levelState() {
-		return levelRenderState;
+		return Objects.requireNonNull(levelRenderState);
 	}
 
 	@Override
 	public ChunkSectionsToRender sectionsToRender() {
-		return sectionsToRender;
+		return Objects.requireNonNull(sectionsToRender);
 	}
 
 	@Override
 	public SubmitNodeCollector submitNodeCollector() {
-		return nodeCollector;
+		return Objects.requireNonNull(nodeCollector);
 	}
 
 	@Override
-	@Nullable
 	public PoseStack poseStack() {
-		return poseStack;
+		return Objects.requireNonNull(poseStack);
 	}
 }

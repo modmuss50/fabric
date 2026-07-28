@@ -16,10 +16,12 @@
 
 package net.fabricmc.fabric.impl.networking;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
 public interface CustomPayloadTypeProvider<B extends FriendlyByteBuf> {
-	CustomPacketPayload.TypeAndCodec<B, ? extends CustomPacketPayload> get(B buf, Identifier identifier);
+	CustomPacketPayload.@Nullable TypeAndCodec<B, ? extends CustomPacketPayload> get(B buf, Identifier identifier);
 }

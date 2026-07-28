@@ -51,6 +51,7 @@ public class TagsProviderMixin<T> {
 	@Final
 	protected ResourceKey<? extends Registry<T>> registryKey;
 	@Unique
+	@SuppressWarnings("NullAway")
 	private PackOutput.PathProvider tagAliasPathResolver;
 
 	@Inject(method = "<init>(Lnet/minecraft/data/PackOutput;Lnet/minecraft/resources/ResourceKey;Ljava/util/concurrent/CompletableFuture;Ljava/util/concurrent/CompletableFuture;)V", at = @At("RETURN"))

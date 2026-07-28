@@ -37,11 +37,13 @@ abstract class AdvancementTabTypeMixin {
 			context.setPos(x, y);
 			AdvancementRenderer.IconRenderer iconRenderer = AdvancementRendererRegistryImpl.getIconRenderer(context.holder().id());
 
-			if (iconRenderer.shouldRenderOriginalIcon()) {
+			if (iconRenderer == null || iconRenderer.shouldRenderOriginalIcon()) {
 				original.call(graphics, icon, x, y);
 			}
 
-			iconRenderer.extractAdvancementIcon(context);
+			if (iconRenderer != null) {
+				iconRenderer.extractAdvancementIcon(context);
+			}
 		} else {
 			original.call(graphics, icon, x, y);
 		}

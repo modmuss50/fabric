@@ -63,7 +63,7 @@ public class OptionalCustomIngredientStreamCodec implements StreamCodec<Registry
 
 		CustomIngredient customIngredient = value.get().getCustomIngredient();
 
-		if (CustomIngredientStreamCodec.shouldEncodeFallback(customIngredient)) {
+		if (customIngredient == null || CustomIngredientStreamCodec.shouldEncodeFallback(customIngredient)) {
 			// The client doesn't support this custom ingredient, so we send the matching stacks as a regular ingredient.
 			this.fallback.encode(buf, value);
 			return;

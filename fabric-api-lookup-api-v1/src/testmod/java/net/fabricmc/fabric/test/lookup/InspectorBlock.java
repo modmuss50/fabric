@@ -38,6 +38,7 @@ public class InspectorBlock extends Block {
 	}
 
 	@Override
+	@SuppressWarnings("NullAway")
 	public InteractionResult useItemOn(ItemStack stack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
 		Inspectable inspectable = FabricItemApiLookupTest.INSPECTABLE.find(stack, null);
 
@@ -53,6 +54,7 @@ public class InspectorBlock extends Block {
 	}
 
 	@Override
+	@SuppressWarnings("NullAway")
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		if (!level.isClientSide()) {
 			Inspectable inspectable = FabricEntityApiLookupTest.INSPECTABLE.find(entity, null);

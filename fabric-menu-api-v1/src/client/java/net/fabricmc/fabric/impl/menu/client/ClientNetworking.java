@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.menu.client;
 
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +68,7 @@ public final class ClientNetworking implements ClientModInitializer {
 
 		if (screenFactory != null) {
 			Minecraft client = Minecraft.getInstance();
-			Player player = client.player;
+			Player player = Objects.requireNonNull(client.player);
 
 			Screen screen = screenFactory.create(
 					((ExtendedMenuType<?, D>) type).create(syncId, player.getInventory(), payload.data()),

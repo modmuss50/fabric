@@ -163,7 +163,7 @@ public interface AttachmentTarget {
 	 * @return the attached data, or the default value
 	 */
 	@Contract("_, !null -> !null")
-	default <A> A getAttachedOrElse(AttachmentType<A> type, @Nullable A defaultValue) {
+	default <A> @Nullable A getAttachedOrElse(AttachmentType<A> type, @Nullable A defaultValue) {
 		A attached = getAttached(type);
 		return attached == null ? defaultValue : attached;
 	}

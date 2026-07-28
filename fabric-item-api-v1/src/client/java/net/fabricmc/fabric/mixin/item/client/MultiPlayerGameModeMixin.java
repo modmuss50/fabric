@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.item.client;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -55,7 +57,7 @@ public class MultiPlayerGameModeMixin {
 		if (!stackUnchanged) {
 			// The stack changed and vanilla is about to cancel block breaking progress. Check if the item wants to continue block breaking instead.
 			ItemStack oldStack = this.destroyingItem;
-			ItemStack newStack = this.minecraft.player.getMainHandItem();
+			ItemStack newStack = Objects.requireNonNull(this.minecraft.player).getMainHandItem();
 
 			if (oldStack.is(newStack.getItem()) && oldStack.getItem().allowContinuingBlockBreaking(this.minecraft.player, oldStack, newStack)) {
 				stackUnchanged = true;

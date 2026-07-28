@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.entity.event;
 
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -229,7 +231,7 @@ public final class EntityEventTests implements ModInitializer {
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			dispatcher.register(Commands.literal("addsleeptestwools").executes(context -> {
-				addSleepWools(context.getSource().getPlayer());
+				addSleepWools(Objects.requireNonNull(context.getSource().getPlayer()));
 				return 0;
 			}));
 		});

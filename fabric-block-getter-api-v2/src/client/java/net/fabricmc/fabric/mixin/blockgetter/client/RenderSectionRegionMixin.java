@@ -42,7 +42,7 @@ public abstract class RenderSectionRegionMixin implements BlockAndTintGetter, Re
 	private Long2ObjectMap<Object> fabric_renderDataMap;
 
 	@Override
-	public Object getBlockEntityRenderData(BlockPos pos) {
+	public @Nullable Object getBlockEntityRenderData(BlockPos pos) {
 		return fabric_renderDataMap == null ? null : fabric_renderDataMap.get(pos.asLong());
 	}
 

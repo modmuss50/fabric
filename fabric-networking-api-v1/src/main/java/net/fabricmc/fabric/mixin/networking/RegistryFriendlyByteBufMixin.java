@@ -31,7 +31,7 @@ import net.fabricmc.fabric.impl.networking.FabricRegistryFriendlyByteBuf;
 @Mixin(RegistryFriendlyByteBuf.class)
 public class RegistryFriendlyByteBufMixin implements FabricRegistryFriendlyByteBuf {
 	@Unique
-	private Set<Identifier> sendableConfigurationChannels = null;
+	private @Nullable Set<Identifier> sendableConfigurationChannels;
 
 	@Override
 	public void fabric_setSendableConfigurationChannels(Set<Identifier> globalChannels) {

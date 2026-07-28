@@ -17,9 +17,11 @@
 package net.fabricmc.fabric.impl.transfer.fluid;
 
 import java.util.Map;
+import java.util.Objects;
 
 import com.google.common.collect.MapMaker;
 import com.google.common.primitives.Ints;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -64,7 +66,7 @@ public class CauldronStorage extends SnapshotParticipant<BlockState> implements 
 
 	private final LevelLocation location;
 	// this is the last released snapshot, which means it's the first snapshot ever saved when onFinalCommit() is called.
-	private BlockState lastReleasedSnapshot;
+	private @Nullable BlockState lastReleasedSnapshot;
 
 	CauldronStorage(LevelLocation location) {
 		this.location = location;
@@ -200,7 +202,7 @@ public class CauldronStorage extends SnapshotParticipant<BlockState> implements 
 	@Override
 	public void onFinalCommit() {
 		BlockState state = createSnapshot();
-		BlockState originalState = lastReleasedSnapshot;
+		BlockState originalState = Objects.requireNonNull(lastReleasedSnapshot);
 
 		if (originalState != state) {
 			// Revert change

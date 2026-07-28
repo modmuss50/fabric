@@ -44,6 +44,7 @@ import net.fabricmc.fabric.impl.networking.server.ServerPlayNetworkAddon;
 @Mixin(value = ServerGamePacketListenerImpl.class, priority = 999)
 abstract class ServerGamePacketListenerImplMixin extends ServerCommonPacketListenerImpl implements PacketListenerExtensions {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private ServerPlayNetworkAddon addon;
 
 	ServerGamePacketListenerImplMixin(MinecraftServer server, Connection connection, CommonListenerCookie arg) {

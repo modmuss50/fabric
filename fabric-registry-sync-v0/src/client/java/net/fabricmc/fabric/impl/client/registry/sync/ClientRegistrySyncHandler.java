@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletionException;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -219,7 +220,7 @@ public final class ClientRegistrySyncHandler {
 
 	private static boolean isRegistryOptional(Identifier registryId, RegistrySyncPayload data) {
 		EnumSet<RegistryAttribute> registryAttributes = data.registryAttributes().get(registryId);
-		return registryAttributes.contains(RegistryAttribute.OPTIONAL);
+		return registryAttributes != null && registryAttributes.contains(RegistryAttribute.OPTIONAL);
 	}
 
 	private static Component getComponent(Throwable e) {
@@ -230,7 +231,7 @@ public final class ClientRegistrySyncHandler {
 				return component;
 			}
 		} else if (e instanceof CompletionException completionException) {
-			return getComponent(completionException.getCause());
+			return getComponent(Objects.requireNonNullElse(completionException.getCause(), completionException));
 		}
 
 		return Component.literal("Registry remapping failed: " + e.getMessage());

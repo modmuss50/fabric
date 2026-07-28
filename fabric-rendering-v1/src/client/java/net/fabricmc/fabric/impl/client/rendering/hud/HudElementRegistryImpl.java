@@ -21,6 +21,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -69,11 +70,11 @@ public class HudElementRegistryImpl {
 	public static final Map<Identifier, RootLayer> ROOT_ELEMENTS = VANILLA_ELEMENT_IDS.stream()
 			.map(RootLayer::new)
 			.collect(Collectors.toMap(RootLayer::id, Function.identity(), (a, b) -> a, IdentityHashMap::new));
-	private static final RootLayer FIRST = ROOT_ELEMENTS.get(VanillaHudElements.MISC_OVERLAYS);
-	private static final RootLayer LAST = ROOT_ELEMENTS.get(VanillaHudElements.SUBTITLES);
+	private static final RootLayer FIRST = Objects.requireNonNull(ROOT_ELEMENTS.get(VanillaHudElements.MISC_OVERLAYS));
+	private static final RootLayer LAST = Objects.requireNonNull(ROOT_ELEMENTS.get(VanillaHudElements.SUBTITLES));
 
 	public static RootLayer getRoot(Identifier id) {
-		return ROOT_ELEMENTS.get(id);
+		return Objects.requireNonNull(ROOT_ELEMENTS.get(id), () -> "Unknown vanilla HUD element: " + id);
 	}
 
 	public static void addFirst(Identifier id, HudElement element) {
@@ -171,7 +172,7 @@ public class HudElementRegistryImpl {
 		boolean modified = false;
 
 		for (Identifier id : VANILLA_ELEMENT_IDS) {
-			RootLayer rootLayer = ROOT_ELEMENTS.get(id);
+			RootLayer rootLayer = Objects.requireNonNull(ROOT_ELEMENTS.get(id));
 			modified |= visitLayers(rootLayer.layers(), visitor);
 		}
 

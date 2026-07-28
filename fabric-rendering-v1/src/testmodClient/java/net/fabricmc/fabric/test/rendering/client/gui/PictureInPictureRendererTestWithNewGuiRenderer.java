@@ -64,8 +64,13 @@ public class PictureInPictureRendererTestWithNewGuiRenderer implements ClientMod
 			fogRenderer.close();
 			guiRenderer.close();
 
-			RenderSystem.setProjectionMatrix(orgProjectionMatrixBuffer, orgProjectionType);
-			RenderSystem.setShaderFog(orgShaderFog);
+			if (orgProjectionMatrixBuffer != null) {
+				RenderSystem.setProjectionMatrix(orgProjectionMatrixBuffer, orgProjectionType);
+			}
+
+			if (orgShaderFog != null) {
+				RenderSystem.setShaderFog(orgShaderFog);
+			}
 		});
 	}
 }

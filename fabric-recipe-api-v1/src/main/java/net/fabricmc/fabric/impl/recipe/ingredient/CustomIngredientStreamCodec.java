@@ -62,7 +62,7 @@ public class CustomIngredientStreamCodec implements StreamCodec<RegistryFriendly
 	public void encode(RegistryFriendlyByteBuf buf, Ingredient value) {
 		CustomIngredient customIngredient = value.getCustomIngredient();
 
-		if (shouldEncodeFallback(customIngredient)) {
+		if (customIngredient == null || shouldEncodeFallback(customIngredient)) {
 			// The client doesn't support this custom ingredient, so we send the matching stacks as a regular ingredient.
 			this.fallback.encode(buf, value);
 			return;

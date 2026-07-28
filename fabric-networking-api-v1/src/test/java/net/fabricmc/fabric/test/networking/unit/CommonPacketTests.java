@@ -118,6 +118,7 @@ public class CommonPacketTests {
 	}
 
 	@BeforeEach
+	@SuppressWarnings("NullAway")
 	void setUp() {
 		packetSender = mock(PacketSender.class);
 		channelInfoHolder = new MockChannelInfoHolder();

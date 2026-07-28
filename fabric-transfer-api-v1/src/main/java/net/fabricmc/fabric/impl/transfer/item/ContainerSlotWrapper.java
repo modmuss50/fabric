@@ -49,7 +49,7 @@ class ContainerSlotWrapper extends SingleStackStorage {
 	private final ContainerStorageImpl storage;
 	final int slot;
 	private final @Nullable SpecialLogicContainer specialContainer;
-	private ItemStack lastReleasedSnapshot = null;
+	private @Nullable ItemStack lastReleasedSnapshot = null;
 
 	ContainerSlotWrapper(ContainerStorageImpl storage, int slot) {
 		this.storage = storage;
@@ -136,7 +136,7 @@ class ContainerSlotWrapper extends SingleStackStorage {
 		if (storage.container instanceof ChestBlockEntity chest && chest.getBlockState().getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
 			BlockPos otherChestPos = chest.getBlockPos().relative(ChestBlock.getConnectedDirection(chest.getBlockState()));
 
-			if (chest.getLevel().getBlockEntity(otherChestPos) instanceof ChestBlockEntity otherChest) {
+			if (Objects.requireNonNull(chest.getLevel()).getBlockEntity(otherChestPos) instanceof ChestBlockEntity otherChest) {
 				((ContainerStorageImpl) ContainerStorageImpl.of(otherChest, null)).setChangedParticipant.updateSnapshots(transaction);
 			}
 		}
@@ -150,7 +150,7 @@ class ContainerSlotWrapper extends SingleStackStorage {
 	@Override
 	protected void onFinalCommit() {
 		// Try to apply the change to the original stack
-		ItemStack original = lastReleasedSnapshot;
+		ItemStack original = Objects.requireNonNull(lastReleasedSnapshot);
 		ItemStack currentStack = getStack();
 
 		if (storage.container instanceof SpecialLogicContainer specialLogicInv) {

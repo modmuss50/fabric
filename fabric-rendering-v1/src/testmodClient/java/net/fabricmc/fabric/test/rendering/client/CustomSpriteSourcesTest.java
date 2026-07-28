@@ -25,6 +25,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.minecraft.client.renderer.texture.SpriteContents;
@@ -92,7 +93,7 @@ public class CustomSpriteSourcesTest implements ClientModInitializer {
 			}
 
 			@Override
-			public SpriteContents get(SpriteResourceLoader spriteResourceLoader) {
+			public @Nullable SpriteContents get(SpriteResourceLoader spriteResourceLoader) {
 				ResourceMetadata metadata;
 
 				try {

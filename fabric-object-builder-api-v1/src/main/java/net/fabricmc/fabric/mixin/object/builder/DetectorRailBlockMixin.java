@@ -33,6 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DetectorRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.MinecartComparatorLogic;
 import net.fabricmc.fabric.api.object.builder.v1.entity.MinecartComparatorLogicRegistry;
 
 @Mixin(DetectorRailBlock.class)
@@ -46,8 +47,14 @@ public abstract class DetectorRailBlockMixin {
 			List<AbstractMinecart> carts = getInteractingMinecartOfType(level, pos, AbstractMinecart.class,
 					cart -> MinecartComparatorLogicRegistry.getCustomComparatorLogic(cart.getType()) != null);
 			for (AbstractMinecart cart : carts) {
-				int comparatorValue = MinecartComparatorLogicRegistry.getCustomComparatorLogic(cart.getType())
-						.getComparatorValue(cart, state, pos);
+				MinecartComparatorLogic comparatorLogic = MinecartComparatorLogicRegistry.getCustomComparatorLogic(cart.getType());
+
+				if (comparatorLogic == null) {
+					continue;
+				}
+
+				int comparatorValue = comparatorLogic.getComparatorValue(cart, state, pos);
+
 				if (comparatorValue >= 0) {
 					cir.setReturnValue(comparatorValue);
 					break;

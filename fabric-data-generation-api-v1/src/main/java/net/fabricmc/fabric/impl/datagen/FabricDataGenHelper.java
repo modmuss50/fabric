@@ -208,8 +208,7 @@ public final class FabricDataGenHelper {
 		CONDITIONS_MAP.merge(object, conditions, ArrayUtils::addAll);
 	}
 
-	@Nullable
-	public static ResourceCondition[] consumeConditions(Object object) {
+	public static ResourceCondition @Nullable [] consumeConditions(Object object) {
 		return CONDITIONS_MAP.remove(object);
 	}
 
@@ -219,7 +218,7 @@ public final class FabricDataGenHelper {
 	 * @param conditions the conditions to insert
 	 * @throws IllegalArgumentException if the object already has conditions
 	 */
-	public static void addConditions(JsonObject baseObject, ResourceCondition... conditions) {
+	public static void addConditions(JsonObject baseObject, ResourceCondition @Nullable [] conditions) {
 		if (baseObject.has(ResourceConditions.CONDITIONS_KEY)) {
 			throw new IllegalArgumentException("Object already has a condition entry: " + baseObject);
 		} else if (conditions == null || conditions.length == 0) {

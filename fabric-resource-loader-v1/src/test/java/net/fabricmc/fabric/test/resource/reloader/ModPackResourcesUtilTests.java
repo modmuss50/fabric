@@ -206,6 +206,7 @@ public class ModPackResourcesUtilTests {
 		);
 	}
 
+	@SuppressWarnings("NullAway")
 	private Pack mockProfile(Map<String, Pack> packs, String id, @Nullable Predicate<Set<String>> parents) {
 		Pack pack = new Pack(
 				new PackLocationInfo(

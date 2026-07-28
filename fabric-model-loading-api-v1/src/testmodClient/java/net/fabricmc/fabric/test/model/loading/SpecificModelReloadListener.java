@@ -16,6 +16,10 @@
 
 package net.fabricmc.fabric.test.model.loading;
 
+import java.util.Objects;
+
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.resources.Identifier;
@@ -26,10 +30,10 @@ public class SpecificModelReloadListener implements ResourceManagerReloadListene
 	public static final SpecificModelReloadListener INSTANCE = new SpecificModelReloadListener();
 	public static final Identifier ID = Identifier.fromNamespaceAndPath(ModelTestModClient.ID, "specific_model");
 
-	private BlockStateModel specificModel;
+	private @Nullable BlockStateModel specificModel;
 
 	public BlockStateModel getSpecificModel() {
-		return specificModel;
+		return Objects.requireNonNull(specificModel);
 	}
 
 	@Override

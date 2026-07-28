@@ -22,6 +22,7 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.google.common.collect.Iterables;
 import com.mojang.brigadier.AmbiguityConsumer;
@@ -68,6 +69,10 @@ public final class ClientCommandInternals {
 		return activeDispatcher;
 	}
 
+	private static CommandDispatcher<FabricClientCommandSource> activeDispatcher() {
+		return Objects.requireNonNull(activeDispatcher, "Client command dispatcher is not initialized");
+	}
+
 	/**
 	 * Executes a client-sided command. Callers should ensure that this is only called
 	 * on slash-prefixed messages and the slash needs to be removed before calling.
@@ -96,7 +101,7 @@ public final class ClientCommandInternals {
 			// TODO: Check for server commands before executing.
 			//   This requires parsing the command, checking if they match a server command
 			//   and then executing the command with the parse results.
-			activeDispatcher.execute(command, source);
+			activeDispatcher().execute(command, source);
 			return true;
 		} catch (CommandSyntaxException e) {
 			boolean ignored = isIgnoredException(e.getType());
@@ -119,14 +124,15 @@ public final class ClientCommandInternals {
 	}
 
 	private static boolean requiresConfirmation(String command, FabricClientCommandSource source, FabricClientCommandSource restrictedSource) {
-		ParseResults<FabricClientCommandSource> parseResults = activeDispatcher.parse(command, source);
+		CommandDispatcher<FabricClientCommandSource> dispatcher = activeDispatcher();
+		ParseResults<FabricClientCommandSource> parseResults = dispatcher.parse(command, source);
 
 		if (!ClientPacketListenerAccessor.invokeIsValidCommand(parseResults)) {
 			// not a valid command, no need to confirm
 			return false;
 		}
 
-		parseResults = activeDispatcher.parse(command, restrictedSource);
+		parseResults = dispatcher.parse(command, restrictedSource);
 
 		if (!ClientPacketListenerAccessor.invokeIsValidCommand(parseResults)) {
 			// We failed to parse the command with the restricted permissions, thus it means that the command requires user confirmation before being executed.
@@ -184,40 +190,42 @@ public final class ClientCommandInternals {
 	 * on the command dispatcher. Also registers a {@code /fcc help} command if there are other commands present.
 	 */
 	public static void finalizeInit() {
-		if (!activeDispatcher.getRoot().getChildren().isEmpty()) {
+		CommandDispatcher<FabricClientCommandSource> dispatcher = activeDispatcher();
+
+		if (!dispatcher.getRoot().getChildren().isEmpty()) {
 			// Register an API command if there are other commands;
 			// these helpers are not needed if there are no client commands
 			LiteralArgumentBuilder<FabricClientCommandSource> help = literal("help");
 			help.executes(ClientCommandInternals::executeRootHelp);
 			help.then(argument("command", StringArgumentType.greedyString()).executes(ClientCommandInternals::executeArgumentHelp));
 
-			CommandNode<FabricClientCommandSource> mainNode = activeDispatcher.register(literal(API_COMMAND_NAME).then(help));
-			activeDispatcher.register(literal(SHORT_API_COMMAND_NAME).redirect(mainNode));
+			CommandNode<FabricClientCommandSource> mainNode = dispatcher.register(literal(API_COMMAND_NAME).then(help));
+			dispatcher.register(literal(SHORT_API_COMMAND_NAME).redirect(mainNode));
 		}
 
 		// noinspection CodeBlock2Expr
-		activeDispatcher.findAmbiguities((parent, child, sibling, inputs) -> {
-			LOGGER.warn("Ambiguity between arguments {} and {} with inputs: {}", activeDispatcher.getPath(child), activeDispatcher.getPath(sibling), inputs);
+		dispatcher.findAmbiguities((parent, child, sibling, inputs) -> {
+			LOGGER.warn("Ambiguity between arguments {} and {} with inputs: {}", dispatcher.getPath(child), dispatcher.getPath(sibling), inputs);
 		});
 	}
 
 	private static int executeRootHelp(CommandContext<FabricClientCommandSource> context) {
-		return executeHelp(activeDispatcher.getRoot(), context);
+		return executeHelp(activeDispatcher().getRoot(), context);
 	}
 
 	private static int executeArgumentHelp(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
-		ParseResults<FabricClientCommandSource> parseResults = activeDispatcher.parse(StringArgumentType.getString(context, "command"), context.getSource());
+		ParseResults<FabricClientCommandSource> parseResults = activeDispatcher().parse(StringArgumentType.getString(context, "command"), context.getSource());
 		List<ParsedCommandNode<FabricClientCommandSource>> nodes = parseResults.getContext().getNodes();
 
 		if (nodes.isEmpty()) {
 			throw HelpCommandAccessor.getFailedException().create();
 		}
 
-		return executeHelp(Iterables.getLast(nodes).getNode(), context);
+		return executeHelp(Objects.requireNonNull(Iterables.getLast(nodes)).getNode(), context);
 	}
 
 	private static int executeHelp(CommandNode<FabricClientCommandSource> startNode, CommandContext<FabricClientCommandSource> context) {
-		Map<CommandNode<FabricClientCommandSource>, String> commands = activeDispatcher.getSmartUsage(startNode, context.getSource());
+		Map<CommandNode<FabricClientCommandSource>, String> commands = activeDispatcher().getSmartUsage(startNode, context.getSource());
 
 		for (String command : commands.values()) {
 			context.getSource().sendFeedback(Component.literal("/" + command));
@@ -227,9 +235,10 @@ public final class ClientCommandInternals {
 	}
 
 	public static void addCommands(CommandDispatcher<FabricClientCommandSource> target, FabricClientCommandSource source) {
+		CommandDispatcher<FabricClientCommandSource> dispatcher = activeDispatcher();
 		Map<CommandNode<FabricClientCommandSource>, CommandNode<FabricClientCommandSource>> nodes = new HashMap<>();
-		nodes.put(activeDispatcher.getRoot(), target.getRoot());
-		copyChildren(activeDispatcher.getRoot(), target.getRoot(), source, nodes);
+		nodes.put(dispatcher.getRoot(), target.getRoot());
+		copyChildren(dispatcher.getRoot(), target.getRoot(), source, nodes);
 	}
 
 	/**

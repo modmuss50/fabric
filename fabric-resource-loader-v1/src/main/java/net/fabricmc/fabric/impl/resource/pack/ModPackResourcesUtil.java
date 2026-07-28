@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.impl.resource.pack;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -179,8 +180,7 @@ public final class ModPackResourcesUtil {
 			return Files.newInputStream(loaderIconPath.get());
 		}
 
-		// Should never happen in practice
-		return null;
+		throw new FileNotFoundException("Could not find the default Fabric resource pack icon");
 	}
 
 	public static InputStream openDefault(ModContainer container, PackType type, String filename) throws IOException {
@@ -198,7 +198,7 @@ public final class ModPackResourcesUtil {
 				return getDefaultIcon();
 			}
 		default:
-			return null;
+			throw new FileNotFoundException("No default resource named " + filename);
 		}
 	}
 

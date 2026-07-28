@@ -52,6 +52,10 @@ public class LevelExtractorMixin implements LevelRendererExtensions {
 
 	@Override
 	public void fabric_prepareLevelExtractionContext(DeltaTracker deltaTracker) {
+		if (level == null) {
+			return;
+		}
+
 		extractionContext.prepare(
 				minecraft.gameRenderer,
 				minecraft.levelRenderer,

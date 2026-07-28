@@ -492,34 +492,34 @@ public final class ClientGameTestContextImpl implements ClientGameTestContext {
 			((OptionsAccessor) Minecraft.getInstance().options).invokeProcessOptions(new Options.FieldAccess() {
 				@Override
 				public int process(String key, int current) {
-					return (Integer) DEFAULT_GAME_OPTIONS.get(key);
+					return (Integer) Objects.requireNonNull(DEFAULT_GAME_OPTIONS.get(key));
 				}
 
 				@Override
 				public boolean process(String key, boolean current) {
-					return (Boolean) DEFAULT_GAME_OPTIONS.get(key);
+					return (Boolean) Objects.requireNonNull(DEFAULT_GAME_OPTIONS.get(key));
 				}
 
 				@Override
 				public String process(String key, String current) {
-					return (String) DEFAULT_GAME_OPTIONS.get(key);
+					return (String) Objects.requireNonNull(DEFAULT_GAME_OPTIONS.get(key));
 				}
 
 				@Override
 				public float process(String key, float current) {
-					return (Float) DEFAULT_GAME_OPTIONS.get(key);
+					return (Float) Objects.requireNonNull(DEFAULT_GAME_OPTIONS.get(key));
 				}
 
 				@SuppressWarnings("unchecked")
 				@Override
 				public <T> T process(String key, T current, Function<String, T> decoder, Function<T, String> encoder) {
-					return (T) DEFAULT_GAME_OPTIONS.get(key);
+					return (T) Objects.requireNonNull(DEFAULT_GAME_OPTIONS.get(key));
 				}
 
 				@SuppressWarnings("unchecked")
 				@Override
 				public <T> void process(String key, OptionInstance<T> option) {
-					option.set((T) DEFAULT_GAME_OPTIONS.get(key));
+					option.set((T) Objects.requireNonNull(DEFAULT_GAME_OPTIONS.get(key)));
 				}
 			});
 		});
@@ -530,7 +530,7 @@ public final class ClientGameTestContextImpl implements ClientGameTestContext {
 		ThreadingImpl.checkOnGametestOrClientThread("runOnClient");
 		Preconditions.checkNotNull(action, "action");
 
-		if (ThreadingImpl.unsafeClientInstance.isSameThread()) {
+		if (Objects.requireNonNull(ThreadingImpl.unsafeClientInstance).isSameThread()) {
 			action.accept(Minecraft.getInstance());
 		} else {
 			ThreadingImpl.runOnClient(() -> action.accept(Minecraft.getInstance()));
@@ -542,7 +542,7 @@ public final class ClientGameTestContextImpl implements ClientGameTestContext {
 		ThreadingImpl.checkOnGametestOrClientThread("computeOnClient");
 		Preconditions.checkNotNull(function, "function");
 
-		if (ThreadingImpl.unsafeClientInstance.isSameThread()) {
+		if (Objects.requireNonNull(ThreadingImpl.unsafeClientInstance).isSameThread()) {
 			return function.apply(Minecraft.getInstance());
 		} else {
 			MutableObject<T> result = new MutableObject<>();

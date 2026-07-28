@@ -36,6 +36,7 @@ import net.fabricmc.fabric.impl.content.registry.FlammableBlockRegistryImpl;
 @Mixin(FireBlock.class)
 public class FireBlockMixin implements FireBlockHooks {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private FlammableBlockRegistryImpl registry;
 
 	@Shadow

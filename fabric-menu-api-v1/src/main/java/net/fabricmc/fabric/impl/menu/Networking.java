@@ -111,7 +111,11 @@ public final class Networking implements ModInitializer {
 			Identifier id = buf.readIdentifier();
 			StreamCodec<RegistryFriendlyByteBuf, D> codec = (StreamCodec<RegistryFriendlyByteBuf, D>) CODEC_BY_ID.get(id);
 
-			return new OpenScreenPayload<>(id, buf.readByte(), ComponentSerialization.STREAM_CODEC.decode(buf), codec, codec == null ? null : codec.decode(buf));
+			if (codec == null) {
+				throw new IllegalArgumentException("Unknown extended menu type " + id);
+			}
+
+			return new OpenScreenPayload<>(id, buf.readByte(), ComponentSerialization.STREAM_CODEC.decode(buf), codec, codec.decode(buf));
 		}
 
 		private void write(RegistryFriendlyByteBuf buf) {

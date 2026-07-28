@@ -18,6 +18,8 @@ package net.fabricmc.fabric.test.transfer.gametests;
 
 import static net.fabricmc.fabric.test.transfer.TestUtil.assertEquals;
 
+import java.util.Objects;
+
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.material.Fluids;
@@ -31,7 +33,7 @@ public class WorldDependentAttributesTest {
 	@GameTest
 	public void testViscosity(GameTestHelper helper) {
 		ServerLevel overworld = helper.getLevel();
-		ServerLevel nether = overworld.getServer().getLevel(ServerLevel.NETHER);
+		ServerLevel nether = Objects.requireNonNull(overworld.getServer().getLevel(ServerLevel.NETHER));
 		FluidVariant lava = FluidVariant.of(Fluids.LAVA);
 
 		// Test that lava viscosity correctly depends on the dimension.

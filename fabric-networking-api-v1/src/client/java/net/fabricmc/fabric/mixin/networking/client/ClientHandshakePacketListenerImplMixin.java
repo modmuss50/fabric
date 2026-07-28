@@ -49,6 +49,7 @@ abstract class ClientHandshakePacketListenerImplMixin implements PacketListenerE
 	private Connection connection;
 
 	@Unique
+	@SuppressWarnings("NullAway")
 	private ClientLoginNetworkAddon addon;
 
 	@Inject(method = "<init>", at = @At("RETURN"))

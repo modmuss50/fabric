@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.sound.client;
 
+import java.util.Objects;
+
 import net.minecraft.client.Minecraft;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -33,7 +35,7 @@ public class ClientSoundTest implements ClientModInitializer {
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, buildContext) -> {
 			dispatcher.register(ClientCommands.literal("sine").executes(o -> {
 				Minecraft client = o.getSource().getClient();
-				client.getSoundManager().play(new SineSound(client.player.position()));
+				client.getSoundManager().play(new SineSound(Objects.requireNonNull(client.player).position()));
 				return 0;
 			}));
 		});

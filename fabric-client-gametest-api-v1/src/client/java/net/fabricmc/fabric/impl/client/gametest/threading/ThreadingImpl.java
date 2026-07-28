@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.impl.client.gametest.threading;
 
+import java.util.Objects;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.Semaphore;
 
@@ -99,7 +100,7 @@ public final class ThreadingImpl {
 	public static volatile boolean networkSyncReceived = false;
 
 	// Reference to Minecraft instance to avoid calling Minecraft.getInstance() on gametest thread (which has a check against doing that)
-	public static Minecraft unsafeClientInstance;
+	public static @Nullable Minecraft unsafeClientInstance;
 
 	public static void enterPhase(int phase) {
 		while (enablePhases && getNextPhase() != phase) {
@@ -176,11 +177,11 @@ public final class ThreadingImpl {
 	}
 
 	public static void checkOnClientThread(String methodName) {
-		Preconditions.checkState(unsafeClientInstance.isSameThread(), "%s can only be called from the client thread", methodName);
+		Preconditions.checkState(Objects.requireNonNull(unsafeClientInstance).isSameThread(), "%s can only be called from the client thread", methodName);
 	}
 
 	public static void checkOnGametestOrClientThread(String methodName) {
-		Preconditions.checkState(Thread.currentThread() == testThread || unsafeClientInstance.isSameThread(), "%s can only be called from the client gametest thread or the client thread", methodName);
+		Preconditions.checkState(Thread.currentThread() == testThread || Objects.requireNonNull(unsafeClientInstance).isSameThread(), "%s can only be called from the client gametest thread or the client thread", methodName);
 	}
 
 	public static void checkOnServerThread(String methodName, MinecraftServer server) {

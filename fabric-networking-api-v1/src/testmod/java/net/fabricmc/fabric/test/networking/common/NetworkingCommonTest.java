@@ -18,6 +18,7 @@ package net.fabricmc.fabric.test.networking.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -73,12 +74,12 @@ public class NetworkingCommonTest implements ModInitializer {
 
 			if (entity instanceof ServerPlayer player) {
 				uuid.set(player.getStringUUID());
-				runOnTick.set(player.level().getServer().getLevel(Level.OVERWORLD).getGameTime() + 50);
+				runOnTick.set(Objects.requireNonNull(player.level().getServer().getLevel(Level.OVERWORLD)).getGameTime() + 50);
 			}
 		});
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			if (server.getLevel(Level.OVERWORLD).getGameTime() != runOnTick.get()) {
+			if (Objects.requireNonNull(server.getLevel(Level.OVERWORLD)).getGameTime() != runOnTick.get()) {
 				return;
 			}
 

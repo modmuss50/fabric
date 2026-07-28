@@ -48,10 +48,15 @@ import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 public class DataGeneratorTestContent implements ModInitializer {
 	public static final String MOD_ID = "fabric-data-gen-api-v1-testmod";
 
+	@SuppressWarnings("NullAway")
 	public static Block SIMPLE_BLOCK;
+	@SuppressWarnings("NullAway")
 	public static Block BLOCK_WITHOUT_ITEM;
+	@SuppressWarnings("NullAway")
 	public static Block BLOCK_WITHOUT_LOOT_TABLE;
+	@SuppressWarnings("NullAway")
 	public static Block BLOCK_WITH_VANILLA_LOOT_TABLE;
+	@SuppressWarnings("NullAway")
 	public static Block BLOCK_THAT_DROPS_NOTHING;
 
 	public static BlockItemId SIMPLE_BLOCK_KEY = createBlockItemId("simple_block");
@@ -60,9 +65,12 @@ public class DataGeneratorTestContent implements ModInitializer {
 	public static ResourceKey<Block> BLOCK_WITH_VANILLA_LOOT_TABLE_KEY = createBlockResourceKey("block_with_vanilla_loot_table");
 	public static ResourceKey<Block> BLOCK_THAT_DROPS_NOTHING_KEY = createBlockResourceKey("block_that_drops_nothing");
 
+	@SuppressWarnings("NullAway")
 	public static SoundEvent TEST_SOUND;
 
+	@SuppressWarnings("NullAway")
 	public static EntityType<?> SIMPLE_ENTITY_TYPE;
+	@SuppressWarnings("NullAway")
 	public static EntityType<?> ENTITY_TYPE_WITHOUT_LOOT_TABLE;
 
 	public static ResourceKey<EntityType<?>> SIMPLE_ENTITY_TYPE_KEY = createEntityTypeResourceKey("simple_entity");

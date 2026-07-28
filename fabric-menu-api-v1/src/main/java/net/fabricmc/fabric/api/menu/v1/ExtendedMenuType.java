@@ -83,7 +83,9 @@ public class ExtendedMenuType<T extends AbstractContainerMenu, D> extends MenuTy
 	 * @param factory the menu factory used for {@link #create(int, Inventory, Object)}
 	 */
 	public ExtendedMenuType(ExtendedFactory<T, D> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> streamCodec) {
-		super(null, FeatureFlags.VANILLA_SET);
+		super((containerId, inventory) -> {
+			throw new UnsupportedOperationException("Use ExtendedMenuType.create(int, Inventory, Object)!");
+		}, FeatureFlags.VANILLA_SET);
 		this.factory = Objects.requireNonNull(factory, "menu factory cannot be null");
 		this.streamCodec = Objects.requireNonNull(streamCodec, "stream codec cannot be null");
 	}

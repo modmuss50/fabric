@@ -33,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 public abstract class WrapperBakedItemModel implements ItemModel {
 	protected ItemModel wrapped;
 
+	@SuppressWarnings("NullAway")
 	protected WrapperBakedItemModel() {
 	}
 

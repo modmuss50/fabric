@@ -36,13 +36,13 @@ public final class BlockApiCacheImpl<A, C> implements BlockApiCache<A, C> {
 	 * blockEntityCacheValid maintains whether the cache is valid or not.
 	 */
 	private boolean blockEntityCacheValid = false;
-	private BlockEntity cachedBlockEntity = null;
+	private @Nullable BlockEntity cachedBlockEntity = null;
 	/**
 	 * We also cache the BlockApiProvider at the target position. We check if the block state has changed to invalidate the cache.
 	 * lastState maintains for which block state the cachedProvider is valid.
 	 */
-	private BlockState lastState = null;
-	private BlockApiLookup.BlockApiProvider<A, C> cachedProvider = null;
+	private @Nullable BlockState lastState = null;
+	private BlockApiLookup.@Nullable BlockApiProvider<A, C> cachedProvider = null;
 
 	public BlockApiCacheImpl(BlockApiLookupImpl<A, C> lookup, ServerLevel level, BlockPos pos) {
 		((ServerLevelCache) level).fabric_registerCache(pos, this);

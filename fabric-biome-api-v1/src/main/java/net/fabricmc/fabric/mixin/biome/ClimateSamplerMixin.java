@@ -16,7 +16,10 @@
 
 package net.fabricmc.fabric.mixin.biome;
 
+import java.util.Objects;
+
 import com.google.common.base.Preconditions;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -30,10 +33,10 @@ import net.fabricmc.fabric.impl.biome.MultiNoiseSamplerHooks;
 @Mixin(Climate.Sampler.class)
 public class ClimateSamplerMixin implements MultiNoiseSamplerHooks {
 	@Unique
-	private Long seed = null;
+	private @Nullable Long seed;
 
 	@Unique
-	private ImprovedNoise endBiomesSampler = null;
+	private @Nullable ImprovedNoise endBiomesSampler;
 
 	@Override
 	public void fabric_setSeed(long seed) {
@@ -42,7 +45,7 @@ public class ClimateSamplerMixin implements MultiNoiseSamplerHooks {
 
 	@Override
 	public long fabric_getSeed() {
-		return this.seed;
+		return Objects.requireNonNull(this.seed);
 	}
 
 	@Override

@@ -19,6 +19,9 @@ package net.fabricmc.fabric.impl.content.registry;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,7 +37,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 
 	private final Map<Block, FlammableBlockRegistry.Entry> registeredEntriesBlock = new HashMap<>();
 	private final Map<TagKey<Block>, FlammableBlockRegistry.Entry> registeredEntriesTag = new HashMap<>();
-	private volatile Map<Block, FlammableBlockRegistry.Entry> computedEntries = null;
+	private volatile @Nullable Map<Block, FlammableBlockRegistry.Entry> computedEntries = null;
 	private final Block key;
 
 	private FlammableBlockRegistryImpl(Block key) {
@@ -54,7 +57,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 
 			// tags take precedence over blocks
 			for (TagKey<Block> tag : registeredEntriesTag.keySet()) {
-				FlammableBlockRegistry.Entry entry = registeredEntriesTag.get(tag);
+				FlammableBlockRegistry.Entry entry = Objects.requireNonNull(registeredEntriesTag.get(tag));
 
 				for (Holder<Block> block : BuiltInRegistries.BLOCK.getTagOrEmpty(tag)) {
 					ret.put(block.value(), entry);
@@ -81,7 +84,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 		}
 	}
 
-	public Entry getFabric(Block block) {
+	public @Nullable Entry getFabric(Block block) {
 		return getEntryMap().get(block);
 	}
 

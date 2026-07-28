@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.command.client;
 
+import java.util.Objects;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,12 +60,12 @@ abstract class ClientSuggestionProviderMixin implements FabricClientCommandSourc
 
 	@Override
 	public LocalPlayer getPlayer() {
-		return minecraft.player;
+		return Objects.requireNonNull(minecraft.player);
 	}
 
 	@Override
 	public ClientLevel getLevel() {
-		return minecraft.level;
+		return Objects.requireNonNull(minecraft.level);
 	}
 
 	@Override

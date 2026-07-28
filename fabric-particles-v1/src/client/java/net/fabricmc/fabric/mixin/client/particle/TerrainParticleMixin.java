@@ -19,6 +19,7 @@ package net.fabricmc.fabric.mixin.client.particle;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,6 +44,7 @@ abstract class TerrainParticleMixin extends SingleQuadParticle {
 	@Final
 	private BlockPos pos;
 
+	@SuppressWarnings("NullAway")
 	private TerrainParticleMixin() {
 		super(null, 0, 0, 0, null);
 	}
@@ -51,7 +53,7 @@ abstract class TerrainParticleMixin extends SingleQuadParticle {
 			method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/color/block/BlockColors;getTintSource(Lnet/minecraft/world/level/block/state/BlockState;I)Lnet/minecraft/client/color/block/BlockTintSource;")
 	)
-	private BlockTintSource removeUntintableParticles(BlockColors instance, BlockState state, int layer, Operation<BlockTintSource> original, @Local(argsOnly = true) ClientLevel level, @Local(argsOnly = true) BlockPos blockPos) {
+	private @Nullable BlockTintSource removeUntintableParticles(BlockColors instance, BlockState state, int layer, Operation<BlockTintSource> original, @Local(argsOnly = true) ClientLevel level, @Local(argsOnly = true) BlockPos blockPos) {
 		if (!ParticleRenderEvents.ALLOW_TERRAIN_PARTICLE_TINT.invoker().allowTerrainParticleTint(state, level, blockPos)) {
 			return null;
 		}

@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.registry.sync;
 
+import java.util.Objects;
+
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -36,7 +38,7 @@ public class RemapStateImpl<T> implements RegistryIdRemapCallback.RemapState<T> 
 		this.newIdMap = new Int2ObjectOpenHashMap<>();
 
 		for (Int2IntMap.Entry entry : rawIdChangeMap.int2IntEntrySet()) {
-			Identifier id = registry.getKey(registry.byId(entry.getIntValue()));
+			Identifier id = registry.getKey(Objects.requireNonNull(registry.byId(entry.getIntValue())));
 			newIdMap.put(entry.getIntValue(), id);
 		}
 	}

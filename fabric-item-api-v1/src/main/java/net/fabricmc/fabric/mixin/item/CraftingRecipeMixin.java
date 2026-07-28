@@ -20,6 +20,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -38,7 +39,7 @@ public interface CraftingRecipeMixin {
 	}
 
 	@Redirect(method = "defaultCraftingReminder", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;getCraftingRemainder()Lnet/minecraft/world/item/ItemStackTemplate;"))
-	private static ItemStackTemplate getStackRemainder(Item item, @Share("stack") LocalRef<ItemStack> stackRef) {
+	private static @Nullable ItemStackTemplate getStackRemainder(Item item, @Share("stack") LocalRef<ItemStack> stackRef) {
 		return stackRef.get().getCraftingRemainder();
 	}
 }

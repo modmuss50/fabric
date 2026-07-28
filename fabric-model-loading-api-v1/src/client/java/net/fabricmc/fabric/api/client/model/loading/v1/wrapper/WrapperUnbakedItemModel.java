@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.item.ItemModel;
 public abstract class WrapperUnbakedItemModel implements ItemModel.Unbaked {
 	protected ItemModel.Unbaked wrapped;
 
+	@SuppressWarnings("NullAway")
 	protected WrapperUnbakedItemModel() {
 	}
 

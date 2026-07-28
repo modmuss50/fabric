@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.client.rendering.advancement;
 
+import java.util.Objects;
+
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Final;
@@ -50,7 +52,7 @@ abstract class AdvancementToastMixin {
 		}
 
 		if (iconRenderer != null) {
-			ClientAdvancements advancements = Minecraft.getInstance().getConnection().getAdvancements();
+			ClientAdvancements advancements = Objects.requireNonNull(Minecraft.getInstance().getConnection()).getAdvancements();
 			AdvancementProgress progress = ((ClientAdvancementsAccessor) advancements).fabric_getProgress().get(advancement);
 			iconRenderer.extractAdvancementIcon(new AdvancementRenderContextImpl.IconImpl(graphics, advancement, progress, x, y, false, false));
 		}

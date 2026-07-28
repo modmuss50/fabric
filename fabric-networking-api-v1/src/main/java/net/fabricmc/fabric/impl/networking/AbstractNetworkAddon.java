@@ -120,7 +120,7 @@ public abstract class AbstractNetworkAddon<H> {
 		}
 	}
 
-	public H unregisterChannel(Identifier channelName) {
+	public @Nullable H unregisterChannel(Identifier channelName) {
 		Objects.requireNonNull(channelName, "Channel name cannot be null");
 		assertNotReserved(channelName);
 

@@ -147,7 +147,7 @@ public final class ServerLoginNetworkAddon extends AbstractNetworkAddon<ServerLo
 			return false;
 		}
 
-		FriendlyByteBuf buf = understood ? FriendlyByteBufs.slice(originalBuf) : FriendlyByteBufs.empty();
+		FriendlyByteBuf buf = understood ? FriendlyByteBufs.slice(Objects.requireNonNull(originalBuf)) : FriendlyByteBufs.empty();
 
 		try {
 			handler.receive(this.server, this.listener, understood, buf, this.waits::add, this);
@@ -171,7 +171,7 @@ public final class ServerLoginNetworkAddon extends AbstractNetworkAddon<ServerLo
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet, ChannelFutureListener callback) {
+	public void sendPacket(Packet<?> packet, @Nullable ChannelFutureListener callback) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
 		this.connection.send(packet, callback);

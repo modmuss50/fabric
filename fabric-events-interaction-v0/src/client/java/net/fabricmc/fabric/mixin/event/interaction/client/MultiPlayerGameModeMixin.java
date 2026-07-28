@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.event.interaction.client;
 
+import java.util.Objects;
+
 import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -70,14 +72,14 @@ public abstract class MultiPlayerGameModeMixin {
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getAbilities()Lnet/minecraft/world/entity/player/Abilities;", ordinal = 0), method = "continueDestroyBlock", cancellable = true)
 	public void method_2902(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> info) {
-		if (this.minecraft.player.getAbilities().instabuild) {
+		if (Objects.requireNonNull(this.minecraft.player).getAbilities().instabuild) {
 			fabric_fireAttackBlockCallback(pos, direction, info);
 		}
 	}
 
 	@Unique
 	private void fabric_fireAttackBlockCallback(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> info) {
-		InteractionResult result = AttackBlockCallback.EVENT.invoker().interact(minecraft.player, minecraft.level, InteractionHand.MAIN_HAND, pos, direction);
+		InteractionResult result = AttackBlockCallback.EVENT.invoker().interact(Objects.requireNonNull(minecraft.player), Objects.requireNonNull(minecraft.level), InteractionHand.MAIN_HAND, pos, direction);
 
 		if (result != InteractionResult.PASS) {
 			// Returning true will spawn particles and trigger the animation of the hand -> only for SUCCESS.
@@ -85,14 +87,14 @@ public abstract class MultiPlayerGameModeMixin {
 
 			// We also need to let the server process the action if it's accepted.
 			if (result.consumesAction()) {
-				startPrediction(minecraft.level, id -> new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK, pos, direction, id));
+				startPrediction(Objects.requireNonNull(minecraft.level), id -> new ServerboundPlayerActionPacket(ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK, pos, direction, id));
 			}
 		}
 	}
 
 	@Inject(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;destroy(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V"))
 	private void fabric$onBlockBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir, @Local(name = "oldState") BlockState oldState) {
-		ClientPlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(minecraft.level, minecraft.player, pos, oldState);
+		ClientPlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(Objects.requireNonNull(minecraft.level), Objects.requireNonNull(minecraft.player), pos, oldState);
 	}
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V"), method = "useItemOn", cancellable = true)

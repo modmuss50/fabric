@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 import com.mojang.serialization.Codec;
@@ -178,7 +179,7 @@ public class CommonAttachmentTests {
 		assertTrue(output.buildResult().contains(AttachmentTarget.NBT_ATTACHMENT_KEY));
 		assertTrue(output.buildResult().getCompound(AttachmentTarget.NBT_ATTACHMENT_KEY).orElseThrow().contains(dummy.identifier().toString()));
 
-		map = AttachmentSerializingImpl.deserializeAttachmentData(TagValueInput.create(ProblemReporter.DISCARDING, ra, output.buildResult()));
+		map = Objects.requireNonNull(AttachmentSerializingImpl.deserializeAttachmentData(TagValueInput.create(ProblemReporter.DISCARDING, ra, output.buildResult())));
 		assertEquals(1, map.size());
 		Map.Entry<AttachmentType<?>, Object> entry = map.entrySet().stream().findFirst().orElseThrow();
 		// in this case the key should be the exact same object

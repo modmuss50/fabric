@@ -190,7 +190,7 @@ public final class ServerConfigurationNetworkAddon extends AbstractChanneledNetw
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet, ChannelFutureListener callback) {
+	public void sendPacket(Packet<?> packet, @Nullable ChannelFutureListener callback) {
 		listener.send(packet, callback);
 	}
 

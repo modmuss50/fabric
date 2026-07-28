@@ -29,6 +29,7 @@ import java.util.function.Predicate;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Suppliers;
 import org.jetbrains.annotations.TestOnly;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -171,7 +172,7 @@ public class BiomeModificationImpl {
 				}
 
 				if (biomes instanceof MappedRegistry<Biome> registry) {
-					RegistrationInfo info = registry.registrationInfos.get(key);
+					RegistrationInfo info = Objects.requireNonNull(registry.registrationInfos.get(key));
 					RegistrationInfo newInfo = new RegistrationInfo(Optional.empty(), info.lifecycle());
 					registry.registrationInfos.put(key, newInfo);
 				}
@@ -191,9 +192,9 @@ public class BiomeModificationImpl {
 
 		private final Predicate<BiomeSelectionContext> selector;
 
-		private final BiConsumer<BiomeSelectionContext, BiomeModificationContext> contextSensitiveModifier;
+		private final @Nullable BiConsumer<BiomeSelectionContext, BiomeModificationContext> contextSensitiveModifier;
 
-		private final Consumer<BiomeModificationContext> modifier;
+		private final @Nullable Consumer<BiomeModificationContext> modifier;
 
 		// Whenever this is modified, the modifiers need to be resorted
 		private int order;
@@ -219,7 +220,7 @@ public class BiomeModificationImpl {
 			if (modifier != null) {
 				return modifier.toString();
 			} else {
-				return contextSensitiveModifier.toString();
+				return Objects.requireNonNull(contextSensitiveModifier).toString();
 			}
 		}
 
@@ -227,7 +228,7 @@ public class BiomeModificationImpl {
 			if (contextSensitiveModifier != null) {
 				contextSensitiveModifier.accept(context, modificationContext);
 			} else {
-				modifier.accept(modificationContext);
+				Objects.requireNonNull(modifier).accept(modificationContext);
 			}
 		}
 

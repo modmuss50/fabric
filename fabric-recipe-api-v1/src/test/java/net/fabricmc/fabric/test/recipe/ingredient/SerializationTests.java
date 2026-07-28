@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Objects;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -94,6 +96,10 @@ public class SerializationTests {
 		// Make sure that we can deserialize it
 		Ingredient deserialized = Ingredient.CODEC.parse(registryOps, json).getOrThrow(JsonParseException::new);
 		assertNotNull(deserialized.getCustomIngredient(), "Custom ingredient was not deserialized");
-		assertSame(deserialized.getCustomIngredient().getSerializer(), ingredient.getCustomIngredient().getSerializer(), "Serializer did not match");
+		assertSame(
+				Objects.requireNonNull(deserialized.getCustomIngredient()).getSerializer(),
+				Objects.requireNonNull(ingredient.getCustomIngredient()).getSerializer(),
+				"Serializer did not match"
+		);
 	}
 }

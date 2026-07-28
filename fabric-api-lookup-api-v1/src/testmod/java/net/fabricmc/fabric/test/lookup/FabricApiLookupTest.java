@@ -46,12 +46,14 @@ public class FabricApiLookupTest implements ModInitializer {
 	public static final ResourceKey<Block> CHUTE_BLOCK_KEY = keyOf("chute");
 	public static final ChuteBlock CHUTE_BLOCK = new ChuteBlock(BlockBehaviour.Properties.of().setId(CHUTE_BLOCK_KEY));
 	public static final BlockItem CHUTE_ITEM = new BlockItem(CHUTE_BLOCK, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CHUTE_BLOCK_KEY.identifier())));
+	@SuppressWarnings("NullAway")
 	public static BlockEntityType<ChuteBlockEntity> CHUTE_BLOCK_ENTITY_TYPE;
 	// Cobble gen - Block without model that can generate infinite cobblestone when placed above a chute.
 	// It's meant to test BlockApiLookup#registerSelf.
 	public static final ResourceKey<Block> COBBLE_GEN_BLOCK_KEY = keyOf("cobble_gen");
 	public static final CobbleGenBlock COBBLE_GEN_BLOCK = new CobbleGenBlock(BlockBehaviour.Properties.of().setId(COBBLE_GEN_BLOCK_KEY));
 	public static final BlockItem COBBLE_GEN_ITEM = new BlockItem(COBBLE_GEN_BLOCK, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, COBBLE_GEN_BLOCK_KEY.identifier())));
+	@SuppressWarnings("NullAway")
 	public static BlockEntityType<CobbleGenBlockEntity> COBBLE_GEN_BLOCK_ENTITY_TYPE;
 	// Testing for item api lookups is done in the `item` package.
 

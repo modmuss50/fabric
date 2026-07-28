@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -73,7 +75,7 @@ public final class ResourceConditions {
 	/**
 	 * @return the condition with ID {@code id}, or {@code null} if there is no such condition
 	 */
-	public static ResourceConditionType<?> getConditionType(Identifier id) {
+	public static @Nullable ResourceConditionType<?> getConditionType(Identifier id) {
 		return REGISTERED_CONDITIONS.get(id);
 	}
 

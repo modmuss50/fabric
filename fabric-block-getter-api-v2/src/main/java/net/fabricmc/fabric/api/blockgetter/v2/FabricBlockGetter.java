@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.api.blockgetter.v2;
 
-import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -97,8 +96,7 @@ public interface FabricBlockGetter {
 	 * @return the biome, or null if biome retrieval is not supported
 	 * @see #hasBiomes()
 	 */
-	@UnknownNullability
-	default Holder<Biome> getBiomeFabric(BlockPos pos) {
+	default @Nullable Holder<Biome> getBiomeFabric(BlockPos pos) {
 		return null;
 	}
 }

@@ -16,8 +16,10 @@
 
 package net.fabricmc.fabric.test.menu.menu;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 
 public interface PositionedMenu {
-	BlockPos getPos();
+	@Nullable BlockPos getPos();
 }

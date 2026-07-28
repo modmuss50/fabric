@@ -50,8 +50,7 @@ public sealed interface AttachmentTargetInfo<T> {
 		return getType().id;
 	}
 
-	@Nullable
-	AttachmentTarget getTarget(Level level);
+	@Nullable AttachmentTarget getTarget(Level level);
 
 	void appendDebugInformation(MutableComponent component);
 
@@ -84,7 +83,7 @@ public sealed interface AttachmentTargetInfo<T> {
 		}
 
 		@Override
-		public AttachmentTarget getTarget(Level level) {
+		public @Nullable AttachmentTarget getTarget(Level level) {
 			return level.getBlockEntity(pos);
 		}
 
@@ -117,7 +116,7 @@ public sealed interface AttachmentTargetInfo<T> {
 		}
 
 		@Override
-		public AttachmentTarget getTarget(Level level) {
+		public @Nullable AttachmentTarget getTarget(Level level) {
 			return level.getEntity(networkId);
 		}
 
@@ -149,7 +148,7 @@ public sealed interface AttachmentTargetInfo<T> {
 		}
 
 		@Override
-		public AttachmentTarget getTarget(Level level) {
+		public @Nullable AttachmentTarget getTarget(Level level) {
 			return level.getChunk(pos.x(), pos.z(), ChunkStatus.FULL, false);
 		}
 

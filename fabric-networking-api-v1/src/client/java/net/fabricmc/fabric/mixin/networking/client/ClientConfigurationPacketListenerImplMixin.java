@@ -40,6 +40,7 @@ import net.fabricmc.fabric.impl.networking.context.PacketContextImpl;
 @Mixin(value = ClientConfigurationPacketListenerImpl.class, priority = 999)
 public abstract class ClientConfigurationPacketListenerImplMixin extends ClientCommonPacketListenerImpl implements PacketListenerExtensions {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private ClientConfigurationNetworkAddon addon;
 
 	protected ClientConfigurationPacketListenerImplMixin(Minecraft client, Connection connection, CommonListenerCookie connectionState) {

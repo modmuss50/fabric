@@ -373,7 +373,7 @@ public final class StorageUtil {
 		T extractableResource = findExtractableResource(storage, filter, transaction);
 
 		if (extractableResource != null) {
-			long extractableAmount = simulateExtract(storage, extractableResource, Long.MAX_VALUE, transaction);
+			long extractableAmount = simulateExtract(Objects.requireNonNull(storage), extractableResource, Long.MAX_VALUE, transaction);
 
 			if (extractableAmount > 0) {
 				return new ResourceAmount<>(extractableResource, extractableAmount);

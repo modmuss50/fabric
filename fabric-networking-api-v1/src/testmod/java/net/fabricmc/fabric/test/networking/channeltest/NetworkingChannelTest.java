@@ -23,6 +23,7 @@ import static net.minecraft.commands.arguments.EntityArgument.player;
 import static net.minecraft.commands.arguments.IdentifierArgument.getId;
 import static net.minecraft.commands.arguments.IdentifierArgument.id;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.mojang.brigadier.context.CommandContext;
@@ -56,7 +57,7 @@ public final class NetworkingChannelTest implements ModInitializer {
 			// Info
 			{
 				final LiteralCommandNode<CommandSourceStack> info = literal("info")
-						.executes(context -> infoCommand(context, context.getSource().getPlayer()))
+						.executes(context -> infoCommand(context, Objects.requireNonNull(context.getSource().getPlayer())))
 						.build();
 
 				final ArgumentCommandNode<CommandSourceStack, EntitySelector> player = argument("player", player())
@@ -71,7 +72,7 @@ public final class NetworkingChannelTest implements ModInitializer {
 			{
 				final LiteralCommandNode<CommandSourceStack> register = literal("register")
 						.then(argument("channel", id())
-								.executes(context -> registerChannel(context, context.getSource().getPlayer())))
+								.executes(context -> registerChannel(context, Objects.requireNonNull(context.getSource().getPlayer()))))
 						.build();
 
 				channelTestCommand.addChild(register);
@@ -81,7 +82,7 @@ public final class NetworkingChannelTest implements ModInitializer {
 			{
 				final LiteralCommandNode<CommandSourceStack> unregister = literal("unregister")
 						.then(argument("channel", id()).suggests(NetworkingChannelTest::suggestReceivableChannels)
-								.executes(context -> unregisterChannel(context, context.getSource().getPlayer())))
+								.executes(context -> unregisterChannel(context, Objects.requireNonNull(context.getSource().getPlayer()))))
 						.build();
 
 				channelTestCommand.addChild(unregister);
@@ -92,7 +93,7 @@ public final class NetworkingChannelTest implements ModInitializer {
 	}
 
 	private static CompletableFuture<Suggestions> suggestReceivableChannels(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) {
-		final ServerPlayer player = context.getSource().getPlayer();
+		final ServerPlayer player = Objects.requireNonNull(context.getSource().getPlayer());
 
 		return SharedSuggestionProvider.suggestResource(ServerPlayNetworking.getReceived(player), builder);
 	}

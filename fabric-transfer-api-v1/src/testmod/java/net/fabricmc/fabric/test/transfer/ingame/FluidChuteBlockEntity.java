@@ -16,8 +16,11 @@
 
 package net.fabricmc.fabric.test.transfer.ingame;
 
+import java.util.Objects;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -39,6 +42,8 @@ public class FluidChuteBlockEntity extends BlockEntity {
 
 	@SuppressWarnings("ConstantConditions")
 	public void tick() {
+		Level level = Objects.requireNonNull(this.level);
+
 		if (!level.isClientSide() && tickCounter++ % 20 == 0) {
 			StorageUtil.move(
 					FluidStorage.SIDED.find(level, worldPosition.relative(Direction.UP), Direction.DOWN),

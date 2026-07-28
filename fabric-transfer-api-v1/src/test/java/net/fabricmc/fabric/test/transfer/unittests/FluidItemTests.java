@@ -21,6 +21,7 @@ import static net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants.BUCKET;
 import static net.fabricmc.fabric.test.transfer.TestUtil.assertEquals;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.BeforeAll;
@@ -149,7 +150,7 @@ class FluidItemTests extends AbstractTransferApiTest {
 		Container testInventory = new SimpleContainer(new ItemStack(Items.GLASS_BOTTLE));
 
 		// Try to fill empty potion
-		Storage<FluidVariant> emptyBottleStorage = new InventoryContainerItem(testInventory, 0).find(FluidStorage.ITEM);
+		Storage<FluidVariant> emptyBottleStorage = Objects.requireNonNull(new InventoryContainerItem(testInventory, 0).find(FluidStorage.ITEM));
 
 		try (Transaction transaction = Transaction.openOuter()) {
 			if (emptyBottleStorage.insert(water, Long.MAX_VALUE, transaction) != BOTTLE) throw new AssertionError("Failed to insert.");
@@ -159,7 +160,7 @@ class FluidItemTests extends AbstractTransferApiTest {
 		if (getPotion(testInventory.getItem(0)) != Potions.WATER) throw new AssertionError("Expected water potion.");
 
 		// Try to empty from water potion
-		Storage<FluidVariant> waterBottleStorage = new InventoryContainerItem(testInventory, 0).find(FluidStorage.ITEM);
+		Storage<FluidVariant> waterBottleStorage = Objects.requireNonNull(new InventoryContainerItem(testInventory, 0).find(FluidStorage.ITEM));
 
 		try (Transaction transaction = Transaction.openOuter()) {
 			if (waterBottleStorage.extract(water, Long.MAX_VALUE, transaction) != BOTTLE) throw new AssertionError("Failed to extract.");

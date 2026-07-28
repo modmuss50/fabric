@@ -18,6 +18,8 @@ package net.fabricmc.fabric.impl.gamerule;
 
 import static net.minecraft.commands.Commands.literal;
 
+import java.util.Objects;
+
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -55,7 +57,7 @@ public final class EnumRuleCommand {
 		try {
 			commandSourceStack.getLevel().getGameRules().set(enumRule, value, commandSourceStack.getServer());
 		} catch (IllegalArgumentException e) {
-			throw new SimpleCommandExceptionType(Component.literal(e.getMessage())).create();
+			throw new SimpleCommandExceptionType(Component.literal(Objects.requireNonNullElse(e.getMessage(), "Invalid game rule value"))).create();
 		}
 
 		commandSourceStack.sendSuccess(() -> Component.translatable("commands.gamerule.set", enumRule.id(), enumRule.serialize(value)), true);

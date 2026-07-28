@@ -132,7 +132,7 @@ public class SingleVariantItemStorageTests extends AbstractTransferApiTest {
 			tx.commit();
 		}
 
-		TagValueOutput output = TagValueOutput.createWithoutContext(null);
+		TagValueOutput output = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
 		storage.writeValue(output);
 		assertEquals("{amount:1L,variant:{item:\"minecraft:diamond\"}}", output.buildResult().toString());
 	}
@@ -153,7 +153,7 @@ public class SingleVariantItemStorageTests extends AbstractTransferApiTest {
 			tx.commit();
 		}
 
-		TagValueOutput output = TagValueOutput.createWithoutContext(null);
+		TagValueOutput output = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
 		storage.writeValue(output);
 		assertEquals("{amount:1L,variant:{components:{\"minecraft:custom_name\":\"test name\"},item:\"minecraft:diamond\"}}", output.buildResult().toString());
 	}

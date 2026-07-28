@@ -39,9 +39,11 @@ public abstract class MinecraftServerMixin implements GlobalAttachmentsProvider 
 	@Final
 	private SavedDataStorage savedDataStorage;
 	@Unique
+	@SuppressWarnings("NullAway")
 	private GlobalAttachmentsImpl globalAttachments;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
+	@SuppressWarnings("NullAway")
 	private void initGlobalAttachments(CallbackInfo ci) {
 		MinecraftServer server = (MinecraftServer) (Object) this;
 		globalAttachments = new GlobalAttachmentsImpl(server);

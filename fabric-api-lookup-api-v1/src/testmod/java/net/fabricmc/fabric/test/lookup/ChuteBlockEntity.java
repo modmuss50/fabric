@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.lookup;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,8 +33,8 @@ import net.fabricmc.fabric.test.lookup.api.ItemUtils;
 
 public class ChuteBlockEntity extends BlockEntity {
 	private int moveDelay = 0;
-	private BlockApiCache<ItemInsertable, Direction> cachedInsertable = null;
-	private BlockApiCache<ItemExtractable, Direction> cachedExtractable = null;
+	private @Nullable BlockApiCache<ItemInsertable, Direction> cachedInsertable = null;
+	private @Nullable BlockApiCache<ItemExtractable, Direction> cachedExtractable = null;
 
 	public ChuteBlockEntity(BlockPos pos, BlockState state) {
 		super(FabricApiLookupTest.CHUTE_BLOCK_ENTITY_TYPE, pos, state);

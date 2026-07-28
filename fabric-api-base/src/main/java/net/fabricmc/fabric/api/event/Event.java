@@ -16,7 +16,10 @@
 
 package net.fabricmc.fabric.api.event;
 
+import java.util.Objects;
+
 import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.resources.Identifier;
 
@@ -33,7 +36,7 @@ public abstract class Event<T> {
 	 * always refer to an instance containing all code that should be
 	 * executed upon event emission.
 	 */
-	protected volatile T invoker;
+	protected volatile @Nullable T invoker;
 
 	/**
 	 * Returns the invoker instance.
@@ -45,7 +48,7 @@ public abstract class Event<T> {
 	 * @return The invoker instance.
 	 */
 	public final T invoker() {
-		return invoker;
+		return Objects.requireNonNull(invoker, "Event invoker has not been initialized");
 	}
 
 	/**

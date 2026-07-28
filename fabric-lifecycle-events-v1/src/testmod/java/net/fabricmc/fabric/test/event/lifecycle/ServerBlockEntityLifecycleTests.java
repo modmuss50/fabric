@@ -18,6 +18,7 @@ package net.fabricmc.fabric.test.event.lifecycle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 
@@ -44,7 +45,7 @@ public final class ServerBlockEntityLifecycleTests implements ModInitializer {
 			this.serverBlockEntities.add(blockEntity);
 
 			if (PRINT_SERVER_BLOCKENTITY_MESSAGES) {
-				logger.info("[SERVER] LOADED " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType()).toString() + " - BlockEntities: " + this.serverBlockEntities.size());
+				logger.info("[SERVER] LOADED " + Objects.requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType())).toString() + " - BlockEntities: " + this.serverBlockEntities.size());
 			}
 		});
 
@@ -52,7 +53,7 @@ public final class ServerBlockEntityLifecycleTests implements ModInitializer {
 			this.serverBlockEntities.remove(blockEntity);
 
 			if (PRINT_SERVER_BLOCKENTITY_MESSAGES) {
-				logger.info("[SERVER] UNLOADED " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType()).toString() + " - BlockEntities: " + this.serverBlockEntities.size());
+				logger.info("[SERVER] UNLOADED " + Objects.requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType())).toString() + " - BlockEntities: " + this.serverBlockEntities.size());
 			}
 		});
 

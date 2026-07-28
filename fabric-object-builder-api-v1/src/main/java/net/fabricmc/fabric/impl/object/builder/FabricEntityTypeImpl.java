@@ -78,9 +78,9 @@ public interface FabricEntityTypeImpl {
 		}
 
 		final class Mob<T extends net.minecraft.world.entity.Mob> extends Living<T> implements FabricEntityType.Builder.Mob<T> {
-			private SpawnPlacementType placementType;
-			private Heightmap.Types placementHeightmap;
-			private SpawnPlacements.SpawnPredicate<T> spawnPredicate;
+			private @Nullable SpawnPlacementType placementType;
+			private Heightmap.@Nullable Types placementHeightmap;
+			private SpawnPlacements.@Nullable SpawnPredicate<T> spawnPredicate;
 
 			@Override
 			public FabricEntityType.Builder.Mob<T> spawnPlacement(SpawnPlacementType placementType, Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
@@ -100,7 +100,7 @@ public interface FabricEntityTypeImpl {
 				super.onBuild(type);
 
 				if (this.spawnPredicate != null) {
-					SpawnPlacements.register(type, this.placementType, this.placementHeightmap, this.spawnPredicate);
+					SpawnPlacements.register(type, Objects.requireNonNull(this.placementType), Objects.requireNonNull(this.placementHeightmap), this.spawnPredicate);
 				}
 			}
 		}

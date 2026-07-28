@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.screen;
 
+import java.util.Objects;
+
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.jspecify.annotations.Nullable;
@@ -52,7 +54,7 @@ public class GuiMixin implements GuiExtensions {
 	private Minecraft minecraft;
 
 	@Unique
-	private Screen tickingScreen;
+	private @Nullable Screen tickingScreen;
 
 	@Inject(method = "setScreen", at = @At("HEAD"))
 	private void checkThreadOnDev(@Nullable Screen screen, CallbackInfo ci) {
@@ -65,7 +67,8 @@ public class GuiMixin implements GuiExtensions {
 
 	@Inject(method = "setScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;removed()V", shift = At.Shift.AFTER))
 	private void onScreenRemove(@Nullable Screen screen, CallbackInfo ci) {
-		ScreenEvents.remove(this.screen).invoker().onRemove(this.screen);
+		Screen removedScreen = Objects.requireNonNull(this.screen);
+		ScreenEvents.remove(removedScreen).invoker().onRemove(removedScreen);
 	}
 
 	// These two injections should be caught by the try-catch block if anything fails in an event and then rethrown in the crash report
@@ -73,13 +76,14 @@ public class GuiMixin implements GuiExtensions {
 	private void beforeScreenTick(CallbackInfo ci) {
 		// Store the screen in a variable in case someone tries to change the screen during this before tick event.
 		// If someone changes the screen, the after tick event will likely have class cast exceptions or an NPE.
-		this.tickingScreen = this.screen;
+		this.tickingScreen = Objects.requireNonNull(this.screen);
 		ScreenEvents.beforeTick(this.tickingScreen).invoker().beforeTick(this.tickingScreen);
 	}
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;tick()V", shift = At.Shift.AFTER))
 	private void afterScreenTick(CallbackInfo ci) {
-		ScreenEvents.afterTick(this.tickingScreen).invoker().afterTick(this.tickingScreen);
+		Screen tickingScreen = Objects.requireNonNull(this.tickingScreen);
+		ScreenEvents.afterTick(tickingScreen).invoker().afterTick(tickingScreen);
 		// Finally set the currently ticking screen to null
 		this.tickingScreen = null;
 	}

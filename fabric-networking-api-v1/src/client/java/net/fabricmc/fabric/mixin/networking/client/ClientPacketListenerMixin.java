@@ -37,6 +37,7 @@ import net.fabricmc.fabric.impl.networking.client.ClientPlayNetworkAddon;
 @Mixin(value = ClientPacketListener.class, priority = 999)
 abstract class ClientPacketListenerMixin extends ClientCommonPacketListenerImpl implements PacketListenerExtensions {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private ClientPlayNetworkAddon addon;
 
 	protected ClientPacketListenerMixin(Minecraft client, Connection connection, CommonListenerCookie connectionState) {

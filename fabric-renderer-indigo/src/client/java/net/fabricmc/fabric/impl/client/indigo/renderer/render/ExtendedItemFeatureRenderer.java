@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.impl.client.indigo.renderer.render;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
@@ -46,7 +47,7 @@ public class ExtendedItemFeatureRenderer extends RenderTypeFeatureRenderer<Exten
 
 		@Override
 		protected void emitDirectly() {
-			switch (outputType) {
+			switch (Objects.requireNonNull(outputType)) {
 				case MAIN -> bufferMain(this);
 				case OUTLINE -> bufferOutline(this);
 				case FOIL -> bufferFoil(this);
@@ -54,9 +55,9 @@ public class ExtendedItemFeatureRenderer extends RenderTypeFeatureRenderer<Exten
 		}
 	};
 
-	private ExtendedItemSubmit submit;
+	private @Nullable ExtendedItemSubmit submit;
 	private PoseStack.@Nullable Pose foilDecalPose;
-	private OutputType outputType;
+	private @Nullable OutputType outputType;
 
 	@Override
 	protected void buildGroup(FeatureFrameContext context, List<ExtendedItemSubmit> submits) {
@@ -100,6 +101,8 @@ public class ExtendedItemFeatureRenderer extends RenderTypeFeatureRenderer<Exten
 	}
 
 	private void bufferMain(MutableQuadViewImpl quad) {
+		ExtendedItemSubmit submit = Objects.requireNonNull(this.submit);
+
 		if (quad.emissive()) {
 			quad.lightmap(LightCoordsUtil.FULL_BRIGHT, LightCoordsUtil.FULL_BRIGHT, LightCoordsUtil.FULL_BRIGHT, LightCoordsUtil.FULL_BRIGHT);
 		} else {
@@ -116,6 +119,7 @@ public class ExtendedItemFeatureRenderer extends RenderTypeFeatureRenderer<Exten
 	}
 
 	private void bufferOutline(MutableQuadViewImpl quad) {
+		ExtendedItemSubmit submit = Objects.requireNonNull(this.submit);
 		RenderType renderType = quad.itemRenderType().outline().orElse(null);
 
 		if (renderType != null) {
@@ -126,6 +130,7 @@ public class ExtendedItemFeatureRenderer extends RenderTypeFeatureRenderer<Exten
 	}
 
 	private void bufferFoil(MutableQuadViewImpl quad) {
+		ExtendedItemSubmit submit = Objects.requireNonNull(this.submit);
 		ItemStackRenderState.FoilType quadFoilType = quad.foilType();
 		ItemStackRenderState.FoilType foilType = quadFoilType == null ? submit.foilType() : quadFoilType;
 

@@ -33,6 +33,7 @@ import net.fabricmc.fabric.impl.permission.EntityPermissionContext;
 @Mixin(Entity.class)
 public abstract class EntityMixin implements PermissionContextOwner {
 	@Unique
+	@SuppressWarnings("NullAway")
 	private PermissionContext context;
 
 	@Inject(method = "<init>", at = @At("TAIL"))

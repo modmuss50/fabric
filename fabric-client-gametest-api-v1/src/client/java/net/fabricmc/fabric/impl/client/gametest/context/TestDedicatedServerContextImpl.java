@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.client.gametest.context;
 
+import java.util.Objects;
+
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
@@ -41,7 +43,7 @@ public class TestDedicatedServerContextImpl extends TestServerContextImpl implem
 
 		context.runOnClient(client -> {
 			final var serverInfo = new ServerData("localhost", getConnectionAddress(), ServerData.Type.OTHER);
-			ConnectScreen.startConnecting(client.gui.screen(), client, ServerAddress.parseString(getConnectionAddress()), serverInfo, false, null);
+			ConnectScreen.startConnecting(Objects.requireNonNull(client.gui.screen()), client, ServerAddress.parseString(getConnectionAddress()), serverInfo, false, null);
 		});
 
 		ClientGameTestImpl.waitForWorldLoad(context);

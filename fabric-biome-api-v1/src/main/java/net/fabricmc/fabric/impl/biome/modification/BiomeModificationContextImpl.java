@@ -430,7 +430,7 @@ public class BiomeModificationContextImpl implements BiomeModificationContext {
 			MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();
 
 			for (MobCategory category : definedCategories) {
-				builder.addAllSpawns(category, WeightedList.of(fabricSpawners.get(category)));
+				builder.addAllSpawns(category, WeightedList.of(Objects.requireNonNull(fabricSpawners.get(category))));
 			}
 
 			MobSpawnSettings rebuiltSpawnSettings = builder.addAllCosts(mobSpawnCosts).build();
@@ -453,7 +453,7 @@ public class BiomeModificationContextImpl implements BiomeModificationContext {
 		public @UnmodifiableView List<Weighted<MobSpawnSettings.SpawnerData>> getMobs(MobCategory category) {
 			Objects.requireNonNull(category);
 
-			return Collections.unmodifiableList(fabricSpawners.get(category));
+			return Collections.unmodifiableList(Objects.requireNonNull(fabricSpawners.get(category)));
 		}
 
 		@Override
@@ -462,7 +462,7 @@ public class BiomeModificationContextImpl implements BiomeModificationContext {
 			Objects.requireNonNull(data);
 
 			definedCategories.add(category);
-			fabricSpawners.get(category).add(new Weighted<>(data, weight));
+			Objects.requireNonNull(fabricSpawners.get(category)).add(new Weighted<>(data, weight));
 			rebuildSpawnSettings = true;
 		}
 
@@ -471,7 +471,7 @@ public class BiomeModificationContextImpl implements BiomeModificationContext {
 			boolean anyRemoved = false;
 
 			for (MobCategory group : MobCategory.values()) {
-				if (fabricSpawners.get(group).removeIf(entry -> predicate.test(group, entry.value()))) {
+				if (Objects.requireNonNull(fabricSpawners.get(group)).removeIf(entry -> predicate.test(group, entry.value()))) {
 					anyRemoved = true;
 				}
 			}

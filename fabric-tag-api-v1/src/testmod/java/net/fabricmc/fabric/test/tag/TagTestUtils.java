@@ -82,8 +82,7 @@ public class TagTestUtils {
 
 		for (TagKey<T> tag : tags) {
 			HolderSet.Named<T> holderSet = lookup.getOrThrow(tag);
-			Set<ResourceKey<T>> actual = holderSet.contents
-					.stream()
+			Set<ResourceKey<T>> actual = holderSet.stream()
 					.map(entry -> entry.unwrapKey().orElseThrow())
 					.collect(Collectors.toSet());
 
@@ -121,8 +120,7 @@ public class TagTestUtils {
 
 		for (TagKey<T> tag : tags) {
 			HolderSet.Named<T> holderSet = lookup.getOrThrow(tag);
-			Set<ResourceKey<T>> actual = holderSet.contents
-					.stream()
+			Set<ResourceKey<T>> actual = holderSet.stream()
 					.map(entry -> entry.unwrapKey().orElseThrow())
 					.collect(Collectors.toSet());
 

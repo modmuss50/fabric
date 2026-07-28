@@ -135,7 +135,7 @@ abstract class ModelManagerMixin implements FabricModelManager {
 	// do that directly.
 	// Instead, cancel the original call and then modify the null value when it's being used to construct the Pair.
 	@Redirect(method = "lambda$loadBlockModels$2(Ljava/util/Map$Entry;)Lcom/mojang/datafixers/util/Pair;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/model/cuboid/CuboidModel;fromStream(Ljava/io/Reader;)Lnet/minecraft/client/resources/model/cuboid/CuboidModel;"))
-	private static CuboidModel cancelVanillaDeserialize(Reader reader) {
+	private static @Nullable CuboidModel cancelVanillaDeserialize(Reader reader) {
 		return null;
 	}
 
