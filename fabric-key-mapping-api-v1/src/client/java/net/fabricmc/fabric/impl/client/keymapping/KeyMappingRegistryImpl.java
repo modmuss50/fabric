@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.impl.client.keymapping;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -24,6 +25,8 @@ import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyModifier;
+
 public final class KeyMappingRegistryImpl {
 	private static final List<KeyMapping> MODDED_KEY_BINDINGS = new ReferenceArrayList<>(); // ArrayList with identity based comparisons for contains/remove/indexOf etc., required for correctly handling duplicate keybinds
 
@@ -31,6 +34,10 @@ public final class KeyMappingRegistryImpl {
 	}
 
 	public static KeyMapping registerKeyMapping(KeyMapping binding) {
+		return registerKeyMapping(binding, new KeyModifier[0]);
+	}
+
+	public static KeyMapping registerKeyMapping(KeyMapping binding, KeyModifier... modifiers) {
 		if (Minecraft.getInstance().options != null) {
 			throw new IllegalStateException("GameOptions has already been initialised");
 		}
@@ -43,8 +50,13 @@ public final class KeyMappingRegistryImpl {
 			}
 		}
 
+		KeyMappingModifierImpl.registerDefaultModifiers(binding, modifiers);
 		MODDED_KEY_BINDINGS.add(binding);
 		return binding;
+	}
+
+	public static EnumSet<KeyModifier> getBoundModifiers(KeyMapping binding) {
+		return KeyMappingModifierImpl.getBoundModifiers(binding);
 	}
 
 	/**

@@ -22,6 +22,7 @@
   "mixins": [
     "fabric-key-mapping-api-v1.mixins.json"
   ],
+  "accessWidener": "fabric-key-mapping-api-v1.classtweaker",
   "custom": {
     "fabric-api:module-lifecycle": "stable"
   }

@@ -16,10 +16,13 @@
 
 package net.fabricmc.fabric.mixin.client.keymapping;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,17 +30,49 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
 
+import net.fabricmc.fabric.impl.client.keymapping.KeyMappingModifierImpl;
 import net.fabricmc.fabric.impl.client.keymapping.KeyMappingRegistryImpl;
 
 @Mixin(Options.class)
 public class OptionsMixin {
+	@Unique
+	private static final String FABRIC_KEY_MODIFIERS_OPTION = "fabricKeyModifiers";
+
 	@Mutable
 	@Shadow
 	@Final
 	public KeyMapping[] keyMappings;
 
+	@Unique
+	private boolean fabric_loadingOptions;
+
 	@Inject(at = @At("HEAD"), method = "load()V")
 	public void loadHook(CallbackInfo info) {
 		keyMappings = KeyMappingRegistryImpl.process(keyMappings);
+	}
+
+	@WrapOperation(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;processOptions(Lnet/minecraft/client/Options$FieldAccess;)V"))
+	private void fabric_trackOptionsLoad(Options options, Options.FieldAccess access, Operation<Void> original) {
+		fabric_loadingOptions = true;
+
+		try {
+			original.call(options, access);
+		} finally {
+			fabric_loadingOptions = false;
+		}
+	}
+
+	@Inject(method = "processOptions", at = @At("TAIL"))
+	private void fabric_processKeyModifiers(Options.FieldAccess access, CallbackInfo ci) {
+		if (fabric_loadingOptions) {
+			String overrides = access.process(FABRIC_KEY_MODIFIERS_OPTION, "");
+			KeyMappingModifierImpl.applyOverrides(overrides, keyMappings);
+		} else {
+			String overrides = KeyMappingModifierImpl.serializeOverrides(keyMappings);
+
+			if (!overrides.isEmpty()) {
+				access.process(FABRIC_KEY_MODIFIERS_OPTION, overrides);
+			}
+		}
 	}
 }

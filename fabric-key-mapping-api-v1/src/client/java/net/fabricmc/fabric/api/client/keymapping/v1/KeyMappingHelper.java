@@ -16,7 +16,10 @@
 
 package net.fabricmc.fabric.api.client.keymapping.v1;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -53,6 +56,23 @@ public final class KeyMappingHelper {
 	}
 
 	/**
+	 * Registers the keymapping with the given default modifiers and adds the keymapping category if required.
+	 *
+	 * <p>A mapping registered with modifiers only matches that exact logical modifier set. A mapping without modifiers
+	 * retains vanilla behavior and can still match while modifiers are held.
+	 *
+	 * @param keyMapping the keymapping
+	 * @param modifiers the default modifiers required by the keymapping
+	 * @return the keymapping itself
+	 * @throws IllegalArgumentException when a key mapping with the same ID is already registered
+	 */
+	public static KeyMapping registerKeyMapping(KeyMapping keyMapping, KeyModifier... modifiers) {
+		Objects.requireNonNull(keyMapping, "key mapping cannot be null");
+		Objects.requireNonNull(modifiers, "modifiers cannot be null");
+		return KeyMappingRegistryImpl.registerKeyMapping(keyMapping, modifiers);
+	}
+
+	/**
 	 * Returns the configured KeyCode bound to the KeyMapping from the player's settings.
 	 *
 	 * @param keyMapping the keymapping
@@ -60,5 +80,17 @@ public final class KeyMappingHelper {
 	 */
 	public static InputConstants.Key getBoundKeyOf(KeyMapping keyMapping) {
 		return ((KeyMappingAccessor) keyMapping).fabric_getBoundKey();
+	}
+
+	/**
+	 * Returns the modifiers bound to the keymapping from the player's settings.
+	 *
+	 * @param keyMapping the keymapping
+	 * @return an immutable set of configured modifiers
+	 */
+	public static Set<KeyModifier> getBoundModifiersOf(KeyMapping keyMapping) {
+		Objects.requireNonNull(keyMapping, "key mapping cannot be null");
+		EnumSet<KeyModifier> modifiers = KeyMappingRegistryImpl.getBoundModifiers(keyMapping);
+		return modifiers.isEmpty() ? Set.of() : Collections.unmodifiableSet(modifiers);
 	}
 }

@@ -3,6 +3,11 @@
   "package": "net.fabricmc.fabric.mixin.client.keymapping",
   "compatibilityLevel": "JAVA_25",
   "client": [
+    "KeyboardHandlerMixin",
+    "KeyBindsListKeyEntryMixin",
+    "KeyBindsScreenMixin",
+    "KeyMappingMixin",
+    "MouseHandlerMixin",
     "OptionsMixin",
     "KeyMappingAccessor",
     "KeyMappingCategoryMixin"
@@ -12,5 +17,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
+  },
+  "mixinextras": {
+    "minVersion": "0.5.0"
   }
 }

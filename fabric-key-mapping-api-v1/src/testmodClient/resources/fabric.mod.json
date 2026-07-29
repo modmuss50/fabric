@@ -7,12 +7,16 @@
   "license": "Apache-2.0",
   "depends": {
     "fabric-api-base": "*",
+    "fabric-client-gametest-api-v1": "*",
     "fabric-lifecycle-events-v1": "*",
     "fabric-key-mapping-api-v1": "*"
   },
   "entrypoints": {
     "client": [
       "net.fabricmc.fabric.test.client.keymapping.KeyMappingsTest"
+    ],
+    "fabric-client-gametest": [
+      "net.fabricmc.fabric.test.client.keymapping.KeyModifierClientGameTest"
     ]
   }
 }

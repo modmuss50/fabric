@@ -1,0 +1,7 @@
+{
+  "fabric.key_modifier.alt": "Alt",
+  "fabric.key_modifier.combination": "%s + %s",
+  "fabric.key_modifier.control": "Control",
+  "fabric.key_modifier.shift": "Shift",
+  "fabric.key_modifier.super": "Super"
+}
