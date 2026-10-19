@@ -552,12 +552,6 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 		}
 
 		@Override
-		public void run() {
-			generate((key, builder) -> {
-			});
-		}
-
-		@Override
 		public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
 			withConditions(consumer, ALWAYS_LOADED).accept(
 					BuiltInLootTables.PIGLIN_BARTERING,
