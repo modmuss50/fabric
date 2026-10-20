@@ -19,6 +19,9 @@
     "fabricloader": ">=0.20.0"
   },
   "description": "Contains the essentials for Fabric API modules.",
+  "mixins": [
+    "fabric-api-base.mixins.json"
+  ],
   "custom": {
     "fabric-api:module-lifecycle": "stable"
   }

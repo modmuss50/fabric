@@ -16,9 +16,12 @@
 
 package net.fabricmc.fabric.test.base;
 
+import java.util.function.IntSupplier;
+
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.util.monomorphizer.MonomorphizableDelegate;
 
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 
@@ -28,5 +31,27 @@ public class FabricApiBaseGameTest {
 		MixinEnvironment.getCurrentEnvironment().audit();
 
 		helper.succeed();
+	}
+
+	@GameTest
+	public void monomorphicDelegatePreservesMixins(GameTestHelper helper) {
+		MonomorphicTestRecord target = new MonomorphicTestRecord(41);
+		helper.assertTrue(target.getAsInt() == 42, "Mixin must transform the target record");
+
+		IntSupplier delegate = new TestDelegate(target).makeMonomorphic(MonomorphicTestRecord.lookup());
+		helper.assertTrue(delegate.getClass().isHidden(), "Delegate must be a generated hidden class");
+		helper.assertTrue(delegate.getAsInt() == 42, "Monomorphic delegate must preserve the target's mixin");
+		helper.succeed();
+	}
+
+	private static final class TestDelegate extends MonomorphizableDelegate<IntSupplier, MonomorphicTestRecord> implements IntSupplier {
+		private TestDelegate(MonomorphicTestRecord target) {
+			super(target);
+		}
+
+		@Override
+		public int getAsInt() {
+			return target.getAsInt();
+		}
 	}
 }

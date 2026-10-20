@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.test.base.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "MonomorphicTestRecordMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
