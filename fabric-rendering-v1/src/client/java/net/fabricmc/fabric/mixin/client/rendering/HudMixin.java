@@ -99,6 +99,13 @@ abstract class HudMixin {
 				ctx -> renderVanilla.call(ctx, font, level));
 	}
 
+	@WrapOperation(method = "extractHotbarAndDecorations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/contextualbar/ContextualBar;extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V"))
+	private void wrapExtractInfoBarForeground(ContextualBar instance, GuiGraphicsExtractor graphics, Operation<Void> renderVanilla) {
+		HudElementRegistryImpl.getRoot(VanillaHudElements.INFO_BAR_FOREGROUND).extractRenderState(
+				graphics,
+				ctx -> renderVanilla.call(instance, ctx));
+	}
+
 	@WrapOperation(method = "extractHotbarAndDecorations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Hud;extractSelectedItemName(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V"))
 	private void wrapHeldItemTooltip(Hud instance, GuiGraphicsExtractor graphics, Operation<Void> renderVanilla) {
 		HudElementRegistryImpl.getRoot(VanillaHudElements.HELD_ITEM_TOOLTIP).extractRenderState(

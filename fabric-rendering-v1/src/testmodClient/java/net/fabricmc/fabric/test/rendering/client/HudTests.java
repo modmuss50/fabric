@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.test.rendering.client;
 
+import java.util.UUID;
+
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.Minecraft;
@@ -25,6 +27,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.waypoints.TrackedWaypoint;
+import net.minecraft.world.waypoints.Waypoint;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
@@ -38,6 +42,7 @@ public class HudTests implements ClientModInitializer, FabricClientGameTest {
 	private static final String MOD_ID = "fabric";
 	private static final String BEFORE_MISC_OVERLAY = "test_before_misc_overlay";
 	private static final String AFTER_MISC_OVERLAY = "test_after_misc_overlay";
+	private static final String AFTER_INFO_BAR_FOREGROUND = "test_after_info_bar_foreground";
 	private static final String AFTER_HOTBAR_AND_BARS = "test_after_hotbar_and_bars";
 	private static final String BEFORE_DEMO_TIMER = "test_before_demo_timer";
 	private static final String BEFORE_CHAT = "test_before_chat";
@@ -48,7 +53,8 @@ public class HudTests implements ClientModInitializer, FabricClientGameTest {
 	public void onInitializeClient() {
 		HudElementRegistry.attachElementBefore(VanillaHudElements.MISC_OVERLAYS, Identifier.fromNamespaceAndPath(MOD_ID, BEFORE_MISC_OVERLAY), HudTests::extractBeforeMiscOverlay);
 		HudElementRegistry.attachElementAfter(VanillaHudElements.MISC_OVERLAYS, Identifier.fromNamespaceAndPath(MOD_ID, AFTER_MISC_OVERLAY), HudTests::extractAfterMiscOverlay);
-		HudElementRegistry.attachElementAfter(VanillaHudElements.HOTBAR, Identifier.fromNamespaceAndPath(MOD_ID, AFTER_HOTBAR_AND_BARS), HudTests::extractAfterExperienceLevel);
+		HudElementRegistry.attachElementAfter(VanillaHudElements.INFO_BAR_FOREGROUND, Identifier.fromNamespaceAndPath(MOD_ID, AFTER_INFO_BAR_FOREGROUND), HudTests::extractAfterInfoBarForeground);
+		HudElementRegistry.attachElementAfter(VanillaHudElements.HOTBAR, Identifier.fromNamespaceAndPath(MOD_ID, AFTER_HOTBAR_AND_BARS), HudTests::extractAfterHotbar);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.DEMO_TIMER, Identifier.fromNamespaceAndPath(MOD_ID, BEFORE_DEMO_TIMER), HudTests::extractBeforeDemoTimer);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath(MOD_ID, BEFORE_CHAT), HudTests::extractBeforeChat);
 		HudElementRegistry.attachElementAfter(VanillaHudElements.SUBTITLES, Identifier.fromNamespaceAndPath(MOD_ID, AFTER_SUBTITLES), HudTests::extractAfterSubtitles);
@@ -79,11 +85,16 @@ public class HudTests implements ClientModInitializer, FabricClientGameTest {
 		graphics.centeredText(Minecraft.getInstance().font, "2. Red square underneath crosshair", graphics.guiWidth() / 2, graphics.guiHeight() / 2 + 10, CommonColors.WHITE);
 	}
 
-	private static void extractAfterExperienceLevel(GuiGraphicsExtractor graphics) {
+	private static void extractAfterInfoBarForeground(GuiGraphicsExtractor graphics) {
 		if (!shouldRender) return;
-		// Render a green rectangle at the bottom of the screen, and it should block the hotbar and status bars
-		graphics.fill(graphics.guiWidth() / 2 - 50, graphics.guiHeight() - 50, graphics.guiWidth() / 2 + 50, graphics.guiHeight() - 10, CommonColors.GREEN);
+		// Cover the info bar foreground; the rest of the rectangle is drawn after the hotbar.
+		graphics.fill(graphics.guiWidth() / 2 - 50, graphics.guiHeight() - 50, graphics.guiWidth() / 2 + 50, graphics.guiHeight() - 24, CommonColors.GREEN);
 		graphics.centeredText(Minecraft.getInstance().font, "3. This green rectangle should block the hotbar and status bars.", graphics.guiWidth() / 2, graphics.guiHeight() - 40, CommonColors.WHITE);
+	}
+
+	private static void extractAfterHotbar(GuiGraphicsExtractor graphics) {
+		if (!shouldRender) return;
+		graphics.fill(graphics.guiWidth() / 2 - 50, graphics.guiHeight() - 24, graphics.guiWidth() / 2 + 50, graphics.guiHeight() - 10, CommonColors.GREEN);
 	}
 
 	private static void extractBeforeDemoTimer(GuiGraphicsExtractor graphics) {
@@ -123,7 +134,7 @@ public class HudTests implements ClientModInitializer, FabricClientGameTest {
 
 		try (TestSingleplayerContext singleplayer = context.worldBuilder().create()) {
 			// Set up the test world
-			singleplayer.getServer().runCommand("/tp @a 0 -60 0");
+			singleplayer.getServer().runCommand("/tp @a 0 -60 0 0 0");
 			singleplayer.getServer().runCommand("/scoreboard objectives add hud_layer_test dummy");
 			singleplayer.getServer().runCommand("/scoreboard objectives setdisplay list hud_layer_test"); // Hack to show player list
 			singleplayer.getServer().runCommand("/scoreboard objectives setdisplay sidebar hud_layer_test"); // Hack to show sidebar
@@ -131,6 +142,8 @@ public class HudTests implements ClientModInitializer, FabricClientGameTest {
 
 			// Wait for stuff to load
 			singleplayer.getConnection().waitForChunksRender();
+			context.runOnClient(client -> client.player.connection.getWaypointManager().trackWaypoint(
+					TrackedWaypoint.setPosition(UUID.randomUUID(), new Waypoint.Icon(), new BlockPos(0, -59, 10))));
 			singleplayer.getServer().runOnServer(server -> server.getPlayerList().broadcastSystemMessage(Component.nullToEmpty("hud_layer_" + BEFORE_CHAT), false)); // Chat messages disappear in 200 ticks so we send one 150 ticks in advance to test the before chat layer
 			context.waitTicks(150); // The powder snow frosty vignette takes 140 ticks to fully appear, so we additionally wait for a total of 150 ticks
 

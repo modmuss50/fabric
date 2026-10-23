@@ -45,6 +45,7 @@ public class HudElementRegistryImpl {
 			VanillaHudElements.MOUNT_HEALTH,
 			VanillaHudElements.INFO_BAR,
 			VanillaHudElements.EXPERIENCE_LEVEL,
+			VanillaHudElements.INFO_BAR_FOREGROUND,
 			VanillaHudElements.SPECTATOR_MENU,
 			VanillaHudElements.HOTBAR,
 			VanillaHudElements.HELD_ITEM_TOOLTIP,
