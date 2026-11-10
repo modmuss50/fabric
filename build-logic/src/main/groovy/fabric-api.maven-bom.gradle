@@ -1,3 +1,4 @@
+import net.fabricmc.fabric.impl.build.FabricApiBuildUtils
 import org.gradle.api.publish.maven.MavenPublication
 
 plugins {
@@ -5,7 +6,7 @@ plugins {
 	id "fabric-api.base-publishing"
 }
 
-version = rootProject.version
+version = FabricApiBuildUtils.rootVersion(project)
 
 publishing.publications {
 	register('mavenJava', MavenPublication) {
@@ -24,7 +25,7 @@ tasks.withType(GenerateModuleMetadata).configureEach {
 dependencies {
 	constraints {
 		for (proj in rootProject.allprojects) {
-			if (proj == project || proj.name == 'fabric-api-catalog') {
+			if (proj == project || proj.name in ['fabric-api-catalog', 'fabric-api-testmod']) {
 				continue
 			}
 

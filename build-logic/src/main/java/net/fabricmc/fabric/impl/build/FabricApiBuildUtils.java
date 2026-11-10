@@ -51,7 +51,8 @@ public final class FabricApiBuildUtils {
 	public static final Set<String> META_PROJECTS = Set.of(
 			"deprecated",
 			"fabric-api-bom",
-			"fabric-api-catalog"
+			"fabric-api-catalog",
+			"fabric-api-testmod"
 	);
 
 	public static final List<String> DEV_ONLY_MODULES = List.of(
@@ -85,25 +86,25 @@ public final class FabricApiBuildUtils {
 		String suffix = project.getProviders().environmentVariable("CI").isPresent()
 				? branchProvider.get().replace("/", "_")
 				: "local";
-		return project.findProperty("version") + "+" + suffix;
+		return project.getProviders().gradleProperty("version").get() + "+" + suffix;
 	}
 
 	public static String moduleVersion(Project project) {
-		Object version = project.findProperty(project.getName() + "-version");
+		return moduleVersion(project, project.getName());
+	}
 
-		if (version == null) {
-			throw new NullPointerException("Could not find version for " + project.getName());
-		}
+	public static String moduleVersion(Project project, String moduleName) {
+		String version = project.getProviders().gradleProperty(moduleName + "-version").get();
 
 		if (!project.getProviders().environmentVariable("CI").isPresent()) {
 			return version + "+local";
 		}
 
 		Provider<String> hashProvider = project.getProviders().of(CommitHashValueSource.class, spec -> {
-			spec.getParameters().getDirectory().set(project.getName());
+			spec.getParameters().getDirectory().set(moduleName);
 		});
 
-		return version + "+" + hashProvider.get().substring(0, 8) + sha256Hex(project.getRootProject().property("minecraft_version").toString()).substring(0, 2);
+		return version + "+" + hashProvider.get().substring(0, 8) + sha256Hex(project.getProviders().gradleProperty("minecraft_version").get()).substring(0, 2);
 	}
 
 	public static String version(Project project, String alias) {

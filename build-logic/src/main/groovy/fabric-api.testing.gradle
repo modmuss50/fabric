@@ -125,3 +125,12 @@ dependencies {
 		addClientOutputDependency(":fabric-registry-sync-v0")
 	}
 }
+
+// Resource sorting fixtures are separate mods in every development run.
+if (findProject(":fabric-resource-loader-v1") != null) {
+	["A", "B", "C"].each { suffix ->
+		loom.mods.register("fabric-resource-loader-v0-testmod-${suffix.toLowerCase()}") {
+			sourceSet "testmod${suffix}", ":fabric-resource-loader-v1"
+		}
+	}
+}

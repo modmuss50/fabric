@@ -14,7 +14,7 @@ loom {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:$rootProject.minecraft_version"
+	minecraft "com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}"
 	api FabricApiBuildUtils.library(project, "fabric-loader")
 }
 

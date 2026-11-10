@@ -14,6 +14,7 @@ includeBuild 'build-logic'
 
 include 'fabric-api-bom'
 include 'fabric-api-catalog'
+include 'fabric-api-testmod'
 
 def focus = new File('focus.txt')
 

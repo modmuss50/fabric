@@ -24,14 +24,12 @@ import java.util.Map;
 import java.util.Set;
 
 import groovy.util.Node;
+import org.gradle.api.NamedDomainObjectProvider;
 import org.gradle.api.Project;
-import org.gradle.api.file.FileCollection;
-import org.gradle.api.plugins.JavaPluginExtension;
+import org.gradle.api.artifacts.DependencyScopeConfiguration;
+import org.gradle.api.artifacts.ResolvableConfiguration;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
-import org.gradle.api.tasks.SourceSet;
-import org.gradle.api.tasks.SourceSetContainer;
-import org.gradle.api.tasks.compile.JavaCompile;
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
 
@@ -44,40 +42,16 @@ public class FabricApiModuleExtension {
 	}
 
 	public void moduleDependencies(String... dependencyNames) {
-		project.getPluginManager().withPlugin("java", plugin -> configureModuleDependencies(List.of(dependencyNames)));
-	}
-
-	public void testDependencies(String... dependencyNames) {
-		project.getPluginManager().withPlugin("java", plugin -> configureTestDependencies(List.of(dependencyNames)));
-	}
-
-	private void configureModuleDependencies(List<String> dependencyNames) {
-		List<Project> dependencyProjects = dependencyProjects(dependencyNames);
-		SourceSet clientSourceSet = sourceSets().getByName("client");
-		String dependencyNamesInput = String.join(",", dependencyNames.stream().map(FabricApiBuildUtils::moduleName).toList());
-		registerDependencyMods(dependencyProjects);
-
-		for (String dependencyName : dependencyNames) {
-			project.getDependencies().add("api", project.getDependencies().project(Map.of("path", FabricApiBuildUtils.projectPath(dependencyName))));
-		}
-
-		project.getRootProject().getTasks().withType(BumpVersionTask.class).configureEach(task -> {
-			task.getApiDependencies().put(project.getName(), dependencyNamesInput);
-		});
-
-		addDependencyClientOutputs("clientImplementation", clientSourceSet, dependencyProjects);
-		dependsOnDependencyClientClasses("compileClientJava", dependencyProjects);
-		addClientClassDirsToCompileTask("compileClientJava", dependencyProjects);
-		addClientClassDirsToCompileTask("compileTestmodClientJava", dependencyProjects);
-
+		addDependencies("api", "clientImplementation", dependencyNames);
 		List<Map<String, String>> dependencyNodes = new ArrayList<>();
 
 		for (String dependencyName : dependencyNames) {
-			Project dependencyProject = project.getRootProject().findProject(FabricApiBuildUtils.projectPath(dependencyName));
+			String moduleName = FabricApiBuildUtils.projectPath(dependencyName);
+			moduleName = moduleName.substring(moduleName.lastIndexOf(':') + 1);
 			var dependencyNode = new LinkedHashMap<String, String>();
 			dependencyNode.put("groupId", project.getGroup().toString());
-			dependencyNode.put("artifactId", dependencyProject.getName());
-			dependencyNode.put("version", FabricApiBuildUtils.moduleVersion(dependencyProject));
+			dependencyNode.put("artifactId", moduleName);
+			dependencyNode.put("version", FabricApiBuildUtils.moduleVersion(project, moduleName));
 			dependencyNode.put("scope", "compile");
 			dependencyNodes.add(dependencyNode);
 		}
@@ -89,75 +63,43 @@ public class FabricApiModuleExtension {
 		}));
 	}
 
-	private void configureTestDependencies(List<String> dependencyNames) {
-		List<Project> dependencyProjects = dependencyProjects(dependencyNames);
-		SourceSet testmodClientSourceSet = sourceSets().getByName("testmodClient");
-		registerDependencyMods(dependencyProjects);
-
-		for (String dependencyName : dependencyNames) {
-			project.getDependencies().add("testmodImplementation", project.getDependencies().project(Map.of("path", FabricApiBuildUtils.projectPath(dependencyName))));
-		}
-
-		addDependencyClientOutputs("testmodClientImplementation", testmodClientSourceSet, dependencyProjects);
-		dependsOnDependencyClientClasses("compileTestmodClientJava", dependencyProjects);
-		addClientClassDirsToCompileTask("compileTestmodClientJava", dependencyProjects);
+	public void testDependencies(String... dependencyNames) {
+		addDependencies("testmodImplementation", "testmodClientImplementation", dependencyNames);
 	}
 
-	private List<Project> dependencyProjects(List<String> dependencyNames) {
-		return dependencyNames.stream()
-				.map(dependencyName -> project.getRootProject().findProject(FabricApiBuildUtils.projectPath(dependencyName)))
-				.toList();
-	}
-
-	private SourceSetContainer sourceSets() {
-		return project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
-	}
-
-	private void registerDependencyMods(List<Project> dependencyProjects) {
+	private void addDependencies(String commonConfiguration, String clientConfiguration, String[] dependencyNames) {
+		NamedDomainObjectProvider<DependencyScopeConfiguration> clientDependencies = project.getConfigurations().dependencyScope(commonConfiguration + "ModuleClientDependencies");
+		NamedDomainObjectProvider<ResolvableConfiguration> clientOutputs = project.getConfigurations().resolvable(commonConfiguration + "ModuleClientOutputs", configuration -> {
+			configuration.extendsFrom(clientDependencies.get());
+			configuration.setTransitive(false);
+			FabricApiBuildUtils.configureJavaRuntimeClassesVariant(configuration, "client");
+		});
+		project.getDependencies().add(clientConfiguration, project.files(clientOutputs));
 		LoomGradleExtensionAPI loom = project.getExtensions().getByType(LoomGradleExtensionAPI.class);
 
-		for (Project dependencyProject : dependencyProjects) {
-			if (dependencyProject == project || !registeredModProjects.add(dependencyProject.getPath())) {
+		for (String dependencyName : dependencyNames) {
+			String dependencyPath = FabricApiBuildUtils.projectPath(dependencyName);
+
+			if (dependencyPath.equals(project.getPath())) {
 				continue;
 			}
 
-			loom.getMods().register(dependencyProject.getName(), mod -> {
-				mod.sourceSet("main", dependencyProject.getPath());
-				mod.sourceSet("client", dependencyProject.getPath());
-			});
-			loom.getMods().register(dependencyProject.getName() + "-testmod", mod -> {
-				mod.sourceSet("testmod", dependencyProject.getPath());
-				mod.sourceSet("testmodClient", dependencyProject.getPath());
-			});
-		}
-	}
+			project.getDependencies().add(commonConfiguration, project.getDependencies().project(Map.of("path", dependencyPath)));
+			project.getDependencies().add(clientDependencies.getName(), project.getDependencies().project(Map.of("path", dependencyPath, "configuration", "fabricApiClientOutputElements")));
 
-	private void addDependencyClientOutputs(String configurationName, SourceSet sourceSet, List<Project> dependencyProjects) {
-		for (Project dependencyProject : dependencyProjects) {
-			FileCollection clientOutput = project.files(
-					dependencyProject.getLayout().getBuildDirectory().dir("classes/java/client"),
-					dependencyProject.getLayout().getBuildDirectory().dir("resources/client")
-			);
-			project.getDependencies().add(configurationName, clientOutput);
-			sourceSet.setCompileClasspath(sourceSet.getCompileClasspath().plus(clientOutput));
-			sourceSet.setRuntimeClasspath(sourceSet.getRuntimeClasspath().plus(clientOutput));
-		}
-	}
-
-	private void dependsOnDependencyClientClasses(String taskName, List<Project> dependencyProjects) {
-		project.getTasks().named(taskName, JavaCompile.class).configure(task -> {
-			for (Project dependencyProject : dependencyProjects) {
-				task.dependsOn(dependencyProject.getPath() + ":clientClasses");
+			if (!registeredModProjects.add(dependencyPath)) {
+				continue;
 			}
-		});
-	}
 
-	private void addClientClassDirsToCompileTask(String taskName, List<Project> dependencyProjects) {
-		List<?> clientClassDirs = dependencyProjects.stream()
-				.map(dependencyProject -> dependencyProject.getLayout().getBuildDirectory().dir("classes/java/client"))
-				.toList();
-		FileCollection clientClasses = project.files(clientClassDirs);
-
-		project.getTasks().named(taskName, JavaCompile.class).configure(task -> task.setClasspath(task.getClasspath().plus(clientClasses)));
+			String moduleName = dependencyPath.substring(dependencyPath.lastIndexOf(':') + 1);
+			loom.getMods().register(moduleName, mod -> {
+				mod.sourceSet("main", dependencyPath);
+				mod.sourceSet("client", dependencyPath);
+			});
+			loom.getMods().register(moduleName + "-testmod", mod -> {
+				mod.sourceSet("testmod", dependencyPath);
+				mod.sourceSet("testmodClient", dependencyPath);
+			});
+		}
 	}
 }

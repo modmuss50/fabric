@@ -1,14 +1,18 @@
 import net.fabricmc.fabric.impl.build.FabricApiBuildUtils
 
 plugins {
+	id "fabric-api.root-versioning"
+	id "fabric-api.java"
+	id "fabric-api.loom"
 	id "fabric-api.testing"
+	id "fabric-api.module-outputs"
 }
 
 def includedModuleProjects = rootProject.allprojects.findAll {
-	FabricApiBuildUtils.isFabricModule(it) && it != project
+	FabricApiBuildUtils.isFabricModule(it) && it.path != ":"
 }
 
-// Root gametest consumes module-published testmod outputs without reading child sourceSets directly.
+// Aggregate runs consume module outputs without configuring other projects.
 def nestedTestmodJarDependencies = configurations.dependencyScope("fabricApiNestedTestmodJarDependencies")
 def nestedTestModJars = configurations.resolvable("fabricApiNestedTestmodJars") {
 	extendsFrom nestedTestmodJarDependencies
@@ -39,16 +43,30 @@ for (def moduleProject : includedModuleProjects) {
 	}
 }
 
+sourceSets {
+	main.resources.srcDir isolated.rootProject.projectDirectory.dir("src/main/resources")
+	testmod.resources.srcDir isolated.rootProject.projectDirectory.dir("src/testmod/resources")
+}
+
+loom {
+	accessWidenerPath = isolated.rootProject.projectDirectory.file("gradle/javadoc.classtweaker").asFile
+	runs.configureEach {
+		ideConfigGenerated true
+		runDir isolated.rootProject.projectDirectory.dir("run").asFile.absolutePath
+	}
+}
+
 dependencies {
 	testmodCompileOnly files(moduleTestmodOutputs)
 	testmodClientCompileOnly files(moduleTestmodClientOutputs)
 	testmodRuntimeOnly files(nestedTestModJars)
 
 	for (def moduleProject : includedModuleProjects) {
+		api project(path: moduleProject.path)
 		add(moduleTestmodOutputDependencies.name, dependencies.project(path: moduleProject.path, configuration: "fabricApiTestmodOutputElements"))
 		add(moduleTestmodClientOutputDependencies.name, dependencies.project(path: moduleProject.path, configuration: "fabricApiTestmodClientOutputElements"))
 
-		if (moduleProject.file("src/testmod").exists() || moduleProject.file("src/testmodClient").exists()) {
+		if (new File(moduleProject.projectDir, "src/testmod").exists() || new File(moduleProject.projectDir, "src/testmodClient").exists()) {
 			add(nestedTestmodJarDependencies.name, dependencies.project(path: moduleProject.path, configuration: "fabricApiTestmodJarElements"))
 		}
 	}
@@ -60,8 +78,8 @@ loom {
 			inherit testmodServer
 			name "Game Test"
 			vmArg "-Dfabric-api.gametest"
-			vmArg "-Dfabric-api.gametest.report-file=${project.layout.buildDirectory.file("junit.xml").get().getAsFile()}"
-			runDir "build/gametest"
+			vmArg "-Dfabric-api.gametest.report-file=${isolated.rootProject.projectDirectory.file("build/junit.xml").asFile}"
+			runDir isolated.rootProject.projectDirectory.dir("build/gametest").asFile.absolutePath
 			source sourceSets.testmod
 		}
 		autoTestServer {
@@ -82,14 +100,14 @@ loom {
 }
 
 runGametest {
-	outputs.file project.layout.buildDirectory.file("junit.xml")
+	outputs.file isolated.rootProject.projectDirectory.file("build/junit.xml")
 }
 
 runClientGametest {
 	if (providers.environmentVariable("ENABLE_TRACY").getOrNull() == "true") {
 		tracy {
-			tracyCapture = file("tracy-capture")
-			output = file("profile.tracy")
+			tracyCapture = isolated.rootProject.projectDirectory.file("tracy-capture").asFile
+			output = isolated.rootProject.projectDirectory.file("profile.tracy").asFile
 		}
 	}
 }

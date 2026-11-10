@@ -24,7 +24,7 @@ for (def sourceSet in [sourceSets.main, sourceSets.client]) {
 		group = 'fabric'
 		description = "Generates package-info files for $sourceSetName packages."
 		sourceRoot.set(file("src/$sourceSetName/java"))
-		header.set(rootProject.file('HEADER'))
+		header.set(isolated.rootProject.projectDirectory.file('HEADER'))
 		outputDir.set(file("src/generated/$sourceSetName"))
 	}
 	sourceSet.java.srcDir generateTask

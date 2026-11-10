@@ -4,6 +4,8 @@ import net.fabricmc.fabric.impl.build.FabricApiBuildUtils
 version = FabricApiBuildUtils.rootVersion(project)
 logger.lifecycle("Building Fabric: " + version)
 
+// Disabled until version bumping supports isolated projects.
+/*
 def moduleProjects = rootProject.allprojects.findAll {
 	FabricApiBuildUtils.isFabricModule(it) && it != rootProject
 }
@@ -18,3 +20,4 @@ def bumpVersions = tasks.register('bumpVersions', BumpVersionTask) {
 		[(it.name): ""]
 	})
 }
+*/

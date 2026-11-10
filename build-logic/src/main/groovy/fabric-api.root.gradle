@@ -1,26 +1,38 @@
 import net.fabricmc.fabric.impl.build.FabricApiBuildUtils
+import net.fabricmc.loom.build.nesting.NestableJarGenerationTask
+import net.fabricmc.loom.task.NestJarsAction
 
 plugins {
 	id "fabric-api.root-versioning"
 	id "fabric-api.java"
 	id "fabric-api.lint"
-	id "fabric-api.loom"
-	id "fabric-api.validation"
-	id "fabric-api.root-testing"
+	id "net.fabricmc.fabric-loom-repositories"
 	id "fabric-api.root-publishing"
 }
 
-tasks.named("validateModules") {
-	enabled = false
+tasks.withType(ProcessResources).configureEach {
+	def modVersion = project.version.toString()
+	inputs.property "version", modVersion
+	filesMatching("fabric.mod.json") {
+		expand "version": modVersion
+	}
 }
 
-loom {
-	accessWidenerPath = file("gradle/javadoc.classtweaker")
+["runClient", "runServer", "runClientGametest", "runGametest", "runAutoTestServer", "runTestmodClient", "runTestmodServer"].each { taskName ->
+	tasks.register(taskName) {
+		group = "fabric"
+		dependsOn ":fabric-api-testmod:${taskName}"
+	}
+}
+
+tasks.register("generateResources") {
+	group = "fabric"
 }
 
 configurations {
 	nestedJars {
 		transitive = false
+		FabricApiBuildUtils.configureJavaRuntimeJarVariant(delegate)
 	}
 }
 
@@ -38,9 +50,19 @@ dependencies {
 	}
 }
 
-loom {
-	nestJars(tasks.named("jar"), configurations.nestedJars)
+def processNestedJars = tasks.register("processNestedJars", NestableJarGenerationTask) {
+	from configurations.nestedJars
+	outputDirectory = layout.buildDirectory.dir("nestedJars")
 	uncompressNestedJars = true
+}
+
+def nestedJarFiles = fileTree(processNestedJars.flatMap { it.outputDirectory }).matching {
+	include "*.jar"
+}
+
+tasks.named("jar", Jar) {
+	dependsOn processNestedJars
+	NestJarsAction.addToTask(delegate, nestedJarFiles)
 }
 
 tasks.register("checkNoDuplicateFiles", Zip) {

@@ -6,7 +6,7 @@ plugins {
 }
 
 checkstyle {
-	configFile = rootProject.file("checkstyle.xml")
+	configFile = isolated.rootProject.projectDirectory.file("checkstyle.xml").asFile
 	toolVersion = FabricApiBuildUtils.version(project, "checkstyle")
 }
 
@@ -14,7 +14,7 @@ spotless {
 	lineEndings = 'UNIX'
 
 	java {
-		licenseHeaderFile(rootProject.file("HEADER"))
+		licenseHeaderFile(isolated.rootProject.projectDirectory.file("HEADER").asFile)
 		removeUnusedImports()
 		importOrder('java', 'javax', '', 'net.minecraft', 'net.fabricmc')
 		leadingSpacesToTabs()

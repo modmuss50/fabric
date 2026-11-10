@@ -443,7 +443,13 @@ Testing code should not be in the regular source sets, it belongs to so-called "
   - Test failures should always throw an `AssertionError` explaining what condition was not met during the test.
 
 Fabric API pull requests should be tested in the dev environment and in production (on both a client and dedicated server).
-The `gradlew build` command can be used to produce the Fabric API fatjar, located in `builds/libs/`.
+The `gradlew build` command can be used to produce the Fabric API fatjar, located in `build/libs/`.
+
+Run `./gradlew runClientGametest` and `./gradlew runGametest` to test the combined modules.
+These root tasks delegate to `fabric-api-testmod`, which owns the aggregate Loom development environment.
+The root project packages the distribution and generates aggregate Javadocs without applying Loom.
+The build enables Gradle's isolated projects feature so modules can be configured in parallel.
+Build conventions must configure only their own project and consume other projects' outputs through dependencies.
 
 #### Common mistakes
 One highly likely cause of a production failure is the use of `remap=false` in a mixin. If `remap=false` is used, you need to verify the mixin works in dev and production. Most likely the mixin will not work in production.

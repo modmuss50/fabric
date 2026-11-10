@@ -18,7 +18,7 @@ def aggregatePomDependencies = includedModuleProjects.findAll {
 	[
 		'groupId': project.group.toString(),
 		'artifactId': it.name,
-		'version': FabricApiBuildUtils.moduleVersion(it),
+		'version': FabricApiBuildUtils.moduleVersion(project, it.name),
 		'scope': 'compile'
 	]
 }
@@ -30,7 +30,28 @@ aggregatePomDependencies.add([
 	'scope': 'compile'
 ])
 
-// Resolve module-published source/classpath variants for the aggregate root Javadoc task.
+def testmodJarDependencies = configurations.dependencyScope("fabricApiAggregateTestmodJarDependencies")
+def testmodJars = configurations.resolvable("fabricApiAggregateTestmodJar") {
+	extendsFrom testmodJarDependencies
+	transitive = false
+	FabricApiBuildUtils.configureJavaRuntimeJarVariant(delegate)
+}
+
+dependencies {
+	add(testmodJarDependencies.name, dependencies.project(path: ":fabric-api-testmod", configuration: "fabricApiTestmodJarElements"))
+}
+
+tasks.register("testmodJar", Jar) {
+	dependsOn testmodJars
+	from {
+		testmodJars.get().files.collect { zipTree(it) }
+	}
+	archiveClassifier = "testmod"
+}
+
+build.dependsOn tasks.named("testmodJar")
+
+// Resolve module outputs through variants, including the aggregate Minecraft classpath.
 def moduleJavadocSourceDependencies = configurations.dependencyScope("fabricApiModuleJavadocSourceDependencies")
 def moduleJavadocSources = configurations.resolvable("fabricApiModuleJavadocSources") {
 	extendsFrom moduleJavadocSourceDependencies
@@ -46,7 +67,7 @@ def moduleJavadocClasspath = configurations.resolvable("fabricApiModuleJavadocCl
 javadoc {
 	enabled = true
 	source moduleJavadocSources
-	classpath = files(sourceSets.main.compileClasspath, sourceSets.client.compileClasspath, moduleJavadocClasspath)
+	classpath = files(moduleJavadocClasspath)
 
 	options {
 		source = "25"
@@ -81,7 +102,7 @@ remoteSign {
 
 String archivesName = project.base.archivesName.get()
 [jar, sourcesJar].each {
-	it.from(rootProject.file("LICENSE")) {
+	it.from(isolated.rootProject.projectDirectory.file("LICENSE")) {
 		rename { "${it}-${archivesName}" }
 	}
 }
@@ -115,13 +136,13 @@ remoteSign {
 }
 
 dependencies {
+	add(moduleJavadocClasspathDependencies.name, dependencies.project(path: ":fabric-api-testmod", configuration: "fabricApiJavadocClasspathElements"))
 	for (def moduleProject : includedModuleProjects) {
 		add(moduleJavadocSourceDependencies.name, dependencies.project(path: moduleProject.path, configuration: "fabricApiJavadocSourcesElements"))
 		add(moduleJavadocClasspathDependencies.name, dependencies.project(path: moduleProject.path, configuration: "fabricApiJavadocClasspathElements"))
 	}
 }
 
-loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
 
 publishMods {
 	file = signJar.output

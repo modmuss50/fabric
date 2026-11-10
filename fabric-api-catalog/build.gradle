@@ -1,3 +1,4 @@
+import net.fabricmc.fabric.impl.build.FabricApiBuildUtils
 import org.gradle.api.publish.maven.MavenPublication
 
 plugins {
@@ -5,7 +6,7 @@ plugins {
 	id "fabric-api.base-publishing"
 }
 
-version = rootProject.version
+version = FabricApiBuildUtils.rootVersion(project)
 
 publishing.publications {
 	register('mavenJava', MavenPublication) {
@@ -21,41 +22,34 @@ tasks.withType(GenerateModuleMetadata).configureEach {
 	enabled = true
 }
 
-tasks.register('configureCatalog') {
-	doConfigureCatalog()
-}
+for (proj in rootProject.allprojects) {
+	if (proj == project || proj.name == "fabric-api-testmod") {
+		continue
+	}
 
-tasks.named('generateCatalogAsToml') {
-	dependsOn('configureCatalog')
-}
+	String catalogName = proj.name
+	if (catalogName == 'fabric-api-base') {
+		catalogName = 'base'
+	} else if (catalogName == 'fabric-api-bom') {
+		catalogName = 'bom'
+	} else if (catalogName == 'deprecated') {
+		catalogName = 'deprecated-fabric-api'
+	} else if (catalogName == 'fabric-api') {
+		catalogName = 'fabric-api'
+	} else {
+		catalogName = catalogName.substring('fabric-'.length())
+	}
 
-def doConfigureCatalog() {
-	for (proj in rootProject.allprojects) {
-		if (proj == project) {
-			continue
-		}
+	if (proj.parent != null && proj.parent.name == 'deprecated') {
+		catalogName = 'deprecated-' + catalogName
+	}
 
-		String catalogName = proj.name
-		if (catalogName == 'fabric-api-base') {
-			catalogName = 'base'
-		} else if (catalogName == 'fabric-api-bom') {
-			catalogName = 'bom'
-		} else if (catalogName == 'deprecated') {
-			catalogName = 'deprecated-fabric-api'
-		} else if (catalogName == 'fabric-api') {
-			catalogName = 'fabric-api'
-		} else {
-			catalogName = catalogName.substring('fabric-'.length())
-		}
-
-		if (proj.parent != null && proj.parent.name == 'deprecated') {
-			catalogName = 'deprecated-' + catalogName
-		}
-
-		catalog {
-			versionCatalog {
-				library(catalogName, "net.fabricmc.fabric-api:${proj.name}:${proj.version}")
-			}
+	catalog {
+		versionCatalog {
+			def moduleVersion = FabricApiBuildUtils.isMetaProject(proj) || proj.path == ":"
+					? project.version
+					: FabricApiBuildUtils.moduleVersion(project, proj.name)
+			library(catalogName, "net.fabricmc.fabric-api:${proj.name}:${moduleVersion}")
 		}
 	}
 }

@@ -5,7 +5,7 @@ plugins {
 	id "fabric-api.base-publishing"
 }
 
-version = rootProject.version
+version = FabricApiBuildUtils.rootVersion(project)
 
 def dependencies = rootProject.allprojects.findAll {
 	it.name != "deprecated" && it.path.startsWith(":deprecated")
@@ -13,7 +13,7 @@ def dependencies = rootProject.allprojects.findAll {
 	[
 		'groupId': project.group.toString(),
 		'artifactId': it.name,
-		'version': FabricApiBuildUtils.moduleVersion(it),
+		'version': FabricApiBuildUtils.moduleVersion(project, it.name),
 		'scope': 'compile'
 	]
 }

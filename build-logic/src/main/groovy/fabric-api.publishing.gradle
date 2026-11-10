@@ -32,7 +32,7 @@ remoteSign {
 
 String archivesName = project.base.archivesName.get()
 [jar, sourcesJar].each {
-	it.from(rootProject.file("LICENSE")) {
+	it.from(isolated.rootProject.projectDirectory.file("LICENSE")) {
 		rename { "${it}-${archivesName}" }
 	}
 }
